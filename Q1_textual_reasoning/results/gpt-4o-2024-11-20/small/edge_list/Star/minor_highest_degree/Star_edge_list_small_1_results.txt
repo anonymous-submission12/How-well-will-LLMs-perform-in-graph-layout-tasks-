@@ -1,0 +1,14 @@
+To find the highest degree of all nodes in the graph, we calculate the degree of each node (the number of edges connected to it). The graph's edge list is provided. Node `0` is connected to every other node, and the other nodes have only one connection (to node `0`).
+
+Here is the calculation:
+
+- Node `0` has edges to nodes `1` through `20`, so its degree is `20`.
+- Nodes `1` to `20` each have one edge (connected to node `0`), so their degree is `1`.
+
+The highest degree of all nodes is therefore `20`.
+
+```json
+{
+  "answer": 20
+}
+```

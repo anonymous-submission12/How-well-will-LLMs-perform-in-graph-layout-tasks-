@@ -1,0 +1,60 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    nodes = list(adj_list.keys())
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+    num_nodes = len(nodes)
+
+    # Check for complete graph
+    if edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for star graph
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == num_nodes - 1]
+    leaf_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == 1]
+    if len(center_nodes) == 1 and len(leaf_nodes) == num_nodes - 1:
+        return "Star"
+
+    # Check for path graph
+    degree_counts = [len(adj_list[node]) for node in nodes]
+    if degree_counts.count(2) == num_nodes - 2 and degree_counts.count(1) == 2:
+        return "Path"
+
+    # Check for cycle graph
+    if all(len(adj_list[node]) == 2 for node in nodes) and edges == num_nodes:
+        return "Cycle"
+
+    # Check for grid graph
+    rows = int(num_nodes**0.5)
+    if rows * rows == num_nodes:
+        expected_edges = 2 * (rows * (rows - 1))  # Horizontal + Vertical edges
+        if edges == expected_edges:
+            return "Grid"
+
+    # Check for clustered graph
+    clusters = defaultdict(set)
+    visited = set()
+
+    def dfs(node, cluster_idx):
+        if node in visited: return
+        visited.add(node)
+        clusters[cluster_idx].add(node)
+        for neighbor in adj_list[node]:
+            dfs(neighbor, cluster_idx)
+
+    cluster_idx = 0
+    for node in nodes:
+        if node not in visited:
+            dfs(node, cluster_idx)
+            cluster_idx += 1
+
+    if cluster_idx > 1:
+        return "Clustered graph"
+
+    # Default to random graph
+    return "Random graph"
+
+adj_list = {0: [6, 13, 16], 1: [3, 21], 2: [7], 3: [1, 5, 20], 4: [9, 22], 5: [3, 14, 22], 6: [0, 12, 18, 21], 7: [2, 9, 13, 18], 8: [19], 9: [4, 7, 12], 10: [11, 14], 11: [10, 16, 18, 19], 12: [6, 9], 13: [0, 7, 14], 14: [5, 10, 13, 15, 21], 15: [14], 16: [0, 11], 17: [22], 18: [6, 7, 11], 19: [8, 11], 20: [3, 21], 21: [1, 6, 14, 20, 22], 22: [4, 5, 17, 21]}
+print(determine_graph_pattern(adj_list))
+```

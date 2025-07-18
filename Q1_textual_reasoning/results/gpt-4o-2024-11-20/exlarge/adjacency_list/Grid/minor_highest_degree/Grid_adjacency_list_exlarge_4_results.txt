@@ -1,0 +1,16 @@
+To calculate the highest degree of all nodes in the graph, follow these steps:
+1. The degree of a node is defined as the number of neighbors it is connected to.
+2. Iterate through the adjacency list to calculate the degree of each node.
+3. Identify the maximum degree among all nodes.
+
+Here's the result in JSON format:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation:
+- Most nodes in the graph have either 2, 3, or 4 connections.
+- The highest degree is **4**, as some nodes (like node 27) are connected to 4 neighbors.

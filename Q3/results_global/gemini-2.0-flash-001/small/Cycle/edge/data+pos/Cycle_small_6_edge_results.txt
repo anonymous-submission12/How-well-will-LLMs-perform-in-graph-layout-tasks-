@@ -1,0 +1,7 @@
+Based on a visual estimation of the layouts, Layout 1 appears to have fewer edge crossings than Layout 2. Layout 2 seems to have several edges crossing in the central area of the graph.
+
+```json
+{
+"Answer": 1
+}
+```

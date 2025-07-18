@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 50, in <module>
+    distance = math.sqrt(dx**2 + dy**2)
+                         ~~^^~
+OverflowError: (34, 'Numerical result out of range')

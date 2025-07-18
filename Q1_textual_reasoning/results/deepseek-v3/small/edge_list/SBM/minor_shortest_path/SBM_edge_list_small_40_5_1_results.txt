@@ -1,0 +1,9 @@
+To calculate the length of the shortest path between node '5' and '1', we can use a Breadth-First Search (BFS) algorithm. Here is the JSON response with the answer:
+
+```json
+{
+  "answer": 1
+}
+```
+
+Explanation: Node '5' is directly connected to node '1' via the edge (5, 1), so the shortest path length is 1.

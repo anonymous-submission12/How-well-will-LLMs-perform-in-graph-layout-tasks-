@@ -1,0 +1,52 @@
+```python
+import networkx as nx
+
+# Input edge list
+edge_list = [(0, 6), (0, 20), (0, 21), (0, 22), (1, 2), (1, 6), (1, 8), (1, 29), (2, 10), (2, 21), (3, 10), (3, 21), (3, 22), 
+             (4, 12), (4, 19), (4, 25), (5, 13), (5, 26), (6, 14), (6, 15), (7, 9), (7, 14), (7, 15), (10, 11), (10, 20), 
+             (10, 27), (11, 16), (11, 18), (11, 21), (11, 29), (12, 14), (12, 23), (12, 24), (12, 26), (12, 27), (14, 16), 
+             (14, 22), (14, 28), (14, 29), (15, 19), (15, 28), (17, 18), (17, 25), (18, 20), (18, 21), (19, 21), (19, 24), 
+             (19, 29), (22, 23), (22, 29), (23, 26), (27, 28)]
+
+# Create graph object
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Function for classification
+def classify_graph(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check if complete graph (all possible edges exist)
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check if cycle graph (every node has degree 2)
+    if all(deg == 2 for _, deg in G.degree) and nx.is_connected(G):
+        return "Cycle"
+    
+    # Check if path graph (two nodes of degree 1, others degree 2)
+    if nx.is_connected(G) and sum(deg == 1 for _, deg in G.degree) == 2 and all(deg <= 2 for _, deg in G.degree):
+        return "Path"
+    
+    # Check if star graph (one node has degree equal to n-1, others degree 1)
+    max_deg = max(dict(G.degree).values())
+    if max_deg == n - 1 and sum(deg == 1 for _, deg in G.degree) == n - 1:
+        return "Star"
+    
+    # Check if grid graph (grid structure, degrees correlate to lattice)
+    grid_checks = nx.algorithms.graphical.is_valid_degree_sequence_havel_hakimi([deg for _, deg in G.degree])
+    if grid_checks:
+        return "Grid"
+    
+    # Check if clustered graph (communities detected with modularity)
+    communities = nx.algorithms.community.greedy_modularity_communities(G)
+    if len(communities) > 1:
+        return "Clustered graph"
+    
+    # If none match, classify as random graph
+    return "Random graph"
+
+# Print the classification result
+print(classify_graph(G))
+```

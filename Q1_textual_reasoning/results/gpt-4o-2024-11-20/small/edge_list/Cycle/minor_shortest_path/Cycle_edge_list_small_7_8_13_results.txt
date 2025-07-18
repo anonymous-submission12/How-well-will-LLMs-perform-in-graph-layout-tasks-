@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '8' and '13', we can observe that the graph is a linear chain of nodes. The shortest path between two nodes in such a graph is simply the difference in their indices.
+
+The shortest path between node '8' and node '13' is:
+
+\[
+|13 - 8| = 5
+\]
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 5
+}
+```

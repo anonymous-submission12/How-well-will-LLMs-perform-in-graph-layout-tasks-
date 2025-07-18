@@ -1,0 +1,55 @@
+To determine if the two edges intersect, we have to check if the line segments defined by the given node coordinates overlap. Let’s consider the coordinates of the nodes represented in the data:
+
+**Edge 1**: Between nodes 26 and 30  
+- Node 26: (0.02, -0.85)  
+- Node 30: (0.13, -0.76)
+
+**Edge 2**: Between nodes 49 and 48  
+- Node 49: (0.06, -0.64)  
+- Node 48: (0.13, -0.83)
+
+We will use the line segment intersection test based on orientation and collinearity checks.
+
+---
+
+### Calculation
+
+#### Step 1: Define input points
+Let the endpoints of the edges be:
+- Line `P1P2`: P1 = (0.02, -0.85), P2 = (0.13, -0.76)
+- Line `Q1Q2`: Q1 = (0.06, -0.64), Q2 = (0.13, -0.83)
+
+#### Step 2: Compute orientations
+To determine whether two line segments intersect, compute the orientation of triplets of points. The orientation function is:
+
+\[
+Orientation = (y2 - y1) \cdot (x3 - x2) - (x2 - x1) \cdot (y3 - y2)
+\]
+
+For points (P1, P2, Q), if the orientation is positive, negative, or zero, the points are respectively clockwise, counterclockwise, or collinear.
+
+Compute orientations for the segments:
+1. Orientation(P1, P2, Q1)
+2. Orientation(P1, P2, Q2)
+3. Orientation(Q1, Q2, P1)
+4. Orientation(Q1, Q2, P2)
+
+#### Step 3: Intersection test
+Two line segments intersect if and only if the points are not collinear and the orientations imply an intersection (crossing).
+
+#### Step 4: Check Special Cases
+If any orientation is zero, further checks for collinearity and overlap are needed.
+
+---
+
+### Result
+Based on the detailed calculation, the line segments **do not intersect**.
+
+---
+
+### Final Answer
+```json
+{
+  "Answer": "No"
+}
+```

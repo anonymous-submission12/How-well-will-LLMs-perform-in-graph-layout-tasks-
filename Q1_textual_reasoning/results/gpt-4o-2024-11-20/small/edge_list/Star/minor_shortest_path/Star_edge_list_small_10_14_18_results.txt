@@ -1,0 +1,15 @@
+The graph provided is structured as a star graph where node `0` is the central node connected to all other nodes. Given this structure, the shortest path between any two non-central nodes must route through the central node (`0`).
+
+To calculate the shortest path between node `14` and node `18`:
+1. The path from node `14` to node `0` has a length of `1`.
+2. The path from node `0` to node `18` has a length of `1`.
+
+Thus, the shortest path length between node `14` and node `18` is `1 + 1 = 2`.
+
+Here is the JSON-formatted answer:
+
+```json
+{
+  "answer": 2
+}
+```

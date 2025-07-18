@@ -1,0 +1,159 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place the central node (node 0) at the origin and place the other nodes at equal distances from the center, forming a circle around it. This ensures that the Euclidean distance between the central node and any other node is consistent, and the graph-theoretic distance (which is 1 for all edges) is also maintained.
+
+Here is the Python code to generate the layout:
+
+```python
+import math
+import json
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), 
+             (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), 
+             (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25)]
+
+# Number of nodes
+num_nodes = max(max(edge) for edge in edge_list) + 1
+
+# Radius of the circle
+radius = 10.0
+
+# Calculate the angle between each node
+angle_increment = (2 * math.pi) / (num_nodes - 1)
+
+# Initialize the positions dictionary
+positions = {0: (0.0, 0.0)}  # Central node at the origin
+
+# Place the other nodes in a circle around the central node
+for i in range(1, num_nodes):
+    angle = (i - 1) * angle_increment
+    x = radius * math.cos(angle)
+    y = radius * math.sin(angle)
+    positions[i] = (x, y)
+
+# Convert positions to JSON format
+layout_json = json.dumps(positions, indent=4)
+
+# Output the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Central Node Placement**: Node 0 is placed at the origin `(0.0, 0.0)`.
+2. **Circle Formation**: The remaining nodes are placed at equal angular intervals around the central node, forming a circle. The radius of the circle is set to `10.0`, but you can adjust this value as needed.
+3. **Angle Calculation**: The angle between each node is calculated as `(2 * pi) / (num_nodes - 1)`, ensuring that the nodes are evenly spaced.
+4. **Position Calculation**: The position of each node is calculated using the polar coordinates `(r * cos(theta), r * sin(theta))`, where `r` is the radius and `theta` is the angle.
+5. **JSON Output**: The positions are converted to JSON format and printed.
+
+### Output:
+The output will be a JSON object where the keys are the node IDs and the values are tuples representing the `(x, y)` coordinates of the nodes.
+
+```json
+{
+    "0": [
+        0.0,
+        0.0
+    ],
+    "1": [
+        10.0,
+        0.0
+    ],
+    "2": [
+        9.510565162951535,
+        3.090169943749474
+    ],
+    "3": [
+        8.090169943749475,
+        5.877852522924732
+    ],
+    "4": [
+        5.877852522924732,
+        8.090169943749475
+    ],
+    "5": [
+        3.0901699437494745,
+        9.510565162951535
+    ],
+    "6": [
+        6.123233995736766e-16,
+        10.0
+    ],
+    "7": [
+        -3.090169943749473,
+        9.510565162951535
+    ],
+    "8": [
+        -5.877852522924731,
+        8.090169943749475
+    ],
+    "9": [
+        -8.090169943749475,
+        5.877852522924732
+    ],
+    "10": [
+        -9.510565162951535,
+        3.0901699437494745
+    ],
+    "11": [
+        -10.0,
+        1.2246467991473532e-15
+    ],
+    "12": [
+        -9.510565162951535,
+        -3.090169943749473
+    ],
+    "13": [
+        -8.090169943749475,
+        -5.877852522924731
+    ],
+    "14": [
+        -5.877852522924732,
+        -8.090169943749475
+    ],
+    "15": [
+        -3.090169943749475,
+        -9.510565162951535
+    ],
+    "16": [
+        -1.8369701987210297e-15,
+        -10.0
+    ],
+    "17": [
+        3.0901699437494727,
+        -9.510565162951535
+    ],
+    "18": [
+        5.87785252292473,
+        -8.090169943749475
+    ],
+    "19": [
+        8.090169943749475,
+        -5.877852522924732
+    ],
+    "20": [
+        9.510565162951535,
+        -3.090169943749475
+    ],
+    "21": [
+        10.0,
+        -2.4492935982947064e-15
+    ],
+    "22": [
+        9.510565162951535,
+        3.0901699437494727
+    ],
+    "23": [
+        8.090169943749475,
+        5.87785252292473
+    ],
+    "24": [
+        5.877852522924732,
+        8.090169943749475
+    ],
+    "25": [
+        3.090169943749475,
+        9.510565162951535
+    ]
+}
+```
+
+This layout ensures that the Euclidean distance between the central node and any other node is consistent, and the graph-theoretic distance is maintained.

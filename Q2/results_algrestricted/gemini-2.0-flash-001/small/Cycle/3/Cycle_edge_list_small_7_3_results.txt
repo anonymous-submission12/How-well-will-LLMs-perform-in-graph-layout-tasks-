@@ -1,0 +1,106 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(edges, layout):
+    """Calculates the number of edge crossings for a given layout."""
+    crossing_number = 0
+    n = len(edges)
+    for i in range(n):
+        for j in range(i + 1, n):
+            a, b = edges[i]
+            c, d = edges[j]
+
+            # Get coordinates from layout
+            x1, y1 = layout[a]
+            x2, y2 = layout[b]
+            x3, y3 = layout[c]
+            x4, y4 = layout[d]
+
+            # Check if line segments (x1, y1)-(x2, y2) and (x3, y3)-(x4, y4) intersect
+            def ccw(x1, y1, x2, y2, x3, y3):
+                return (y3 - y1) * (x2 - x1) > (y2 - y1) * (x3 - x1)
+
+            if (ccw(x1, y1, x3, y3, x4, y4) != ccw(x2, y2, x3, y3, x4, y4) and
+                ccw(x1, y1, x2, y2, x3, y3) != ccw(x1, y1, x2, y2, x4, y4)):
+                crossing_number += 1
+
+    return crossing_number
+
+
+def generate_graph_layout(edges, num_iterations=1000):
+    """Generates a graph layout that minimizes edge crossings."""
+
+    nodes = set()
+    for u, v in edges:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))
+    num_nodes = len(nodes)
+
+    # Initialize layout with random positions
+    layout = {node: (random.random(), random.random()) for node in nodes}
+    best_layout = layout.copy()
+    min_crossing_number = calculate_crossing_number(edges, layout)
+
+    # Iterate and try to improve the layout
+    for _ in range(num_iterations):
+        # Pick a random node
+        node_to_move = random.choice(nodes)
+
+        # Generate a slightly perturbed position
+        new_x = layout[node_to_move][0] + random.uniform(-0.1, 0.1)
+        new_y = layout[node_to_move][1] + random.uniform(-0.1, 0.1)
+
+        # Keep the new position within bounds [0, 1]
+        new_x = max(0, min(1, new_x))
+        new_y = max(0, min(1, new_y))
+
+        new_layout = layout.copy()
+        new_layout[node_to_move] = (new_x, new_y)
+
+        # Calculate the crossing number for the new layout
+        crossing_number = calculate_crossing_number(edges, new_layout)
+
+        # If the new layout has fewer crossings, accept it
+        if crossing_number < min_crossing_number:
+            min_crossing_number = crossing_number
+            best_layout = new_layout.copy()
+            layout = new_layout.copy()
+        else:
+            # Simulated annealing: accept with some probability
+            temperature = 100 - (_ / num_iterations) * 100
+            probability =  2.71828 ** ((min_crossing_number - crossing_number) / temperature)
+            if random.random() < probability:
+                layout = new_layout.copy()
+
+    # Normalize the layout to fit within [0, 1]
+    min_x = min(x for x, y in best_layout.values())
+    min_y = min(y for x, y in best_layout.values())
+    max_x = max(x for x, y in best_layout.values())
+    max_y = max(y for x, y in best_layout.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1
+    if y_range == 0:
+        y_range = 1
+
+    normalized_layout = {
+        node: ((x - min_x) / x_range, (y - min_y) / y_range)
+        for node, (x, y) in best_layout.items()
+    }
+
+    return normalized_layout
+
+
+# Example usage:
+edges = [(0, 1), (0, 26), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26)]
+layout = generate_graph_layout(edges)
+
+# Convert layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

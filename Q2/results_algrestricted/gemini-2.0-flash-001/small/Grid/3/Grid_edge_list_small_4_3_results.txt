@@ -1,0 +1,100 @@
+```python
+import json
+
+def generate_layout(edges):
+    """
+    Generates a graph layout to minimize edge crossings.
+
+    This function implements a simple layering approach.  It first identifies
+    nodes with degree 1 (leaves) and assigns them to the outermost layers.
+    Then, it iteratively moves inward, assigning nodes to layers based on
+    their distance from the leaves.  Finally, nodes within each layer are
+    arranged to minimize crossings based on the positions of their neighbors
+    in adjacent layers.
+
+    Args:
+        edges: A list of tuples representing the graph's edges.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build adjacency list and degree dictionary
+    adj = {}
+    degree = {}
+    for u, v in edges:
+        if u not in adj:
+            adj[u] = []
+            degree[u] = 0
+        if v not in adj:
+            adj[v] = []
+            degree[v] = 0
+        adj[u].append(v)
+        adj[v].append(u)
+        degree[u] += 1
+        degree[v] += 1
+
+    nodes = list(adj.keys())
+
+    # 2. Layer assignment
+    layers = {}
+    layer_assignment = {}
+    layer_num = 0
+
+    # Initialize leaves (degree 1 nodes) to the first layer
+    leaves = [node for node in nodes if degree[node] == 1]
+    for leaf in leaves:
+        layers.setdefault(layer_num, []).append(leaf)
+        layer_assignment[leaf] = layer_num
+
+    # Assign layers to the rest of the nodes
+    assigned_nodes = set(leaves)
+    while len(assigned_nodes) < len(nodes):
+        layer_num += 1
+        new_layer_nodes = []
+        for node in nodes:
+            if node not in assigned_nodes:
+                neighbors_in_prev_layer = 0
+                for neighbor in adj[node]:
+                    if neighbor in assigned_nodes and layer_assignment[neighbor] == layer_num - 1:
+                        neighbors_in_prev_layer += 1
+                if neighbors_in_prev_layer > 0:
+                    new_layer_nodes.append(node)
+                    layers.setdefault(layer_num, []).append(node)
+                    layer_assignment[node] = layer_num
+                    assigned_nodes.add(node)
+
+    # 3. Node positioning within layers (minimize crossings)
+    num_layers = len(layers)
+    x_spacing = 1.0
+    y_spacing = 1.0
+    positions = {}
+
+    for layer_index in range(num_layers):
+        layer_nodes = layers[layer_index]
+        num_nodes_in_layer = len(layer_nodes)
+
+        # Initial x positions (equally spaced)
+        x_positions = [i * x_spacing for i in range(num_nodes_in_layer)]
+
+        # Try to minimize crossings by sorting based on neighbor positions in adjacent layers
+        if layer_index > 0:
+            prev_layer_positions = {node: positions[node][0] for node in layers[layer_index - 1]}
+            layer_nodes.sort(key=lambda node: sum([prev_layer_positions[neighbor] for neighbor in adj[node] if neighbor in prev_layer_positions]) / (len([neighbor for neighbor in adj[node] if neighbor in prev_layer_positions]) or 1))
+
+        # Assign final positions
+        for i, node in enumerate(layer_nodes):
+            positions[node] = (i * x_spacing, layer_index * y_spacing)
+
+    return positions
+
+
+# Graph data
+edges = [(0, 1), (0, 15), (1, 2), (1, 16), (2, 3), (2, 17), (3, 4), (3, 18), (4, 5), (4, 19), (5, 6), (5, 20), (6, 7), (6, 21), (7, 8), (7, 22), (8, 9), (8, 23), (9, 10), (9, 24), (10, 11), (10, 25), (11, 12), (11, 26), (12, 13), (12, 27), (13, 14), (13, 28), (14, 29), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+
+# Generate layout
+layout = generate_layout(edges)
+
+# Output in JSON format
+print(json.dumps(layout, indent=4))
+```

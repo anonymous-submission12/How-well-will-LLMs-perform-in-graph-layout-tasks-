@@ -1,0 +1,46 @@
+Here's how we can find the shortest path length between nodes '22' and '0' in the given graph using Breadth-First Search (BFS).
+
+```python
+import json
+
+def solve():
+    graph_data = [(0, 1), (0, 6), (1, 2), (1, 7), (2, 3), (2, 8), (3, 4), (3, 9), (4, 5), (4, 10), (5, 11), (6, 7), (6, 12), (7, 8), (7, 13), (8, 9), (8, 14), (9, 10), (9, 15), (10, 11), (10, 16), (11, 17), (12, 13), (12, 18), (13, 14), (13, 19), (14, 15), (14, 20), (15, 16), (15, 21), (16, 17), (16, 22), (17, 23), (18, 19), (18, 24), (19, 20), (19, 25), (20, 21), (20, 26), (21, 22), (21, 27), (22, 23), (22, 28), (23, 29), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+    
+    # Build the adjacency list representation of the graph
+    graph = {}
+    for u, v in graph_data:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    start_node = 22
+    end_node = 0
+    
+    # BFS to find the shortest path
+    queue = [(start_node, 0)]  # (node, distance)
+    visited = {start_node}
+    
+    while queue:
+        node, distance = queue.pop(0)
+        
+        if node == end_node:
+            return json.dumps({"answer": distance})
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+    
+    return json.dumps({"answer": -1}) # Should not reach here.
+
+print(solve())
+```
+
+```json
+{
+"answer": 8
+}
+```

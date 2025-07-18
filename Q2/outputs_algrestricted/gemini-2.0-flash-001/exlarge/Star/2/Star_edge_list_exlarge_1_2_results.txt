@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 115, in <module>
+    layout = layout_graph(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 74, in layout_graph
+    forces[node1][0] += attraction * (dx / distance)
+                                      ~~~^~~~~~~~~~
+ZeroDivisionError: float division by zero

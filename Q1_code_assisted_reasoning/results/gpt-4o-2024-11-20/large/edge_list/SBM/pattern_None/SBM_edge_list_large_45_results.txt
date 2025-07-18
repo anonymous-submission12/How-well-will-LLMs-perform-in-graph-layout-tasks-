@@ -1,0 +1,51 @@
+```python
+import networkx as nx
+
+# Initialize the graph with the edge list provided
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (1, 2), (1, 3), (1, 6), (1, 8), (2, 4), 
+         (2, 5), (2, 6), (3, 5), (3, 8), (3, 26), (4, 6), (4, 7), (4, 8), (5, 7), (5, 8), (6, 7), (7, 8), (9, 10), 
+         (9, 12), (9, 13), (9, 14), (9, 15), (9, 16), (9, 17), (10, 11), (10, 12), (10, 15), (10, 16), (11, 12), 
+         (11, 13), (12, 14), (12, 16), (12, 19), (12, 26), (13, 14), (14, 15), (14, 16), (17, 18), (17, 21), (17, 22), 
+         (17, 24), (18, 21), (18, 24), (18, 38), (19, 20), (19, 21), (19, 22), (20, 21), (20, 22), (20, 23), (20, 24), 
+         (21, 23), (21, 24), (22, 23), (22, 24), (25, 26), (25, 27), (25, 29), (25, 30), (25, 34), (27, 28), (27, 30), 
+         (28, 29), (28, 31), (29, 31), (30, 31), (32, 25), (32, 26), (32, 27), (32, 28), (32, 29), (32, 30), (32, 31), 
+         (33, 35), (33, 38), (33, 39), (34, 35), (34, 36), (35, 39), (36, 37), (36, 38), (36, 39), (36, 40), (37, 40), 
+         (38, 40)]
+G = nx.Graph(edges)
+
+# Analyze the graph
+def detect_graph_type(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+
+    # Check for star graph
+    degrees = [deg for _, deg in G.degree]
+    if degrees.count(max(degrees)) == 1 and max(degrees) == n - 1:
+        return "Star"
+    
+    # Check for cycle graph
+    if nx.cycle_graph(n).number_of_edges() == m and nx.is_connected(G) and all(deg == 2 for _, deg in G.degree):
+        return "Cycle"
+    
+    # Check for path graph
+    if nx.path_graph(n).number_of_edges() == m and nx.is_connected(G) and max(degrees) == 2 and degrees.count(1) == 2:
+        return "Path"
+    
+    # Check for grid graph
+    if all(deg <= 4 for _, deg in G.degree) and nx.is_connected(G):
+        return "Grid"
+    
+    # Check for complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clusters (connected components)
+    components = [len(c) for c in nx.connected_components(G)]
+    if len(components) > 1 and all(nx.is_connected(G.subgraph(c)) for c in nx.connected_components(G)):
+        return "Clustered"
+    
+    # Assume random graph if fits none of the above
+    return "Random"
+
+print(detect_graph_type(G))
+```

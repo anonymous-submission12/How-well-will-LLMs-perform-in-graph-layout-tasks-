@@ -1,0 +1,50 @@
+```python
+from collections import defaultdict
+
+def graph_pattern(adj_list):
+    # Count the number of nodes and edges
+    num_nodes = len(adj_list)
+    num_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for star pattern
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == num_nodes - 1]
+    if len(center_nodes) == 1:
+        return "Star"
+
+    # Check for cycle pattern
+    if num_edges == num_nodes and all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        return "Cycle"
+
+    # Check for path pattern
+    end_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == 1]
+    if len(end_nodes) == 2 and num_edges == num_nodes - 1:
+        return "Path"
+
+    # Check for complete graph
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for grid pattern (approximation)
+    sqrt_nodes = int(num_nodes**0.5)
+    if sqrt_nodes * sqrt_nodes == num_nodes and all(len(neighbors) <= 4 for neighbors in adj_list.values()):
+        return "Grid"
+
+    # Check for clustered graph (approximation)
+    clusters = defaultdict(set)
+    for node, neighbors in adj_list.items():
+        for neighbor in neighbors:
+            clusters[node].add(neighbor)
+            clusters[neighbor].add(node)
+    cluster_sizes = [len(cluster) for cluster in clusters.values()]
+    if len(set(cluster_sizes)) > 1 and max(cluster_sizes) > num_nodes // 2:
+        return "Clustered"
+
+    # Default to random graph
+    return "Random"
+
+# Input adjacency list
+adj_list = {0: [21, 27, 28, 34, 38, 43], 1: [38, 39, 40], 2: [3, 4, 19, 35, 37], 3: [2, 7, 11, 12, 14, 15, 19, 35, 42], 4: [2, 16, 23, 25, 26, 28, 37], 5: [17, 26, 28, 30, 38], 6: [22, 25, 29, 30, 40], 7: [3, 32, 36, 40, 41], 8: [15, 18, 24, 27, 36, 42], 9: [11, 36, 37], 10: [19, 25, 29, 33], 11: [3, 9, 14, 20, 27, 34], 12: [3, 21, 22, 31, 41], 13: [27, 30, 31], 14: [3, 11, 41], 15: [3, 8, 19, 26, 37], 16: [4, 22, 30], 17: [5, 19, 23, 40, 43], 18: [8, 21, 35, 37], 19: [2, 3, 10, 15, 17, 22, 25, 29, 35, 43], 20: [11, 23, 25], 21: [0, 12, 18, 25, 39], 22: [6, 12, 16, 19, 38, 39], 23: [4, 17, 20, 33], 24: [8, 29, 34], 25: [4, 6, 10, 19, 20, 21, 27, 32], 26: [4, 5, 15, 37], 27: [0, 8, 11, 13, 25], 28: [0, 4, 5, 30], 29: [6, 10, 19, 24, 34, 36], 30: [5, 6, 13, 16, 28], 31: [12, 13, 35, 42], 32: [7, 25, 33, 36], 33: [10, 23, 32, 35, 40], 34: [0, 11, 24, 29], 35: [2, 3, 18, 19, 31, 33], 36: [7, 8, 9, 29, 32, 41], 37: [2, 4, 9, 15, 18, 26, 38], 38: [0, 1, 5, 22, 37], 39: [1, 21, 22, 42], 40: [1, 6, 7, 17, 33], 41: [7, 12, 14, 36, 43], 42: [3, 8, 31, 39], 43: [0, 17, 19, 41]}
+
+# Determine the pattern
+print(graph_pattern(adj_list))
+```

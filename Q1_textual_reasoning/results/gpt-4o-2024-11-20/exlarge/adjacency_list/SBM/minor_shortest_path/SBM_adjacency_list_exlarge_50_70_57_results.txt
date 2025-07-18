@@ -1,0 +1,9 @@
+To calculate the shortest path between node `70` and `57` in the input graph, we can use a Breadth-First Search (BFS) algorithm since it is suitable for unweighted graphs like this one.
+
+Here's the calculated result:
+
+```json
+{
+  "answer": 8
+}
+```

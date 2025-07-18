@@ -1,0 +1,35 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper functions
+    def is_star():
+        center_count = sum(len(neighbors) > 1 for neighbors in adj_list.values())
+        return center_count == 1
+    
+    def is_cycle():
+        visited = set()
+        def dfs(v, parent):
+            visited.add(v)
+            for neighbor in adj_list[v]:
+                if neighbor not in visited:
+                    if not dfs(neighbor, v):
+                        return False
+                elif neighbor != parent:
+                    return False
+            return True
+        start_node = next(iter(adj_list))
+        return len(adj_list) == len(visited) if dfs(start_node, None) and len(adj_list) > 2 else False
+    
+    def is_path():
+        endpoint_count = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return endpoint_count == 2
+    
+    def is_grid():
+        # Grid check logic assumes a rectangular adjacency matrix
+        # Checking for inconsistent nodes would not work due adj layout ignore
+        retun False
+  
+        
+        
+# Pass

@@ -1,0 +1,11 @@
+To calculate the shortest path between node '9' and node '10', we can analyze the graph structure and find the path with the minimum number of edges connecting these two nodes. Based on the edge list provided, nodes '9' and '10' are directly connected by an edge.
+
+Thus, the length of the shortest path between node '9' and node '10' is **1**.
+
+Here is the JSON output:
+
+```json
+{
+  "answer": 1
+}
+```

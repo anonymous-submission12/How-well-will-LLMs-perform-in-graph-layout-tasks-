@@ -1,0 +1,76 @@
+```python
+from collections import defaultdict
+
+# Input graph
+graph = {
+    0: [25], 1: [17, 25, 36], 2: [3, 21, 35, 38, 42], 3: [2, 46], 4: [15, 20, 22, 44, 46], 5: [16, 39, 42, 44], 
+    6: [16, 37, 42], 7: [19, 27, 30], 8: [16, 21, 34, 42, 45], 9: [16, 17, 19, 28, 30, 32, 37], 
+    10: [13, 33], 11: [21, 27, 34, 37], 12: [14, 19, 30, 38, 41], 13: [10, 22, 32], 14: [12, 17, 37], 
+    15: [4, 16, 22, 31, 37], 16: [5, 6, 8, 9, 15, 17], 17: [1, 9, 14, 16, 24, 28], 18: [19, 22, 23, 32, 34, 36, 42], 
+    19: [7, 9, 12, 18, 20, 45], 20: [4, 19], 21: [2, 8, 11, 34, 43], 22: [4, 13, 15, 18, 23, 24, 32, 35], 
+    23: [18, 22, 31, 33, 42], 24: [17, 22, 29, 36], 25: [0, 1, 37, 38, 40], 26: [34], 27: [7, 11, 30, 37], 
+    28: [9, 17, 30, 33, 42, 46], 29: [24], 30: [7, 9, 12, 27, 28, 32, 34, 41], 31: [15, 23, 38], 
+    32: [9, 13, 18, 22, 30, 34, 36], 33: [10, 23, 28], 34: [8, 11, 18, 21, 26, 30, 32, 39, 41], 
+    35: [2, 22, 42], 36: [1, 18, 24, 32], 37: [6, 9, 11, 14, 15, 25, 27, 44], 38: [2, 12, 25, 31, 39, 42, 46], 
+    39: [5, 34, 38], 40: [25, 41], 41: [12, 30, 34, 40], 42: [2, 5, 6, 8, 18, 23, 28, 35, 38], 43: [21], 
+    44: [4, 5, 37], 45: [8, 19], 46: [3, 4, 28, 38]
+}
+
+# Graph properties
+n = len(graph)  # Number of nodes
+edges = sum(len(neighbors) for neighbors in graph.values()) // 2  # Number of edges
+
+# Patterns checking functions
+def is_star(graph):
+    degrees = [len(neighbors) for neighbors in graph.values()]
+    max_degree = max(degrees)
+    return max_degree == n - 1 and degrees.count(1) == n - 1
+
+def is_cycle(graph):
+    degrees = [len(neighbors) for neighbors in graph.values()]
+    return all(degree == 2 for degree in degrees) and edges == n
+
+def is_path(graph):
+    degrees = [len(neighbors) for neighbors in graph.values()]
+    return degrees.count(1) == 2 and degrees.count(2) == n - 2 and edges == n - 1
+
+def is_grid(graph):
+    # Check if graph structure matches a grid
+    # Simplified, assumes grid graphs are planar and have specific edge/node ratios
+    return edges == 4 * (n - 1)
+
+def is_complete(graph):
+    return edges == n * (n - 1) // 2
+
+# Clustering can be approximated by looking for dense groups
+def is_clustered(graph):
+    cluster_score = []
+    for node, neighbors in graph.items():
+        subgraph_edges = sum(
+            1 for neighbor in neighbors if any(neighbor in graph[other] for other in neighbors)
+        )
+        cluster_score.append(subgraph_edges / len(neighbors) if neighbors else 0)
+    return max(cluster_score) > 0.6  # Arbitrary density threshold
+
+# Random graph: Not fitting specific patterns such as grid, cycle, or star
+def is_random(graph):
+    return not (is_star(graph) or is_cycle(graph) or is_path(graph) or is_grid(graph) or is_complete(graph) or is_clustered(graph))
+
+# Determine the pattern
+if is_star(graph):
+    print("Star")
+elif is_cycle(graph):
+    print("Cycle")
+elif is_path(graph):
+    print("Path")
+elif is_grid(graph):
+    print("Grid")
+elif is_complete(graph):
+    print("Complete")
+elif is_clustered(graph):
+    print("Clustered Graph")
+elif is_random(graph):
+    print("Random Graph")
+else:
+    print("Unknown")
+```

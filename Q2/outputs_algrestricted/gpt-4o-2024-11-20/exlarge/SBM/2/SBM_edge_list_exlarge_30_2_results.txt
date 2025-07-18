@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 46, in <module>
+    if v in shortest_path_distances[u]:
+            ~~~~~~~~~~~~~~~~~~~~~~~^^^
+KeyError: 8

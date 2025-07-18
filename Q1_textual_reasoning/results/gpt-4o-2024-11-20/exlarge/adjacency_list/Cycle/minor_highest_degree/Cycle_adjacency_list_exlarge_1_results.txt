@@ -1,0 +1,15 @@
+To calculate the highest degree of all nodes in the graph, we need to determine the number of connections (edges) each node has and find the maximum among them.
+
+Here is the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+- The degree of a node is the number of edges connected to it.
+- In the given graph, most nodes have a degree of 2 because they are part of a linear chain.
+- However, nodes `0` and `70` have a degree of 3 because they are connected to two other nodes in the chain and also to each other, forming a cycle.
+- Therefore, the highest degree in the graph is `3`.

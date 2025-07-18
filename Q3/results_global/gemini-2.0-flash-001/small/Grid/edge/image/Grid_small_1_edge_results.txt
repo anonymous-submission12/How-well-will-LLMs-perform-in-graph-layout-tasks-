@@ -1,0 +1,13 @@
+Let's analyze the two images.
+
+Image 1 has many edge crossings. It's difficult to count them precisely, but there are clearly more than a few.
+
+Image 2 has no edge crossings.
+
+Therefore, Image 2 has the fewest number of edge crossings.
+
+```json
+{
+  "Answer": 2
+}
+```

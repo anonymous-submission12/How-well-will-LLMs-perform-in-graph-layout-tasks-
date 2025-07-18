@@ -1,0 +1,18 @@
+To calculate the highest degree of all nodes in the graph, we need to count the number of edges connected to each node. The degree of a node is the number of edges it is part of.
+
+Given the edge list:
+```
+[(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22)]
+```
+
+Node `0` is connected to all other nodes (1 through 22), so its degree is `22`. All other nodes (1 through 22) are connected only to node `0`, so their degree is `1`.
+
+The highest degree in the graph is `22`.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 22
+}
+```

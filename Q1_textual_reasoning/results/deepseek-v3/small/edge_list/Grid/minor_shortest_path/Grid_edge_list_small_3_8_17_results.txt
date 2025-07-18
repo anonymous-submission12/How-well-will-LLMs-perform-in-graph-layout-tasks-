@@ -1,0 +1,32 @@
+To calculate the length of the shortest path between node '8' and '17', we can use a Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start from node '8'.
+2. Explore all its neighbors.
+3. Continue exploring the neighbors of the neighbors until node '17' is reached.
+
+Let's perform the BFS:
+
+- Start at node '8'.
+- From '8', we can go to nodes '7' and '20'.
+- From '7', we can go to nodes '6' and '19'.
+- From '20', we can go to nodes '19' and '21'.
+- From '6', we can go to nodes '5' and '18'.
+- From '19', we can go to nodes '18' and '20'.
+- From '21', we can go to nodes '20' and '22'.
+- From '5', we can go to nodes '4' and '17'.
+- From '18', we can go to nodes '17' and '19'.
+- From '22', we can go to nodes '21' and '23'.
+- From '4', we can go to nodes '3' and '16'.
+- From '17', we have reached our destination.
+
+The shortest path from '8' to '17' is: 8 → 7 → 6 → 5 → 17.
+
+The length of this path is 4 edges.
+
+```json
+{
+  "answer": 4
+}
+```

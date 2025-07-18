@@ -1,0 +1,7 @@
+To determine the graph layout with the fewest edge crossings, visually inspecting the two images reveals that **Layout 2** has fewer edge crossings compared to **Layout 1**. In Layout 2, the graph appears to be separated into more distinct regions, reducing edge intersections.
+
+```json
+{
+  "Answer": "2"
+}
+```

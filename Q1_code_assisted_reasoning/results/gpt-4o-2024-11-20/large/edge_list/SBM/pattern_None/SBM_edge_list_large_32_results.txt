@@ -1,0 +1,58 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 7), (0, 39), (1, 2), (1, 4), (1, 6), (2, 3), (2, 4), (2, 5), (2, 6),
+    (3, 6), (3, 7), (3, 25), (4, 5), (4, 6), (5, 6), (5, 7), (8, 10), (8, 13), (8, 14), (8, 15), (8, 21),
+    (9, 11), (9, 12), (9, 13), (9, 14), (10, 11), (10, 13), (10, 14), (10, 15), (10, 35), (11, 14), (11, 15),
+    (12, 15), (13, 14), (14, 15), (14, 24), (16, 17), (16, 20), (16, 22), (17, 18), (17, 19), (17, 22),
+    (18, 19), (18, 21), (18, 22), (19, 21), (19, 23), (19, 26), (20, 21), (21, 23), (22, 23), (24, 26),
+    (24, 27), (24, 28), (24, 29), (24, 30), (24, 43), (25, 26), (25, 27), (25, 30), (25, 31), (26, 27),
+    (26, 28), (26, 29), (26, 30), (26, 31), (27, 28), (27, 31), (27, 34), (28, 29), (28, 31), (29, 30),
+    (29, 31), (32, 36), (32, 38), (33, 34), (33, 36), (33, 37), (34, 35), (34, 36), (34, 37), (34, 38),
+    (35, 36), (35, 38), (39, 40), (39, 42), (39, 43), (39, 44), (40, 42), (40, 45), (41, 42), (41, 43),
+    (41, 45), (42, 43), (42, 44), (43, 44)
+]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Determine the structure of the graph
+def graph_pattern(G):
+    num_nodes = G.number_of_nodes()
+    num_edges = G.number_of_edges()
+
+    # Check for Star graph
+    degrees = [deg for node, deg in G.degree()]
+    max_degree = max(degrees)
+    if max_degree == num_nodes - 1 and degrees.count(1) == num_nodes - 1:
+        return "Star"
+
+    # Check for Cycle graph
+    if nx.is_connected(G) and num_edges == num_nodes and all(deg == 2 for deg in degrees):
+        return "Cycle"
+
+    # Check for Path graph
+    if nx.is_connected(G) and num_edges == num_nodes - 1 and degrees.count(2) == num_nodes - 2 and degrees.count(1) == 2:
+        return "Path"
+
+    # Check for Grid graph
+    sqrt_nodes = int(num_nodes**0.5)
+    if sqrt_nodes**2 == num_nodes and all(len(list(nx.node_boundary(G, {node}))) in (2, 3, 4) for node in G.nodes):
+        return "Grid"
+
+    # Check for Complete graph
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for Clustered graph
+    if nx.algorithms.community.is_community(graph=G):
+        return "Clustered Graph"
+
+    # Default to Random graph if no other pattern fits
+    return "Random"
+
+print(graph_pattern(G))
+```

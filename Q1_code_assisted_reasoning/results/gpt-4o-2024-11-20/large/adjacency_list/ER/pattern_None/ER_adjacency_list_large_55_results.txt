@@ -1,0 +1,85 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper function to count edges
+    def count_edges(adj_list):
+        edge_count = 0
+        for node, neighbors in adj_list.items():
+            edge_count += len(neighbors)
+        return edge_count // 2  # Each edge is counted twice
+
+    # Helper function to check if graph is complete
+    def is_complete(adj_list):
+        n = len(adj_list)
+        expected_edges = n * (n - 1) // 2
+        return count_edges(adj_list) == expected_edges
+
+    # Helper function to check if graph is a star
+    def is_star(adj_list):
+        center_count = 0
+        leaf_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(adj_list) - 1:
+                center_count += 1
+            elif len(neighbors) == 1:
+                leaf_count += 1
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    # Helper function to check if graph is a cycle
+    def is_cycle(adj_list):
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != 2:
+                return False
+        return True
+
+    # Helper function to check if graph is a path
+    def is_path(adj_list):
+        end_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == 1:
+                end_count += 1
+            elif len(neighbors) > 2:
+                return False
+        return end_count == 2
+
+    # Helper function to check if graph is a grid
+    def is_grid(adj_list):
+        # Grid graphs are hard to detect without additional information.
+        # For simplicity, we assume it's not a grid.
+        return False
+
+    # Helper function to check if graph is clustered
+    def is_clustered(adj_list):
+        # Clustered graphs are hard to detect without additional information.
+        # For simplicity, we assume it's not clustered.
+        return False
+
+    # Helper function to check if graph is random
+    def is_random(adj_list):
+        # Random graphs are hard to detect without additional information.
+        # For simplicity, we assume it's random if no other pattern matches.
+        return True
+
+    # Determine the graph pattern
+    if is_complete(adj_list):
+        return "Complete"
+    elif is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+# Input adjacency list
+adj_list = {0: [12, 20, 25, 30, 36, 38], 1: [4, 8, 31, 34, 40], 2: [36], 3: [8, 12, 39], 4: [1, 14, 19, 32, 40], 5: [6, 13, 23, 33, 41], 6: [5, 32], 7: [13], 8: [1, 3, 20, 41, 42, 44], 9: [21, 22, 24, 33], 10: [21, 25, 32, 39], 11: [20], 12: [0, 3, 17, 28, 30], 13: [5, 7, 23, 28, 39, 42], 14: [4, 17, 30, 43], 15: [24, 38, 39], 16: [25, 27, 30], 17: [12, 14, 18, 29, 31, 35], 18: [17, 48], 19: [4, 41, 43], 20: [0, 8, 11], 21: [9, 10, 25, 34, 40, 45], 22: [9, 23, 24], 23: [5, 13, 22, 24, 32], 24: [9, 15, 22, 23, 38, 45, 47], 25: [0, 10, 16, 21, 35, 47], 26: [28, 48], 27: [16, 34], 28: [12, 13, 26, 37, 48], 29: [17, 44], 30: [0, 12, 14, 16, 37, 41, 44], 31: [1, 17], 32: [4, 6, 10, 23, 46], 33: [5, 9, 38], 34: [1, 21, 27], 35: [17, 25, 38, 39], 36: [0, 2, 41, 48], 37: [28, 30, 44], 38: [0, 15, 24, 33, 35], 39: [3, 10, 13, 15, 35], 40: [1, 4, 21], 41: [5, 8, 19, 30, 36], 42: [8, 13], 43: [14, 19, 47], 44: [8, 29, 30, 37], 45: [21, 24], 46: [32], 47: [24, 25, 43], 48: [18, 26, 28, 36]}
+
+# Output the result
+print(determine_graph_pattern(adj_list))
+```

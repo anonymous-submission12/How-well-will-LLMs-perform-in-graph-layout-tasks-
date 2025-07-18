@@ -1,0 +1,16 @@
+To find the shortest path between node `'54'` and `'35'`, the graph given describes a star topology where all nodes are directly connected to the central node `'0'`. Using Breadth-First Search (BFS) is a straightforward method to calculate this in such a graph.
+
+Here, both node `'54'` and `'35'` are directly connected to node `'0'`, so:
+
+1. From `'54'` to `'0'`, the distance is `1`.
+2. From `'0'` to `'35'`, the distance is `1`.
+
+Thus, the total shortest path distance between `'54'` and `'35'` is `2`.
+
+Here is the JSON:
+
+```json
+{
+  "answer": 2
+}
+```

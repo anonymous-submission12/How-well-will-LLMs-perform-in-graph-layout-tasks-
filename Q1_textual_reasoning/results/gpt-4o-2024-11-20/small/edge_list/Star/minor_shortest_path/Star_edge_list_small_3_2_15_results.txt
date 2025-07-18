@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes "2" and "15" in the given graph, we can use breadth-first search (BFS). The graph is represented as an edge list, which indicates that every node from 1 to 22 is connected to node 0. This forms a star-like structure where node 0 is at the center, and all other nodes are directly connected to it.
+
+Shortest path analysis:
+1. Node "2" is directly connected to node "0".
+2. Node "15" is also directly connected to node "0".
+3. The shortest path between "2" and "15" traverses through "0".
+
+Thus, the shortest path length is 2: **2 -> 0 -> 15**.
+
+### JSON Result:
+```json
+{
+  "answer": 2
+}
+```

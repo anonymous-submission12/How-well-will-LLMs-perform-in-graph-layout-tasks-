@@ -1,0 +1,35 @@
+```python
+from collections import defaultdict
+
+def detect_graph_type(adjacency_list):
+    node_count = len(adjacency_list)
+    edge_count = sum(len(neighbors) for neighbors in adjacency_list.values()) // 2
+    
+    # Check for Star Graph
+    center_count = sum(1 for node, neighbors in adjacency_list.items() if len(neighbors) == node_count - 1)
+    leaf_count = sum(1 for node, neighbors in adjacency_list.items() if len(neighbors) == 1)
+    if center_count == 1 and leaf_count == node_count - 1:
+        return "Star"
+
+    # Check for Cycle Graph
+    if all(len(neighbors) == 2 for neighbors in adjacency_list.values()) and edge_count == node_count:
+        return "Cycle"
+
+    # Check for Path Graph
+    if sum(len(neighbors) == 1 for neighbors in adjacency_list.values()) == 2 and \
+       all(len(neighbors) <= 2 for neighbors in adjacency_list.values()):
+        return "Path"
+
+    # Check for Grid Graph
+    def is_grid():
+        degrees = list(sorted(len(neighbors) for neighbors in adjacency_list.values()))
+        if degrees.count(2) == node_count:
+            return True  # Could be a line-grid
+        if degrees.count(3) or degrees.count(4) :
+          return true
+
+      
+    # checks >::}
+
+
+  

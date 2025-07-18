@@ -1,0 +1,14 @@
+The graph-theoretic distance between node 21 and node 12 is the number of edges in the shortest path between them. From the given subgraph data, the path is 21-20-19-18-17-16-15-14-13-12, which has 9 edges.
+
+The Euclidean distance is the straight-line distance between the coordinates of node 21 and node 12.
+Node 21: [-0.7, -0.25]
+Node 12: [0.16, 0.64]
+Euclidean distance = sqrt((0.16 - (-0.7))^2 + (0.64 - (-0.25))^2) = sqrt((0.86)^2 + (0.89)^2) = sqrt(0.7396 + 0.7921) = sqrt(1.5317) = 1.2376
+
+Since 1.2376 < 9, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+ "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

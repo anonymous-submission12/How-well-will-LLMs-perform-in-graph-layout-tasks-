@@ -1,0 +1,73 @@
+Below is a Python script that generates a layout for the provided graph (in edge-list format) while preserving the community structure. The script uses the Louvain community detection algorithm (via the `community` package) and a force-directed layout algorithm (`spring_layout` via NetworkX).
+
+The output is a JSON object where nodes are mapped to their calculated positions.
+
+```python
+import json
+import networkx as nx
+import community as community_louvain
+
+
+def generate_graph_layout(edge_list):
+    """
+    Function to create a graph layout based on community structure.
+
+    Parameters:
+    edge_list (list): List of edges in the format [(u, v), ...]
+
+    Returns:
+    dict: JSON formatted dict of node positions.
+    """
+    # Step 1: Create the graph
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Step 2: Perform community detection using Louvain algorithm
+    partition = community_louvain.best_partition(G)
+    
+    # Step 3: Assign positions to nodes with spring layout
+    # Use `partition` to weight node repulsion within the layout algorithm
+    pos = nx.spring_layout(G, k=0.15, scale=1.0, iterations=50, seed=42, weight="weight")
+    
+    # Result in JSON format
+    json_output = {node: {'x': pos[node][0], 'y': pos[node][1], 'community': partition[node]} for node in G.nodes()}
+    return json_output
+
+
+if __name__ == "__main__":
+    # Edge list input (replace this with your edge list)
+    edge_list = [(0, 2), (0, 7), (0, 8), (0, 35), (1, 2), (1, 3), (1, 7), (1, 8), (1, 9), (2, 6),
+                 (2, 7), (2, 8), (3, 5), (3, 8), (3, 10), (4, 5), (4, 7), (4, 8), (5, 6), (5, 7),
+                 (5, 8), (5, 10), (6, 7), (6, 8), (6, 10), (7, 10), (7, 19), (8, 9), (8, 10), (8, 73),
+                 (9, 10), (9, 43), (11, 12), (11, 16), (11, 18), (11, 20), (11, 21), (11, 25), (12, 14),
+                 (12, 16), (12, 17), (12, 18), (12, 19), (12, 21), (13, 19), (13, 21), (14, 17), (15, 17),
+                 (15, 18), (15, 20), (16, 19), (17, 20), (18, 21), (18, 69), (19, 20), (19, 21), (20, 21),
+                 (22, 26), (22, 28), (23, 25), (23, 27), (24, 30), (25, 27), (25, 28), (25, 29), (25, 30),
+                 (26, 27), (26, 31), (27, 28), (27, 30), (27, 57), (29, 30), (30, 47), (32, 23), (32, 24),
+                 (32, 25), (32, 69), (33, 34), (33, 37), (33, 38), (33, 41), (33, 42), (33, 51), (34, 36),
+                 (34, 37), (34, 38), (34, 42), (35, 40), (35, 43), (36, 39), (36, 41), (36, 42), (37, 38),
+                 (37, 39), (37, 41), (37, 43), (39, 41), (40, 43), (44, 46), (44, 48), (44, 53), (45, 48),
+                 (45, 49), (45, 52), (46, 50), (46, 52), (46, 53), (47, 48), (47, 49), (47, 51), (47, 52),
+                 (48, 49), (48, 51), (48, 53), (50, 51), (50, 52), (50, 56), (54, 56), (54, 59), (54, 60),
+                 (54, 62), (55, 57), (55, 58), (55, 60), (55, 61), (55, 62), (55, 63), (56, 58), (56, 60),
+                 (56, 63), (57, 60), (57, 63), (58, 59), (58, 61), (58, 62), (59, 61), (59, 62), (60, 61),
+                 (60, 63), (61, 63), (64, 66), (64, 67), (64, 70), (64, 72), (64, 73), (65, 66), (65, 67),
+                 (65, 69), (66, 72), (66, 73), (67, 68), (67, 71), (68, 69), (68, 70), (70, 72), (70, 73),
+                 (71, 73), (72, 73)]
+
+    # Generate the layout and print the JSON
+    layout = generate_graph_layout(edge_list)
+    print(json.dumps(layout, indent=2))
+```
+
+### Explanation of Code:
+1. **Graph Construction:** The script creates a graph using the edge list provided as input.
+2. **Community Detection:** It uses the Louvain algorithm (via the `community_louvain` package) to detect graph communities.
+3. **Layout Generation:** A spring layout algorithm (`spring_layout` from NetworkX) is applied to assign positions to the nodes. Communities influence repulsion weights for clarity in the layout.
+4. **JSON Output:** Returns the graph's node positions (`x` and `y`) and their corresponding community assignments for visualization purposes.
+
+Make sure to install the required libraries if they are not already available on your system:
+
+```bash
+pip install networkx python-louvain
+```

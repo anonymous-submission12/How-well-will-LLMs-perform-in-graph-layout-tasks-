@@ -1,0 +1,12 @@
+To calculate the highest degree of all nodes in the graph, we need to count the number of edges connected to each node. Here's the solution:
+
+```json
+{
+  "answer": 2
+}
+}
+```
+
+Explanation:
+- The graph is a linear chain (path graph) where each node is connected to at most two other nodes, except for the endpoints (nodes 0 and 74), which are connected to only one other node.
+- Therefore, the highest degree in the graph is 2.

@@ -1,0 +1,42 @@
+```python
+def identify_graph_pattern(edge_list):
+    # Create adjacency list
+    from collections import defaultdict
+    adjacency_list = defaultdict(list)
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Count nodes and edges
+    num_nodes = len(adjacency_list)
+    num_edges = len(edge_list)
+
+    # Check for Path: A path graph has exactly (n-1) edges and all nodes have degree <= 2
+    if num_edges == num_nodes - 1 and all(len(neighbors) <= 2 for neighbors in adjacency_list.values()):
+        return "Path"
+
+    # Check for Cycle: A cycle graph has exactly n edges and all nodes have degree 2
+    if num_edges == num_nodes and all(len(neighbors) == 2 for neighbors in adjacency_list.values()):
+        return "Cycle"
+
+    # Check for Star: A star graph has one central node with degree (n-1) and all other nodes have degree 1
+    degrees = [len(neighbors) for neighbors in adjacency_list.values()]
+    if degrees.count(1) == num_nodes - 1 and degrees.count(num_nodes - 1) == 1:
+        return "Star"
+
+    # Check for Complete: A complete graph has n*(n-1)/2 edges
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for Grid: A grid graph has a specific structure, which is harder to verify without additional info
+    # Skipping detailed grid check for simplicity
+
+    # If none of the above, classify as Random or Clustered
+    return "Random or Clustered"
+
+# Input edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45)]
+
+# Determine the graph pattern
+print(identify_graph_pattern(edge_list))
+```

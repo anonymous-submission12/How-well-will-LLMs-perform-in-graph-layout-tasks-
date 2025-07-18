@@ -1,0 +1,6 @@
+Yes, the two edges intersect.
+```json
+{
+"Answer": "Yes"
+}
+```

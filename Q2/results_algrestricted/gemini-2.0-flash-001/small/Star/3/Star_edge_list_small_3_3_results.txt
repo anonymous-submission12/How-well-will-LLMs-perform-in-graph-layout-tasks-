@@ -1,0 +1,85 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to minimize edge crossings.
+
+    This implementation uses a force-directed layout approach with some
+    simplifications to avoid relying on existing graph layout libraries.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple (u, v) indicates an edge between node u and node v.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates
+        representing the layout.  The dictionary is then converted to JSON format.
+    """
+
+    # 1. Initialize Node Positions Randomly
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    positions = {node: (random.random(), random.random()) for node in nodes}
+
+    # 2. Define Parameters (Adjust these for better results)
+    iterations = 100  # Number of layout iterations
+    repulsion_strength = 0.1  # Strength of the repulsive force between nodes
+    attraction_strength = 0.05  # Strength of the attractive force between connected nodes
+    damping_factor = 0.5 # Damping factor to reduce oscillations
+
+    # 3. Iterative Force-Directed Layout
+    for _ in range(iterations):
+        forces = {node: [0.0, 0.0] for node in nodes}  # Initialize forces to zero
+
+        # a. Repulsive Forces (between all pairs of nodes)
+        for u in nodes:
+            for v in nodes:
+                if u != v:
+                    dx = positions[u][0] - positions[v][0]
+                    dy = positions[u][1] - positions[v][1]
+                    distance = math.sqrt(dx**2 + dy**2)
+                    if distance == 0:
+                        distance = 0.01  # Avoid division by zero
+
+                    repulsion = repulsion_strength / distance**2
+                    forces[u][0] += repulsion * dx
+                    forces[u][1] += repulsion * dy
+
+        # b. Attractive Forces (between connected nodes)
+        for u, v in edge_list:
+            dx = positions[v][0] - positions[u][0]
+            dy = positions[v][1] - positions[u][1]
+            distance = math.sqrt(dx**2 + dy**2)
+
+            attraction = attraction_strength * distance
+            forces[u][0] += attraction * dx
+            forces[u][1] += attraction * dy
+            forces[v][0] -= attraction * dx
+            forces[v][1] -= attraction * dy
+
+        # c. Update Node Positions
+        for node in nodes:
+            positions[node] = (
+                positions[node][0] + damping_factor * forces[node][0],
+                positions[node][1] + damping_factor * forces[node][1],
+            )
+
+            # Keep nodes within bounds (optional)
+            positions[node] = (max(0.0, min(1.0, positions[node][0])), max(0.0, min(1.0, positions[node][1])))
+
+    # 4. Return Layout in JSON format
+    return json.dumps(positions)
+
+
+# Example Usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22)]
+layout_json = layout_graph(edge_list)
+print(layout_json)
+```

@@ -1,0 +1,7 @@
+Here's how we can find the shortest path between nodes '4' and '21' in the given graph using Breadth-First Search (BFS).
+
+```json
+{
+"answer": 4
+}
+```

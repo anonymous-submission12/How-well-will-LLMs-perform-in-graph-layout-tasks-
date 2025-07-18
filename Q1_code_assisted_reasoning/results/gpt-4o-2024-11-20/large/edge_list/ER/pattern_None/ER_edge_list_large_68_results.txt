@@ -1,0 +1,58 @@
+```python
+import networkx as nx
+
+# Define the graph from the given edge list
+edge_list = [(0, 4), (0, 10), (0, 19), (0, 32), (0, 37), (1, 16), (2, 5), (2, 21), (2, 30), (2, 33), (2, 34), (2, 36),
+             (2, 37), (3, 31), (3, 33), (3, 37), (3, 39), (4, 9), (5, 21), (5, 23), (5, 33), (5, 34), (5, 39), (6, 17),
+             (6, 34), (7, 10), (8, 21), (8, 27), (9, 12), (9, 17), (9, 26), (9, 36), (10, 22), (10, 25), (10, 38),
+             (10, 39), (11, 14), (11, 34), (12, 22), (13, 33), (14, 27), (15, 18), (15, 23), (15, 38), (16, 35), (17, 30),
+             (17, 37), (18, 27), (18, 35), (19, 26), (19, 30), (19, 38), (20, 21), (20, 22), (20, 27), (20, 38),
+             (22, 25), (22, 27), (22, 30), (22, 31), (23, 26), (23, 28), (23, 40), (24, 27), (24, 33), (24, 37),
+             (25, 26), (25, 29), (26, 29), (26, 36), (27, 39), (28, 39), (30, 32), (30, 36), (30, 41), (35, 41),
+             (36, 37), (36, 39)]
+G = nx.Graph(edge_list)
+
+# Determine the pattern of the graph
+def is_star(G):
+    return sum(degree == len(G) - 1 for _, degree in G.degree()) == 1
+
+def is_cycle(G):
+    return nx.is_connected(G) and len(G.edges) == len(G.nodes) and all(degree == 2 for _, degree in G.degree())
+
+def is_path(G):
+    return nx.is_connected(G) and sum(degree == 1 for _, degree in G.degree()) == 2 and \
+           all(degree <= 2 for _, degree in G.degree())
+
+def is_grid(G):
+    # For simplicity, we check if the graph has a near-square number of nodes, and each node degree is <= 4.
+    n = len(G.nodes)
+    sqrt_n = int(n**0.5)
+    return (sqrt_n**2 == n or (sqrt_n * (sqrt_n + 1)) >= n) and all(degree <= 4 for _, degree in G.degree())
+
+def is_complete(G):
+    return len(G.edges) == len(G.nodes) * (len(G.nodes) - 1) // 2
+
+def is_clustered(G):
+    # A clustered graph will typically have a high clustering coefficient
+    return nx.average_clustering(G) > 0.5
+
+def is_random(G):
+    # A random graph will typically have no obvious structure; 
+    # we consider it as "not fitting any other category."
+    return True
+
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered Graph")
+else:
+    print("Random Graph")
+```

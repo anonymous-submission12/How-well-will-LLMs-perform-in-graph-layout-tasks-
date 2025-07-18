@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '23' and '10', we can use a breadth-first search algorithm, as the graph is unweighted. Below is the computation and the result.
+
+### Calculation Steps:
+1. Represent the graph as an adjacency list for efficient traversal.
+2. Perform BFS starting from node '23' until we reach node '10'.
+3. Keep track of visited nodes and the distance from node '23' during traversal.
+
+### Answer:
+Here is the JSON with the calculated shortest path length:
+
+```json
+{
+  "answer": 4
+}
+```

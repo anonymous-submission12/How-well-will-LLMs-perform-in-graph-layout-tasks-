@@ -1,0 +1,7 @@
+```json
+{
+  "answer": null
+}
+```
+
+Explanation: The provided graph does not contain a path between node '20' and node '6'. Therefore, the shortest path length is undefined, and the answer is `null`.

@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes '35' and '15' in the given graph, we treat it as an unweighted graph. Using breadth-first search (BFS) to traverse the nodes reveals that the shortest path is the number of edges between these two nodes.
+
+The graph structure forms a linear chain from node 0 to 70. In this chain, node '35' is at an index of 35 steps from node 0, and node '15' is at an index of 15 steps from node 0. Thus, the shortest path between them is:
+
+    |35 - 15| = 20
+
+Here is the result wrapped in JSON format:
+
+```json
+{
+  "answer": 20
+}
+```

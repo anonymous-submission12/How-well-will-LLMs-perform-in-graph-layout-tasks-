@@ -1,0 +1,9 @@
+To calculate the shortest path length between node `37` and node `5` in the given graph using the edge list, we treat the graph as unweighted and employ a Breadth-First Search (BFS) algorithm.
+
+The calculation reveals that the shortest path length is **5**.
+
+```json
+{
+  "answer": 5
+}
+```

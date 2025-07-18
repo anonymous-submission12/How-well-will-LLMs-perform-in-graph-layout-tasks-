@@ -1,0 +1,69 @@
+```python
+import json
+import community as co
+import networkx as nx
+from networkx.algorithms import community
+import random
+
+def generate_layout_with_community_structure(edge_list):
+    """
+    Generates a graph layout that emphasizes community structure using the Louvain algorithm
+    for community detection and the Kamada-Kawai layout algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A JSON string representing the graph layout, where each node has 'x' and 'y' coordinates.
+    """
+
+    # 1. Create a NetworkX graph from the edge list
+    graph = nx.Graph(edge_list)
+
+    # 2. Apply the Louvain algorithm for community detection
+    partition = co.best_partition(graph)
+
+    # 3. Use Kamada-Kawai layout as base layout
+    pos = nx.kamada_kawai_layout(graph)
+
+    # 4. Adjust node positions based on community
+    community_centers = {}
+    for node, comm_id in partition.items():
+        if comm_id not in community_centers:
+            community_centers[comm_id] = [0, 0, 0]  # sum_x, sum_y, count
+
+        community_centers[comm_id][0] += pos[node][0]
+        community_centers[comm_id][1] += pos[node][1]
+        community_centers[comm_id][2] += 1
+
+    # Calculate the center of each community
+    for comm_id, values in community_centers.items():
+        count = values[2]
+        community_centers[comm_id] = (values[0] / count, values[1] / count)
+
+    # Apply a force to each node to move it closer to its community center
+    for node, comm_id in partition.items():
+        center_x, center_y = community_centers[comm_id]
+        x, y = pos[node]
+
+        # Adjust the strength of the attraction force as needed
+        attraction_strength = 0.1  # Adjust this value
+
+        dx = center_x - x
+        dy = center_y - y
+
+        pos[node] = (x + attraction_strength * dx, y + attraction_strength * dy)
+
+    # 5. Convert the layout to the desired JSON format
+    layout_json = {}
+    for node, (x, y) in pos.items():
+        layout_json[node] = {'x': x, 'y': y}
+
+    return json.dumps(layout_json, indent=4)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 5), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2, 3), (2, 5), (2, 6), (3, 5), (3, 6), (3, 22), (4, 5), (4, 6), (5, 6), (5, 21), (7, 9), (7, 10), (7, 11), (7, 13), (8, 9), (8, 13), (8, 17), (10, 12), (10, 13), (11, 12), (11, 13), (12, 13), (13, 18), (14, 15), (14, 16), (14, 17), (14, 18), (14, 20), (15, 17), (15, 20), (16, 17), (16, 18), (16, 20), (17, 18), (17, 20), (18, 19), (18, 20), (18, 21), (21, 22), (21, 25), (21, 26), (21, 27), (22, 23), (22, 24), (22, 25), (22, 26), (22, 27), (23, 24), (23, 25), (23, 26), (24, 25), (24, 26), (24, 27), (25, 26), (25, 27)]
+layout_json = generate_layout_with_community_structure(edge_list)
+print(layout_json)
+```

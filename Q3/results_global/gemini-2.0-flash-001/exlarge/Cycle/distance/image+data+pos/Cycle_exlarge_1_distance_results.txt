@@ -1,0 +1,7 @@
+The graph data represents a path graph. Layout 2 arranges the nodes in a sequential manner, which visually reflects the path structure and preserves graph-theoretic distance much better than layout 1, which scatters the nodes seemingly randomly.
+
+```json
+{
+"Answer": 2
+}
+```

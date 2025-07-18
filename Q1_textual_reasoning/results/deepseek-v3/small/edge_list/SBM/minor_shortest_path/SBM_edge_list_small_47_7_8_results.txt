@@ -1,0 +1,8 @@
+```json
+{
+  "answer": null
+}
+```
+
+**Explanation:**  
+The graph provided does not contain any edges that connect node '7' to node '8'. Therefore, there is no path between these two nodes, and the shortest path length is undefined (or null).

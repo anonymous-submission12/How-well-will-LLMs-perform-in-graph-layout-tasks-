@@ -1,0 +1,34 @@
+```python
+graph = {0: [1, 2, 3, 5], 1: [0, 2, 3, 4, 5, 6], 2: [0, 1, 3, 5, 6], 3: [0, 1, 2, 5, 6, 22], 4: [1, 5, 6], 5: [0, 1, 2, 3, 4, 6, 21], 6: [1, 2, 3, 4, 5], 7: [9, 10, 11, 13], 8: [9, 13, 17], 9: [7, 8], 10: [7, 12, 13], 11: [7, 12, 13], 12: [10, 11, 13], 13: [7, 8, 10, 11, 12, 18], 14: [15, 16, 17, 18, 20], 15: [14, 17, 20], 16: [14, 17, 18, 20], 17: [8, 14, 15, 16, 18, 20], 18: [13, 14, 16, 17, 19, 20, 21], 19: [18], 20: [14, 15, 16, 17, 18], 21: [5, 18, 22, 25, 26, 27], 22: [3, 21, 23, 24, 25, 26, 27], 23: [22, 24, 25, 26], 24: [22, 23, 25, 26, 27], 25: [21, 22, 23, 24, 26, 27], 26: [21, 22, 23, 24, 25], 27: [21, 22, 24, 25]}
+
+def count_communities(graph):
+  """Counts the number of communities in a graph represented as an adjacency list.
+
+  Args:
+    graph: A dictionary representing the graph, where keys are nodes and values
+      are lists of their neighbors.
+
+  Returns:
+    The number of connected components (communities) in the graph.
+  """
+
+  visited = set()
+  num_communities = 0
+
+  def dfs(node):
+    """Performs a Depth-First Search to explore a connected component."""
+    visited.add(node)
+    for neighbor in graph[node]:
+      if neighbor not in visited:
+        dfs(neighbor)
+
+  for node in graph:
+    if node not in visited:
+      dfs(node)
+      num_communities += 1
+
+  return num_communities
+
+num_communities = count_communities(graph)
+print(num_communities)
+```

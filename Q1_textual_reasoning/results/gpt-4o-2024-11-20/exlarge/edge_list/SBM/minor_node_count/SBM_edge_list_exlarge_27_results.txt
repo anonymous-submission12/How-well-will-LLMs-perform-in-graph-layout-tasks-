@@ -1,0 +1,11 @@
+To calculate the number of distinct nodes in the graph, we need to identify all unique nodes in the edge list. Here's the JSON result:
+
+```json
+{
+  "answer": 80
+}
+```
+
+Explanation:
+- The edge list contains pairs of nodes, and we extract all unique nodes from these pairs.
+- In this graph, there are 80 unique nodes.

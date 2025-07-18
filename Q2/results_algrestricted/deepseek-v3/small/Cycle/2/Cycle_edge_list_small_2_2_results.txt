@@ -1,0 +1,62 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place the nodes in a circular layout. This ensures that the Euclidean distance between connected nodes is roughly proportional to their graph-theoretic distance.
+
+Here's a Python script that generates the layout and outputs it in JSON format:
+
+```python
+import json
+import math
+
+# Input edge list
+edge_list = [(0, 1), (0, 21), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Number of nodes
+num_nodes = 22
+
+# Calculate the angle between each node in the circle
+angle_increment = 2 * math.pi / num_nodes
+
+# Generate positions for each node
+positions = {}
+for i in range(num_nodes):
+    angle = i * angle_increment
+    x = math.cos(angle)
+    y = math.sin(angle)
+    positions[i] = {"x": x, "y": y}
+
+# Output the positions in JSON format
+output_json = json.dumps(positions, indent=4)
+print(output_json)
+```
+
+### Explanation:
+1. **Circular Layout**: The nodes are placed on a unit circle. The angle between each node is calculated as `2 * pi / num_nodes`, where `num_nodes` is the total number of nodes in the graph.
+2. **Position Calculation**: For each node, the position is calculated using the cosine and sine of the angle, which gives the (x, y) coordinates on the unit circle.
+3. **JSON Output**: The positions are stored in a dictionary and then converted to JSON format.
+
+### Output:
+The output will be a JSON object where each key is a node ID, and the value is a dictionary containing the `x` and `y` coordinates of the node.
+
+Example output:
+```json
+{
+    "0": {
+        "x": 1.0,
+        "y": 0.0
+    },
+    "1": {
+        "x": 0.9594929736144974,
+        "y": 0.28173255684142967
+    },
+    "2": {
+        "x": 0.8412535328311812,
+        "y": 0.5406408174555976
+    },
+    ...
+    "21": {
+        "x": 0.9594929736144974,
+        "y": -0.28173255684142967
+    }
+}
+```
+
+This layout ensures that the Euclidean distance between connected nodes is consistent with their graph-theoretic distance, as nodes that are close in the graph will also be close in the Euclidean space.

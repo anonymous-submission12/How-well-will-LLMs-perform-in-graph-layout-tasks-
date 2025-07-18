@@ -1,0 +1,19 @@
+To calculate the shortest path length between nodes '34' and '38' using the adjacency list provided, we can use Breadth-First Search (BFS), which is the optimal algorithm for unweighted graphs. Let's find the answer:
+
+### Approach:
+1. Traverse the graph using BFS starting from node '34'.
+2. Calculate the shortest distance to node '38'.
+
+Here is the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+Using BFS:
+- Node `34` connects directly to `35`, `30`, and other nodes.
+- From `34` → `35` → `38`:
+  - We reach node `38` from `34` in **3 steps**.

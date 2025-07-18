@@ -1,0 +1,7 @@
+To calculate the shortest path length between nodes '76' and '18', we will model the graph as an unweighted graph because no weights are specified in the edge list. Then, we use a breadth-first search (BFS) algorithm to find the shortest path.
+
+```json
+{
+  "answer": 3
+}
+```

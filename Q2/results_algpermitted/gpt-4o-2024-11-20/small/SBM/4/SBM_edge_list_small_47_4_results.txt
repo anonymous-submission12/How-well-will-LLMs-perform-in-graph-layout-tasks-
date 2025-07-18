@@ -1,0 +1,58 @@
+Below is the Python script that generates a graph layout in JSON format while preserving the community structure using a modularity-based community detection algorithm. The script uses the `networkx` library for graph manipulation and the `community` library for community detection.
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+
+# Input graph data
+edge_list = [
+    (0, 4), (0, 5), (0, 7), (1, 2), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 5), 
+    (2, 6), (3, 5), (3, 6), (3, 7), (3, 22), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7), 
+    (6, 7), (8, 10), (8, 11), (8, 12), (8, 13), (8, 14), (8, 15), (9, 11), (9, 12), 
+    (9, 13), (9, 14), (9, 15), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15), 
+    (11, 12), (11, 13), (12, 13), (12, 14), (12, 15), (13, 14), (13, 15), (14, 18), 
+    (16, 17), (16, 18), (16, 20), (16, 21), (16, 22), (17, 19), (17, 20), (17, 21), 
+    (17, 22), (18, 19), (18, 20), (18, 21), (18, 22), (19, 20), (19, 21), (19, 22), 
+    (20, 21)
+]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Detect communities using the Louvain method
+partition = community_louvain.best_partition(G)
+
+# Generate a layout for the graph
+# Use the spring layout, which is good for visualizing community structures
+pos = nx.spring_layout(G)
+
+# Combine the layout positions with community information
+layout_with_communities = {
+    node: {
+        "x": pos[node][0],
+        "y": pos[node][1],
+        "community": partition[node]
+    }
+    for node in G.nodes()
+}
+
+# Output the layout in JSON format
+layout_json = json.dumps(layout_with_communities, indent=4)
+print(layout_json)
+```
+
+### Explanation:
+1. **Graph Creation**: The script creates a graph `G` using the `networkx` library and populates it with the provided edge list.
+2. **Community Detection**: The `community_louvain.best_partition` function is used to detect communities in the graph based on modularity optimization.
+3. **Graph Layout**: The `nx.spring_layout` function generates a layout for the graph, which is suitable for visualizing community structures.
+4. **Output Format**: The layout positions and community assignments are combined into a dictionary, which is then serialized into JSON format for output.
+
+### Output:
+The output is a JSON object where each node is represented as a key, and its value contains:
+- `x`: The x-coordinate of the node in the layout.
+- `y`: The y-coordinate of the node in the layout.
+- `community`: The community to which the node belongs.
+
+You can run this script in a Python environment to generate the desired graph layout in JSON format.

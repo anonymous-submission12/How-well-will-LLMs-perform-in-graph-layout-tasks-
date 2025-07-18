@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 34, in <module>
+    distance = euclidean_distance(positions[i], positions[j])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 25, in euclidean_distance
+    return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+                     ~~~~~~~~~~~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

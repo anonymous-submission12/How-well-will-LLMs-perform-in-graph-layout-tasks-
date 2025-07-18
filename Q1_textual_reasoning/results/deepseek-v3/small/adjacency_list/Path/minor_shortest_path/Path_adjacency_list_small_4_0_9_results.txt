@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 9
+}
+``` 
+
+The shortest path from node '0' to node '9' involves traversing through nodes 0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9, which consists of 9 edges. Therefore, the length of the shortest path is 9.

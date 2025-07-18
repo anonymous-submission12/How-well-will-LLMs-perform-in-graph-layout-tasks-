@@ -1,0 +1,11 @@
+The graph is given as an edge list. To find the shortest path between node 14 and node 8, we can perform a Breadth-First Search (BFS) starting from node 14. Alternatively, we can recognize that the nodes are linearly connected. We can traverse the path starting from node 14 and going back towards node 8.
+
+The path from 14 to 8 is:
+14 -> 13 -> 12 -> 11 -> 10 -> 9 -> 8.
+The length of this path is 6.
+
+```json
+{
+  "answer": 6
+}
+```

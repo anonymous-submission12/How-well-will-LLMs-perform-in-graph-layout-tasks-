@@ -1,0 +1,37 @@
+```python
+import json
+import math
+
+def generate_layout(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance
+    and graph-theoretic distance.  This implementation places the nodes in a line.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs and
+        values are (x, y) coordinates.  The layout is returned as a JSON string.
+    """
+
+    # Determine the number of nodes
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    num_nodes = len(nodes)
+
+    # Simple linear layout: place nodes along a line
+    layout = {}
+    for i in range(num_nodes):
+        layout[i] = (i, 0)  # Place nodes at (i, 0)
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+layout_json = generate_layout(edge_list)
+print(layout_json)
+```

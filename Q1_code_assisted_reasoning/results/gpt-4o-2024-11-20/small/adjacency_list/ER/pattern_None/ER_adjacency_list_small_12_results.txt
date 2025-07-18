@@ -1,0 +1,68 @@
+```python
+def identify_graph_pattern(adj_list):
+    num_vertices = len(adj_list)
+    num_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for Star: One central vertex connected to all others
+    central_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == num_vertices - 1]
+    if len(central_nodes) == 1 and all(len(neighbors) == 1 or node in central_nodes for node, neighbors in adj_list.items()):
+        return "Star"
+
+    # Check for Cycle: All vertices must have degree 2 and form one loop
+    if all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        visited = set()
+        stack = [list(adj_list.keys())[0]]
+        while stack:
+            v = stack.pop()
+            if v in visited:
+                continue
+            visited.add(v)
+            stack.extend([n for n in adj_list[v] if n not in visited])
+        if len(visited) == num_vertices and num_edges == num_vertices:
+            return "Cycle"
+
+    # Check for Path: Two vertices must have degree 1 and all others must have degree 2
+    degree_count = [len(neighbors) for neighbors in adj_list.values()]
+    if degree_count.count(1) == 2 and degree_count.count(2) == num_vertices - 2:
+        return "Path"
+
+    # Check for Grid: Grid must have vertices with 2, 3, or 4 connections
+    grid_degrees = [2, 3, 4]
+    if all(len(neighbors) in grid_degrees for neighbors in adj_list.values()):
+        return "Grid"
+
+    # Check for Complete: Every vertex is connected to every other vertex
+    if num_edges == num_vertices * (num_vertices - 1) // 2:
+        return "Complete"
+
+    # Check for Clustered: Graph has distinct clusters (naive approach based on disconnected nodes)
+    def dfs(v, visited, cluster):
+        visited[v] = True
+        cluster.append(v)
+        for neighbor in adj_list[v]:
+            if not visited.get(neighbor, False):
+                dfs(neighbor, visited, cluster)
+
+    visited = {}
+    clusters = []
+    for node in adj_list.keys():
+        if not visited.get(node, False):
+            cluster = []
+            dfs(node, visited, cluster)
+            clusters.append(cluster)
+    if len(clusters) > 1:
+        return "Clustered"
+
+    # Default assumption is Random
+    return "Random"
+
+# Input adjacency list
+graph_data = {0: [9, 11], 1: [3, 11, 20], 2: [7, 13], 3: [1, 10, 13, 16], 4: [18, 19, 21],
+              5: [13, 23, 25, 26], 6: [21, 25], 7: [2, 11, 14], 8: [11, 16, 17, 18, 22, 26], 
+              9: [0, 10, 11, 15, 20], 10: [3, 9, 20], 11: [0, 1, 7, 8, 9, 15], 12: [14], 
+              13: [2, 3, 5], 14: [7, 12, 22], 15: [9, 11, 16, 21], 16: [3, 8, 15], 17: [8, 23],
+              18: [4, 8, 25], 19: [4], 20: [1, 9, 10, 23], 21: [4, 6, 15, 24, 26], 22: [8, 14],
+              23: [5, 17, 20], 24: [21], 25: [5, 6, 18], 26: [5, 8, 21]}
+
+print(identify_graph_pattern(graph_data))
+```

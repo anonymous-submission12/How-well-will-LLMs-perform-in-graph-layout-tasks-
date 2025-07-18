@@ -1,0 +1,19 @@
+```python
+def graph_pattern(edge_list):
+    # Create adjacency list
+    graph = {}
+    for u, v in edge_list:
+        graph.setdefault(u, []).append(v)
+        graph.setdefault(v, []).append(u)
+
+    # Check for Star pattern
+    center_node = None
+    for node, neighbors in graph.items():
+        if len(neighbors) == len(edge_list):  # Center should connect to all others
+            if center_node is None:
+                center_node = node
+            else:
+                return "random graph"  # More than one center indicates random
+
+    if center_node is not None:
+        if sum(len(neighbors) for node, neighbors in graph.items() if node != center_node)else

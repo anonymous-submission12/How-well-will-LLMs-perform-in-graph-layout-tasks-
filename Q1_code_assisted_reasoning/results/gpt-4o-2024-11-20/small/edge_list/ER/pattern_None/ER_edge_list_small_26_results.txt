@@ -1,0 +1,51 @@
+Here is the Python code to determine the pattern of the graph:
+
+```python
+import networkx as nx
+
+edge_list = [(0, 2), (0, 11), (0, 21), (1, 7), (1, 11), (1, 17), (1, 22), 
+             (2, 3), (2, 7), (2, 8), (2, 9), (2, 14), (2, 16), (4, 7), 
+             (4, 19), (5, 7), (5, 18), (6, 10), (6, 12), (6, 13), (6, 17), 
+             (6, 20), (7, 9), (7, 17), (7, 21), (7, 22), (8, 15), (8, 18), 
+             (8, 22), (9, 17), (10, 15), (13, 15), (13, 21), (14, 17), 
+             (14, 22), (15, 19), (15, 22), (19, 22)]
+
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+def determine_pattern(graph):
+    n = graph.number_of_nodes()
+    m = graph.number_of_edges()
+    
+    # Star Pattern: One central node connected to all other nodes.
+    if max(dict(graph.degree()).values()) == n - 1:
+        return "Star"
+    
+    # Cycle Pattern: Each node connects to precisely two other nodes, forming a closed loop.
+    if nx.is_connected(graph) and all(degree == 2 for _, degree in graph.degree()) and m == n:
+        return "Cycle"
+    
+    # Path Pattern: Linear arrangement of nodes, degree of 2 in middle nodes, 1 for endpoints.
+    if nx.is_connected(graph) and all(degree <= 2 for _, degree in graph.degree()) and sum(1 for _, degree in graph.degree() if degree == 1) == 2:
+        return "Path"
+    
+    # Grid Pattern: Regular 2D grid-like structure.
+    # (Simplified check via the number of nodes and linear neighbors for small graphs.)
+    if m in [2*n - 2, 2*n - 1, 2*n]:
+        return "Grid"
+    
+    # Complete Pattern: Every node is connected to every other node.
+    if m == n*(n-1)//2:
+        return "Complete"
+    
+    # Clustered Graph: Groups of nodes with dense connections within groups and sparse connections between groups.
+    clustering_coefficients = nx.clustering(graph).values()
+    average_clustering = sum(clustering_coefficients) / len(clustering_coefficients)
+    if 0.5 < average_clustering < 1.0:
+        return "Clustered Graph"
+    
+    # Random Graph: No particular recognizable structure.
+    return "Random Graph"
+
+print(determine_pattern(G))
+```

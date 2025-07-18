@@ -1,0 +1,56 @@
+```python
+import networkx as nx
+
+# Define the graph data
+edge_list = [(0, 17), (1, 3), (1, 14), (2, 15), (2, 17), (2, 18), (3, 8), (3, 9), (3, 11), (3, 13), 
+             (4, 9), (4, 14), (4, 16), (5, 18), (5, 20), (6, 7), (6, 14), (6, 20), (8, 9), 
+             (9, 15), (9, 18), (10, 12), (11, 12), (11, 13), (11, 15), (12, 14), (12, 18), 
+             (12, 19), (13, 14), (13, 15), (13, 17), (13, 18), (16, 20), (16, 21), (17, 20), (18, 21)]
+
+# Create the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check the graph pattern
+n = len(G.nodes)
+m = len(G.edges)
+
+# Star: one central node connected to all others
+is_star = max(dict(G.degree).values()) == n - 1 and m == n - 1
+
+# Cycle: all nodes connected in a single loop
+is_cycle = nx.is_connected(G) and m == n and all(degree == 2 for degree in dict(G.degree).values())
+
+# Path: a single line with endpoints and no branches
+is_path = nx.is_connected(G) and m == n - 1 and (
+    sum(degree == 1 for degree in dict(G.degree).values()) == 2
+)
+
+# Grid: nodes arranged in a 2D grid
+is_grid = all(len(list(nx.neighbors(G, node))) <= 4 for node in G)
+
+# Complete: all nodes connect to each other
+is_complete = m == n * (n - 1) // 2
+
+# Clustered: modularity suggests strong community division
+is_clustered = nx.communities.modularity(G, nx.community.greedy_modularity_communities(G)) > 0.3
+
+# Random graph pattern: fallback if none of the above are true
+is_random = not (is_star or is_cycle or is_path or is_grid or is_complete or is_clustered)
+
+# Determine the pattern
+if is_star:
+    print("Star")
+elif is_cycle:
+    print("Cycle")
+elif is_path:
+    print("Path")
+elif is_grid:
+    print("Grid")
+elif is_complete:
+    print("Complete")
+elif is_clustered:
+    print("Clustered Graph")
+elif is_random:
+    print("Random Graph")
+```

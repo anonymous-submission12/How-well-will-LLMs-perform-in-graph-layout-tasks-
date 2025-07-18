@@ -1,0 +1,67 @@
+Here's how we can approach this problem:
+
+1. **Represent the Graph:** The input is an edge list. We can represent the graph using an adjacency list or an adjacency matrix, but for finding connected components, an adjacency list is generally more efficient.
+
+2. **Find Connected Components:** The communities in the graph are essentially the connected components.  We can use Depth-First Search (DFS) or Breadth-First Search (BFS) to find these components.
+
+3. **Count the Components:** After identifying each connected component, we simply count how many there are.
+
+Let's implement this using Python:
+
+```python
+def count_communities(edge_list):
+    """
+    Counts the number of connected components (communities) in a graph.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        The number of connected components in the graph.
+    """
+
+    # 1. Build the adjacency list
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # 2. Find connected components using DFS
+    visited = set()
+    count = 0
+
+    def dfs(node, visited, graph):
+        visited.add(node)
+        if node in graph:
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    dfs(neighbor, visited, graph)
+
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    for node in nodes:
+        if node not in visited:
+            dfs(node, visited, graph)
+            count += 1
+
+    return count
+
+
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (1, 5), (1, 6), (1, 8), (1, 9), (1, 10), (2, 3), (2, 6), (3, 4), (3, 7), (3, 9), (4, 5), (4, 7), (4, 14), (4, 19), (5, 6), (5, 7), (5, 8), (5, 10), (6, 7), (6, 8), (6, 9), (6, 10), (7, 8), (8, 10), (11, 13), (11, 16), (11, 18), (11, 19), (11, 20), (12, 13), (12, 14), (12, 15), (12, 16), (12, 19), (13, 15), (13, 16), (13, 18), (13, 19), (13, 20), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (15, 17), (15, 18), (15, 19), (15, 20), (16, 19), (17, 18), (17, 20), (18, 19), (18, 20)]
+num_communities = count_communities(edge_list)
+
+print(num_communities)
+```
+
+```json
+{
+  "answer": 2
+}
+```

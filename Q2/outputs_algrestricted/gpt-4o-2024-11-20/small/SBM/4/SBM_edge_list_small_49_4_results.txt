@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 79, in <module>
+    layout = generate_community_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 23, in generate_community_layout
+    community_positions = generate_community_positions(num_communities)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 52, in generate_community_positions
+    x = radius * math.cos(math.radians(angle))
+                 ^^^^
+NameError: name 'math' is not defined. Did you forget to import 'math'?

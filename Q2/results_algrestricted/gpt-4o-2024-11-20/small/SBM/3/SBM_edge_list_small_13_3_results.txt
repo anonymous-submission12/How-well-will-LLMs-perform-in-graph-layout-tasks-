@@ -1,0 +1,117 @@
+Below is a Python script that calculates a layout to minimize edge crossings given the edges of a graph in edge list format. It uses a heuristic to place nodes based on their connections and tries to minimize edge crossings systematically. The output of the program is a JSON representation of the positions of the nodes.
+
+```python
+import json
+import random
+import math
+
+def generate_layout(edge_list):
+    # Extract all nodes from edges
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+
+    # Assign random positions to nodes to start with
+    node_positions = {node: (random.random(), random.random()) for node in nodes}
+
+    # Function to calculate edge crossing
+    def calculate_crossings(positions, edges):
+        crossings = 0
+        edge_count = len(edges)
+        for i in range(edge_count):
+            for j in range(i + 1, edge_count):
+                a1, b1 = edges[i]
+                a2, b2 = edges[j]
+                x1, y1 = positions[a1]
+                x2, y2 = positions[b1]
+                x3, y3 = positions[a2]
+                x4, y4 = positions[b2]
+
+                # Check line segment intersection using determinant approach
+                def ccw(ax, ay, bx, by, cx, cy):
+                    return (cy - ay) * (bx - ax) > (by - ay) * (cx - ax)
+
+                d1 = ccw(x1, y1, x3, y3, x4, y4)
+                d2 = ccw(x2, y2, x3, y3, x4, y4)
+                d3 = ccw(x1, y1, x2, y2, x3, y3)
+                d4 = ccw(x1, y1, x2, y2, x4, y4)
+
+                # If two line segments cross each other
+                if d1 != d2 and d3 != d4:
+                    crossings += 1
+        return crossings
+
+    # Simulated annealing to minimize edge crossings
+    def optimize_layout(positions, edges, max_iterations=1000, initial_temp=1.0, cooling_rate=0.99):
+        temperature = initial_temp
+        best_positions = positions.copy()
+        best_crossings = calculate_crossings(positions, edges)
+
+        for _ in range(max_iterations):
+            # Create a new proposed layout by slight tweaking
+            new_positions = positions.copy()
+            node_to_move = random.choice(nodes)
+            new_positions[node_to_move] = (positions[node_to_move][0] + (random.random() - 0.5) * temperature,
+                                           positions[node_to_move][1] + (random.random() - 0.5) * temperature)
+
+            # Calculate crossings for new layout
+            new_crossings = calculate_crossings(new_positions, edges)
+
+            # Accept new layout with certain probability
+            if new_crossings < best_crossings or math.exp((best_crossings - new_crossings) / temperature) > random.random():
+                positions = new_positions
+                best_crossings = new_crossings
+                best_positions = new_positions
+
+            # Decrease temperature
+            temperature *= cooling_rate
+
+            # Stop early if no crossings
+            if best_crossings == 0:
+                break
+        
+        return best_positions
+
+    # Run the optimization
+    optimized_positions = optimize_layout(node_positions, edge_list)
+
+    # Format result as JSON
+    layout_json = {str(node): list(map(float, position)) for node, position in optimized_positions.items()}
+    return layout_json
+
+if __name__ == "__main__":
+    edge_list = [
+        (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 9), (1, 2), (1, 5), (1, 6), (1, 7),
+        (1, 8), (1, 9), (2, 4), (2, 5), (2, 7), (2, 8), (2, 9), (2, 21), (3, 4), (3, 5),
+        (3, 6), (3, 7), (3, 8), (3, 9), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (5, 6),
+        (5, 7), (5, 8), (6, 7), (6, 8), (6, 9), (6, 18), (7, 9), (10, 11), (10, 12), (10, 13),
+        (10, 14), (10, 15), (10, 16), (10, 17), (10, 18), (10, 19), (11, 12), (11, 13), (11, 14),
+        (11, 15), (11, 16), (11, 17), (11, 18), (11, 19), (11, 28), (12, 13), (12, 15), (12, 16),
+        (12, 17), (12, 27), (13, 15), (13, 16), (13, 17), (13, 18), (13, 19), (14, 15), (14, 16),
+        (14, 17), (14, 18), (14, 19), (15, 16), (15, 17), (15, 19), (16, 17), (16, 19), (17, 18),
+        (17, 19), (18, 19), (18, 22), (20, 21), (20, 23), (20, 26), (20, 27), (20, 29), (21, 22),
+        (21, 24), (21, 25), (21, 27), (21, 28), (21, 29), (22, 23), (22, 24), (22, 26), (22, 27),
+        (22, 28), (23, 24), (23, 25), (23, 26), (23, 28), (23, 29), (24, 27), (24, 29), (25, 27),
+        (25, 28), (25, 29), (26, 27), (26, 28), (26, 29), (27, 28), (28, 29)
+    ]
+
+    layout = generate_layout(edge_list)
+    print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Initialization**:
+   - Generate random initial positions for all nodes.
+   
+2. **Edge Crossings Calculation**:
+   - Use a geometric method to count edge crossings.
+
+3. **Simulated Annealing**:
+   - Randomly adjusts node positions to reduce edge crossings using a simulated annealing approach.
+   - Annealing ensures broader exploration of the state space early and fine-tuned optimization later.
+
+4. **Output**:
+   - Outputs a JSON dictionary that maps each node to its 2D position (`x`, `y`).
+
+You can run this code, and it will output the layout as JSON.

@@ -1,0 +1,47 @@
+To find the shortest path between node '28' and '60', we can use the Breadth-First Search (BFS) algorithm, which is suitable for unweighted graphs. Here's how the BFS algorithm can be applied to the given adjacency list:
+
+1. Start from node '28'.
+2. Explore all its neighbors, then the neighbors of those neighbors, and so on, until node '60' is found.
+3. Keep track of the number of steps taken to reach each node.
+
+Let's simulate the BFS:
+
+- Start at node '28'.
+- From '28', we can go to nodes '22', '23', and '27'.
+- From '22', we can go to nodes '1', '4', '23', '25', '26', '29', and '30'.
+- From '23', we can go to nodes '21', '22', '25', '27', and '28'.
+- From '27', we can go to nodes '21', '23', '24', '25', '26', '28', and '29'.
+- From '21', we can go to nodes '23', '26', '27', '29', and '40'.
+- From '25', we can go to nodes '22', '23', '26', '27', and '40'.
+- From '26', we can go to nodes '21', '22', '24', '25', '27', and '29'.
+- From '29', we can go to nodes '21', '22', '26', '27', and '30'.
+- From '40', we can go to nodes '21', '25', '32', '33', '36', and '38'.
+- From '32', we can go to nodes '31', '34', '36', '37', and '40'.
+- From '33', we can go to nodes '35', '38', and '40'.
+- From '36', we can go to nodes '32', '38', and '40'.
+- From '38', we can go to nodes '33', '34', '36', '39', and '40'.
+- From '35', we can go to nodes '31', '33', '34', '53', and '54'.
+- From '53', we can go to nodes '35', '51', '54', and '55'.
+- From '51', we can go to nodes '18', '52', '53', '56', '57', and '60'.
+- From '52', we can go to nodes '51', '56', '57', '58', and '60'.
+- From '56', we can go to nodes '51', '52', and '60'.
+- From '57', we can go to nodes '4', '51', '52', '54', '58', and '60'.
+- From '60', we have reached our destination.
+
+Counting the steps:
+- '28' to '22' (1 step)
+- '22' to '21' (2 steps)
+- '21' to '40' (3 steps)
+- '40' to '33' (4 steps)
+- '33' to '35' (5 steps)
+- '35' to '53' (6 steps)
+- '53' to '51' (7 steps)
+- '51' to '60' (8 steps)
+
+So, the shortest path from '28' to '60' is 8 steps.
+
+```json
+{
+  "answer": 8
+}
+```

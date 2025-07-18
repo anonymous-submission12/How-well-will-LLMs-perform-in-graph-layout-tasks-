@@ -1,0 +1,23 @@
+```python
+from collections import deque
+
+def shortest_path_length(adj_list, start, end):
+    visited = {start: 0}
+    queue = deque([start])
+    
+    while queue:
+        current = queue.popleft()
+        if current == end:
+            return visited[current]
+        for neighbor in adj_list[current]:
+            if neighbor not in visited:
+                visited[neighbor] = visited[current] + 1
+                queue.append(neighbor)
+    return -1
+
+adj_list = {0: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 1: [0], 2: [0], 3: [0], 4: [0], 5: [0], 6: [0], 7: [0], 8: [0], 9: [0], 10: [0], 11: [0], 12: [0], 13: [0], 14: [0], 15: [0], 16: [0], 17: [0], 18: [0], 19: [0], 20: [0], 21: [0], 22: [0], 23: [0]}
+start_node = 6
+end_node = 11
+
+print(shortest_path_length(adj_list, start_node, end_node))
+```

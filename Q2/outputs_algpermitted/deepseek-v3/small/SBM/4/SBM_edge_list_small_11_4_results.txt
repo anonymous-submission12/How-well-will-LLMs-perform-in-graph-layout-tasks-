@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 40, in <module>
+    centroid = nx.center_of_mass(subgraph, subgraph_pos)
+               ^^^^^^^^^^^^^^^^^
+AttributeError: module 'networkx' has no attribute 'center_of_mass'

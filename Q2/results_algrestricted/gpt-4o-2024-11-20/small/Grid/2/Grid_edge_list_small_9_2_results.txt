@@ -1,0 +1,80 @@
+To generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a custom algorithm. One approach is to use multidimensional scaling (MDS), which attempts to preserve pairwise distances between nodes. Below is the Python script to compute the layout and output it in JSON format.
+
+```python
+import json
+import numpy as np
+from scipy.spatial.distance import squareform
+from scipy.optimize import minimize
+
+def generate_graph_layout(edge_list):
+    # Step 1: Create adjacency matrix and compute shortest path distances
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = sorted(nodes)
+    n = len(nodes)
+    node_index = {node: i for i, node in enumerate(nodes)}
+    
+    # Initialize adjacency matrix
+    adjacency_matrix = np.zeros((n, n))
+    for u, v in edge_list:
+        adjacency_matrix[node_index[u], node_index[v]] = 1
+        adjacency_matrix[node_index[v], node_index[u]] = 1
+    
+    # Compute shortest path distances using Floyd-Warshall algorithm
+    distances = np.full((n, n), np.inf)
+    np.fill_diagonal(distances, 0)
+    for i in range(n):
+        for j in range(n):
+            if adjacency_matrix[i, j] == 1:
+                distances[i, j] = 1
+    
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                distances[i, j] = min(distances[i, j], distances[i, k] + distances[k, j])
+    
+    # Step 2: Use multidimensional scaling (MDS) to compute positions
+    def stress_function(positions):
+        positions = positions.reshape((n, 2))
+        euclidean_distances = squareform(np.sqrt(np.sum((positions[:, None, :] - positions[None, :, :]) ** 2, axis=-1)))
+        graph_distances = distances
+        stress = np.sum((euclidean_distances - graph_distances) ** 2)
+        return stress
+    
+    # Initialize random positions
+    initial_positions = np.random.rand(n, 2)
+    result = minimize(stress_function, initial_positions.flatten(), method='L-BFGS-B')
+    final_positions = result.x.reshape((n, 2))
+    
+    # Step 3: Output positions in JSON format
+    layout = {nodes[i]: final_positions[i].tolist() for i in range(n)}
+    return json.dumps(layout, indent=4)
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 7), (1, 2), (1, 8), (2, 3), (2, 9), (3, 4), (3, 10),
+    (4, 5), (4, 11), (5, 6), (5, 12), (6, 13), (7, 8), (7, 14), (8, 9),
+    (8, 15), (9, 10), (9, 16), (10, 11), (10, 17), (11, 12), (11, 18),
+    (12, 13), (12, 19), (13, 20), (14, 15), (15, 16), (16, 17), (17, 18),
+    (18, 19), (19, 20)
+]
+
+# Generate layout
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Explanation:
+1. **Adjacency Matrix and Shortest Path Distances**:
+   - The adjacency matrix is constructed based on the edge list.
+   - The Floyd-Warshall algorithm computes the shortest path distances between all pairs of nodes.
+
+2. **Multidimensional Scaling (MDS)**:
+   - A custom stress function is defined to minimize the difference between Euclidean distances and graph-theoretic distances.
+   - The `scipy.optimize.minimize` function is used to find the optimal positions.
+
+3. **Output**:
+   - The final positions of nodes are output in JSON format, where each node is mapped to its 2D coordinates.
+
+This script does not use any existing graph layout algorithms and ensures that the layout maintains consistency between Euclidean and graph-theoretic distances.

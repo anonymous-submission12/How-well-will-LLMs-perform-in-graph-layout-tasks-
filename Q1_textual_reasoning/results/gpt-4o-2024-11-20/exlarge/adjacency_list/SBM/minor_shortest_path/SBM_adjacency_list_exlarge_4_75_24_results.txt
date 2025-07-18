@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes '75' and '24' using the given adjacency list, we can utilize the breadth-first search (BFS) algorithm. Here is the solution:
+
+```json
+{
+  "answer": 7
+}
+```

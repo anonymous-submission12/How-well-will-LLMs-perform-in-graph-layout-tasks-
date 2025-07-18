@@ -1,0 +1,78 @@
+Here is the Python code that analyzes the graph structure:
+
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Function definitions for checking specific patterns
+
+    def is_star(adj_list):
+        # In a star graph, one central node connects to all other nodes, with others being degree 1.
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        max_degree = max(degrees.values())
+        return max_degree == len(adj_list) - 1 and sum(d == 1 for d in degrees.values()) == len(adj_list) - 1
+
+    def is_cycle(adj_list):
+        # In a cycle graph, all nodes have degree 2, and no disconnected components exist.
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        return all(degree == 2 for degree in degrees.values()) and len(adj_list) >= 3
+
+    def is_path(adj_list):
+        # Path graph has two end-nodes of degree 1, and intermediates of degree 2.
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        degree_one_count = sum(d == 1 for d in degrees.values())
+        degree_two_count = sum(d == 2 for d in degrees.values())
+        return degree_one_count == 2 and degree_two_count == len(adj_list) - 2
+
+    def is_grid(adj_list):
+        # Grid graph is not trivial to detect directly without spatial data. Skip detection.
+        return False
+
+    def is_complete(adj_list):
+        # Complete graph has each node connected to all other nodes (degree = n-1).
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered(adj_list):
+        # Clustered graph implies densely connected nodes forming distinct local subsets.
+        # This needs advanced detection; here, a heuristic based on average degree.
+        total_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+        n = len(adj_list)
+        average_degree = total_edges / n
+        return average_degree > n / 4  # Influential heuristic
+
+    def is_random_graph(adj_list):
+        # Random graph detection is vague; fallback to last heuristic if pattern unknown.
+        return True
+
+    # Checking all patterns
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+# Input graph data
+graph_data = {0: [1, 2, 5, 6, 8, 9, 10, 11], 1: [0, 2, 3, 4, 7, 9, 10, 11, 21], 2: [0, 1, 4, 6, 7, 8, 9, 10, 11], 
+              3: [1, 5, 6, 8, 9, 10, 11], 4: [1, 2, 5, 6, 7, 8, 9, 10], 5: [0, 3, 4, 6, 7, 8, 10, 11], 
+              6: [0, 2, 3, 4, 5, 7, 8, 9, 10, 11, 19], 7: [1, 2, 4, 5, 6, 8, 9, 10, 11], 
+              8: [0, 2, 3, 4, 5, 6, 7, 9, 11], 9: [0, 1, 2, 3, 4, 6, 7, 8, 10, 12], 
+              10: [0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 12], 11: [0, 1, 2, 3, 5, 6, 7, 8, 10], 
+              12: [9, 10, 13, 14, 15, 17, 19, 20, 21], 13: [12, 14, 16, 17, 18, 19, 20, 21], 
+              14: [12, 13, 16, 18, 19, 20, 21, 22], 15: [12, 16, 18, 20, 21], 
+              16: [13, 14, 15, 17, 18, 21, 22], 17: [12, 13, 16, 18, 19, 20, 21, 22], 
+              18: [13, 14, 15, 16, 17, 20, 22], 19: [6, 12, 13, 14, 17, 20, 21, 22], 
+              20: [12, 13, 14, 15, 17, 18, 19, 22], 21: [1, 12, 13, 14, 15, 16, 17, 19, 22], 
+              22: [14, 16, 17, 18, 19, 20, 21]}
+
+print(determine_graph_pattern(graph_data))
+```

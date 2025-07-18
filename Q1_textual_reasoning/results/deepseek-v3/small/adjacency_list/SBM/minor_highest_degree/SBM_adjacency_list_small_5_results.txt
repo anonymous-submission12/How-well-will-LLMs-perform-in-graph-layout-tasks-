@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 6
+}
+``` 
+
+The highest degree of all nodes in the graph is 6. This is because node 8 and node 9 both have 6 connections each, which is the maximum degree in the graph.

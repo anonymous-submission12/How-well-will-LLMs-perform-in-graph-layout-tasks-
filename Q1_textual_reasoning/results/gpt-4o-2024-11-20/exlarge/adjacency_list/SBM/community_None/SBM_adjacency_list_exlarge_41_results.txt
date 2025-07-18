@@ -1,0 +1,9 @@
+To count the number of communities in the graph, first, we need to find the connected components of the graph. Here is the solution:
+
+```json
+{
+  "answer": 2
+}
+``` 
+
+The graph has **2 communities** (or connected components).

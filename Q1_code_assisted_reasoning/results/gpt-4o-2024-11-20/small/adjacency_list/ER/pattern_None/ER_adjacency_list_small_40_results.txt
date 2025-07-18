@@ -1,0 +1,71 @@
+```python
+from collections import defaultdict
+
+def graph_pattern(adj_list):
+    nodes = list(adj_list.keys())
+    n = len(nodes)
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+    
+    # Helper functions to recognize patterns
+    def is_star():
+        center_nodes = [node for node in adj_list if len(adj_list[node]) == n - 1]
+        return len(center_nodes) == 1
+
+    def is_cycle():
+        visited = set()
+        stack = [(nodes[0], -1)]
+        while stack:
+            current, parent = stack.pop()
+            if current in visited:
+                return len(visited) == n and edges == n
+            visited.add(current)
+            for neighbor in adj_list[current]:
+                if neighbor != parent:
+                    stack.append((neighbor, current))
+        return False
+
+    def is_path():
+        degree_count = [0] * (n + 1)
+        for node in adj_list:
+            degree_count[len(adj_list[node])] += 1
+        return degree_count[1] == 2 and degree_count[2] == n - 2
+
+    def is_grid():
+        sqrt_n = int(n ** 0.5)
+        return sqrt_n ** 2 == n and edges == 2 * n - 2 * sqrt_n
+
+    def is_complete():
+        return edges == n * (n - 1) // 2
+
+    def is_clustered():
+        # Count cluster indicators (common neighbors among groups)
+        neighbor_groups = defaultdict(set)
+        for node, neighbors in adj_list.items():
+            neighbor_groups[node].update(neighbors)
+        return len(neighbor_groups) < n / 2
+
+    def is_random():
+        return True  # Default if no other pattern is matched
+
+    # Check patterns in order of specificity
+    if is_star():
+        return "Star"
+    elif is_cycle():
+        return "Cycle"
+    elif is_path():
+        return "Path"
+    elif is_grid():
+        return "Grid"
+    elif is_complete():
+        return "Complete"
+    elif is_clustered():
+        return "Clustered Graph"
+    else:
+        return "Random Graph"
+
+# Input graph adjacency list
+graph = {0: [4, 14, 19, 20, 28], 1: [12, 18, 23, 26, 28], 2: [11, 24], 3: [8, 23, 25], 4: [0, 21], 5: [7], 6: [18], 7: [5, 10, 12, 14, 19], 8: [3, 12, 13, 16, 17, 22, 23], 9: [10, 11, 28], 10: [7, 9, 20, 24, 27], 11: [2, 9, 12, 26], 12: [1, 7, 8, 11, 15, 21], 13: [8, 19, 21, 28], 14: [0, 7, 18, 23], 15: [12, 27], 16: [8], 17: [8, 28], 18: [1, 6, 14], 19: [0, 7, 13, 21, 26], 20: [0, 10], 21: [4, 12, 13, 19, 24, 27], 22: [8, 24], 23: [1, 3, 8, 14, 26], 24: [2, 10, 21, 22, 26], 25: [3], 26: [1, 11, 19, 23, 24, 28], 27: [10, 15, 21], 28: [0, 1, 9, 13, 17, 26]}
+
+# Determine graph pattern
+print(graph_pattern(graph))
+```

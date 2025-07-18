@@ -1,0 +1,12 @@
+Based on visual inspection:
+
+**Image 1 (Answer 1)** has multiple edge crossings.
+**Image 2 (Answer 2)** appears to have fewer or possibly no edge crossings at all because the graph is laid out in a planar manner.
+
+Thus, the graph in **Answer 2** has the fewest number of edge crossings.
+
+```json
+{
+  "Answer": 2
+}
+```

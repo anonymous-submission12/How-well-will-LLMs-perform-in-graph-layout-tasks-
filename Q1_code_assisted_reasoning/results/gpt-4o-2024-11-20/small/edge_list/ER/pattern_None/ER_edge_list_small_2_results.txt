@@ -1,0 +1,62 @@
+Here is the Python code to determine which pattern the graph fits:
+
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 2), (0, 4), (0, 6), (0, 17), (0, 21), (0, 24), (1, 2), 
+             (1, 7), (1, 9), (1, 26), (1, 27), (2, 12), (2, 17), (3, 10), 
+             (3, 14), (3, 15), (3, 24), (4, 11), (4, 15), (4, 19), (4, 26), 
+             (5, 12), (5, 22), (6, 7), (6, 10), (7, 15), (8, 9), (8, 15), 
+             (8, 18), (9, 14), (9, 21), (10, 19), (10, 22), (10, 23), 
+             (10, 27), (12, 16), (12, 20), (12, 21), (12, 22), (12, 26), 
+             (13, 23), (13, 27), (14, 16), (14, 27), (15, 18), (15, 22), 
+             (15, 27), (17, 23), (18, 24), (18, 25), (18, 26), (25, 26)]
+
+# Create a graph
+G = nx.Graph(edge_list)
+
+def is_star_graph(G):
+    degrees = [d for _, d in G.degree()]
+    return degrees.count(len(G.nodes) - 1) == 1 and degrees.count(1) == len(G.nodes) - 1
+
+def is_cycle_graph(G):
+    return nx.is_connected(G) and all(degree == 2 for _, degree in G.degree())
+
+def is_path_graph(G):
+    endpoints = [n for n, d in G.degree() if d == 1]
+    return len(endpoints) == 2 and nx.is_connected(G)
+
+def is_grid_graph(G):
+    try:
+        rows, cols = nx.grid_graph(dim=[len(G.nodes), 1]).order(), nx.grid_graph(dim=[1, len(G.nodes)]).order()
+        return G.order() in (rows,cols)
+    except Exception:
+        return False
+
+def is_complete_graph(G):
+    n = len(G.nodes)
+    return G.size() == n * (n - 1) // 2
+
+def is_clustered_graph(G):
+    return nx.average_clustering(G) > 0.5
+
+def is_random_graph(G):
+    return not (is_star_graph(G) or is_cycle_graph(G) or is_path_graph(G) or is_grid_graph(G) or is_complete_graph(G) or is_clustered_graph(G))
+
+# Determine the type of graph
+if is_star_graph(G):
+    print("Star")
+elif is_cycle_graph(G):
+    print("Cycle")
+elif is_path_graph(G):
+    print("Path")
+elif is_grid_graph(G):
+    print("Grid")
+elif is_complete_graph(G):
+    print("Complete")
+elif is_clustered_graph(G):
+    print("Clustered graph")
+elif is_random_graph(G):
+    print("Random graph")
+```

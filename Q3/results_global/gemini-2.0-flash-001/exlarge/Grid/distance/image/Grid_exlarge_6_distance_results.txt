@@ -1,0 +1,7 @@
+Based on the visual representation of the two graph layouts, layout 2 appears to better preserve graph-theoretic distance. In layout 1, the nodes are clustered together in a way that makes it difficult to visually estimate the shortest path between nodes. In layout 2, the nodes are arranged in a more linear fashion, which makes it easier to see the connections and estimate the distance between nodes.
+
+```json
+{
+"Answer": "2"
+}
+```

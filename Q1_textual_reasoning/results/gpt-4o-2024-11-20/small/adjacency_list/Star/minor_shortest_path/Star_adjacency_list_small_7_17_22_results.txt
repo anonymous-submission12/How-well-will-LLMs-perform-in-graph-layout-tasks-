@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '17' and '22' in the given graph, we can observe that the graph is structured as a star graph. Node '0' is the central node connected to all other nodes, and all other nodes are only connected to node '0'. Therefore, the shortest path between any two non-central nodes (like '17' and '22') is through the central node '0'.
+
+The shortest path from '17' to '22' is:
+- From '17' to '0' (1 step)
+- From '0' to '22' (1 step)
+
+Thus, the total length of the shortest path is 2.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

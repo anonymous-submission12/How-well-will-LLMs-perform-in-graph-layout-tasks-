@@ -1,0 +1,9 @@
+To calculate the shortest path between node `4` and `12`, we first observe that the graph provided is represented as an edge list. The nodes `4` and `12` belong to different connected components of the graph (from observation, the first component includes nodes such as `0`, `1`, `2`, ..., `9`, while the second component includes nodes like `10`, `11`, `12`, ..., `19`). Since there is no path between nodes `4` and `12`, the shortest path would be considered infinite or undefined. However, in many contexts, the convention is to represent this as `-1`.
+
+Here is the JSON output:
+
+```json
+{
+  "answer": -1
+}
+```

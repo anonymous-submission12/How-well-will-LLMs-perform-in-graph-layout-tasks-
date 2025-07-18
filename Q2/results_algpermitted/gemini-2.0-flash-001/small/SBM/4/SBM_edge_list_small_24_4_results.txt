@@ -1,0 +1,141 @@
+```python
+import networkx as nx
+import community as co
+import json
+import random
+
+def generate_community_layout(edge_list):
+    """
+    Generates a graph layout that respects community structure.
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node IDs
+        and values are [x, y] coordinate lists.
+    """
+
+    # 1. Create a NetworkX graph
+    graph = nx.Graph(edge_list)
+
+    # 2. Detect communities using the Louvain algorithm
+    partition = co.best_partition(graph)
+
+    # 3. Calculate the center of each community
+    community_centers = {}
+    for community_id in set(partition.values()):
+        nodes_in_community = [
+            node for node, comm_id in partition.items() if comm_id == community_id
+        ]
+        community_centers[community_id] = [
+            random.random(),
+            random.random(),
+        ]  # Initialize with random positions
+
+    # 4. Layout nodes within each community using a force-directed layout
+    pos = {}
+    for community_id in set(partition.values()):
+        nodes_in_community = [
+            node for node, comm_id in partition.items() if comm_id == community_id
+        ]
+        subgraph = graph.subgraph(nodes_in_community)
+
+        # Use spring_layout for the subgraph, centered around the community center
+        subgraph_pos = nx.spring_layout(subgraph, k=0.3, iterations=50)  # Adjust k and iterations as needed
+
+        # Shift the subgraph layout to be centered around the community center
+        center_x, center_y = community_centers[community_id]
+        x_coords = [x for x, y in subgraph_pos.values()]
+        y_coords = [y for x, y in subgraph_pos.values()]
+
+        if x_coords and y_coords:  # Check if the community is not empty
+            min_x = min(x_coords)
+            max_x = max(x_coords)
+            min_y = min(y_coords)
+            max_y = max(y_coords)
+
+            width = max_x - min_x
+            height = max_y - min_y
+
+            for node, (x, y) in subgraph_pos.items():
+                x_new = center_x + (x - (min_x + width / 2)) * 0.5  # Scale down the layout
+                y_new = center_y + (y - (min_y + height / 2)) * 0.5 # Scale down the layout
+                pos[node] = [x_new, y_new]
+        else:
+            # Handle empty community (assign random position)
+            for node in nodes_in_community:
+                pos[node] = [random.random(), random.random()]
+
+    # 5. Return the layout in JSON format
+    layout_json = json.dumps(pos, indent=2)
+    return layout_json
+
+
+# Example usage with the provided graph data:
+edge_list = [
+    (0, 1),
+    (0, 2),
+    (0, 3),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (2, 3),
+    (2, 4),
+    (2, 5),
+    (3, 4),
+    (3, 5),
+    (4, 5),
+    (4, 22),
+    (5, 14),
+    (6, 7),
+    (6, 8),
+    (6, 10),
+    (7, 8),
+    (7, 9),
+    (7, 10),
+    (7, 11),
+    (8, 9),
+    (8, 10),
+    (8, 11),
+    (9, 10),
+    (9, 11),
+    (10, 11),
+    (10, 26),
+    (12, 13),
+    (12, 16),
+    (12, 17),
+    (13, 15),
+    (13, 16),
+    (13, 17),
+    (13, 25),
+    (14, 15),
+    (14, 16),
+    (14, 17),
+    (14, 19),
+    (15, 16),
+    (15, 17),
+    (16, 17),
+    (18, 19),
+    (18, 20),
+    (18, 21),
+    (18, 22),
+    (19, 20),
+    (19, 21),
+    (20, 21),
+    (20, 22),
+    (21, 22),
+    (23, 24),
+    (23, 25),
+    (23, 26),
+    (23, 27),
+    (24, 26),
+    (24, 27),
+    (25, 26),
+    (25, 27),
+    (26, 27),
+]
+
+layout_json = generate_community_layout(edge_list)
+print(layout_json)
+```

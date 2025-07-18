@@ -1,0 +1,7 @@
+To calculate the shortest path between node '25' and '11', we first represent the graph using the edge list provided and then utilize an algorithm like BFS (Breadth-First Search) to compute the shortest path. Here's the result:
+
+```json
+{
+  "answer": 5
+}
+```

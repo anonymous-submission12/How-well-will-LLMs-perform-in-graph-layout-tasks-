@@ -1,0 +1,13 @@
+To determine which layout better preserves graph-theoretic distance, we analyze the spatial arrangement of nodes relative to their graph-theoretic distances (shortest path distances in the graph). 
+
+In the first image, the layout appears more scattered, with nodes positioned in a way that does not clearly reflect the linear structure of the graph. Nodes that are close in graph-theoretic distance may not be spatially close, and vice versa.
+
+In the second image, the layout is more linear and sequential, closely resembling the graph's structure. Nodes that are adjacent in the graph are spatially closer, and the overall arrangement reflects the graph-theoretic distances more accurately.
+
+Thus, **Answer 2** better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,9 @@
+To determine which layout better preserves graph-theoretic distance, we need to compare how well the Euclidean distances between nodes in each layout correspond to the shortest path distances in the original graph. A good layout will have Euclidean distances that are roughly proportional to the graph distances. Since calculating all shortest paths and comparing them to Euclidean distances is computationally intensive, we can approximate by comparing the distances between adjacent nodes in the graph.
+
+Layout 1 appears to have more variance in edge lengths. Layout 2 seems to have more uniform edge lengths. A more uniform edge length distribution is likely to better preserve graph-theoretic distance.
+
+```json
+{
+"Answer": "2"
+}
+```

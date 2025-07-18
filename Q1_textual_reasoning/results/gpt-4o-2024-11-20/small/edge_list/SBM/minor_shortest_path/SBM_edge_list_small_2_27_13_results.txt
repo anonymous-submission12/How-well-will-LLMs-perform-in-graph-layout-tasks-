@@ -1,0 +1,11 @@
+To calculate the shortest path between nodes '27' and '13', we can use a graph traversal algorithm like Breadth-First Search (BFS). Here's the solution:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation:
+- The shortest path from node '27' to node '13' is: 27 → 21 → 18 → 13.
+- This path has a length of 4 edges.

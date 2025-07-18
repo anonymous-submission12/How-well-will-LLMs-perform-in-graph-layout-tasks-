@@ -1,0 +1,78 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Identify all nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = list(nodes)
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions randomly
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Initial positions in [0, 1]
+
+    # 3. Iteratively adjust node positions
+    iterations = 1000  # Number of iterations for refinement
+    learning_rate = 0.1  # Adjust this to control the step size
+
+    for _ in range(iterations):
+        for node1 in nodes:
+            for node2 in nodes:
+                if node1 == node2:
+                    continue
+
+                # Calculate Euclidean distance
+                x1, y1 = layout[node1]
+                x2, y2 = layout[node2]
+                euclidean_distance = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+                # Approximate graph-theoretic distance (shortest path)
+                # Here, we approximate it by checking if nodes are directly connected.
+                # For larger graphs, you'd need a proper shortest path algorithm (e.g., Dijkstra's).
+                graph_distance = 1 if (node1, node2) in edge_list or (node2, node1) in edge_list else 2 # Assume 2 if not directly connected
+
+                # Calculate the difference between Euclidean and graph distances
+                distance_diff = graph_distance - euclidean_distance
+
+                # Adjust node positions to reduce the difference
+                dx = (x2 - x1) * learning_rate * distance_diff
+                dy = (y2 - y1) * learning_rate * distance_diff
+
+                # Update positions (apply the adjustment in opposite directions)
+                layout[node1] = (x1 - dx / num_nodes, y1 - dy / num_nodes)
+                layout[node2] = (x2 + dx / num_nodes, y2 + dy / num_nodes)
+
+                # Keep nodes within bounds [0, 1]
+                x1, y1 = layout[node1]
+                x2, y2 = layout[node2]
+                layout[node1] = (max(0, min(1, x1)), max(0, min(1, y1)))
+                layout[node2] = (max(0, min(1, x2)), max(0, min(1, y2)))
+
+    # 4. Return the layout as a dictionary
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 5), (0, 6), (0, 8), (0, 9), (0, 10), (0, 11), (1, 2), (1, 3), (1, 4), (1, 7), (1, 9), (1, 10), (1, 11), (1, 21), (2, 4), (2, 6), (2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (3, 5), (3, 6), (3, 8), (3, 9), (3, 10), (3, 11), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (4, 10), (5, 6), (5, 7), (5, 8), (5, 10), (5, 11), (6, 7), (6, 8), (6, 9), (6, 10), (6, 11), (6, 19), (7, 8), (7, 9), (7, 10), (7, 11), (8, 9), (8, 11), (9, 10), (9, 12), (10, 11), (10, 12), (12, 13), (12, 14), (12, 15), (12, 17), (12, 19), (12, 20), (12, 21), (13, 14), (13, 16), (13, 17), (13, 18), (13, 19), (13, 20), (13, 21), (14, 16), (14, 18), (14, 19), (14, 20), (14, 21), (14, 22), (15, 16), (15, 18), (15, 20), (15, 21), (16, 17), (16, 18), (16, 21), (16, 22), (17, 18), (17, 19), (17, 20), (17, 21), (17, 22), (18, 20), (18, 22), (19, 20), (19, 21), (19, 22), (20, 22), (21, 22)]
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

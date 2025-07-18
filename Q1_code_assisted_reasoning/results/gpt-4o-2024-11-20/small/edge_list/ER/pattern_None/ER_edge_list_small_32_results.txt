@@ -1,0 +1,56 @@
+```python
+import networkx as nx
+
+# Define the graph with the given edge list
+edge_list = [(0, 9), (1, 10), (1, 25), (1, 26), (2, 4), (2, 13), (2, 20), (3, 17), (3, 24),
+             (4, 6), (4, 9), (4, 26), (5, 11), (5, 16), (5, 20), (5, 21), (5, 22), (5, 27),
+             (5, 28), (6, 13), (6, 14), (6, 15), (6, 17), (6, 18), (6, 25), (7, 12), (7, 13),
+             (7, 27), (8, 23), (9, 14), (9, 23), (9, 27), (10, 19), (10, 23), (11, 17), (11, 23),
+             (11, 26), (12, 23), (12, 27), (13, 20), (13, 27), (14, 19), (14, 22), (14, 26),
+             (17, 20), (17, 27), (17, 28), (18, 26), (20, 22), (23, 25), (23, 28), (24, 25)]
+
+G = nx.Graph(edge_list)
+
+# Functions to check various patterns
+def is_star(graph):
+    degrees = [d for _, d in graph.degree()]
+    return degrees.count(len(graph.nodes) - 1) == 1 and degrees.count(1) == len(graph.nodes) - 1
+
+def is_cycle(graph):
+    return nx.cycle_graph(len(graph.nodes())).edges() == nx.Graph(graph).edges() and nx.is_connected(graph)
+
+def is_path(graph):
+    degrees = [d for _, d in graph.degree()]
+    return degrees.count(2) == len(graph.nodes) - 2 and degrees.count(1) == 2
+
+def is_grid(graph):
+    sqrt_nodes = int(len(graph.nodes) ** 0.5)
+    return nx.grid_2d_graph(sqrt_nodes, sqrt_nodes).edges() == nx.convert_node_labels_to_integers(graph).edges()
+
+def is_complete(graph):
+    n = len(graph.nodes)
+    return len(graph.edges) == n * (n - 1) // 2
+
+def is_clustered(graph):
+    return nx.average_clustering(graph) > 0.5
+
+def is_random(graph):
+    # A naive proxy: check if there's no strong structure
+    return not (is_star(graph) or is_cycle(graph) or is_path(graph) or is_grid(graph) or is_complete(graph) or is_clustered(graph))
+
+# Determining the graph pattern
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered")
+elif is_random(G):
+    print("Random")
+```

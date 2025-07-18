@@ -1,0 +1,8 @@
+To compute the shortest path between nodes '21' and '12', we can use a Breadth-First Search (BFS) algorithm since the graph provided is unweighted. Here's the computation:
+
+1. Using BFS traversal, starting at node '21', we track distances to other nodes until we reach node '12'.
+2. The graph appears to be cyclic, but a direct traversal from node '21' to node '12' in reverse order covers simple connected path chains.
+
+The shortest path traversal steps count —
+
+```CONTENT

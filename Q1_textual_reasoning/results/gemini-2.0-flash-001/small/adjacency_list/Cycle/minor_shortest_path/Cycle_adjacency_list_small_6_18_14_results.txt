@@ -1,0 +1,44 @@
+We are asked to find the shortest path between nodes 18 and 14 in the given graph. The graph is represented as an adjacency list. We can use Breadth-First Search (BFS) to find the shortest path.
+
+1.  **Initialization:**
+    *   Create a queue and add the starting node (18) to it.
+    *   Create a `visited` set to keep track of visited nodes, initially containing only the starting node.
+    *   Create a `distance` dictionary to store the distance from the starting node to each node, initialized with `distance[18] = 0`.
+
+2.  **BFS:**
+    *   While the queue is not empty:
+        *   Dequeue a node from the queue (current node).
+        *   For each neighbor of the current node:
+            *   If the neighbor has not been visited:
+                *   Add the neighbor to the queue.
+                *   Mark the neighbor as visited.
+                *   Set the distance to the neighbor as `distance[neighbor] = distance[current_node] + 1`.
+                *   If the neighbor is the target node (14), return `distance[14]`.
+
+3.  **Return:**
+    *   If the target node is not found after traversing the entire graph, return -1.
+
+Now, let's apply BFS to the given graph:
+
+*   Start at node 18. distance\[18] = 0
+*   Neighbors of 18: 17, 19
+    *   Visit 17: distance\[17] = 1
+    *   Visit 19: distance\[19] = 1
+*   Neighbors of 17: 16
+    *   Visit 16: distance\[16] = 2
+*   Neighbors of 19: 20
+    *   Visit 20: distance\[20] = 2
+*   Neighbors of 16: 15
+    *   Visit 15: distance\[15] = 3
+*   Neighbors of 20: 21
+    *   Visit 21: distance\[21] = 3
+*   Neighbors of 15: 14
+    *   Visit 14: distance\[14] = 4
+
+Therefore, the shortest path length between node 18 and node 14 is 4.
+
+```json
+{
+"answer": 4
+}
+```

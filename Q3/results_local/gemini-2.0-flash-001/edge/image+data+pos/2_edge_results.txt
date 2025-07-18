@@ -1,0 +1,7 @@
+Based on the provided data and the image, the two edges (0, 4) and (21, 20) do not intersect.
+
+```json
+{
+"Answer": "No"
+}
+```

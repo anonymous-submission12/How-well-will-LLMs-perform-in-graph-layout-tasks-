@@ -1,0 +1,13 @@
+To assess which layout better preserves graph-theoretic distance, one would examine the spatial arrangement of vertices and edges relative to their graph-theory shortest path distances.
+
+**Layout 1:** Vertices are placed with some overlap and intersections, making it harder to discern clear graph-theoretic distances visually.
+
+**Layout 2:** The graph is drawn in a circular or oval arrangement where vertices are spaced out consistently along their connections, improving the ability to estimate graph-theoretic distances.
+
+**Answer:** Layout 2 better preserves graph-theoretic distance as it provides a clearer visualization of shortest path distances between vertices.
+
+```json
+{
+  "Answer": 2
+}
+```

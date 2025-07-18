@@ -1,0 +1,9 @@
+To determine the number of communities in the given graph, we can use the concept of connected components. Each connected component in an undirected graph can be considered as a community.
+
+Here is the answer:
+
+```json
+{
+  "answer": 5
+}
+```

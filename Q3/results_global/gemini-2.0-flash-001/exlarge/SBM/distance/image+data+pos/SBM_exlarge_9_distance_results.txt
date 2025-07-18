@@ -1,0 +1,7 @@
+Based on visual inspection, layout 1 appears to better preserve the graph-theoretic distance. The nodes that are close in the graph data are also placed closer in layout 1 compared to layout 2.
+
+```json
+{
+"Answer": "1"
+}
+```

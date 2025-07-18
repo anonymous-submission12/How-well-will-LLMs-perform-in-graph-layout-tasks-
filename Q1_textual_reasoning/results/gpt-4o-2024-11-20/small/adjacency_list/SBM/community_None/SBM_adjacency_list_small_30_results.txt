@@ -1,0 +1,13 @@
+To count the communities in the given graph, we need to identify the connected components of the graph. A community corresponds to each connected component in the adjacency list representation. Below you'll find the code with the number of communities identified.
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation:
+- In the given graph, nodes {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13} are interconnected, forming one large community (a connected component).
+- Nodes {14, 15, 16, 17, 18, 19, 20} form another interconnected block, creating a second community.
+
+Thus, the total number of communities (connected components) in the graph is 2.

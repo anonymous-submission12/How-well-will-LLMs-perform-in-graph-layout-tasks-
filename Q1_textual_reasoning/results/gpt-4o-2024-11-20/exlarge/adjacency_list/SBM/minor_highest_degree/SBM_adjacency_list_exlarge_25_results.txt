@@ -1,0 +1,7 @@
+To determine the highest degree of all nodes in the graph, we calculate the degree of each node, which is the number of edges connected to the node. The adjacency list representation directly provides this information for each node.
+
+```json
+{
+  "answer": 8
+}
+```

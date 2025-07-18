@@ -1,0 +1,15 @@
+To calculate the shortest path between node '3' and node '19', we can observe the graph structure provided in the adjacency list. The graph is a star graph where node '0' is the central node connected to all other nodes, and all other nodes are only connected to node '0'. 
+
+Thus, the shortest path between node '3' and node '19' is:
+- From node '3' to node '0' (1 step).
+- From node '0' to node '19' (1 step).
+
+The total length of the shortest path is 2.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

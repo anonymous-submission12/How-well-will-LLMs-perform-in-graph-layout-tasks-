@@ -1,0 +1,7 @@
+The given graph is a star graph where node `0` is the central node connected to all other nodes. The shortest path between any two non-central nodes must first go through the central node `0`. Thus, the shortest path from node `10` to node `35` will be `10 -> 0 -> 35`, which is of length `2`.
+
+```json
+{
+  "answer": 2
+}
+```

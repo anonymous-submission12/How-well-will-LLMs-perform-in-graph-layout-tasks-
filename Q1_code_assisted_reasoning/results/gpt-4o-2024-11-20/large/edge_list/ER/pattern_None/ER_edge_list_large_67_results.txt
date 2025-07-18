@@ -1,0 +1,55 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 4), (0, 33), (0, 44), (1, 3), (1, 7), (1, 21), (1, 27), (1, 29), (1, 36), (1, 39), (1, 43), 
+             (2, 12), (2, 13), (2, 24), (3, 9), (3, 10), (3, 24), (3, 27), (3, 30), (3, 34), (4, 9), (4, 28), 
+             (4, 41), (4, 42), (4, 43), (5, 38), (5, 40), (6, 15), (6, 27), (6, 28), (6, 36), (6, 43), (7, 23), 
+             (7, 26), (7, 30), (7, 35), (8, 12), (8, 24), (8, 38), (9, 18), (9, 24), (9, 28), (9, 34), (9, 45), 
+             (10, 21), (10, 42), (10, 44), (10, 45), (11, 39), (12, 41), (13, 15), (13, 30), (13, 40), (14, 25), 
+             (15, 28), (15, 43), (15, 44), (16, 20), (16, 32), (17, 20), (17, 44), (18, 28), (18, 44), (19, 27), 
+             (19, 32), (19, 40), (19, 43), (20, 22), (20, 30), (20, 34), (20, 39), (20, 41), (21, 27), (21, 37), 
+             (21, 38), (22, 32), (22, 35), (23, 32), (23, 33), (23, 43), (24, 30), (24, 31), (24, 38), (25, 27), 
+             (25, 28), (25, 37), (26, 33), (26, 35), (27, 31), (27, 37), (27, 42), (28, 41), (29, 43), (30, 31), 
+             (30, 38), (32, 36), (33, 37), (33, 38), (33, 40), (33, 45), (35, 44), (37, 43), (38, 44)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Check graph patterns
+def check_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for Star
+    degrees = [deg for _, deg in G.degree()]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(G) and m == n and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(G) and m == n - 1 and degrees.count(2) == n - 2 and degrees.count(1) == 2:
+        return "Path"
+    
+    # Check for Grid
+    sqrt_n = int(n**0.5)
+    if sqrt_n * sqrt_n == n and m == 2 * n - 2:
+        return "Grid"
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered Graph
+    if nx.number_connected_components(G) > 1:
+        return "Clustered Graph"
+    
+    # Default to Random Graph
+    return "Random Graph"
+
+# Determine the graph pattern
+print(check_graph_pattern(G))
+```

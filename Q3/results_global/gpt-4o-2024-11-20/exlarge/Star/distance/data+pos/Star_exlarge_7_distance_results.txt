@@ -1,0 +1,5 @@
+To determine which layout better preserves graph-theoretic distances, we need to compare distances between nodes based on the coordinate layout and compare them against their actual graph-theoretic distances (shortest path distances). While the graph-theoretic distances are dictated by the graph structure, the layouts attempt to reflect these distances geometrically.
+
+For simplicity in analysis, tools like stress model comparison or normalized graph-theoretic preservation metrics can be computed in practice. However, given the data and no further computation to compare actual values:
+
+Considering the graph-theoretic distance is symmetrical 76!, documented noting (each 

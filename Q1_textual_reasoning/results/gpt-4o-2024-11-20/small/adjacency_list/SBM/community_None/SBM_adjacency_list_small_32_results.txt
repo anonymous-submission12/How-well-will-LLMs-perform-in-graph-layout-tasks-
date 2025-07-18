@@ -1,0 +1,7 @@
+To determine the number of communities in the graph described by its adjacency list, we can identify connected components in the graph. Each connected component represents one community. Here's the result:
+
+```json
+{
+  "answer": 4
+}
+```

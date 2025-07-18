@@ -1,0 +1,64 @@
+```python:/home/user/graph_patterns.py
+import networkx as nx
+
+# Given adjacency list
+adjacency_list = {
+    0: [5, 13, 37], 1: [12, 13, 24, 26, 32, 44], 2: [3, 7, 14, 16, 20, 37, 39], 
+    3: [2, 17, 21, 25, 27, 30, 41, 45], 4: [21, 29, 35, 47], 5: [0, 28], 
+    6: [9, 10, 21, 24, 32, 43, 44], 7: [2, 21, 23, 35], 8: [15, 40], 
+    9: [6, 13, 21, 27, 35], 10: [6, 17, 44], 11: [22, 34, 43, 44], 
+    12: [1, 18, 31, 39, 45], 13: [0, 1, 9, 26], 14: [2, 23, 32, 34, 41, 42, 46], 
+    15: [8, 19, 21, 26, 30, 42], 16: [2, 27, 47], 17: [3, 10, 27, 29, 38, 42], 
+    18: [12, 19, 30, 34, 47], 19: [15, 18, 20, 27], 20: [2, 19, 31, 37], 
+    21: [3, 4, 6, 7, 9, 15, 45], 22: [11, 28, 32, 36, 37], 23: [7, 14, 29, 40, 41, 42, 47], 
+    24: [1, 6, 41], 25: [3, 30, 33, 39], 26: [1, 13, 15, 28, 29, 30, 33, 34, 35, 37, 43, 47], 
+    27: [3, 9, 16, 17, 19], 28: [5, 22, 26, 38, 43], 29: [4, 17, 23, 26, 36], 
+    30: [3, 15, 18, 25, 26, 31, 34, 40], 31: [12, 20, 30, 36, 38, 43], 
+    32: [1, 6, 14, 22, 43], 33: [25, 26, 37, 42], 34: [11, 14, 18, 26, 30, 39, 47], 
+    35: [4, 7, 9, 26, 36, 45], 36: [22, 29, 31, 35, 45], 37: [0, 2, 20, 22, 26, 33, 41, 47], 
+    38: [17, 28, 31, 47], 39: [2, 12, 25, 34], 40: [8, 23, 30, 47], 
+    41: [3, 14, 23, 24, 37, 44], 42: [14, 15, 17, 23, 33], 43: [6, 11, 26, 28, 31, 32], 
+    44: [1, 6, 10, 11, 41], 45: [3, 12, 21, 35, 36], 46: [14], 47: [4, 16, 18, 23, 26, 34, 37, 38, 40]
+}
+
+# Create a NetworkX graph
+G = nx.Graph(adjacency_list)
+
+# Function to classify graph pattern
+def classify_graph(G):
+    n = G.number_of_nodes()
+    m = G.number_of_edges()
+
+    # Check for complete graph
+    if nx.density(G) == 1:
+        return "Complete"
+
+    # Check for cycle graph
+    if nx.is_connected(G) and all(deg == 2 for _, deg in G.degree()):
+        return "Cycle"
+
+    # Check for path graph
+    if nx.is_connected(G) and sum(1 for _, deg in G.degree() if deg == 1) == 2:
+        return "Path"
+
+    # Check for star graph
+    degree_counts = [deg for _, deg in G.degree()]
+    if degree_counts.count(n - 1) == 1 and degree_counts.count(1) == n - 1:
+        return "Star"
+
+    # Check for grid-like structure (heuristic: degree around 2-4)
+    avg_degree = sum(degree_counts) / n
+    if 2 <= avg_degree <= 4:
+        return "Grid"
+
+    # Check for clustering (heuristic: high average clustering coefficient)
+    clustering_coeff = nx.average_clustering(G)
+    if clustering_coeff > 0.4:  # heuristic threshold
+        return "Clustered Graph"
+    
+    # Default case: random graph
+    return "Random Graph"
+
+# Determine the pattern
+print(classify_graph(G))
+```

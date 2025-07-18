@@ -1,0 +1,29 @@
+To calculate the shortest path between node '17' and '54', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph. Here's how we can approach this:
+
+1. **Graph Representation**: Represent the graph using an adjacency list.
+2. **BFS Algorithm**: Use BFS to explore the graph starting from node '17' until we reach node '54'.
+3. **Path Length**: The number of steps taken to reach node '54' from node '17' will be the length of the shortest path.
+
+Let's implement this step-by-step.
+
+### Step 1: Graph Representation
+We will create an adjacency list from the given edge list.
+
+### Step 2: BFS Algorithm
+We will perform BFS starting from node '17' and keep track of the distance from '17' to each node.
+
+### Step 3: Path Length
+Once we reach node '54', we will return the distance.
+
+Here is the JSON response with the calculated shortest path length:
+
+```json
+{
+  "answer": 6
+}
+```
+
+### Explanation:
+- The shortest path from node '17' to node '54' involves 6 edges. The path is: `17 -> 15 -> 18 -> 51 -> 53 -> 54`.
+
+This is the minimum number of steps required to travel from node '17' to node '54' in the given graph.

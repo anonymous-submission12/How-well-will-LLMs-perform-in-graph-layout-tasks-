@@ -1,0 +1,131 @@
+```python
+import json
+import random
+import math
+
+def community_detection(graph):
+    """
+    A simple community detection algorithm based on modularity maximization.
+    This is a simplified version and may not be optimal for all graphs.
+    """
+    # Initialize each node as its own community
+    community_map = {node: node for edge in graph for node in edge}
+    nodes = list(community_map.keys())
+    num_nodes = len(nodes)
+
+    def calculate_modularity(graph, community_map):
+        """Calculates the modularity of the graph given the community assignments."""
+        Q = 0.0
+        m = len(graph)  # Total number of edges
+        if m == 0:
+            return 0.0
+
+        degrees = {}
+        for node in nodes:
+            degrees[node] = 0
+        for u, v in graph:
+            degrees[u] += 1
+            degrees[v] += 1
+
+        for i in nodes:
+            for j in nodes:
+                if community_map[i] == community_map[j]:
+                    A_ij = 1 if (i, j) in graph or (j, i) in graph else 0
+                    Q += (A_ij - (degrees[i] * degrees[j]) / m)
+
+        return Q / m
+
+    best_community_map = community_map.copy()
+    best_modularity = calculate_modularity(graph, community_map)
+
+    for _ in range(10): # Iterate a few times
+        for node in nodes:
+            original_community = community_map[node]
+            best_neighbor_community = original_community
+            max_modularity_gain = 0
+
+            neighbors = set()
+            for u, v in graph:
+                if u == node:
+                    neighbors.add(v)
+                if v == node:
+                    neighbors.add(u)
+
+            neighbor_communities = set(community_map[neighbor] for neighbor in neighbors)
+
+            for neighbor_community in neighbor_communities:
+                # Temporarily move the node to the neighbor's community
+                community_map[node] = neighbor_community
+                new_modularity = calculate_modularity(graph, community_map)
+                modularity_gain = new_modularity - best_modularity
+
+                if modularity_gain > max_modularity_gain:
+                    max_modularity_gain = modularity_gain
+                    best_neighbor_community = neighbor_community
+
+            # Move the node to the best neighbor community
+            community_map[node] = best_neighbor_community
+            new_modularity = calculate_modularity(graph, community_map)
+
+            if new_modularity > best_modularity:
+                best_modularity = new_modularity
+                best_community_map = community_map.copy()
+            else:
+                community_map[node] = original_community #revert
+
+    # Consolidate community IDs to be unique integers starting from 0
+    unique_communities = sorted(list(set(best_community_map.values())))
+    community_id_map = {community: i for i, community in enumerate(unique_communities)}
+    final_community_map = {node: community_id_map[best_community_map[node]] for node in nodes}
+
+    return final_community_map
+
+
+def layout_graph(graph):
+    """
+    Generates a layout for the graph, keeping community structure clear.
+    """
+    community_map = community_detection(graph)
+    num_communities = len(set(community_map.values()))
+    nodes = list(community_map.keys())
+    num_nodes = len(nodes)
+
+    # 1. Community Placement: Place communities in a circle
+    community_positions = {}
+    for i in range(num_communities):
+        angle = 2 * math.pi * i / num_communities
+        community_positions[i] = (math.cos(angle), math.sin(angle))
+
+    # 2. Node Placement within Community: Place nodes within their community's circle
+    node_positions = {}
+    nodes_in_community = {}
+    for node, community in community_map.items():
+        if community not in nodes_in_community:
+            nodes_in_community[community] = []
+        nodes_in_community[community].append(node)
+
+    for community, nodes_in_community_list in nodes_in_community.items():
+        num_nodes_in_community = len(nodes_in_community_list)
+        for i, node in enumerate(nodes_in_community_list):
+            angle = 2 * math.pi * i / num_nodes_in_community
+            # Place nodes in a smaller circle within the community's position
+            radius = 0.4  # Adjust for spacing
+            x = community_positions[community][0] + radius * math.cos(angle)
+            y = community_positions[community][1] + radius * math.sin(angle)
+            node_positions[node] = (x, y)
+
+    return node_positions
+
+
+# Graph data
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (1, 3), (1, 4), (1, 6), (2, 3), (2, 5), (2, 6), (3, 5), (3, 6), (4, 5), (5, 6), (5, 11), (6, 17), (7, 8), (7, 9), (7, 10), (7, 11), (7, 12), (7, 13), (8, 9), (8, 10), (8, 11), (8, 13), (9, 10), (9, 11), (9, 12), (9, 13), (10, 11), (10, 13), (11, 12), (11, 13), (11, 18), (12, 13), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 17), (15, 18), (15, 19), (15, 20), (16, 17), (16, 18), (16, 19), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+# Generate layout
+layout = layout_graph(edge_list)
+
+# Convert layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

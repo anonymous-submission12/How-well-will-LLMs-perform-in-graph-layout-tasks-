@@ -1,0 +1,16 @@
+To calculate the shortest path between nodes `40` and `60`, let's analyze the structure of the provided graph:
+
+The graph is represented as an adjacency list. Node `0` is connected to all other nodes (`1` through `76`), and all other nodes are only connected back to node `0`. This makes node `0` the central hub of the graph.
+
+Thus, the shortest path between node `40` and node `60` must pass through node `0`. The path will be:
+1. `40` → `0`
+2. `0` → `60`
+
+The shortest path length is `2`.
+
+### JSON Response:
+```json
+{
+  "answer": 2
+}
+```

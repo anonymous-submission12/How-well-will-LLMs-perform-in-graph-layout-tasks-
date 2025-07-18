@@ -1,0 +1,19 @@
+```python
+graph = {0: [1, 23], 1: [0, 2], 2: [1, 3], 3: [2, 4], 4: [3, 5], 5: [4, 6], 6: [5, 7], 7: [6, 8], 8: [7, 9], 9: [8, 10], 10: [9, 11], 11: [10, 12], 12: [11, 13], 13: [12, 14], 14: [13, 15], 15: [14, 16], 16: [15, 17], 17: [16, 18], 18: [17, 19], 19: [18, 20], 20: [19, 21], 21: [20, 22], 22: [21, 23], 23: [0, 22]}
+
+def shortest_path(graph, start, end):
+    queue = [(start, [start])]
+    visited = set()
+
+    while queue:
+        (node, path) = queue.pop(0)
+        if node not in visited:
+            if node == end:
+                return len(path) - 1
+            visited.add(node)
+            for neighbor in graph[node]:
+                queue.append((neighbor, path + [neighbor]))
+    return -1
+
+print(shortest_path(graph, 15, 20))
+```

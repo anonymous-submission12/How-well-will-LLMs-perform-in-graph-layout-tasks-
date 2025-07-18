@@ -1,0 +1,13 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+### Explanation:
+The shortest path from node '8' to node '4' is as follows:
+- **Step 1**: Start at node '8'.
+- **Step 2**: Move from node '8' to node '0' (directly connected).
+- **Step 3**: Move from node '0' to node '4' (directly connected).
+
+Thus, the shortest path length is **2**.

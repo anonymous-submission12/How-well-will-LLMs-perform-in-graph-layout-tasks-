@@ -1,0 +1,21 @@
+To solve this, we need to find the shortest path between node '13' and node '20' in the given graph using the adjacency list. This can be done using a breadth-first search (BFS) algorithm because the graph is unweighted.
+
+Here’s the calculation step-by-step:
+1. Start BFS from node '13'.
+2. Traverse the graph level-by-level until node '20' is reached.
+3. Maintain the distance (number of edges traversed) while exploring each node.
+
+The shortest path from node '13' to node '20' can be computed as follows:
+- Starting at node '13', move to '12' and '14'.
+- Continue moving forward towards node '20', following the adjacency list.
+- Count the steps until node '20' is reached.
+
+The shortest path between node '13' and '20' is **7 edges** (13 → 14 → 15 → 16 → 17 → 18 → 19 → 20).
+
+Below is the response in JSON format:
+
+```json
+{
+  "answer": 7
+}
+```

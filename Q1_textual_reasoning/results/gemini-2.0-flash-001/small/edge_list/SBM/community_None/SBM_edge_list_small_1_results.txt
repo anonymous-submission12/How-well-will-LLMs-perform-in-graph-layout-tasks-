@@ -1,0 +1,15 @@
+Here's how we can determine the number of communities based on the provided edge list.  We can identify communities by finding connected components in the graph.  Two nodes are in the same community if there's a path between them.
+
+Looking at the edge list, we can identify the following connected components (communities):
+
+*   **Community 1:** Nodes 0, 1, 2, 3, 4, 5, 14
+*   **Community 2:** Nodes 6, 7, 8, 9, 10, 11, 12, 13, 15,17
+*   **Community 3:** Nodes 16, 18, 19, 20
+
+Thus, there are 3 communities in the graph.
+
+```json
+{
+  "answer": 3
+}
+```

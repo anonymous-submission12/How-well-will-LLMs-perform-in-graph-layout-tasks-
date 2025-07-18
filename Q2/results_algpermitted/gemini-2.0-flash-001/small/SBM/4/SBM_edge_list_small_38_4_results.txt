@@ -1,0 +1,82 @@
+```python
+import json
+import community as co
+import networkx as nx
+import numpy as np
+from sklearn.manifold import TSNE
+
+def generate_community_layout(edge_list):
+    """
+    Generates a graph layout that emphasizes community structure using the
+    Louvain algorithm for community detection and t-SNE for layout.
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A JSON string representing the graph layout, where each node has
+        'x' and 'y' coordinates.
+    """
+
+    # 1. Create a NetworkX graph from the edge list.
+    graph = nx.Graph(edge_list)
+
+    # 2. Apply the Louvain algorithm for community detection.
+    partition = co.best_partition(graph)
+
+    # 3. Calculate a base layout using a force-directed algorithm (e.g., Fruchterman-Reingold).
+    #    This provides a reasonable initial layout.
+    pos = nx.spring_layout(graph, seed=42)  # Seed for reproducibility
+
+    # 4. Calculate community centers.  We'll average the positions of nodes within each community.
+    community_centers = {}
+    for node, community_id in partition.items():
+        if community_id not in community_centers:
+            community_centers[community_id] = []
+        community_centers[community_id].append(np.array(pos[node]))
+
+    for community_id, positions in community_centers.items():
+        community_centers[community_id] = np.mean(positions, axis=0)
+
+    # 5.  Adjust node positions to be closer to their community centers.
+    #     This reinforces the community structure visually.
+    for node, community_id in partition.items():
+        center = community_centers[community_id]
+        pos[node] = 0.5 * np.array(pos[node]) + 0.5 * center  # Adjust proximity. The weight 0.5 can be tuned.
+
+    # 6. Use t-SNE to further refine the layout, preserving community structure.
+    #    t-SNE is good at revealing clusters in high-dimensional data.  We'll use the
+    #    existing positions as initialization.
+    node_ids = list(graph.nodes())
+    initial_positions = np.array([pos[node_id] for node_id in node_ids])
+
+    tsne = TSNE(n_components=2, random_state=42, perplexity=5, n_iter=300, init=initial_positions) # Tunable parameters
+    tsne_result = tsne.fit_transform(initial_positions)
+
+    # Update node positions with t-SNE results
+    for i, node_id in enumerate(node_ids):
+        pos[node_id] = tsne_result[i]
+
+    # 7. Normalize the layout to fit within a 0-1 range for x and y.  This is good practice
+    #    for consistent visualization.
+    x_values = [p[0] for p in pos.values()]
+    y_values = [p[1] for p in pos.values()]
+    x_min, x_max = min(x_values), max(x_values)
+    y_min, y_max = min(y_values), max(y_values)
+
+    for node in graph.nodes():
+        x = (pos[node][0] - x_min) / (x_max - x_min)
+        y = (pos[node][1] - y_min) / (y_max - y_min)
+        pos[node] = {'x': x, 'y': y}
+
+
+    # 8. Convert the layout to JSON format.
+    layout_json = json.dumps(pos, indent=2)
+    return layout_json
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 6), (1, 2), (1, 3), (1, 24), (2, 3), (2, 4), (3, 4), (5, 6), (5, 7), (5, 8), (5, 9), (6, 7), (6, 8), (6, 9), (6, 29), (7, 8), (7, 9), (7, 23), (8, 9), (10, 11), (10, 13), (10, 14), (11, 12), (11, 14), (11, 28), (12, 13), (12, 26), (15, 16), (15, 17), (15, 18), (15, 19), (16, 17), (16, 19), (16, 26), (17, 18), (20, 21), (20, 22), (20, 23), (20, 24), (21, 22), (21, 23), (22, 23), (22, 24), (25, 26), (25, 27), (25, 28), (25, 29), (26, 27), (26, 28), (26, 29), (27, 28), (28, 29)]
+layout_json = generate_community_layout(edge_list)
+print(layout_json)
+```

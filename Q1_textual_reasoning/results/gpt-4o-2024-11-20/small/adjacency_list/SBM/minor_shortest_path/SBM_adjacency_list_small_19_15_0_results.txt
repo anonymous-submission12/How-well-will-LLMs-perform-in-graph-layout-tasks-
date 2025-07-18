@@ -1,0 +1,15 @@
+To solve this, I will calculate the shortest path from node '15' to node '0' using the Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph like the one provided.
+
+Here's the solution:
+
+```json
+{
+  "answer": 4
+}
+``` 
+
+Explanation:
+1. Start BFS from node '15'.
+2. Exploring the connections from node '15', we can reach its neighbors ('16', '17', '18', '19', '20', '21', '25') in 1 step.
+3. From these neighbors, we continue the BFS process until reaching node '0'. Specifically:
+   - From '15' -> '18' -> '8' -> '2' -> '0'.

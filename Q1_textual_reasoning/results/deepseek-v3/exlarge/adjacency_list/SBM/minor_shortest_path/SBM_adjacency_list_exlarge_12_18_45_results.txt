@@ -1,0 +1,25 @@
+To calculate the length of the shortest path between node '18' and '45', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the calculated shortest path length:
+
+```json
+{
+  "answer": 6
+}
+```
+
+### Explanation:
+1. **BFS Algorithm**: BFS explores all nodes at the present depth level before moving on to nodes at the next depth level. This ensures that the first time we reach the destination node, we have found the shortest path.
+
+2. **Path from '18' to '45'**:
+   - Start at node '18'.
+   - From '18', we can go to nodes [1, 13, 15, 16, 20, 22, 25].
+   - From '1', we can go to nodes [0, 3, 5, 7, 9, 18, 77].
+   - From '25', we can go to nodes [14, 15, 16, 17, 18, 19, 20, 22, 33].
+   - From '33', we can go to nodes [25, 27, 30, 31, 32, 34, 36, 38].
+   - From '32', we can go to nodes [28, 31, 33, 34, 35, 36, 38].
+   - From '35', we can go to nodes [26, 31, 32, 34, 36, 38, 40].
+   - From '40', we can go to nodes [35, 39, 41, 45, 48, 49].
+   - Finally, we reach node '45'.
+
+The shortest path from '18' to '45' involves 6 edges, so the length of the shortest path is 6.

@@ -1,0 +1,12 @@
+To solve the problem, we calculate the degree of each node in the graph. The degree of a node is the number of edges connected to it. By iterating through the `edge_list` and counting occurrences for each node, we determine the highest degree.
+
+Here is the result in the required JSON format:
+
+```json
+{
+  "answer": 13
+}
+```
+
+Explanation:
+- After processing the `edge_list` and counting connections for each node, the maximum degree found is 13. This is the highest number of edges connected to a single node in the graph.

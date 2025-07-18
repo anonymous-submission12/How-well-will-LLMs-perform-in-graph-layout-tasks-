@@ -1,0 +1,13 @@
+To determine which layout better preserves graph-theoretic distance, observe that graph-theoretic distance corresponds to the number of edges traversed between nodes in the graph. 
+
+- **Image 1**: This layout is more chaotic and scattered, making it harder to correlate spatial proximity with graph-theoretic distances. Nodes that are far apart spatially may still be close in terms of the graph-theoretic distance, and vice versa.
+
+- **Image 2**: In contrast, this layout is much more intuitive, as nodes positioned close to each other often correspond to fewer edges traversed between them. It better preserves graph-theoretic distances by presenting them in a clearer, more structured form.
+
+Thus, **Answer 2** better preserves graph-theoretic distances.
+
+```json
+{
+  "Answer": 2
+}
+```

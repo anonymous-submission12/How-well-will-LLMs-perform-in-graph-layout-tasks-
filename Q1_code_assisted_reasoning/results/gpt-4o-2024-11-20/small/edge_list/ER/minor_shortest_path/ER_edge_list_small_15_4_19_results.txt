@@ -1,0 +1,38 @@
+```python
+from collections import deque
+
+# Graph representation
+edge_list = [(0, 5), (0, 6), (0, 10), (1, 19), (2, 5), (2, 8), (2, 22), 
+             (3, 10), (4, 12), (4, 16), (5, 18), (5, 21), (6, 12), (6, 25), 
+             (7, 11), (7, 17), (8, 9), (8, 12), (8, 13), (8, 19), (9, 15), 
+             (11, 12), (11, 15), (11, 18), (11, 19), (11, 20), (11, 25), 
+             (12, 19), (12, 22), (12, 25), (13, 16), (13, 25), (14, 20), 
+             (14, 21), (16, 21), (17, 23), (17, 24), (18, 23), (19, 23)]
+
+# Create a graph as an adjacency list
+graph = {}
+for u, v in edge_list:
+    if u not in graph:
+        graph[u] = []
+    if v not in graph:
+        graph[v] = []
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Breadth-first search (BFS) to find the shortest path
+def bfs_shortest_path(graph, start, target):
+    queue = deque([(start, 0)])
+    visited = set([start])
+    while queue:
+        node, distance = queue.popleft()
+        if node == target:
+            return distance
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+    return -1  # Target not reachable
+
+# Calculate the shortest path from node 4 to node 19
+print(bfs_shortest_path(graph, 4, 19))
+```

@@ -1,0 +1,92 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Identify all nodes in the graph.
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = list(nodes)
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions randomly.
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Initial positions in [0, 1]
+
+    # 3. Define a simple force-based layout algorithm.
+    def calculate_force(node1, node2, current_layout):
+        """Calculates the force between two nodes."""
+        pos1 = current_layout[node1]
+        pos2 = current_layout[node2]
+        distance = math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+        # Adjacency influences the force.  Adjacent nodes attract, non-adjacent repel.
+        if (node1, node2) in edge_list or (node2, node1) in edge_list:
+            # Attractive force (Hooke's law)
+            k = 0.1  # Spring constant
+            force_magnitude = k * distance
+            force_x = (pos2[0] - pos1[0]) / distance * force_magnitude if distance > 0 else 0
+            force_y = (pos2[1] - pos1[1]) / distance * force_magnitude if distance > 0 else 0
+            return force_x, force_y
+        else:
+            # Repulsive force (inverse square law)
+            k = 0.01 # Repulsion constant
+            force_magnitude = k / (distance**2 + 0.01)  # Add a small constant to avoid division by zero
+            force_x = (pos1[0] - pos2[0]) / distance * force_magnitude if distance > 0 else 0
+            force_y = (pos1[1] - pos2[1]) / distance * force_magnitude if distance > 0 else 0
+            return force_x, force_y
+
+    # 4. Iteratively adjust node positions based on forces.
+    iterations = 100
+    learning_rate = 0.1
+
+    for _ in range(iterations):
+        for node in nodes:
+            total_force_x = 0
+            total_force_y = 0
+            for other_node in nodes:
+                if node != other_node:
+                    force_x, force_y = calculate_force(node, other_node, layout)
+                    total_force_x += force_x
+                    total_force_y += force_y
+
+            # Update node position
+            x, y = layout[node]
+            new_x = x + learning_rate * total_force_x
+            new_y = y + learning_rate * total_force_y
+
+            # Keep nodes within bounds
+            new_x = max(0, min(1, new_x))
+            new_y = max(0, min(1, new_y))
+
+            layout[node] = (new_x, new_y)
+
+    # 5. Return the layout as a dictionary.
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 9), (1, 2), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (2, 4), (2, 5), (2, 7), (2, 8), (2, 9), (2, 21), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (5, 6), (5, 7), (5, 8), (6, 7), (6, 8), (6, 9), (6, 18), (7, 9), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15), (10, 16), (10, 17), (10, 18), (10, 19), (11, 12), (11, 13), (11, 14), (11, 15), (11, 16), (11, 17), (11, 18), (11, 19), (11, 28), (12, 13), (12, 15), (12, 16), (12, 17), (12, 27), (13, 15), (13, 16), (13, 17), (13, 18), (13, 19), (14, 15), (14, 16), (14, 17), (14, 18), (14, 19), (15, 16), (15, 17), (15, 19), (16, 17), (16, 19), (17, 18), (17, 19), (18, 19), (18, 22), (20, 21), (20, 23), (20, 26), (20, 27), (20, 29), (21, 22), (21, 24), (21, 25), (21, 27), (21, 28), (21, 29), (22, 23), (22, 24), (22, 26), (22, 27), (22, 28), (23, 24), (23, 25), (23, 26), (23, 28), (23, 29), (24, 27), (24, 29), (25, 27), (25, 28), (25, 29), (26, 27), (26, 28), (26, 29), (27, 28), (28, 29)]
+graph_layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+graph_layout_json = json.dumps(graph_layout, indent=4)
+
+# Print the JSON output
+print(graph_layout_json)
+```

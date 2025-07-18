@@ -1,0 +1,148 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layering approach.  It first identifies
+    nodes that can be placed on the first layer (nodes with no incoming edges).
+    Then, it iteratively places nodes on subsequent layers based on their
+    connections to nodes on previous layers.  Finally, it arranges nodes
+    within each layer to minimize crossings (a simple greedy approach).
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple (u, v) indicates an edge from node u to node v.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates
+        for the layout.  The layout is also returned as a JSON string.
+    """
+
+    # 1. Build adjacency list and in-degree counts
+    adj = {}
+    in_degree = {}
+    nodes = set()
+
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+        if u not in adj:
+            adj[u] = []
+        adj[u].append(v)
+        if v not in in_degree:
+            in_degree[v] = 0
+        in_degree[v] += 1
+        if u not in in_degree:
+            in_degree[u] = 0
+
+    # 2. Layer assignment
+    layers = []
+    q = [node for node in nodes if in_degree[node] == 0]  # Start with nodes with no incoming edges
+    
+    layer_num = 0
+    visited = set()
+    while q:
+        layers.append(q)
+        next_q = []
+        for u in q:
+            visited.add(u)
+            if u in adj:
+                for v in adj[u]:
+                    in_degree[v] -= 1
+                    if in_degree[v] == 0:
+                        next_q.append(v)
+        q = next_q
+        layer_num += 1
+
+    # Handle disconnected components
+    remaining_nodes = nodes - visited
+    if remaining_nodes:
+        print("Warning: Disconnected components detected.  Assigning remaining nodes to layers.")
+        unvisited_edges = [edge for edge in edge_list if edge[0] in remaining_nodes or edge[1] in remaining_nodes]
+        
+        # Recursively call the layout function for the disconnected component
+        subgraph_layout = layout_graph(unvisited_edges)
+        
+        # Find the maximum layer number in the existing layout
+        max_layer_num = len(layers)
+        
+        # Assign the nodes in the subgraph to new layers starting from max_layer_num
+        subgraph_layers = []
+        subgraph_nodes = set()
+        for node in subgraph_layout.keys():
+            subgraph_nodes.add(node)
+        
+        subgraph_in_degree = {}
+        subgraph_adj = {}
+        for u, v in unvisited_edges:
+            if u not in subgraph_adj:
+                subgraph_adj[u] = []
+            subgraph_adj[u].append(v)
+            if v not in subgraph_in_degree:
+                subgraph_in_degree[v] = 0
+            subgraph_in_degree[v] += 1
+            if u not in subgraph_in_degree:
+                subgraph_in_degree[u] = 0
+        
+        subgraph_q = [node for node in subgraph_nodes if subgraph_in_degree[node] == 0]
+        subgraph_visited = set()
+        while subgraph_q:
+            subgraph_layers.append(subgraph_q)
+            next_q = []
+            for u in subgraph_q:
+                subgraph_visited.add(u)
+                if u in subgraph_adj:
+                    for v in subgraph_adj[u]:
+                        subgraph_in_degree[v] -= 1
+                        if subgraph_in_degree[v] == 0:
+                            next_q.append(v)
+            subgraph_q = next_q
+        
+        # Append the subgraph layers to the existing layers
+        for layer in subgraph_layers:
+            layers.append(layer)
+
+    # 3. Within-layer node ordering (simple greedy approach)
+    for i in range(len(layers)):
+        # Sort nodes based on the average position of their neighbors in the next layer
+        if i + 1 < len(layers):
+            neighbor_positions = {}
+            for j, node in enumerate(layers[i+1]):
+                neighbor_positions[node] = j
+
+            def calculate_avg_neighbor_pos(node):
+                if node not in adj:
+                    return 0  # No neighbors in the next layer
+                neighbors = [n for n in adj[node] if n in neighbor_positions]
+                if not neighbors:
+                    return 0
+                return sum(neighbor_positions[n] for n in neighbors) / len(neighbors)
+
+            layers[i].sort(key=calculate_avg_neighbor_pos)
+
+    # 4. Assign coordinates
+    layout = {}
+    x_spacing = 1
+    y_spacing = 1
+    for i, layer in enumerate(layers):
+        for j, node in enumerate(layer):
+            x = j * x_spacing
+            y = i * y_spacing
+            layout[node] = (x, y)
+
+    return layout
+
+# Provided graph data
+edge_list = [(0, 1), (0, 24), (1, 2), (1, 25), (2, 3), (2, 26), (3, 4), (3, 27), (4, 5), (4, 28), (5, 6), (5, 29), (6, 7), (6, 30), (7, 8), (7, 31), (8, 9), (8, 32), (9, 10), (9, 33), (10, 11), (10, 34), (11, 12), (11, 35), (12, 13), (12, 36), (13, 14), (13, 37), (14, 15), (14, 38), (15, 16), (15, 39), (16, 17), (16, 40), (17, 18), (17, 41), (18, 19), (18, 42), (19, 20), (19, 43), (20, 21), (20, 44), (21, 22), (21, 45), (22, 23), (22, 46), (23, 47), (24, 25), (24, 48), (25, 26), (25, 49), (26, 27), (26, 50), (27, 28), (27, 51), (28, 29), (28, 52), (29, 30), (29, 53), (30, 31), (30, 54), (31, 32), (31, 55), (32, 33), (32, 56), (33, 34), (33, 57), (34, 35), (34, 58), (35, 36), (35, 59), (36, 37), (36, 60), (37, 38), (37, 61), (38, 39), (38, 62), (39, 40), (39, 63), (40, 41), (40, 64), (41, 42), (41, 65), (42, 43), (42, 66), (43, 44), (43, 67), (44, 45), (44, 68), (45, 46), (45, 69), (46, 47), (46, 70), (47, 71), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

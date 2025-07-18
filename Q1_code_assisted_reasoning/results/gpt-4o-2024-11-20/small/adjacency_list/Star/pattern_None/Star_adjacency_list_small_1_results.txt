@@ -1,0 +1,20 @@
+```python
+def determine_graph_pattern(adj_list):
+    n = len(adj_list)
+    degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+    
+    # Check for Star pattern
+    center_nodes = [node for node, degree in degrees.items() if degree == n - 1]
+    leaf_nodes = [node for node, degree in degrees.items() if degree == 1]
+    if len(center_nodes) == 1 and len(leaf_nodes) == n - 1:
+        return "Star"
+    
+    return "Unknown"
+
+adj_list = {0: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 
+            1: [0], 2: [0], 3: [0], 4: [0], 5: [0], 6: [0], 7: [0], 8: [0], 9: [0], 
+            10: [0], 11: [0], 12: [0], 13: [0], 14: [0], 15: [0], 16: [0], 17: [0], 
+            18: [0], 19: [0], 20: [0]}
+
+print(determine_graph_pattern(adj_list))
+```

@@ -1,0 +1,9 @@
+To calculate the number of edges in the graph, we divide the sum of the lengths of the adjacency lists by 2 (since every edge is represented twice in an undirected graph).
+
+Here's the solution:
+
+```json
+{
+  "answer": 75
+}
+```

@@ -1,0 +1,9 @@
+To find the shortest path between nodes '71' and '28' in the given graph representing adjacency lists, I will use a Breadth-First Search (BFS) algorithm. BFS is suitable for unweighted graphs and guarantees the shortest path.
+
+Let's compute the answer:
+
+```json
+{
+  "answer": 8
+}
+```

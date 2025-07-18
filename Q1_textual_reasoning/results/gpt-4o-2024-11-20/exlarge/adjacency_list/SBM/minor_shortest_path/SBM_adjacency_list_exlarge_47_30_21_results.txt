@@ -1,0 +1,9 @@
+To solve the problem, we need to find the shortest path from node `30` to node `21` using the adjacency list provided. We can use Breadth-First Search (BFS) for this purpose as it is well-suited for finding shortest paths in an unweighted graph.
+
+Using BFS, the length of the shortest path is calculated as follows:
+
+```json
+{
+  "answer": 3
+}
+```

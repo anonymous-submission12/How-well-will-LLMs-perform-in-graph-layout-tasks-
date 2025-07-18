@@ -1,0 +1,25 @@
+```python
+from collections import defaultdict
+
+def dfs(node, graph, visited):
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                stack.append(neighbor)
+
+def count_communities(graph):
+    visited = set()
+    communities = 0
+    for node in graph:
+        if node not in visited:
+            visited.add(node)
+            dfs(node, graph, visited)
+            communities += 1
+    return communities
+
+graph = {0: [1, 2, 4, 5, 16], 1: [0, 3, 4, 5, 9], 2: [0, 4, 5, 11], 3: [1, 4, 5], 4: [0, 1, 2, 3, 27], 5: [0, 1, 2, 3, 16], 6: [7, 8, 9, 10, 11], 7: [6, 8, 9, 10], 8: [6, 7, 9, 10, 11], 9: [1, 6, 7, 8, 10, 11], 10: [6, 7, 8, 9], 11: [2, 6, 8, 9], 12: [13, 14, 16], 13: [12, 14, 15, 17], 14: [12, 13, 15, 16, 17], 15: [13, 14, 16, 17], 16: [0, 5, 12, 14, 15, 17, 19], 17: [13, 14, 15, 16], 18: [19, 21, 22], 19: [16, 18, 20, 22], 20: [19, 21, 22], 21: [18, 20], 22: [18, 19, 20], 23: [27], 24: [26, 27], 25: [26, 27], 26: [24, 25, 27], 27: [4, 23, 24, 25, 26]}
+print(count_communities(graph))
+```

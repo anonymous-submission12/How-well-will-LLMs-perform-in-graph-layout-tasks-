@@ -1,0 +1,62 @@
+Below is the Python script to generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance. The script calculates positions for each node based on the shortest path distance from a reference node (node 0 in this case) and places them along a straight line in 2D space.
+
+```python
+import json
+import math
+from collections import defaultdict, deque
+
+def compute_graph_layout(edge_list):
+    # Build adjacency list representation of the graph
+    graph = defaultdict(list)
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Compute shortest path distances from node 0 using BFS
+    def bfs_distances(start_node):
+        distances = {}
+        queue = deque([(start_node, 0)])
+        visited = set()
+        while queue:
+            current_node, current_distance = queue.popleft()
+            if current_node in visited:
+                continue
+            visited.add(current_node)
+            distances[current_node] = current_distance
+            for neighbor in graph[current_node]:
+                if neighbor not in visited:
+                    queue.append((neighbor, current_distance + 1))
+        return distances
+
+    distances = bfs_distances(0)
+
+    # Generate positions based on distances
+    positions = {}
+    for node, distance in distances.items():
+        # Place nodes along a straight line in 2D space
+        positions[node] = (distance, 0)  # (x, y) coordinates
+
+    return positions
+
+# Input edge list
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8),
+    (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15),
+    (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22),
+    (22, 23), (23, 24)
+]
+
+# Compute layout
+layout = compute_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list using a `defaultdict`.
+2. **Shortest Path Calculation**: BFS is used to compute the shortest path distances from a reference node (node 0).
+3. **Position Assignment**: Nodes are placed along a straight line in 2D space, with the x-coordinate proportional to the graph-theoretic distance from the reference node. The y-coordinate is fixed at 0 for simplicity.
+4. **Output**: The layout is output in JSON format, where each node is mapped to its `(x, y)` position.
+
+This approach ensures that the Euclidean distance between nodes is consistent with their graph-theoretic distance.

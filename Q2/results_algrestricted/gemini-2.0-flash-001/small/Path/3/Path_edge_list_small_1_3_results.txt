@@ -1,0 +1,46 @@
+```python
+import json
+
+def generate_layout(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a simple linear layout.  For more complex
+    graphs, consider more sophisticated algorithms like simulated annealing
+    or force-directed placement (though those are explicitly disallowed).
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # Simple linear layout: nodes are placed along a line.
+    layout = {}
+    num_nodes = len(nodes)
+    for i, node in enumerate(nodes):
+        x = i  # Evenly space nodes along the x-axis
+        y = 0  # Place all nodes on the same horizontal line
+        layout[node] = (x, y)
+
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+layout = generate_layout(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

@@ -1,0 +1,15 @@
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+The graph provided is a star graph where node `0` is connected to all other nodes (including `13` and `19`), and all other nodes are only connected back to node `0`. 
+
+To find the shortest path between node `13` and `19`:
+1. Start at node `13`.
+2. Move to node `0` (1 step).
+3. Move from node `0` to node `19` (1 step).
+
+Thus, the shortest path length is **2**.

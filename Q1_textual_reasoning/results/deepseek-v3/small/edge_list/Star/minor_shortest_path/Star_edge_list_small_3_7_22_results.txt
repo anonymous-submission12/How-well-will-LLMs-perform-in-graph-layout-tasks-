@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+Explanation: The shortest path between node '7' and node '22' is through node '0'. Node '7' is directly connected to node '0', and node '22' is also directly connected to node '0'. Therefore, the path is '7' -> '0' -> '22', which has a length of 2.

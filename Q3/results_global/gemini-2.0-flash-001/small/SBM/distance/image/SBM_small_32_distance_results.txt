@@ -1,0 +1,7 @@
+Based on visual inspection, layout 2 appears to better preserve graph-theoretic distance. The clusters of nodes are more tightly packed and the overall structure seems to reflect the connectivity of the graph more accurately than layout 1.
+
+```json
+{
+"Answer": 2
+}
+```

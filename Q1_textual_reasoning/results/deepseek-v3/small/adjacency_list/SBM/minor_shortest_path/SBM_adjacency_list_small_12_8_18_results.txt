@@ -1,0 +1,22 @@
+To find the shortest path between node '8' and node '18', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start from node '8'.
+2. Explore all its neighbors.
+3. Continue exploring neighbors level by level until node '18' is found.
+
+Let's perform the BFS:
+
+- **Level 0**: Start at node '8'.
+- **Level 1**: Neighbors of '8' are [0, 3, 4, 6, 7, 9, 10, 11, 12].
+- **Level 2**: Neighbors of nodes in Level 1 are [1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25].
+- **Level 3**: Neighbors of nodes in Level 2 are [18].
+
+Node '18' is found at Level 3. Therefore, the shortest path from node '8' to node '18' has a length of 3.
+
+```json
+{
+  "answer": 3
+}
+```

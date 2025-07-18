@@ -1,0 +1,76 @@
+Below is a Python script that generates a layout for the graph based on the provided edge list. The script utilizes a straightforward method to position the nodes in a straight line, which inherently avoids edge crossings:
+
+```python
+import json
+
+def generate_graph_layout(edge_list):
+    """
+    Generate a layout for the graph by positioning nodes in a straight line,
+    minimizing edge crossings inherently for a simple connected graph.
+
+    :param edge_list: List of tuples indicating edges in the graph
+    :return: A dictionary representing the layout in JSON format
+    """
+    # Extract unique nodes from the edge list
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    
+    # Sort nodes to ensure consistent ordering
+    sorted_nodes = sorted(nodes)
+
+    # Generate positions in a straight line for all nodes
+    layout = {}
+    for i, node in enumerate(sorted_nodes):
+        layout[node] = {"x": i, "y": 0}  # Position nodes on a straight horizontal line
+
+    # Return layout as a JSON string
+    return json.dumps(layout, indent=4)
+
+# Input edge list
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), 
+    (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), 
+    (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+    (17, 18), (18, 19), (19, 20), (20, 21)
+]
+
+# Generate and print layout
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Key Points About the Script:
+1. **Purpose**: Positions all nodes on a straight horizontal line.
+   - Each node's `x` coordinate is incremented from 0, and all nodes share the same `y` coordinate (0). This straightforward arrangement minimizes edge crossings for the given graph as it has a linear structure.
+
+2. **Output Format**: The resulting layout is output in JSON format, where each node is associated with an `x` and `y` coordinate.
+
+### Example JSON Output from the Script:
+For the provided edge list, the output will look like this:
+```json
+{
+    "0": {"x": 0, "y": 0},
+    "1": {"x": 1, "y": 0},
+    "2": {"x": 2, "y": 0},
+    "3": {"x": 3, "y": 0},
+    "4": {"x": 4, "y": 0},
+    "5": {"x": 5, "y": 0},
+    "6": {"x": 6, "y": 0},
+    "7": {"x": 7, "y": 0},
+    "8": {"x": 8, "y": 0},
+    "9": {"x": 9, "y": 0},
+    "10": {"x": 10, "y": 0},
+    "11": {"x": 11, "y": 0},
+    "12": {"x": 12, "y": 0},
+    "13": {"x": 13, "y": 0},
+    "14": {"x": 14, "y": 0},
+    "15": {"x": 15, "y": 0},
+    "16": {"x": 16, "y": 0},
+    "17": {"x": 17, "y": 0},
+    "18": {"x": 18, "y": 0},
+    "19": {"x": 19, "y": 0},
+    "20": {"x": 20, "y": 0},
+    "21": {"x": 21, "y": 0}
+}
+```

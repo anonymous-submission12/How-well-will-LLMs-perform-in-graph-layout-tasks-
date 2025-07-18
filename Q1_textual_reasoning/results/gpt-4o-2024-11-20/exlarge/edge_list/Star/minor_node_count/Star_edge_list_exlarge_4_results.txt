@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 74
+}
+``` 
+
+Explanation: The graph is represented as an edge list, meaning each tuple (x, y) represents an edge between two nodes x and y. To find the total number of unique nodes, we extract all distinct numbers from the edge list. By observing the range of numbers in the edge list, nodes 0 to 73 are included, which gives a total of 74 nodes.

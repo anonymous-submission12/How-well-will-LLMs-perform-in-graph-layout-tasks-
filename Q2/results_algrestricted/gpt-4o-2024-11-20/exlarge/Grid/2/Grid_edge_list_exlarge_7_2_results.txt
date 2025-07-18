@@ -1,0 +1,74 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The script uses a custom force-directed algorithm to calculate the positions of the nodes.
+
+```python
+import json
+import math
+from collections import defaultdict
+
+# Input graph as edge list
+edge_list = [(0, 1), (0, 13), (1, 2), (1, 14), (2, 3), (2, 15), (3, 4), (3, 16), (4, 5), (4, 17), (5, 6), (5, 18), 
+             (6, 7), (6, 19), (7, 8), (7, 20), (8, 9), (8, 21), (9, 10), (9, 22), (10, 11), (10, 23), (11, 12), 
+             (11, 24), (12, 25), (13, 14), (13, 26), (14, 15), (14, 27), (15, 16), (15, 28), (16, 17), (16, 29), 
+             (17, 18), (17, 30), (18, 19), (18, 31), (19, 20), (19, 32), (20, 21), (20, 33), (21, 22), (21, 34), 
+             (22, 23), (22, 35), (23, 24), (23, 36), (24, 25), (24, 37), (25, 38), (26, 27), (26, 39), (27, 28), 
+             (27, 40), (28, 29), (28, 41), (29, 30), (29, 42), (30, 31), (30, 43), (31, 32), (31, 44), (32, 33), 
+             (32, 45), (33, 34), (33, 46), (34, 35), (34, 47), (35, 36), (35, 48), (36, 37), (36, 49), (37, 38), 
+             (37, 50), (38, 51), (39, 40), (39, 52), (40, 41), (40, 53), (41, 42), (41, 54), (42, 43), (42, 55), 
+             (43, 44), (43, 56), (44, 45), (44, 57), (45, 46), (45, 58), (46, 47), (46, 59), (47, 48), (47, 60), 
+             (48, 49), (48, 61), (49, 50), (49, 62), (50, 51), (50, 63), (51, 64), (52, 53), (52, 65), (53, 54), 
+             (53, 66), (54, 55), (54, 67), (55, 56), (55, 68), (56, 57), (56, 69), (57, 58), (57, 70), (58, 59), 
+             (58, 71), (59, 60), (59, 72), (60, 61), (60, 73), (61, 62), (61, 74), (62, 63), (62, 75), (63, 64), 
+             (63, 76), (64, 77), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), 
+             (73, 74), (74, 75), (75, 76), (76, 77)]
+
+# Create adjacency list
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Initialize positions randomly
+positions = {node: (math.cos(2 * math.pi * node / len(graph)), math.sin(2 * math.pi * node / len(graph))) for node in graph}
+
+# Parameters for the force-directed algorithm
+iterations = 1000
+learning_rate = 0.01
+repulsion_constant = 1.0
+attraction_constant = 0.1
+
+# Force-directed layout algorithm
+for _ in range(iterations):
+    # Calculate repulsive forces
+    repulsive_forces = {node: [0, 0] for node in graph}
+    for node1 in graph:
+        for node2 in graph:
+            if node1 != node2:
+                dx = positions[node1][0] - positions[node2][0]
+                dy = positions[node1][1] - positions[node2][1]
+                distance = math.sqrt(dx**2 + dy**2) + 1e-6  # Avoid division by zero
+                force = repulsion_constant / distance**2
+                repulsive_forces[node1][0] += force * dx / distance
+                repulsive_forces[node1][1] += force * dy / distance
+
+    # Calculate attractive forces
+    attractive_forces = {node: [0, 0] for node in graph}
+    for u, v in edge_list:
+        dx = positions[u][0] - positions[v][0]
+        dy = positions[u][1] - positions[v][1]
+        distance = math.sqrt(dx**2 + dy**2) + 1e-6  # Avoid division by zero
+        force = -attraction_constant * (distance**2)
+        attractive_forces[u][0] += force * dx / distance
+        attractive_forces[u][1] += force * dy / distance
+        attractive_forces[v][0] -= force * dx / distance
+        attractive_forces[v][1] -= force * dy / distance
+
+    # Update positions
+    for node in graph:
+        fx = repulsive_forces[node][0] + attractive_forces[node][0]
+        fy = repulsive_forces[node][1] + attractive_forces[node][1]
+        positions[node] = (positions[node][0] + learning_rate * fx, positions[node][1] + learning_rate * fy)
+
+# Convert positions to JSON format
+layout = {node: {"x": positions[node][0], "y": positions[node][1]} for node in positions}
+print(json.dumps(layout, indent=2))
+```

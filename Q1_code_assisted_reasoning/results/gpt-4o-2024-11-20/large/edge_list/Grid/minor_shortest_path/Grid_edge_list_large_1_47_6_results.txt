@@ -1,0 +1,45 @@
+```python
+from collections import deque
+
+# Create the graph from the edge list
+edge_list = [(0, 1), (0, 12), (1, 2), (1, 13), (2, 3), (2, 14), (3, 4), (3, 15),
+             (4, 5), (4, 16), (5, 6), (5, 17), (6, 7), (6, 18), (7, 8), (7, 19),
+             (8, 9), (8, 20), (9, 10), (9, 21), (10, 11), (10, 22), (11, 23),
+             (12, 13), (12, 24), (13, 14), (13, 25), (14, 15), (14, 26), (15, 16),
+             (15, 27), (16, 17), (16, 28), (17, 18), (17, 29), (18, 19), (18, 30),
+             (19, 20), (19, 31), (20, 21), (20, 32), (21, 22), (21, 33), (22, 23),
+             (22, 34), (23, 35), (24, 25), (24, 36), (25, 26), (25, 37), (26, 27),
+             (26, 38), (27, 28), (27, 39), (28, 29), (28, 40), (29, 30), (29, 41),
+             (30, 31), (30, 42), (31, 32), (31, 43), (32, 33), (32, 44), (33, 34),
+             (33, 45), (34, 35), (34, 46), (35, 47), (36, 37), (37, 38), (38, 39),
+             (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46),
+             (46, 47)]
+
+graph = {}
+for src, dest in edge_list:
+    if src not in graph:
+        graph[src] = []
+    if dest not in graph:
+        graph[dest] = []
+    graph[src].append(dest)
+    graph[dest].append(src)
+
+# BFS to find the shortest path
+def shortest_path_length(graph, start, target):
+    visited = set()
+    queue = deque([(start, 0)])  # (current_node, current_distance)
+    
+    while queue:
+        node, distance = queue.popleft()
+        if node == target:
+            return distance
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + 1))
+    return -1  # If no path is found
+
+# Find the shortest path length between node 47 and 6
+print(shortest_path_length(graph, 47, 6))
+```

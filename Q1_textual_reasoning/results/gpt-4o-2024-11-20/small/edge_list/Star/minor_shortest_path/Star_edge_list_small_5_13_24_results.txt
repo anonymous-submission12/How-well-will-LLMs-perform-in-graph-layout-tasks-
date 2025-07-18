@@ -1,0 +1,11 @@
+To calculate the shortest path between nodes '13' and '24', let's analyze the given graph. The graph is represented as an edge list, and it shows that node '0' is connected to all other nodes (1 through 24). This means the graph is a star graph with node '0' as the central hub.
+
+In a star graph, the shortest path between any two non-central nodes (e.g., '13' and '24') is always 2, as the path goes through the central node ('0').
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

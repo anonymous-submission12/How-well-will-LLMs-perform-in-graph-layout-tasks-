@@ -1,0 +1,13 @@
+To calculate the number of edges in the graph:
+
+1. Each key in the adjacency list represents a node.
+2. The total count of neighbors for all nodes in the adjacency list gives the sum of degrees of all nodes.
+3. Since each edge is counted twice (once for each node), the total number of edges is half the total sum of degrees.
+
+Here is the calculated number of edges:
+
+```json
+{
+  "answer": 219
+}
+```

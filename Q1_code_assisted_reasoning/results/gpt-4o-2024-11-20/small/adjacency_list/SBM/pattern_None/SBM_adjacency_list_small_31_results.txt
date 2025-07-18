@@ -1,0 +1,98 @@
+```python
+from itertools import combinations
+
+def graph_pattern(adj_list):
+
+    def is_star(adj_list):
+        # A star graph has one central node connected to all others, and the other nodes have only one edge each.
+        nodes = set(adj_list.keys())
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(nodes) - 1:  # Central node
+                if all(len(adj_list[n]) == 1 for n in nodes - {node}):
+                    return True
+        return False
+
+    def is_cycle(adj_list):
+        # A cycle graph has each node connected to exactly two other nodes.
+        return all(len(neighbors) == 2 for neighbors in adj_list.values())
+
+    def is_path(adj_list):
+        # A path graph has two endpoints (nodes with degree 1) and all other nodes have degree 2.
+        degree_counts = [len(neighbors) for neighbors in adj_list.values()]
+        return degree_counts.count(1) == 2 and degree_counts.count(2) == len(adj_list) - 2
+
+    def is_grid(adj_list):
+        # A grid graph has each node connected to its top, bottom, left, and right neighbors as applicable.
+        nodes = list(adj_list.keys())
+        rows = int(len(nodes)**0.5)
+        if rows**2 != len(nodes):
+            return False  # Must be perfect square for square grid
+        for node in nodes:
+            x, y = divmod(node, rows)
+            expected_neighbors = []
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < rows and 0 <= ny < rows:
+                    expected_neighbors.append(nx * rows + ny)
+            if set(adj_list[node]) != set(expected_neighbors):
+                return False
+        return True
+
+    def is_complete(adj_list):
+        # A complete graph has every node connected to every other node.
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered(adj_list):
+        # A clustered graph has distinct clusters where nodes within each cluster are densely connected.
+        visited = set()
+        clusters = []
+        
+        def dfs(node, component):
+            if node in visited:
+                return
+            visited.add(node)
+            component.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    dfs(neighbor, component)
+        
+        for node in adj_list:
+            if node not in visited:
+                component = set()
+                dfs(node, component)
+                clusters.append(component)
+
+        for cluster in clusters:
+            cluster_nodes = list(cluster)
+            for i, u in enumerate(cluster_nodes):
+                for j, v in enumerate(cluster_nodes):
+                    if i != j and v not in adj_list[u]:
+                        return False
+        return True
+
+    def is_random(adj_list):
+        # A random graph does not fit neatly into the above categories. It's less structured.
+        return not any([is_star(adj_list), is_cycle(adj_list), is_path(adj_list), 
+                        is_grid(adj_list), is_complete(adj_list), is_clustered(adj_list)])
+
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    elif is_random(adj_list):
+        return "Random"
+    return "Unknown"
+
+adj_list = {0: [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13], 1: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13], 2: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 21], 3: [1, 2, 5, 7, 9, 12, 13, 22], 4: [0, 1, 2, 5, 6, 7, 8, 10, 11, 13], 5: [1, 2, 3, 4, 7, 8, 9, 10, 11, 13], 6: [0, 1, 2, 4, 7, 9, 10, 11], 7: [0, 1, 2, 3, 4, 5, 6, 9, 10, 12, 13], 8: [0, 1, 2, 4, 5, 9, 12, 13], 9: [0, 1, 2, 3, 5, 6, 7, 8, 11, 12, 22], 10: [0, 1, 2, 4, 5, 6, 7, 11, 12, 13], 11: [0, 1, 2, 4, 5, 6, 9, 10, 12], 12: [0, 2, 3, 7, 8, 9, 10, 11, 13, 17], 13: [0, 1, 2, 3, 4, 5, 7, 8, 10, 12], 14: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27], 15: [14, 16, 17, 19, 21, 22, 23, 24, 26, 27], 16: [14, 15, 17, 18, 19, 21, 23, 24, 25, 26, 27], 17: [12, 14, 15, 16, 18, 20, 21, 22, 25, 26, 27], 18: [14, 16, 17, 20, 24, 26, 27], 19: [14, 15, 16, 22, 23, 24, 25, 27], 20: [14, 17, 18, 21, 22, 24, 27], 21: [2, 14, 15, 16, 17, 20, 22, 24, 25, 26, 27], 22: [3, 9, 14, 15, 17, 19, 20, 21, 23, 24, 25, 26, 27], 23: [14, 15, 16, 19, 22, 24, 25], 24: [14, 15, 16, 18, 19, 20, 21, 22, 23, 25, 26], 25: [14, 16, 17, 19, 21, 22, 23, 24, 26, 27], 26: [15, 16, 17, 18, 21, 22, 24, 25, 27], 27: [14, 15, 16, 17, 18, 19, 20, 21, 22, 25, 26]}
+
+print(graph_pattern(adj_list))
+```

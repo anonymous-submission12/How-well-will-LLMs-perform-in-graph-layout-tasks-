@@ -1,0 +1,11 @@
+To calculate the shortest path between node '19' and node '5', we need to analyze the graph represented by the edge list. The graph appears to be unweighted, so we can use a breadth-first search (BFS) algorithm to find the shortest path.
+
+Upon analyzing the graph, we notice that nodes '19' and '5' belong to different connected components. Therefore, there is no path between them.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": -1
+}
+```

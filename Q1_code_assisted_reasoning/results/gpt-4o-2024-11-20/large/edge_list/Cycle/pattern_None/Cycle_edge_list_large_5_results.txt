@@ -1,0 +1,26 @@
+```python
+import networkx as nx
+
+# Define the edge list of the graph
+edge_list = [(0, 1), (0, 44), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), 
+             (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), 
+             (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), 
+             (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Determine the type of graph
+# Check for star graph
+if len(G.nodes) - 1 == len(G.edges) and sum(deg == len(G.nodes) - 1 for _, deg in G.degree) == 1:
+    print("Star")
+# Check for cycle graph
+elif nx.is_connected(G) and len(G.nodes) == len(G.edges):
+    print("Cycle")
+# Check for path graph
+elif nx.is_connected(G) and max(dict(G.degree).values()) == 2:
+    print("Path")
+# Check for grid graph
+elif all(len(row) == len(list(G.nodes))**0.5 for row in nx.to_numpy_array(G)) and nx.graph_atlas(nx.grid_2d_graph(int(len(G.nodes)**0.5), int(len(G.nodes)**0.5))):
+   print...

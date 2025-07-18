@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes '19' and '23', we can see from the adjacency list that both nodes are directly connected to the central node '0'. This forms a star graph structure, where the central node '0' connects to all other nodes.
+
+The shortest path between '19' and '23' will involve going through node '0':
+1. From '19' to '0' (1 step)
+2. From '0' to '23' (1 step)
+
+Thus, the total length of the shortest path is 2.
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,15 @@
+We can determine the number of communities by identifying connected components in the graph.  A connected component is a set of nodes where there exists a path between any two nodes in the set.
+
+Let's analyze the adjacency list provided:
+
+*   Nodes 0-9 seem to be highly interconnected.
+*   Nodes 10-19 are interconnected, with node 18 having a link to node 6 from the first group. This connection merges these two groups into one.
+*   Nodes 20-29 are interconnected.
+
+Therefore, upon closer inspection, the graph appears to have just one connected component because node 6 is connected to node 18. This means a path exists between any node in the range 0-9 and any node in the range 10-19 and the group of nodes in the range of 20-29 are connected to nodes outside its range, for example node 2 is connected to 21, therefore it should be 1 component.
+
+```json
+{
+  "answer": 1
+}
+```

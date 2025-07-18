@@ -1,0 +1,74 @@
+Here is the Python code to determine the type of graph for your given adjacency list:
+
+```python
+from collections import defaultdict
+
+# Input graph
+graph = {0: [1, 2, 3], 1: [0, 3, 4, 5], 2: [0, 3, 4, 5], 3: [0, 1, 2, 4, 5], 
+         4: [1, 2, 3, 5, 22], 5: [1, 2, 3, 4, 14], 6: [7, 8, 10], 
+         7: [6, 8, 9, 10, 11], 8: [6, 7, 9, 10, 11], 9: [7, 8, 10, 11], 
+         10: [6, 7, 8, 9, 11, 26], 11: [7, 8, 9, 10], 12: [13, 16, 17], 
+         13: [12, 15, 16, 17, 25], 14: [5, 15, 16, 17, 19], 15: [13, 14, 16, 17], 
+         16: [12, 13, 14, 15, 17], 17: [12, 13, 14, 15, 16], 18: [19, 20, 21, 22], 
+         19: [14, 18, 20, 21], 20: [18, 19, 21, 22], 21: [18, 19, 20, 22], 
+         22: [4, 18, 20, 21], 23: [24, 25, 26, 27], 24: [23, 26, 27], 
+         25: [13, 23, 26, 27], 26: [10, 23, 24, 25, 27], 27: [23, 24, 25, 26]}
+
+# Helper Functions
+def is_star(graph):
+    degrees = [len(neighbors) for neighbors in graph.values()]
+    center_count = degrees.count(len(graph) - 1)
+    leaf_count = degrees.count(1)
+    return center_count == 1 and leaf_count == len(graph) - 1
+
+def is_cycle(graph):
+    for neighbors in graph.values():
+        if len(neighbors) != 2:
+            return False
+    return True
+
+def is_path(graph):
+    end_points = 0
+    for neighbors in graph.values():
+        if len(neighbors) == 1:
+            end_points += 1
+        elif len(neighbors) > 2:
+            return False
+    return end_points == 2
+
+def is_complete(graph):
+    n = len(graph)
+    for neighbors in graph.values():
+        if len(neighbors) != n - 1:
+            return False
+    return True
+
+def is_grid(graph):
+    has_square = False
+    visited_edges = set()
+    for node, neighbors in graph.items():
+        for neighbor in neighbors:
+            if (node, neighbor) not in visited_edges:
+                visited_edges.add((neighbor, node))
+                common_neighbors = set(neighbors).intersection(graph[neighbor])
+                if len(common_neighbors) == 2:
+                    has_square = True
+    return has_square
+
+def determine_graph_type(graph):
+    if is_star(graph):
+        return "Star"
+    elif is_cycle(graph):
+        return "Cycle"
+    elif is_path(graph):
+        return "Path"
+    elif is_complete(graph):
+        return "Complete"
+    elif is_grid(graph):
+        return "Grid"
+    else:
+        return "Clustered Graph or Random Graph"
+
+# Determine the graph type
+print(determine_graph_type(graph))
+```

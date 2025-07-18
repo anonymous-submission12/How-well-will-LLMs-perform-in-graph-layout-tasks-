@@ -1,0 +1,11 @@
+Based on the provided graph, we can determine the shortest path length between node '1' and node '11'. The graph is represented as an adjacency list.
+
+The adjacency list shows that node '0' is connected to all nodes from '1' to '25', and each node from '1' to '25' is only connected to node '0'.
+
+Therefore, the shortest path from node '1' to node '11' is: 1 -> 0 -> 11.  This path has a length of 2.
+
+```json
+{
+  "answer": 2
+}
+```

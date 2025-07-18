@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 76, in <module>
+    layout = generate_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 59, in generate_layout
+    apply_attraction()
+  File "/tmp/code.py", line 40, in apply_attraction
+    dist = distance(pos1, pos2)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 17, in distance
+    return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+                     ~~~~~~~~~~~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

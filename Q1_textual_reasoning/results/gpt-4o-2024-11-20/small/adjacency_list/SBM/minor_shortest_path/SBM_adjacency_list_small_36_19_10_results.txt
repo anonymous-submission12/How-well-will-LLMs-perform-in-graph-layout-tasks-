@@ -1,0 +1,14 @@
+To calculate the shortest path between node `19` and node `10`, we can use a breadth-first search (BFS) method on the graph represented by the adjacency list. BFS is appropriate because it finds the shortest path in an unweighted graph.
+
+Here is the BFS implementation and the computed result:
+
+```json
+{
+  "answer": 4
+}
+``` 
+
+Explanation:
+1. Starting from node `19`, the BFS expands level by level.
+2. The shortest path found between `19` and `10` is through the sequence: `19 -> 0 -> 3 -> 9 -> 10`, which has a total path length of `4`.
+

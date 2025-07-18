@@ -1,0 +1,138 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a simple layering approach.  It first identifies a longest path
+    in the graph and places those nodes in a straight line.  Then, it iteratively adds
+    nodes connected to the existing layout, placing them on layers based on their distance
+    from the initial path.  Nodes on the same layer are positioned to minimize crossings
+    with edges to the previous layer.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build adjacency list
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = list(nodes)
+
+    # 2. Find a "longest" path (simple heuristic)
+    start_node = nodes[0]
+    longest_path = find_longest_path(adj, start_node)
+
+    # 3. Initial layout: Place longest path in a line
+    layout = {}
+    for i, node in enumerate(longest_path):
+        layout[node] = (i, 0)
+
+    # 4. Iteratively add remaining nodes in layers
+    remaining_nodes = set(nodes) - set(longest_path)
+    layers = {}
+    layer_index = 1
+
+    while remaining_nodes:
+        new_layer = []
+        for node in list(remaining_nodes):
+            # Check if the node is connected to the existing layout
+            connected = False
+            for neighbor in adj[node]:
+                if neighbor in layout:
+                    connected = True
+                    break
+            if connected:
+                new_layer.append(node)
+                remaining_nodes.remove(node)
+
+        if not new_layer:
+            # Handle disconnected components (place them far away)
+            disconnected_node = remaining_nodes.pop()
+            layout[disconnected_node] = (max(x for x, y in layout.values()) + 5, layer_index)
+            continue
+
+        layers[layer_index] = new_layer
+
+        # Position nodes in the new layer to minimize crossings (very basic heuristic)
+        layer_positions = {}
+        for node in new_layer:
+            # Calculate average x-position of connected neighbors in previous layers
+            x_sum = 0
+            count = 0
+            for neighbor in adj[node]:
+                if neighbor in layout:
+                    x_sum += layout[neighbor][0]
+                    count += 1
+            if count > 0:
+                layer_positions[node] = x_sum / count
+            else:
+                layer_positions[node] = 0  # Default position
+
+        # Sort nodes in the layer based on calculated positions
+        sorted_layer = sorted(new_layer, key=lambda node: layer_positions[node])
+
+        # Assign x, y coordinates to nodes in the layer
+        for i, node in enumerate(sorted_layer):
+            layout[node] = (i, layer_index)
+
+        layer_index += 1
+
+    return layout
+
+
+def find_longest_path(adj, start_node):
+    """
+    Finds a "longest" path in the graph using a simple depth-first search.
+    Not guaranteed to find the absolute longest path, but provides a reasonable starting point.
+    """
+    visited = {start_node}
+    path = [start_node]
+    
+    def dfs(node, current_path):
+        nonlocal path
+        
+        if len(current_path) > len(path):
+            path = current_path[:]
+            
+        for neighbor in adj[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                dfs(neighbor, current_path + [neighbor])
+                visited.remove(neighbor)  # Backtrack
+                
+    dfs(start_node, [start_node])
+    return path
+
+
+# Graph data
+edge_list = [(0, 1), (0, 79), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11),
+             (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21),
+             (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31),
+             (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41),
+             (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51),
+             (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61),
+             (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71),
+             (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), (76, 77), (77, 78), (78, 79)]
+
+# Generate layout
+layout = layout_graph(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```

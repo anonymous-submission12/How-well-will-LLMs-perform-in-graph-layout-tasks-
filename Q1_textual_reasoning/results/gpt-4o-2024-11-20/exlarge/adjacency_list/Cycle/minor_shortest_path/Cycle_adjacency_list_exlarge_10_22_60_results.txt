@@ -1,0 +1,24 @@
+To calculate the length of the shortest path between node `'22'` and node `'60'` in the given adjacency list, we can use the Breadth-First Search (BFS) algorithm. Since all edges have equal weight (implicit in unweighted graphs), BFS is ideal for finding the shortest path.
+
+### Steps:
+1. Initialize a queue for BFS and a set to keep track of visited nodes.
+2. Starting from node `22`, explore its neighbors and mark nodes as visited.
+3. When node `60` is reached, return the path length.
+
+### Calculation:
+
+When we perform BFS starting from node `22`, the shortest path traces through contiguous nodes until we arrive at node `60`. These nodes form a single sequence in the graph. The path is:
+
+`22 -> 23 -> 24 -> ... -> 59 -> 60`
+
+The length is simply the difference between the node values, which is:  
+`60 - 22 = 38`.
+
+### Result:
+The shortest path length is `38`.
+
+```json
+{
+  "answer": 38
+}
+```

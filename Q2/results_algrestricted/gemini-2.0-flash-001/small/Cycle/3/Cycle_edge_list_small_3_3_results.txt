@@ -1,0 +1,108 @@
+```python
+import json
+import random
+
+def generate_layout(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple force-directed layout algorithm. It initializes
+    node positions randomly and then iteratively adjusts them based on attractive
+    and repulsive forces.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph. Each tuple
+                   contains the node indices of the connected nodes.
+
+    Returns:
+        A dictionary where keys are node indices and values are their (x, y) coordinates.
+        The layout is also returned as a JSON string.
+    """
+
+    # 1. Initialization
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    num_nodes = len(nodes)
+    positions = {}
+    for node in nodes:
+        positions[node] = (random.random(), random.random())  # Assign random initial positions
+
+    # 2. Force-Directed Layout Algorithm
+    iterations = 100  # Number of iterations for the algorithm
+    attraction_strength = 0.1  # Strength of attractive forces between connected nodes
+    repulsion_strength = 10  # Strength of repulsive forces between all nodes
+    damping = 0.5 # Damping factor to prevent oscillations
+
+    for _ in range(iterations):
+        forces = {}
+        for node in nodes:
+            forces[node] = [0.0, 0.0]  # Initialize force vector for each node
+
+        # Calculate attractive forces
+        for edge in edge_list:
+            node1, node2 = edge
+            pos1 = positions[node1]
+            pos2 = positions[node2]
+            dx = pos2[0] - pos1[0]
+            dy = pos2[1] - pos1[1]
+            distance = (dx**2 + dy**2)**0.5
+            if distance == 0:
+                distance = 0.01 # Avoid division by zero
+                dx = 0.01
+                dy = 0.01
+
+            force = attraction_strength * distance
+            forces[node1][0] += force * dx / distance
+            forces[node1][1] += force * dy / distance
+            forces[node2][0] -= force * dx / distance
+            forces[node2][1] -= force * dy / distance
+
+        # Calculate repulsive forces
+        for node1 in nodes:
+            for node2 in nodes:
+                if node1 != node2:
+                    pos1 = positions[node1]
+                    pos2 = positions[node2]
+                    dx = pos2[0] - pos1[0]
+                    dy = pos2[1] - pos1[1]
+                    distance = (dx**2 + dy**2)**0.5
+                    if distance == 0:
+                        distance = 0.01 # Avoid division by zero
+                        dx = 0.01
+                        dy = 0.01
+
+                    force = repulsion_strength / (distance**2)
+                    forces[node1][0] -= force * dx / distance
+                    forces[node1][1] -= force * dy / distance
+                    forces[node2][0] += force * dx / distance
+                    forces[node2][1] += force * dy / distance
+
+        # Update positions based on forces
+        for node in nodes:
+            forces[node][0] *= damping
+            forces[node][1] *= damping
+            positions[node] = (positions[node][0] + forces[node][0], positions[node][1] + forces[node][1])
+
+    # 3. Normalize positions to [0, 1] range
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    for node in nodes:
+        x, y = positions[node]
+        x = (x - min_x) / (max_x - min_x) if (max_x - min_x) != 0 else 0.5
+        y = (y - min_y) / (max_y - min_y) if (max_y - min_y) != 0 else 0.5
+        positions[node] = (x, y)
+
+    return positions
+
+# Example usage:
+edge_list = [(0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+layout = generate_layout(edge_list)
+json_layout = json.dumps(layout, indent=4)
+print(json_layout)
+```

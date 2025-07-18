@@ -1,0 +1,7 @@
+The path from the source node to the target node is not a straight line. The graph-theoretic distance follows the edges of the graph, while the Euclidean distance is a straight line between the two nodes. Therefore, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

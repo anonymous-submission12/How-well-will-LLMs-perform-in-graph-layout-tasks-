@@ -1,0 +1,115 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are lists of [x, y] coordinates.  Returns in JSON format.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Initialize node positions randomly.
+    num_nodes = max(max(u, v) for u, v in edge_list) + 1
+    positions = {}
+    for i in range(num_nodes):
+        positions[i] = [0.0, 0.0]  # Initialize all nodes at the origin
+
+    # 3. Iteratively adjust node positions using a force-based approach.
+    #    Nodes connected by edges attract each other, while all nodes repel each other.
+    num_iterations = 100
+    attraction_strength = 0.1
+    repulsion_strength = 1.0
+    damping_factor = 0.5
+
+    for _ in range(num_iterations):
+        forces = {}
+        for i in range(num_nodes):
+            forces[i] = [0.0, 0.0]
+
+        # Calculate attractive forces.
+        for u, v in edge_list:
+            dx = positions[v][0] - positions[u][0]
+            dy = positions[v][1] - positions[u][1]
+            distance = math.sqrt(dx**2 + dy**2)
+            if distance == 0:
+                distance = 0.01  # Avoid division by zero
+                dx = 0.01
+                dy = 0.01
+
+            force = attraction_strength * distance
+            fx = force * dx / distance
+            fy = force * dy / distance
+
+            forces[u][0] += fx
+            forces[u][1] += fy
+            forces[v][0] -= fx
+            forces[v][1] -= fy
+
+        # Calculate repulsive forces.
+        for i in range(num_nodes):
+            for j in range(i + 1, num_nodes):
+                dx = positions[j][0] - positions[i][0]
+                dy = positions[j][1] - positions[i][1]
+                distance = math.sqrt(dx**2 + dy**2)
+                if distance == 0:
+                    distance = 0.01  # Avoid division by zero
+                    dx = 0.01
+                    dy = 0.01
+
+                force = -repulsion_strength / (distance**2)
+                fx = force * dx / distance
+                fy = force * dy / distance
+
+                forces[i][0] += fx
+                forces[i][1] += fy
+                forces[j][0] -= fx
+                forces[j][1] -= fy
+
+        # Update node positions based on the calculated forces.
+        for i in range(num_nodes):
+            positions[i][0] += damping_factor * forces[i][0]
+            positions[i][1] += damping_factor * forces[i][1]
+
+    # Normalize positions to fit within a reasonable range (e.g., -1 to 1).
+    min_x = min(positions[i][0] for i in range(num_nodes))
+    max_x = max(positions[i][0] for i in range(num_nodes))
+    min_y = min(positions[i][1] for i in range(num_nodes))
+    max_y = max(positions[i][1] for i in range(num_nodes))
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1
+    if y_range == 0:
+        y_range = 1
+
+    for i in range(num_nodes):
+        positions[i][0] = 2 * (positions[i][0] - min_x) / x_range - 1
+        positions[i][1] = 2 * (positions[i][1] - min_y) / y_range - 1
+
+    return json.dumps(positions)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 12), (1, 2), (1, 13), (2, 3), (2, 14), (3, 4), (3, 15), (4, 5), (4, 16), (5, 6), (5, 17), (6, 7), (6, 18), (7, 8), (7, 19), (8, 9), (8, 20), (9, 10), (9, 21), (10, 11), (10, 22), (11, 23), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)]
+layout = layout_graph(edge_list)
+print(layout)
+```

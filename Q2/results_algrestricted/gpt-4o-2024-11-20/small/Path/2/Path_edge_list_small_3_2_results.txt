@@ -1,0 +1,41 @@
+Here is the Python script you can use to compute a graph layout that ensures consistency between the Euclidean distance and the graph-theoretic distance. The layout generated will aim to achieve this by embedding the graph in a 2D space while maintaining the proper proportionality between distances.
+
+```python
+import json
+import math
+
+def generate_graph_layout(edge_list):
+    # Step 1: Compute graph-theoretic distances (shortest paths)
+    def bfs_shortest_distances(node_count, edges, start_node):
+        distances = {i: float('inf') for i in range(node_count)}
+        distances[start_node] = 0
+        queue = [start_node]
+        while queue:
+            current = queue.pop(0)
+            current_distance = distances[current]
+            for u, v in edges:
+                neighbor = v if current == u else u if current == v else None
+                if neighbor is not None and distances[neighbor] == float('inf'):
+                    distances[neighbor] = current_distance + 1
+                    queue.append(neighbor)
+        return distances
+
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    node_count = len(nodes)
+
+    all_distances = {}
+    for node in nodes:
+        all_distances[node] = bfs_shortest_distances(node_count, edge_list, node)
+
+    # Step 2: Map nodes to 2D space using a scaling approach for dimensions
+    positions = {i: [0, 0] for i in nodes}
+    used = set()
+    scaling_factor = 50  # Scaling factor adjusts graph size
+    placed_nodes = []
+
+    for layer_offset, current in enumerate(sorted(nodes)):
+        angle_rads=layer_offset*math.pi
+        positions[current] [0]=  layer_offset+scaling_factor

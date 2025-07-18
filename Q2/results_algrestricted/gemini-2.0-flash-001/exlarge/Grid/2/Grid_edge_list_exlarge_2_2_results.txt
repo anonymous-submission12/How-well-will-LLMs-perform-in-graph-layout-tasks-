@@ -1,0 +1,123 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Determine the nodes in the graph.
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    # 2. Initialize node positions.  Start with a simple circle.
+    num_nodes = len(nodes)
+    positions = {}
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        positions[node] = (math.cos(angle), math.sin(angle))
+
+    # 3. Iteratively refine positions using a force-based approach.
+    #    Nodes connected by edges attract each other, while all nodes
+    #    repel each other.  The strength of attraction/repulsion is
+    #    related to the graph-theoretic distance.
+
+    num_iterations = 100
+    attraction_strength = 0.1
+    repulsion_strength = 0.05
+
+    # Build adjacency list for efficient neighbor lookup
+    adjacency_list = {node: [] for node in nodes}
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+    def graph_distance(start_node, end_node, adjacency_list):
+        """Calculates the shortest path distance between two nodes."""
+        if start_node == end_node:
+            return 0
+
+        queue = [(start_node, 0)]  # (node, distance)
+        visited = {start_node}
+
+        while queue:
+            node, distance = queue.pop(0)
+            if node == end_node:
+                return distance
+
+            for neighbor in adjacency_list[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, distance + 1))
+
+        return float('inf')  # Nodes are not connected
+
+    for _ in range(num_iterations):
+        for node in nodes:
+            force_x = 0.0
+            force_y = 0.0
+
+            # Attraction force
+            for neighbor in adjacency_list[node]:
+                graph_dist = graph_distance(node, neighbor, adjacency_list)
+                if graph_dist != float('inf'):
+                    dx = positions[neighbor][0] - positions[node][0]
+                    dy = positions[neighbor][1] - positions[node][1]
+                    force_x += attraction_strength * dx / graph_dist
+                    force_y += attraction_strength * dy / graph_dist
+
+            # Repulsion force
+            for other_node in nodes:
+                if node != other_node:
+                    graph_dist = graph_distance(node, other_node, adjacency_list)
+                    if graph_dist != float('inf'):
+                        dx = positions[other_node][0] - positions[node][0]
+                        dy = positions[other_node][1] - positions[node][1]
+                        force_x -= repulsion_strength * dx / (graph_dist**2 + 0.01) # Add small constant to avoid division by zero
+                        force_y -= repulsion_strength * dy / (graph_dist**2 + 0.01)
+
+            # Update position
+            positions[node] = (positions[node][0] + force_x, positions[node][1] + force_y)
+
+    # 4. Normalize positions to fit within a reasonable range (e.g., -1 to 1).
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1  # Avoid division by zero if all x-coordinates are the same
+    if y_range == 0:
+        y_range = 1  # Avoid division by zero if all y-coordinates are the same
+
+    normalized_positions = {}
+    for node, pos in positions.items():
+        x = 2 * (pos[0] - min_x) / x_range - 1
+        y = 2 * (pos[1] - min_y) / y_range - 1
+        normalized_positions[node] = (x, y)
+
+    return normalized_positions
+
+
+# Example usage:
+edge_list = [(0, 1), (0, 16), (1, 2), (1, 17), (2, 3), (2, 18), (3, 4), (3, 19), (4, 5), (4, 20), (5, 6), (5, 21), (6, 7), (6, 22), (7, 8), (7, 23), (8, 9), (8, 24), (9, 10), (9, 25), (10, 11), (10, 26), (11, 12), (11, 27), (12, 13), (12, 28), (13, 14), (13, 29), (14, 15), (14, 30), (15, 31), (16, 17), (16, 32), (17, 18), (17, 33), (18, 19), (18, 34), (19, 20), (19, 35), (20, 21), (20, 36), (21, 22), (21, 37), (22, 23), (22, 38), (23, 24), (23, 39), (24, 25), (24, 40), (25, 26), (25, 41), (26, 27), (26, 42), (27, 28), (27, 43), (28, 29), (28, 44), (29, 30), (29, 45), (30, 31), (30, 46), (31, 47), (32, 33), (32, 48), (33, 34), (33, 49), (34, 35), (34, 50), (35, 36), (35, 51), (36, 37), (36, 52), (37, 38), (37, 53), (38, 39), (38, 54), (39, 40), (39, 55), (40, 41), (40, 56), (41, 42), (41, 57), (42, 43), (42, 58), (43, 44), (43, 59), (44, 45), (44, 60), (45, 46), (45, 61), (46, 47), (46, 62), (47, 63), (48, 49), (48, 64), (49, 50), (49, 65), (50, 51), (50, 66), (51, 52), (51, 67), (52, 53), (52, 68), (53, 54), (53, 69), (54, 55), (54, 70), (55, 56), (55, 71), (56, 57), (56, 72), (57, 58), (57, 73), (58, 59), (58, 74), (59, 60), (59, 75), (60, 61), (60, 76), (61, 62), (61, 77), (62, 63), (62, 78), (63, 79), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), (76, 77), (77, 78), (78, 79)]
+layout = layout_graph(edge_list)
+print(json.dumps(layout, indent=2))
+```

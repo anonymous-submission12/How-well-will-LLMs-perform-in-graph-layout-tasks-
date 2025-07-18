@@ -1,0 +1,69 @@
+Below is the Python code to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance by placing nodes in a straight line, where the distance between consecutive nodes is uniform.
+
+```python
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a dictionary to store the positions of nodes
+    layout = {}
+    
+    # Start with the first node at position (0, 0)
+    current_position = [0, 0]
+    layout[0] = tuple(current_position)
+    
+    # Iterate through the edges to determine positions
+    for edge in edge_list:
+        node_a, node_b = edge
+        
+        # If node_b is not already placed, place it at a fixed distance from node_a
+        if node_b not in layout:
+            current_position[0] += 1  # Increment x-coordinate for a straight line layout
+            layout[node_b] = tuple(current_position)
+    
+    return layout
+
+# Input graph as edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), 
+             (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Generate the layout
+layout = generate_graph_layout(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Layout**: The graph is laid out in a straight line, with each node placed at a fixed distance from its predecessor. This ensures that the Euclidean distance between consecutive nodes matches their graph-theoretic distance.
+2. **Output Format**: The layout is returned as a dictionary where keys are node IDs and values are 2D coordinates (x, y). The dictionary is then serialized into JSON format for the final output.
+3. **Assumptions**: The graph is connected, and the edge list is provided in a way that allows traversal from the first node to the last.
+
+### Example Output:
+For the given edge list, the output will look like this:
+```json
+{
+    "0": [0, 0],
+    "1": [1, 0],
+    "2": [2, 0],
+    "3": [3, 0],
+    "4": [4, 0],
+    "5": [5, 0],
+    "6": [6, 0],
+    "7": [7, 0],
+    "8": [8, 0],
+    "9": [9, 0],
+    "10": [10, 0],
+    "11": [11, 0],
+    "12": [12, 0],
+    "13": [13, 0],
+    "14": [14, 0],
+    "15": [15, 0],
+    "16": [16, 0],
+    "17": [17, 0],
+    "18": [18, 0],
+    "19": [19, 0],
+    "20": [20, 0],
+    "21": [21, 0]
+}
+```

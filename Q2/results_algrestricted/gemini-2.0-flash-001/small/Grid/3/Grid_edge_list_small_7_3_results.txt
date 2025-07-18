@@ -1,0 +1,111 @@
+```python
+import json
+
+def generate_layout(edges):
+    """
+    Generates a graph layout to minimize edge crossings.
+
+    This function implements a simple layering approach.  It first identifies
+    nodes with degree 1 as starting points for layers.  Then, it iteratively
+    builds layers by adding neighbors of nodes in the previous layer.  Finally,
+    it assigns x-coordinates to nodes within each layer to minimize crossings
+    using a simple barycenter heuristic.
+
+    Args:
+        edges: A list of tuples representing the graph's edges.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the adjacency list
+    adj = {}
+    for u, v in edges:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Find nodes with degree 1 to start layering
+    start_nodes = [node for node in adj if len(adj[node]) == 1]
+    if not start_nodes:
+        start_nodes = [min(adj.keys())] # If no degree 1 nodes, pick an arbitrary node
+
+    # 3. Layer the graph
+    layers = []
+    visited = set()
+    queue = start_nodes[:]  # Start with a copy to avoid modifying start_nodes
+    
+    while queue:
+        next_layer = []
+        current_layer = []
+        
+        for node in queue:
+            if node not in visited:
+                visited.add(node)
+                current_layer.append(node)
+                
+                for neighbor in adj[node]:
+                    if neighbor not in visited:
+                        next_layer.append(neighbor)
+        
+        layers.append(current_layer)
+        queue = next_layer[:]
+
+    # 4. Assign y-coordinates based on layer
+    layout = {}
+    for i, layer in enumerate(layers):
+        for node in layer:
+            layout[node] = [0, i]  # Initial x is 0, y is layer index
+
+    # 5. Minimize edge crossings within each layer using barycenter heuristic
+    for i in range(10): # Iterate a few times to refine the x-coordinates
+        for layer in layers:
+            for node in layer:
+                neighbors_x = []
+                for neighbor in adj[node]:
+                    if neighbor in layout:
+                        neighbors_x.append(layout[neighbor][0])
+                
+                if neighbors_x:
+                    layout[node][0] = sum(neighbors_x) / len(neighbors_x)
+                else:
+                    layout[node][0] = 0 # If no neighbors have x-coordinates yet
+
+    # 6. Normalize x-coordinates to be between 0 and 1
+    min_x = min(x for x, y in layout.values())
+    max_x = max(x for x, y in layout.values())
+    
+    if max_x - min_x > 0:
+        for node in layout:
+            layout[node][0] = (layout[node][0] - min_x) / (max_x - min_x)
+    else:
+        # Handle the case where all x-coordinates are the same
+        for node in layout:
+            layout[node][0] = 0.5  # Set all x-coordinates to the middle
+
+    # 7. Normalize y-coordinates to be between 0 and 1
+    min_y = min(y for x, y in layout.values())
+    max_y = max(y for x, y in layout.values())
+
+    if max_y - min_y > 0:
+        for node in layout:
+            layout[node][1] = (layout[node][1] - min_y) / (max_y - min_y)
+    else:
+        for node in layout:
+            layout[node][1] = 0.5
+
+    return layout
+
+
+# Graph data
+edges = [(0, 1), (0, 7), (1, 2), (1, 8), (2, 3), (2, 9), (3, 4), (3, 10), (4, 5), (4, 11), (5, 6), (5, 12), (6, 13), (7, 8), (7, 14), (8, 9), (8, 15), (9, 10), (9, 16), (10, 11), (10, 17), (11, 12), (11, 18), (12, 13), (12, 19), (13, 20), (14, 15), (14, 21), (15, 16), (15, 22), (16, 17), (16, 23), (17, 18), (17, 24), (18, 19), (18, 25), (19, 20), (19, 26), (20, 27), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27)]
+
+# Generate the layout
+layout = generate_layout(edges)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

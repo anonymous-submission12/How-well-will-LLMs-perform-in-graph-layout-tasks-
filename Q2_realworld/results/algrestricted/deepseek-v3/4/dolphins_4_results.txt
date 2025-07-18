@@ -1,0 +1,138 @@
+Here's a Python script that generates a graph layout with clear community structure using a modularity-based community detection algorithm and a custom layout algorithm:
+
+```python
+import json
+import random
+import math
+from collections import defaultdict
+
+def detect_communities(edge_list):
+    # Convert edge list to adjacency list
+    graph = defaultdict(set)
+    for u, v in edge_list:
+        graph[u].add(v)
+        graph[v].add(u)
+    
+    # Simple community detection using label propagation
+    nodes = list(graph.keys())
+    communities = {node: i for i, node in enumerate(nodes)}
+    
+    changed = True
+    while changed:
+        changed = False
+        random.shuffle(nodes)
+        
+        for node in nodes:
+            neighbor_communities = defaultdict(int)
+            for neighbor in graph[node]:
+                neighbor_communities[communities[neighbor]] += 1
+            
+            if not neighbor_communities:
+                continue
+                
+            max_count = max(neighbor_communities.values())
+            best_communities = [c for c, count in neighbor_communities.items() if count == max_count]
+            
+            current_community = communities[node]
+            if current_community not in best_communities or random.random() < 0.1:
+                new_community = random.choice(best_communities)
+                communities[node] = new_community
+                changed = True
+    
+    # Renumber communities sequentially
+    unique_comms = sorted(set(communities.values()))
+    comm_mapping = {old: new for new, old in enumerate(unique_comms)}
+    return {node: comm_mapping[comm] for node, comm in communities.items()}
+
+def generate_layout(edge_list, communities):
+    # Group nodes by community
+    comm_nodes = defaultdict(list)
+    for node, comm in communities.items():
+        comm_nodes[comm].append(node)
+    
+    # Calculate community centers in a circle
+    num_communities = len(comm_nodes)
+    comm_centers = {}
+    radius = 100.0  # Base radius for community centers
+    
+    for i, comm in enumerate(comm_nodes.keys()):
+        angle = 2 * math.pi * i / num_communities
+        comm_centers[comm] = (
+            radius * math.cos(angle),
+            radius * math.sin(angle)
+    
+    # Position nodes within their communities
+    positions = {}
+    node_radius = 20.0  # Radius for node placement within community
+    
+    for comm, nodes in comm_nodes.items():
+        center_x, center_y = comm_centers[comm]
+        num_nodes = len(nodes)
+        
+        # Place nodes in a smaller circle around community center
+        for j, node in enumerate(nodes):
+            angle = 2 * math.pi * j / num_nodes
+            positions[node] = {
+                "x": center_x + node_radius * math.cos(angle),
+                "y": center_y + node_radius * math.sin(angle)
+            }
+    
+    return positions
+
+def main():
+    edge_list = [('0', '10'), ('0', '14'), ('0', '15'), ('0', '40'), ('0', '42'), ('0', '47'), 
+                ('1', '17'), ('1', '19'), ('1', '26'), ('1', '27'), ('1', '28'), ('1', '36'), 
+                ('1', '41'), ('1', '54'), ('10', '2'), ('10', '29'), ('10', '42'), ('10', '47'), 
+                ('12', '33'), ('13', '32'), ('13', '57'), ('13', '6'), ('14', '16'), ('14', '24'), 
+                ('14', '3'), ('14', '33'), ('14', '34'), ('14', '37'), ('14', '38'), ('14', '40'), 
+                ('14', '43'), ('14', '50'), ('14', '52'), ('15', '18'), ('15', '24'), ('15', '40'), 
+                ('15', '45'), ('15', '55'), ('15', '59'), ('16', '38'), ('16', '50'), ('17', '13'), 
+                ('17', '22'), ('17', '25'), ('17', '27'), ('17', '31'), ('17', '57'), ('17', '6'), 
+                ('17', '9'), ('18', '21'), ('19', '30'), ('19', '54'), ('19', '7'), ('2', '44'), 
+                ('2', '61'), ('20', '16'), ('20', '18'), ('20', '38'), ('20', '50'), ('24', '18'), 
+                ('26', '25'), ('26', '27'), ('27', '25'), ('27', '7'), ('28', '20'), ('28', '30'), 
+                ('28', '8'), ('29', '18'), ('29', '21'), ('29', '24'), ('29', '35'), ('29', '43'), 
+                ('29', '52'), ('3', '59'), ('3', '8'), ('32', '60'), ('33', '16'), ('33', '21'), 
+                ('33', '34'), ('33', '38'), ('33', '43'), ('33', '50'), ('34', '49'), ('36', '20'), 
+                ('36', '23'), ('36', '37'), ('36', '39'), ('36', '59'), ('37', '16'), ('37', '21'), 
+                ('37', '33'), ('37', '34'), ('37', '43'), ('37', '45'), ('38', '43'), ('38', '52'), 
+                ('38', '58'), ('4', '51'), ('40', '33'), ('40', '36'), ('40', '37'), ('40', '52'), 
+                ('40', '7'), ('41', '13'), ('41', '54'), ('41', '57'), ('41', '9'), ('42', '2'), 
+                ('42', '30'), ('42', '47'), ('42', '50'), ('43', '46'), ('43', '53'), ('44', '20'), 
+                ('44', '34'), ('44', '38'), ('45', '18'), ('45', '21'), ('45', '23'), ('45', '24'), 
+                ('45', '29'), ('45', '50'), ('47', '20'), ('47', '28'), ('47', '30'), ('49', '46'), 
+                ('5', '13'), ('5', '56'), ('5', '57'), ('5', '9'), ('51', '11'), ('51', '18'), 
+                ('51', '21'), ('51', '23'), ('51', '24'), ('51', '29'), ('51', '45'), ('51', '50'), 
+                ('51', '55'), ('54', '13'), ('54', '57'), ('54', '6'), ('54', '7'), ('56', '6'), 
+                ('57', '39'), ('57', '48'), ('57', '6'), ('59', '45'), ('61', '37'), ('61', '53'), 
+                ('7', '30'), ('8', '20'), ('8', '37'), ('8', '45'), ('8', '59'), ('9', '13'), 
+                ('9', '32'), ('9', '57'), ('9', '6')]
+    
+    communities = detect_communities(edge_list)
+    layout = generate_layout(edge_list, communities)
+    
+    # Convert to JSON format
+    output = {
+        "nodes": [{"id": node, "x": pos["x"], "y": pos["y"], "community": communities[node]} 
+                 for node, pos in layout.items()],
+        "links": [{"source": u, "target": v} for u, v in edge_list]
+    }
+    
+    print(json.dumps(output, indent=2))
+
+if __name__ == "__main__":
+    main()
+```
+
+This script:
+
+1. Detects communities using a label propagation algorithm (a simple but effective community detection method)
+2. Positions communities in a circular arrangement
+3. Positions nodes within each community in smaller circles around their community center
+4. Outputs the layout in JSON format with node positions and community assignments
+
+The output JSON contains:
+- Node objects with id, x/y coordinates, and community assignment
+- Links representing the original edges
+
+You can adjust the `radius` and `node_radius` parameters to change the spacing between communities and nodes within communities. The layout emphasizes community structure by keeping nodes from the same community close together while separating different communities.

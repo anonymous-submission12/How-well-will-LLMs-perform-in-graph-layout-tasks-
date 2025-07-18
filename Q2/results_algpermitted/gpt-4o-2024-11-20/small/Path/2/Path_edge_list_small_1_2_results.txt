@@ -1,0 +1,33 @@
+Below is a Python script that uses the Fruchterman-Reingold force-directed algorithm from the `networkx` library to compute a graph layout. The script outputs the resulting node positions in JSON format for the given edge list.
+
+```python
+import networkx as nx
+import json
+
+# Input graph in edge list format
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), 
+    (16, 17), (17, 18), (18, 19), (19, 20)
+]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Compute the layout using the Fruchterman-Reingold force-directed algorithm
+layout = nx.spring_layout(G)
+
+# Convert layout to JSON-serializable format
+layout_json = {node: list(pos) for node, pos in layout.items()}
+
+# Output the layout in JSON format
+print(json.dumps(layout_json, indent=2))
+```
+
+### Key Notes:
+- The `nx.spring_layout` function computes a force-directed layout using the Fruchterman-Reingold algorithm, which is designed to ensure a balance between Euclidean and graph-theoretic distances.
+- The positions are structured as a dictionary where keys are node identifiers and values are 2-dimensional coordinates.
+- The output coordinates are converted into JSON-serializable format and printed as a JSON string with indentation.
+
+You can run this script to generate the layout and save the result for further visualization or processing. Let me know if you need any further assistance!

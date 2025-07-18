@@ -1,0 +1,15 @@
+To compute the shortest path between node `14` and node `18` in the given graph, we first analyze the graph structure based on the provided edge list. Then, using a graph traversal algorithm such as **Breadth-First Search (BFS)**, we calculate the minimum number of edges to traverse between the two nodes.
+
+The graph appears to be undirected, so edges are bidirectional. 
+
+Here is the calculation:
+
+- Nodes 14 and 18 share a direct edge as per the edge list: `(14, 18)`. This means the shortest path between these two nodes is of length **1**.
+
+Here is the JSON output:
+
+```json
+{
+  "answer": 1
+}
+```

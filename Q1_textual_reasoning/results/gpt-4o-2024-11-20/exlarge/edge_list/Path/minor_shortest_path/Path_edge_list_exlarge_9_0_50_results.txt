@@ -1,0 +1,14 @@
+To calculate the shortest path between node `0` and node `50` in the provided graph, we notice that the graph is a linear path where each node is connected to the next in a sequence. The shortest path is simply counting the number of edges between node `0` and node `50`.
+
+From the edge list:
+- Node `0` is connected to node `1`, node `1` is connected to node `2`, and so on, until node `50`.
+
+Thus, the shortest path from `0` to `50` is `50` edges.
+
+Here is the result in the specified JSON format:
+
+```json
+{
+  "answer": 50
+}
+```

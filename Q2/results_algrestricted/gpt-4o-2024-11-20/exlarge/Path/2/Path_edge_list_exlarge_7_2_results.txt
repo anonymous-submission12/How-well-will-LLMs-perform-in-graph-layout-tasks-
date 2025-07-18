@@ -1,0 +1,73 @@
+Here is the Python script to generate a layout for your graph that maintains consistency between Euclidean distance and graph-theoretic distance. The script uses a custom iterative computation to determine the positions of nodes in a 2D space.
+
+```python
+import json
+import numpy as np
+
+def generate_layout(edge_list):
+    # Parse nodes and compute adjacency information
+    nodes = set()
+    adjacency_list = {}
+    for u, v in edge_list:
+        nodes.update([u, v])
+        adjacency_list.setdefault(u, []).append(v)
+        adjacency_list.setdefault(v, []).append(u)
+    nodes = sorted(nodes)
+
+    # Graph-theoretic distance
+    def compute_distances():
+        distances = {node: {other_node: float('inf') for other_node in nodes} for node in nodes}
+        for node in nodes:
+            distances[node][node] = 0
+        
+        for u, v in edge_list:
+            distances[u][v] = 1
+            distances[v][u] = 1
+        
+        # Floyd-Warshall to compute shortest paths (graph-theoretic distances)
+        for k in nodes:
+            for i in nodes:
+                for j in nodes:
+                    distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
+        return distances
+
+    distances = compute_distances()
+
+    # Initialize positions randomly in 2D space
+    positions = {node: np.random.rand(2) for node in nodes}
+
+    # Force-based positioning algorithm
+    def compute_positions():
+        learning_rate = 0.01  # Determines convergence speed
+        max_iterations = 1000
+        for _ in range(max_iterations):
+            deltas = {node: np.zeros(2) for node in nodes}
+            for i in nodes:
+                for j in nodes:
+                    if i != j:
+                        dist_target = distances[i][j]
+                        vector = positions[j] - positions[i]
+                        euclidean_dist = np.linalg.norm(vector)
+                        if euclidean_dist < 1e-6:  # Avoid division by zero
+                            euclidean_dist = 1e-6
+                        direction = vector / euclidean_dist
+                        deltas[i] += direction * (euclidean_dist - dist_target)
+            for node in nodes:
+                positions[node] -= learning_rate * deltas[node]
+
+    compute_positions()
+
+    # Prepare layout
+    layout = {node: positions[node].tolist() for node in nodes}
+    return layout
+
+
+# Input edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76)]
+
+# Generate and print layout in JSON format
+layout = generate_layout(edge_list)
+print(json.dumps(layout, indent=2))
+```
+
+This script ensures that the layout reflects consistency between graph-theoretic and Euclidean distances by iteratively adjusting the positions based on a force-directed method. The output is a JSON-formatted layout of node positions.

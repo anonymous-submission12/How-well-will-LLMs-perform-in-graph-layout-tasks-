@@ -1,0 +1,82 @@
+Below is the Python code that creates a graph layout based on community structure. The layout calculation uses modularity-based community detection and positions nodes according to their communities while ensuring the layout remains structured.
+
+```python
+import networkx as nx
+import json
+from community import community_louvain
+
+def generate_layout(edge_list):
+    # Step 1: Build a NetworkX graph
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+
+    # Step 2: Identify communities using the Louvain method
+    partition = community_louvain.best_partition(G)
+
+    # Step 3: Generate positions for nodes
+    # Each community will be assigned a circular layout within larger circles for separation
+    from math import cos, sin, pi
+
+    community_positions = {}  # Store positions of communities (central coordinate)
+    node_positions = {}       # Store final node positions
+    community_radius = 10     # Distance between community centers
+    community_layout_radius = 3  # Radius of each community's internal layout
+
+    # Assign community-level positions
+    communities = sorted(set(partition.values()))
+    community_count = len(communities)
+    for i, community_id in enumerate(communities):
+        angle = 2 * pi * i / community_count
+        community_positions[community_id] = (
+            community_radius * cos(angle),
+            community_radius * sin(angle)
+        )
+
+    # Assign node-level positions within each community
+    nodes_by_community = {}
+    for node, community in partition.items():
+        nodes_by_community.setdefault(community, []).append(node)
+
+    for community_id, nodes in nodes_by_community.items():
+        # Circular layout for community nodes
+        num_nodes = len(nodes)
+        center_x, center_y = community_positions[community_id]
+        for j, node in enumerate(nodes):
+            angle = 2 * pi * j / num_nodes
+            x = center_x + community_layout_radius * cos(angle)
+            y = center_y + community_layout_radius * sin(angle)
+            node_positions[node] = (x, y)
+    
+    # Step 4: Convert positions to a JSON-serializable format
+    layout_json = {node: {"x": pos[0], "y": pos[1]} for node, pos in node_positions.items()}
+
+    return json.dumps(layout_json, indent=4)
+
+# Edge list
+edge_list = [('0', '1'), ('0', '10'), ('0', '11'), ('0', '12'), ('0', '13'), ('0', '17'), ('0', '19'), ('0', '2'),
+             ('0', '21'), ('0', '3'), ('0', '31'), ('0', '4'), ('0', '5'), ('0', '6'), ('0', '7'), ('0', '8'), 
+             ('1', '13'), ('1', '17'), ('1', '19'), ('1', '2'), ('1', '21'), ('1', '3'), ('1', '30'), ('1', '7'), 
+             ('13', '33'), ('19', '33'), ('2', '13'), ('2', '27'), ('2', '28'), ('2', '3'), ('2', '32'), ('2', '7'), 
+             ('2', '8'), ('2', '9'), ('23', '25'), ('23', '29'), ('25', '24'), ('27', '23'), ('27', '24'), 
+             ('27', '33'), ('28', '33'), ('29', '26'), ('3', '12'), ('3', '13'), ('3', '7'), ('30', '32'), 
+             ('30', '33'), ('31', '24'), ('31', '25'), ('31', '28'), ('31', '32'), ('31', '33'), ('32', '14'), 
+             ('32', '15'), ('32', '18'), ('32', '20'), ('32', '22'), ('32', '23'), ('32', '29'), ('32', '33'), 
+             ('33', '14'), ('33', '15'), ('33', '18'), ('33', '20'), ('33', '22'), ('33', '23'), ('33', '26'), 
+             ('33', '29'), ('4', '10'), ('4', '6'), ('5', '10'), ('5', '16'), ('5', '6'), ('6', '16'), ('8', '30'), 
+             ('8', '32'), ('8', '33'), ('9', '33')]
+
+# Generate and print the layout
+layout = generate_layout(edge_list)
+print(layout)
+```
+
+### Explanation:
+1. **Community Detection**: The Louvain method detects communities in the graph. Nodes belonging to the same community are grouped together.
+2. **Community Positions**: Communities are placed in a circular pattern, ensuring separation between communities.
+3. **Node Positions**: Within each community, nodes are arranged in a smaller circular layout relative to the community's center.
+4. **JSON Output**: The final layout is formatted in JSON, where each node has an "x" and "y" position.
+
+Ensure you install the `python-louvain` module if not already installed:
+```bash
+pip install python-louvain
+```

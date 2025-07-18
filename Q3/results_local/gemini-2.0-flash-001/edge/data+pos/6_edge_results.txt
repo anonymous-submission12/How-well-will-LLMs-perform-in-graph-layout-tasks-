@@ -1,0 +1,25 @@
+To determine if two line segments intersect, we can use the orientation test.  Let the two line segments be AB and CD.  We can determine the orientation of point C with respect to the line AB, and the orientation of point D with respect to the line AB.  Similarly, we can determine the orientation of point A with respect to the line CD, and the orientation of point B with respect to the line CD.  If the orientations of C and D with respect to AB are different, and the orientations of A and B with respect to CD are different, then the line segments intersect.
+
+The orientation of three points (p1, p2, p3) can be determined by the sign of the following determinant:
+(p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x)
+
+If the determinant is positive, the orientation is counterclockwise.
+If the determinant is negative, the orientation is clockwise.
+If the determinant is zero, the points are collinear.
+
+Let's denote the edge as AB and CD.
+A = (24, 15), B = (46, 49)
+C = (24, 15), D = (46, 49)
+
+A_coords = [-0.15, 0.19]
+B_coords = [0.36, 0.1]
+C_coords = [-0.15, 0.19]
+D_coords = [0.36, 0.1]
+
+Since the two edges are identical, they intersect.
+
+```json
+{
+  "Answer": "Yes"
+}
+```

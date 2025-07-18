@@ -1,0 +1,11 @@
+To count the number of unique nodes in the graph, we extract all unique vertices from the given edge list. Let me calculate that for you.
+
+The unique nodes are: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27}. 
+
+This gives us a total of **28 nodes**.
+
+```json
+{
+  "answer": 28
+}
+```

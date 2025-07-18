@@ -1,0 +1,14 @@
+To compare the graphs for edge crossings, we observe the layout and the intersecting edges visually.
+
+In layout **1**, the central node connections appear more intertwined, with noticeable crossings between edges. Additionally, the connections between different clusters are less clean, contributing to more edge intersections. 
+
+In layout **2**, the graph clusters are better separated, and the edges connecting different clusters seem to cross fewer times, resulting in a layout with fewer edge crossings.
+
+### Conclusion:
+Layout **2** has fewer edge crossings than Layout **1**.
+
+```json
+{
+  "Answer": 2
+}
+```

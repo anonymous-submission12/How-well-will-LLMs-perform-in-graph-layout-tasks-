@@ -1,0 +1,16 @@
+```python
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21)]
+
+degrees = {}
+for edge in edge_list:
+    u, v = edge
+    degrees[u] = degrees.get(u, 0) + 1
+    degrees[v] = degrees.get(v, 0) + 1
+
+max_degree = 0
+for node in degrees:
+    if degrees[node] > max_degree:
+        max_degree = degrees[node]
+
+print(max_degree)
+```

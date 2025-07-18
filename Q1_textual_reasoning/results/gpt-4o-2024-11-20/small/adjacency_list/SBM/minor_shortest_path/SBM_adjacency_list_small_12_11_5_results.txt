@@ -1,0 +1,11 @@
+To determine the length of the shortest path between nodes '11' and '5', we can use Breadth-First Search (BFS) because the graph is unweighted. Here is the calculated result:
+
+```json
+{
+  "answer": 1
+}
+```
+
+Explanation:
+- Node '11' is directly connected to node '5' as shown in the adjacency list: `11: [1, 2, 4, 5, 7, 8, 9]`.
+- Therefore, the shortest path between '11' and '5' has a length of 1.

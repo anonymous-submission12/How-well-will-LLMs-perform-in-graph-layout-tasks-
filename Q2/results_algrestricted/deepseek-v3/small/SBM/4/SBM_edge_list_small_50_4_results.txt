@@ -1,0 +1,84 @@
+To generate a layout for the graph while keeping the community structure clear, we can use a community detection algorithm to identify communities and then position nodes within each community in a way that reflects their relationships. Here, we'll use the Louvain method for community detection and then position nodes in a grid-like fashion within their respective communities.
+
+Below is the Python script that accomplishes this:
+
+```python
+import json
+from collections import defaultdict
+import random
+
+# Define the graph using the provided edge list
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 5), (1, 2), (1, 3), (1, 4), (1, 5), (1, 16), 
+             (2, 3), (2, 5), (2, 8), (3, 5), (3, 10), (4, 5), (6, 9), (6, 10), (7, 8), 
+             (7, 10), (8, 10), (9, 10), (11, 12), (11, 14), (12, 14), (12, 15), (12, 20), 
+             (13, 14), (13, 15), (14, 20), (16, 17), (16, 18), (16, 19), (16, 20), 
+             (17, 18), (18, 19), (18, 20), (19, 20)]
+
+# Create a graph representation
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Louvain community detection
+def louvain_communities(graph):
+    communities = []
+    nodes = list(graph.keys())
+    random.shuffle(nodes)
+    
+    # Initialize each node as its own community
+    node_to_community = {node: i for i, node in enumerate(nodes)}
+    communities = [{node} for node in nodes]
+    
+    # Iteratively optimize communities
+    improved = True
+    while improved:
+        improved = False
+        for node in nodes:
+            best_community = node_to_community[node]
+            best_gain = 0
+            for neighbor in graph[node]:
+                if node_to_community[neighbor] != node_to_community[node]:
+                    # Calculate modularity gain
+                    gain = 1  # Simplified gain calculation for demonstration
+                    if gain > best_gain:
+                        best_gain = gain
+                        best_community = node_to_community[neighbor]
+            
+            if best_community != node_to_community[node]:
+                communities[node_to_community[node]].remove(node)
+                communities[best_community].add(node)
+                node_to_community[node] = best_community
+                improved = True
+    
+    return communities
+
+# Detect communities
+communities = louvain_communities(graph)
+
+# Assign positions to nodes based on communities
+layout = {}
+community_positions = {}
+spacing = 2.0  # Spacing between communities
+
+for i, community in enumerate(communities):
+    community_positions[i] = (i * spacing, 0)  # Place communities along the x-axis
+    
+    # Place nodes within the community in a grid
+    nodes_in_community = list(community)
+    for j, node in enumerate(nodes_in_community):
+        x = community_positions[i][0] + (j % 3) * 0.5
+        y = community_positions[i][1] + (j // 3) * 0.5
+        layout[node] = (x, y)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented using a dictionary where each key is a node, and the value is a list of its neighbors.
+2. **Community Detection**: The Louvain method is used to detect communities. This is a simplified version of the algorithm for demonstration purposes.
+3. **Layout Generation**: Nodes within the same community are placed in a grid-like fashion. Communities are spaced out along the x-axis to keep them visually distinct.
+4. **Output**: The final layout is output in JSON format, where each node is mapped to its (x, y) coordinates.
+
+This script does not use any existing graph layout algorithms or visualization libraries, and it outputs the layout in JSON format as required.

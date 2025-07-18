@@ -1,0 +1,7 @@
+The first image shows a clearer separation between the two communities.
+
+```json
+{
+"Answer": "1"
+}
+```

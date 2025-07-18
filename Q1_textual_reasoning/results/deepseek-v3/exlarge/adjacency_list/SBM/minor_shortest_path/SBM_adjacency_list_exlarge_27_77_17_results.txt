@@ -1,0 +1,25 @@
+To calculate the length of the shortest path between node '77' and '17', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the calculated shortest path length:
+
+```json
+{
+  "answer": 6
+}
+```
+
+### Explanation:
+1. **BFS Algorithm**: BFS explores all nodes at the present depth level before moving on to nodes at the next depth level. This ensures that the first time we reach the target node, we have found the shortest path.
+
+2. **Path Calculation**:
+   - Start at node '77'.
+   - Explore its neighbors: '72', '75', '76', '78'.
+   - From '72', explore its neighbors: '69', '70', '71', '75', '76', '77', '78', '79'.
+   - From '75', explore its neighbors: '69', '72', '77', '79'.
+   - From '76', explore its neighbors: '45', '70', '71', '72', '73', '77'.
+   - From '78', explore its neighbors: '69', '70', '71', '72', '77', '79'.
+   - Continue this process until node '17' is reached.
+
+3. **Shortest Path**: The shortest path from '77' to '17' involves 6 edges, hence the length is 6.
+
+This is the shortest path length between node '77' and '17'.

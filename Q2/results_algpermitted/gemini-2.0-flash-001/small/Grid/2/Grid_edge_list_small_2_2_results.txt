@@ -1,0 +1,70 @@
+```python
+import json
+import numpy as np
+import scipy
+from scipy.sparse.linalg import eigsh
+from scipy.sparse import csr_matrix
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node IDs and values are [x, y] coordinates.
+    """
+
+    # 1. Create the adjacency matrix
+    num_nodes = max(max(u, v) for u, v in edge_list) + 1
+    adj_matrix = np.zeros((num_nodes, num_nodes))
+    for u, v in edge_list:
+        adj_matrix[u, v] = 1
+        adj_matrix[v, u] = 1  # Assuming an undirected graph
+
+    # 2. Compute the Laplacian matrix
+    degree_matrix = np.diag(np.sum(adj_matrix, axis=1))
+    laplacian_matrix = degree_matrix - adj_matrix
+
+    # 3. Compute the Fiedler vector using sparse methods for efficiency
+    laplacian_sparse = csr_matrix(laplacian_matrix)
+    eigenvalues, eigenvectors = eigsh(laplacian_sparse, k=2, which='SM')  # Find 2 smallest eigenvalues
+
+    # 4. Use the eigenvectors corresponding to the two smallest non-zero eigenvalues as coordinates
+    # The smallest eigenvalue is close to zero, so we use the second and third.
+    x = eigenvectors[:, 1]
+
+    # To get a second dimension, we can use the eigenvector corresponding to the *third* smallest eigenvalue.
+    # However, for better results, we can use a different approach, such as initializing y coordinates randomly
+    # and then optimizing them to be consistent with the graph structure.  For simplicity, we'll use a simple approach here.
+    y = np.random.rand(num_nodes) # Initialize y randomly
+    
+    # A simple approach to make y somewhat consistent: average the y-coordinates of neighbors
+    for _ in range(10): # Iterate a few times
+        new_y = np.zeros(num_nodes)
+        for i in range(num_nodes):
+            neighbors = np.where(adj_matrix[i] == 1)[0]
+            if len(neighbors) > 0:
+                new_y[i] = np.mean(y[neighbors])
+            else:
+                new_y[i] = y[i] # Keep the same if no neighbors
+        y = new_y
+
+    # Normalize the coordinates to be between 0 and 1
+    x = (x - np.min(x)) / (np.max(x) - np.min(x))
+    y = (y - np.min(y)) / (np.max(y) - np.min(y))
+
+    # 5. Create the layout dictionary
+    layout = {}
+    for i in range(num_nodes):
+        layout[str(i)] = [float(x[i]), float(y[i])]  # Convert to float for JSON serialization
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 5), (1, 2), (1, 6), (2, 3), (2, 7), (3, 4), (3, 8), (4, 9), (5, 6), (5, 10), (6, 7), (6, 11), (7, 8), (7, 12), (8, 9), (8, 13), (9, 14), (10, 11), (10, 15), (11, 12), (11, 16), (12, 13), (12, 17), (13, 14), (13, 18), (14, 19), (15, 16), (15, 20), (16, 17), (16, 21), (17, 18), (17, 22), (18, 19), (18, 23), (19, 24), (20, 21), (21, 22), (22, 23), (23, 24)]
+layout_json = layout_graph(edge_list)
+print(layout_json)
+```

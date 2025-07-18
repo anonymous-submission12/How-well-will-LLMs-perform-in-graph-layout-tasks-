@@ -1,0 +1,17 @@
+To determine the number of communities in the graph, we can use a community detection algorithm such as the Louvain method or the Girvan-Newman algorithm. However, since we are not running actual code here, we can analyze the graph structure manually by looking for densely connected subgraphs that are sparsely connected to other subgraphs.
+
+From the provided edge list, we can observe that the graph can be divided into three main communities based on the connectivity patterns:
+
+1. **Community 1**: Nodes 0-24 are densely connected among themselves.
+2. **Community 2**: Nodes 25-49 are densely connected among themselves.
+3. **Community 3**: Nodes 50-73 are densely connected among themselves.
+
+These communities are identified based on the fact that nodes within each group have many connections to each other and few connections to nodes outside their group.
+
+Thus, the number of communities in the graph is **3**.
+
+```json
+{
+  "answer": 3
+}
+```

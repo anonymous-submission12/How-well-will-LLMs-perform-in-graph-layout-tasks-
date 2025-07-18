@@ -1,0 +1,9 @@
+To calculate the shortest path between node '10' and '15', we observe that the graph is structured as a linear chain. Each node is directly connected to its neighbors only. Therefore, the shortest path is simply the difference between the node values, which represents the number of edges traveled along the chain.
+
+The shortest path between '10' and '15' has a length of |15 - 10| = 5.
+
+```json
+{
+  "answer": 5
+}
+```

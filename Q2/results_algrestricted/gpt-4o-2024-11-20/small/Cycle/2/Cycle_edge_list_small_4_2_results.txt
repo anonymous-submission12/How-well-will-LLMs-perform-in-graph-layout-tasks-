@@ -1,0 +1,59 @@
+Here is the Python script to generate a layout for the provided graph while maintaining consistency between the Euclidean distance and graph-theoretic distance. The output of the script is a JSON-format graph layout:
+
+```python
+import json
+import math
+from collections import defaultdict
+from queue import Queue
+
+def calculate_positions(edge_list):
+    # Build adjacency list
+    graph = defaultdict(list)
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Calculate shortest-path graph-theoretic distances using BFS
+    def bfs_distances(start_node):
+        distances = {start_node: 0}
+        q = Queue()
+        q.put(start_node)
+        while not q.empty():
+            current = q.get()
+            for neighbor in graph[current]:
+                if neighbor not in distances:
+                    distances[neighbor] = distances[current] + 1
+                    q.put(neighbor)
+        return distances
+
+    # Gather all shortest-path distances from a reference node
+    reference_node = list(graph.keys())[0]
+    graph_distances = bfs_distances(reference_node)
+
+    # Scale Euclidean distances directly proportional to graph-theoretic distances
+    positions = {}
+    angle_step = 2 * math.pi / len(graph_distances)  # For circular arrangement
+    for idx, (node, dist) in enumerate(graph_distances.items()):
+        angle = idx * angle_step
+        # Euclidean layout emphasizing graph-theoretic distances
+        x = dist * math.cos(angle)
+        y = dist * math.sin(angle)
+        positions[node] = (x, y)
+
+    return positions
+
+
+# Graph data
+edge_list = [(0, 1), (0, 23), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7),
+             (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), 
+             (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), 
+             (20, 21), (21, 22), (22, 23)]
+
+# Generate graph layout
+layout_positions = calculate_positions(edge_list)
+
+# Output result in JSON format
+print(json.dumps(layout_positions, indent=4))
+```
+
+You can run the script, and it will produce a JSON object where node IDs are keys and the corresponding positions are values in the form of `(x, y)` coordinates.

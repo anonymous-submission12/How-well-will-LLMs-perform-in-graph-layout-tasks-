@@ -1,0 +1,76 @@
+Below is a Python script that generates a layout for the graph provided in the edge list format. The layout minimizes edge crossings by implementing a custom heuristic approach. The output is a JSON representation of the node positions.
+
+```python
+import json
+import random
+
+def generate_graph_layout(edge_list):
+    # Step 1: Extract nodes from the edge list
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+
+    # Step 2: Initialize positions randomly
+    positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in nodes}
+
+    # Step 3: Define a function to calculate edge crossings
+    def count_edge_crossings(positions, edge_list):
+        crossings = 0
+        for i, (u1, v1) in enumerate(edge_list):
+            for j, (u2, v2) in enumerate(edge_list):
+                if i >= j:
+                    continue
+                # Check if edges (u1, v1) and (u2, v2) cross
+                x1, y1 = positions[u1]
+                x2, y2 = positions[v1]
+                x3, y3 = positions[u2]
+                x4, y4 = positions[v2]
+                # Using determinant method to check intersection
+                def ccw(A, B, C):
+                    return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
+                if ccw((x1, y1), (x3, y3), (x4, y4)) != ccw((x2, y2), (x3, y3), (x4, y4)) and \
+                   ccw((x1, y1), (x2, y2), (x3, y3)) != ccw((x1, y1), (x2, y2), (x4, y4)):
+                    crossings += 1
+        return crossings
+
+    # Step 4: Optimize positions to minimize edge crossings
+    def optimize_positions(positions, edge_list, iterations=1000):
+        for _ in range(iterations):
+            # Pick two random nodes and swap their positions
+            node1, node2 = random.sample(nodes, 2)
+            positions[node1], positions[node2] = positions[node2], positions[node1]
+            # Check if the swap reduces edge crossings
+            new_crossings = count_edge_crossings(positions, edge_list)
+            if new_crossings < count_edge_crossings(positions, edge_list):
+                # Keep the swap
+                continue
+            else:
+                # Revert the swap
+                positions[node1], positions[node2] = positions[node2], positions[node1]
+        return positions
+
+    # Optimize positions
+    optimized_positions = optimize_positions(positions, edge_list)
+
+    # Step 5: Convert positions to JSON format
+    layout_json = json.dumps(optimized_positions, indent=4)
+    return layout_json
+
+# Input edge list
+edge_list = [
+    (0, 4), (0, 5), (0, 7), (1, 2), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 5), (2, 6), 
+    (3, 5), (3, 6), (3, 7), (3, 22), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7), (6, 7), 
+    (8, 10), (8, 11), (8, 12), (8, 13), (8, 14), (8, 15), (9, 11), (9, 12), (9, 13), 
+    (9, 14), (9, 15), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15), (11, 12), 
+    (11, 13), (12, 13), (12, 14), (12, 15), (13, 14), (13, 15), (14, 18), (16, 17), 
+    (16, 18), (16, 20), (16, 21), (16, 22), (17, 19), (17, 20), (17, 21), (17, 22), 
+    (18, 19), (18, 20), (18, 21), (18, 22), (19, 20), (19, 21), (19, 22), (20, 21)
+]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+print(layout)
+```
+
+This script uses a heuristic approach to minimize edge crossings by iteratively swapping node positions and checking if the swap reduces edge crossings. The final layout is output in JSON format. Note that this approach is not guaranteed to find the optimal layout but provides a reasonable approximation.

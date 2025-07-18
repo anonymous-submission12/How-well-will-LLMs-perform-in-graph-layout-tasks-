@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 18, in <module>
+    graph.add_edges(edge_list)
+  File "/usr/local/lib/python3.12/site-packages/igraph/basic.py", line 42, in _add_edges
+    res = GraphBase.add_edges(graph, es)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: error while indexing vertex names; did you accidentally try to use a non-hashable object as a vertex name earlier? Check the name of vertex 43 ({'11', '6', '26', '43', '29', '35', '44', '23', '51', '25', '27', '28', '31', '34', '5', '13', '55', '70', '71', '9', '7', '37', '4', '72', '15', '10', '2', '0', '49', '33', '38', '64', '8', '68', '36', '48', '3', '58', '1', '24', '12', '69', '14', '32'})

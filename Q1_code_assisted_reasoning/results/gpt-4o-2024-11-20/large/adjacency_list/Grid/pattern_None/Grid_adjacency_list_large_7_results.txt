@@ -1,0 +1,19 @@
+```python
+def identify_graph_pattern(adj_list):
+    # Check for Star pattern
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) > 1]
+    if len(center_nodes) == 1 and all(len(adj_list[n]) == 1 for n in adj_list if n != center_nodes[0]):
+        return "Star"
+
+    # Check for Cycle pattern
+    if all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        visited = set()
+        stack = list(adj_list.keys())[0]
+        parent = {stack: None}
+        while stack:
+            node = stack.pop()
+            visited.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    stack.append(neighbor)
+                    parent[neighbor]=

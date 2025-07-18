@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 62, in <module>
+    layout = compute_graph_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 40, in compute_graph_layout
+    result = minimize(stress_function, initial_positions.flatten(), method='L-BFGS-B')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 738, in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_lbfgsb_py.py", line 386, in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_optimize.py", line 291, in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_differentiable_functions.py", line 223, in __init__
+    self._update_fun()
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_differentiable_functions.py", line 295, in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/scipy/optimize/_differentiable_functions.py", line 21, in wrapped
+    fx = fun(np.copy(x), *args)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 35, in stress_function
+    stress = np.sum((euclidean_distances[mask] - graph_distances[mask])**2)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^
+IndexError: too many indices for array: array is 1-dimensional, but 2 were indexed

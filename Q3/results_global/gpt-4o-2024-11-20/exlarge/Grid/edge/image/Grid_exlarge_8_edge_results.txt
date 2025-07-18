@@ -1,0 +1,7 @@
+Looking at the images, Layout 2 has fewer edge crossings compared to Layout 1. The arrangement of nodes and edges in Layout 2 is more structured and less tangled.
+
+```json
+{
+  "Answer": 2
+}
+```

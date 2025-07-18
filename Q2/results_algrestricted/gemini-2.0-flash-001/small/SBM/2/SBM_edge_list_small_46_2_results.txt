@@ -1,0 +1,115 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Initialize node positions randomly
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    layout = {node: (random.random(), random.random()) for node in nodes}
+
+    # 2. Iteratively adjust positions to minimize stress
+    iterations = 100  # Number of iterations for refinement
+    alpha = 0.1       # Learning rate (adjust as needed)
+
+    for _ in range(iterations):
+        for u in nodes:
+            # Calculate the force acting on node u
+            force_x = 0.0
+            force_y = 0.0
+
+            for v in nodes:
+                if u == v:
+                    continue
+
+                # Calculate graph-theoretic distance (shortest path)
+                graph_dist = shortest_path_distance(u, v, edge_list, num_nodes)
+
+                # Calculate Euclidean distance
+                euclidean_dist = math.sqrt((layout[u][0] - layout[v][0])**2 + (layout[u][1] - layout[v][1])**2)
+
+                # Calculate the difference between the distances
+                diff = euclidean_dist - graph_dist
+
+                # Calculate the force components
+                force_x += (layout[v][0] - layout[u][0]) * diff
+                force_y += (layout[v][1] - layout[u][1]) * diff
+
+            # Update the position of node u
+            layout[u] = (layout[u][0] - alpha * force_x, layout[u][1] - alpha * force_y)
+
+    # 3. Normalize the layout to fit within [0, 1] x [0, 1]
+    min_x = min(x for x, y in layout.values())
+    max_x = max(x for x, y in layout.values())
+    min_y = min(y for x, y in layout.values())
+    max_y = max(y for x, y in layout.values())
+
+    for node in nodes:
+        x, y = layout[node]
+        x = (x - min_x) / (max_x - min_x) if (max_x - min_x) > 0 else 0.5
+        y = (y - min_y) / (max_y - min_y) if (max_y - min_y) > 0 else 0.5
+        layout[node] = (x, y)
+
+    return layout
+
+
+def shortest_path_distance(start_node, end_node, edge_list, num_nodes):
+    """
+    Calculates the shortest path distance between two nodes in a graph.
+
+    Args:
+        start_node: The starting node.
+        end_node: The ending node.
+        edge_list: A list of tuples representing the edges of the graph.
+        num_nodes: The number of nodes in the graph.
+
+    Returns:
+        The shortest path distance between the two nodes. Returns infinity if no path exists.
+    """
+
+    # Build adjacency list
+    adj = {i: [] for i in range(num_nodes)}
+    for u, v in edge_list:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # Initialize distances
+    distances = {node: float('inf') for node in adj}
+    distances[start_node] = 0
+
+    # BFS
+    queue = [start_node]
+    while queue:
+        u = queue.pop(0)
+        for v in adj[u]:
+            if distances[v] == float('inf'):
+                distances[v] = distances[u] + 1
+                queue.append(v)
+
+    return distances[end_node]
+
+
+# Example usage:
+edge_list = [(0, 1), (0, 3), (0, 4), (0, 5), (0, 12), (0, 17), (0, 19), (1, 2), (1, 3), (2, 4), (4, 5), (6, 7), (6, 9), (6, 10), (7, 8), (7, 9), (7, 10), (7, 11), (7, 17), (8, 9), (8, 10), (9, 11), (10, 11), (12, 13), (12, 15), (12, 16), (12, 17), (13, 15), (13, 16), (13, 17), (14, 15), (14, 16), (14, 17), (15, 16), (15, 17), (16, 17), (18, 20), (18, 22), (19, 20), (19, 21), (20, 21), (21, 22)]
+layout = layout_graph(edge_list)
+
+# Convert layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

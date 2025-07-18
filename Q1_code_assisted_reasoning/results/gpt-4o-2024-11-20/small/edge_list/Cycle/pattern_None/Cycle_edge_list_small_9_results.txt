@@ -1,0 +1,30 @@
+```python
+import networkx as nx
+
+# Define the graph
+edge_list = [(0, 1), (0, 28), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), 
+             (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), 
+             (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), 
+             (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), 
+             (25, 26), (26, 27), (27, 28)]
+
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Identify pattern
+node_degrees = dict(G.degree())
+
+# Check for a star graph
+if sum(degree == len(G.nodes) - 1 for degree in node_degrees.values()) == 1 and all(degree == 1 for degree in node_degrees.values() if degree != len(G.nodes) - 1):
+    print("Star")
+
+# Check for a path graph
+elif nx.is_connected(G) and all(degree <= 2 for degree in node_degrees.values()) and sum(degree == 1 for degree in node_degrees.values()) == 2:
+    print("Path")
+
+# Check for a cycle graph
+elif all(degree == 2 for degree in node_degrees.values()) and nx.is_connected(G) and len(edge_list) == len(node_degrees):
+    print("Cycle")
+
+# Check for a grid graph
+elif len(node_degrees) > 4 and all(degree == 2 or degree == 3 or degree == 4 for degree in node_degrees.values()) and len(edge_list) == len(G.nodes) + sum(d == 3 for d in node_degrees.values())ush ;<-- grid check borders print

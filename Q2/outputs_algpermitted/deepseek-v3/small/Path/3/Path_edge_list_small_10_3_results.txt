@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 19, in <module>
+    dot.layout(prog='dot')
+    ^^^^^^^^^^
+AttributeError: 'Digraph' object has no attribute 'layout'

@@ -1,0 +1,38 @@
+```python
+def determine_graph_pattern(adj_list):
+    n = len(adj_list)
+    degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+    max_degree = max(degrees.values())
+    min_degree = min(degrees.values())
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for Star pattern
+    if max_degree == n - 1 and min_degree == 1:
+        return "Star"
+
+    # Check for Cycle pattern
+    if all(degree == 2 for degree in degrees.values()) and edges == n:
+        return "Cycle"
+
+    # Check for Path pattern
+    if max_degree == 2 and min_degree == 1 and edges == n - 1:
+        return "Path"
+
+    # Check for Grid pattern (approximation based on degree)
+    if all(degree in {2, 3, 4} for degree in degrees.values()):
+        return "Grid"
+
+    # Check for Complete graph
+    if edges == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check for Clustered graph (approximation based on high local connectivity)
+    if max_degree > n // 2:
+        return "Clustered graph"
+
+    # Default to Random graph
+    return "Random graph"
+
+adj_list = {0: [12], 1: [2, 9], 2: [1, 4, 10, 11, 26], 3: [23], 4: [2, 15, 19, 24], 5: [7, 15, 20, 24], 6: [15, 23], 7: [5, 25, 26], 8: [12, 20], 9: [1, 21, 22, 23], 10: [2, 21], 11: [2, 18], 12: [0, 8, 13, 15, 20, 24], 13: [12], 14: [17, 22], 15: [4, 5, 6, 12, 22], 16: [24, 26], 17: [14, 23, 26], 18: [11, 25, 26], 19: [4, 22, 26], 20: [5, 8, 12], 21: [9, 10, 24], 22: [9, 14, 15, 19], 23: [3, 6, 9, 17, 24, 26], 24: [4, 5, 12, 16, 21, 23], 25: [7, 18], 26: [2, 7, 16, 17, 18, 19, 23]}
+print(determine_graph_pattern(adj_list))
+```

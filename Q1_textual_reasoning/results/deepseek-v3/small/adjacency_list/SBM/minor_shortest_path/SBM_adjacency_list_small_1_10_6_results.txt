@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 3
+}
+``` 
+
+The shortest path from node '10' to node '6' is directly connected, so the length of the shortest path is 1. However, based on the adjacency list provided, node '10' is directly connected to node '6', so the shortest path length is 1. If there was a typo in the question and you meant a different pair of nodes, please clarify.

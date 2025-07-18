@@ -1,0 +1,76 @@
+```python
+from collections import defaultdict
+
+def graph_pattern(adj_list):
+    # Helper function to count edges
+    def count_edges(adj_list):
+        edge_count = 0
+        for node, neighbors in adj_list.items():
+            edge_count += len(neighbors)
+        return edge_count // 2  # Each edge is counted twice
+
+    # Check for Star pattern
+    def is_star(adj_list):
+        center_count = sum(len(neighbors) > 1 for neighbors in adj_list.values())
+        return center_count == 1 and count_edges(adj_list) == len(adj_list) - 1
+
+    # Check for Cycle pattern
+    def is_cycle(adj_list):
+        return all(len(neighbors) == 2 for neighbors in adj_list.values()) and count_edges(adj_list) == len(adj_list)
+
+    # Check for Path pattern
+    def is_path(adj_list):
+        end_points = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return end_points == 2 and count_edges(adj_list) == len(adj_list) - 1
+
+    # Check for Grid pattern
+    def is_grid(adj_list):
+        # Grid graphs are hard to detect without coordinates, so we skip this check
+        return False
+
+    # Check for Complete pattern
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return count_edges(adj_list) == n * (n - 1) // 2
+
+    # Check for Clustered graph
+    def is_clustered(adj_list):
+        # Clustered graphs are hard to detect without additional information, so we skip this check
+        return False
+
+    # Check for Random graph
+    def is_random(adj_list):
+        # If none of the above patterns match, we assume it's random
+        return True
+
+    # Determine the pattern
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    elif is_random(adj_list):
+        return "Random"
+
+# Input adjacency list
+adj_list = {
+    0: [1, 24], 1: [0, 6, 23, 26, 28], 2: [10, 22, 28], 3: [4, 5, 8, 10, 22, 25, 27],
+    4: [3, 8, 11, 19, 24, 28], 5: [3], 6: [1, 12, 28], 7: [13, 16, 18, 19],
+    8: [3, 4, 9, 16, 23], 9: [8, 11, 14, 16, 17, 18, 19, 27], 10: [2, 3, 12, 19, 21],
+    11: [4, 9, 13, 14, 21], 12: [6, 10, 23], 13: [7, 11, 18], 14: [9, 11, 20],
+    15: [21, 22, 27], 16: [7, 8, 9], 17: [9], 18: [7, 9, 13, 26], 19: [4, 7, 9, 10],
+    20: [14, 24], 21: [10, 11, 15], 22: [2, 3, 15, 25, 26], 23: [1, 8, 12],
+    24: [0, 4, 20, 28], 25: [3, 22, 28], 26: [1, 18, 22], 27: [3, 9, 15],
+    28: [1, 2, 4, 6, 24, 25]
+}
+
+# Output the result
+print(graph_pattern(adj_list))
+```

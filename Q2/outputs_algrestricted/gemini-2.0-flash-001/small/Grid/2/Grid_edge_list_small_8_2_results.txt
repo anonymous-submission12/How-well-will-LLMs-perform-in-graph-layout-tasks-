@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 76, in <module>
+    layout = layout_graph(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 44, in layout_graph
+    distance = math.sqrt(dx**2 + dy**2)
+                         ~~^^~
+OverflowError: (34, 'Numerical result out of range')

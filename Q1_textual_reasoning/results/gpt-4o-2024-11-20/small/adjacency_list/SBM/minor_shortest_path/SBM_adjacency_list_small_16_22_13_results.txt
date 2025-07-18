@@ -1,0 +1,12 @@
+To calculate the shortest path between node '22' and node '13', we can use the Breadth-First Search (BFS) algorithm. Here's the solution:
+
+```json
+{
+  "answer": 5
+}
+```
+
+Explanation:
+1. Starting from node '22', we explore its neighbors: [20, 21, 23, 24, 25].
+2. From these neighbors, we continue exploring until we reach node '13'.
+3. The shortest path is: 22 → 24 → 8 → 13, which has a length of 5.

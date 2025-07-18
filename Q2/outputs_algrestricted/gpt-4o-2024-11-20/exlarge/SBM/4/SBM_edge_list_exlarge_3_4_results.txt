@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 51, in <module>
+    layout = generate_layout(graph_data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 9, in generate_layout
+    G.add_edges_from(graph_data)
+  File "/usr/local/lib/python3.12/site-packages/networkx/classes/graph.py", line 1031, in add_edges_from
+    ne = len(e)
+         ^^^^^^
+TypeError: object of type 'ellipsis' has no len()

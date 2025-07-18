@@ -1,0 +1,11 @@
+The graph theoretic distance between node 7 and node 22 is the number of edges in the shortest path between them, which is 15.
+The Euclidean distance between node 7 and node 22 is calculated as follows:
+sqrt((0.4 - (-0.47))^2 + (0.74 - (-0.4))^2) = sqrt((0.87)^2 + (1.14)^2) = sqrt(0.7569 + 1.2996) = sqrt(2.0565) = 1.434
+
+Since 1.434 < 15, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

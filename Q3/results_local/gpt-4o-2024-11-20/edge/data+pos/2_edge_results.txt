@@ -1,0 +1,35 @@
+To determine whether the two edges intersect, we need to analyze their coordinates:
+
+Edge 1 connects nodes 0 and 4:
+- Node 0: [-0.17, -0.0]
+- Node 4: [-0.25, 0.14]
+
+Edge 2 connects nodes 21 and 20:
+- Node 21: [-0.0, -0.26]
+- Node 20: [0.13, -0.27]
+
+Now, we check if these two line segments intersect. We use the orientation test method from computational geometry to determine whether two line segments intersect.
+
+### Steps:
+1. **Calculate orientations**: 
+   Orientation of points is determined using the determinant:
+   ```
+   Orientation(p, q, r) = (q_x - p_x) * (r_y - p_y) - (q_y - p_y) * (r_x - p_x)
+   ```
+   Based on its sign, it can either be clockwise, counterclockwise, or collinear.
+
+2. **Check for intersection conditions**:
+   Two edges intersect if:
+   - The orientations of the points on one edge with respect to the other edge straddle (one clockwise and one counterclockwise).
+   - Special case: collinear points where intersection overlaps.
+
+### Calculations:
+Let `p1 = [-0.17, -0.0]`, `p2 = [-0.25, 0.14]`, `q1 = [-0.0, -0.26]`, and `q2 = [0.13, -0.27]`.
+
+#### Orientation tests:
+- Orientation of (p1, p2, q1):  
+  ```
+  (-0.25 + 0.17) * (-0.26 + 0.0) - (0.14 - 0.0) *
+  ...
+  ...
+No

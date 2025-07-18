@@ -1,0 +1,76 @@
+Below is a Python script designed to create a graph layout with positions for the nodes, minimizing edge crossings. Instead of using any predefined libraries for layout generation, the script relies on a manual heuristic to assign positions to the nodes.
+
+The output of the script will be a JSON object representing the layout, where each node is assigned a position in a 2D space.
+
+```python
+import json
+import math
+
+# Define the graph data as an edge list
+edge_list = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14),
+             (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18),
+             (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), (13, 14),
+             (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Extract all unique nodes from the edge list
+nodes = list(set([node for edge in edge_list for node in edge]))
+
+# Initialize a dictionary to store the positions of nodes
+positions = {}
+
+# Manual heuristic for layout generation:
+# - Assign y-coordinates based on a rough grouping of nodes into levels based on their connection hierarchy.
+# - x-coordinates are evenly spaced for visual clarity.
+
+# Organize nodes into 'levels' for a hierarchical layout
+level_mapping = {}
+for edge in edge_list:
+    src, dest = edge
+    level_mapping.setdefault(src, []).append(dest)
+    level_mapping.setdefault(dest, []).append(src)
+
+# Assign levels based on distances from node 0 (using BFS)
+visited = set()
+levels = {0: 0}
+queue = [0]
+
+while queue:
+    current = queue.pop(0)
+    if current in visited:
+        continue
+    visited.add(current)
+    for neighbor in level_mapping.get(current, []):
+        if neighbor not in visited and neighbor not in queue:
+            queue.append(neighbor)
+            levels[neighbor] = levels[current] + 1
+
+# Group nodes by levels
+level_groups = {}
+for node, level in levels.items():
+    level_groups.setdefault(level, []).append(node)
+
+# Assign positions to nodes in a 2D space
+y_gap = 10  # Space between levels
+x_gap = 5   # Space between nodes on the same level
+
+for level, nodes_at_level in level_groups.items():
+    total_nodes = len(nodes_at_level)
+    for idx, node in enumerate(sorted(nodes_at_level)):
+        # Distribute nodes evenly at their respective levels
+        x = idx * x_gap
+        y = -level * y_gap  # Negative y for top-to-bottom hierarchy
+        positions[node] = (x, y)
+
+# Convert the positions dictionary into JSON-compatible format
+layout_json = json.dumps(positions, indent=4)
+
+# Print the JSON layout
+print(layout_json)
+```
+
+### Output Explanation:
+- The script organizes nodes in hierarchical levels using a breadth-first search (BFS) approach to estimate their levels in the graph.
+- X-coordinates are spaced evenly within each level, while Y-coordinates are based on the level depth, creating a top-to-bottom layered structure.
+- The layout is exported as a JSON object where each node has an associated (X, Y) position.
+
+You can execute this script, and the JSON layout of the graph will be printed to the console.

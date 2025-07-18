@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve the graph-theoretic distance. The nodes are arranged in a more sequential manner, following the connections in the graph data. Layout 1 has more nodes that are far apart despite being close in the graph.
+
+```json
+{
+"Answer": 2
+}
+```

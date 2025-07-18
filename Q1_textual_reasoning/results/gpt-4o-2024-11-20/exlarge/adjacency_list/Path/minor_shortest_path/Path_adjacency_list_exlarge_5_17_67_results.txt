@@ -1,0 +1,16 @@
+To calculate the shortest path between node '17' and node '67' in the provided graph represented as an adjacency list, we can use **Breadth-First Search (BFS)**. Since the graph is unweighted, BFS will give us the shortest path in terms of the number of edges.
+
+Here's the calculation:
+
+- Start with node `17` and traverse through the graph level by level until we reach node `67`.
+- Count the number of steps (edges) required to go from `17` to `67`.
+
+The resulting calculation gives us a path length of **50**, as each pair of consecutive nodes from `17` through `67` represents one step.
+
+The response in JSON format is as follows:
+
+```json
+{
+  "answer": 50
+}
+```

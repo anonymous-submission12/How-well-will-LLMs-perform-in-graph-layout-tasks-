@@ -1,0 +1,49 @@
+```python
+from collections import defaultdict
+
+# Input edge list
+edges = [(0, 1), (0, 48), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), 
+         (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), 
+         (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), 
+         (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), 
+         (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), 
+         (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), 
+         (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48)]
+
+# Find all nodes and degree of each node
+nodes = set()
+degree = defaultdict(int)
+adj_list = defaultdict(list)
+
+for u, v in edges:
+    nodes.add(u)
+    nodes.add(v)
+    degree[u] += 1
+    degree[v] += 1
+    adj_list[u].append(v)
+    adj_list[v].append(u)
+
+# Helper to check path
+def is_path():
+    return sum(1 for node in degree if degree[node] == 1) == 2 and \
+           all(deg <= 2 for deg in degree.values()) and len(edges) == len(nodes) - 1
+
+# Helper to check cycle
+def is_cycle():
+    return all(deg == 2 for deg in degree.values()) and len(edges) == len(nodes)
+
+# Helper to check star
+def is_star():
+    return sum(1 for node in degree if degree[node] == 1) == len(nodes) - 1 and \
+           any(deg == len(nodes) - 1 for deg in degree.values())
+
+# Start analysis
+if is_path():
+    print("Path")
+elif is_cycle():
+    print("Cycle")
+elif is_star():
+    print("Star")
+else:
+    print("None")
+```

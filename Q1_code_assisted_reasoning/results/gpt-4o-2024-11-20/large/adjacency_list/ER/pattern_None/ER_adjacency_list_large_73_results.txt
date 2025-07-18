@@ -1,0 +1,67 @@
+```python:/home/app/graph_analysis.py
+from collections import defaultdict
+
+# Given adjacency list
+graph = {0: [3, 4, 7, 13, 14, 32, 40, 41, 42], 1: [12, 16, 22, 25], 2: [20, 36, 42], 
+         3: [0, 24, 27, 29, 33, 36], 4: [0, 6, 7, 15, 31, 38, 40], 5: [35, 36, 37, 43], 
+         6: [4, 8, 12, 24, 30, 39], 7: [0, 4, 9, 19, 20, 22, 31, 41], 8: [6], 
+         9: [7, 21, 34, 39], 10: [14, 23, 27, 32, 35], 11: [12, 13, 19, 28, 43], 
+         12: [1, 6, 11, 16, 17, 36], 13: [0, 11, 19, 24, 43], 14: [0, 10, 20], 
+         15: [4, 23, 27, 37], 16: [1, 12, 27, 29, 33, 36], 17: [12, 18, 29, 31], 
+         18: [17, 22, 29, 31, 36, 41], 19: [7, 11, 13, 27, 36, 41, 42], 
+         20: [2, 7, 14, 43], 21: [9], 22: [1, 7, 18, 27, 43], 23: [10, 15, 32], 
+         24: [3, 6, 13, 25, 26, 30, 31, 32], 25: [1, 24, 28, 29, 33, 40], 
+         26: [24, 38], 27: [3, 10, 15, 16, 19, 22, 38], 28: [11, 25, 31], 
+         29: [3, 16, 17, 18, 25, 33], 30: [6, 24, 32], 31: [4, 7, 17, 18, 24, 28], 
+         32: [0, 10, 23, 24, 30, 42], 33: [3, 16, 25, 29], 34: [9, 42], 
+         35: [5, 10], 36: [2, 3, 5, 12, 16, 18, 19, 38, 42], 37: [5, 15, 43], 
+         38: [4, 26, 27, 36, 41], 39: [6, 9], 40: [0, 4, 25], 
+         41: [0, 7, 18, 19, 38], 42: [0, 2, 19, 32, 34, 36, 43], 
+         43: [5, 11, 13, 20, 22, 37, 42]}
+
+# Function to check if a graph is a star graph
+def is_star(graph):
+    center_count = sum(len(neighbors) > 1 for neighbors in graph.values())
+    return center_count == 1
+
+# Function to check if a graph is a complete graph
+def is_complete(graph):
+    n = len(graph)
+    return all(len(neighbors) == n - 1 for neighbors in graph.values())
+
+# Function to check if a graph is a cycle
+def is_cycle(graph):
+    n = len(graph)
+    return all(len(neighbors) == 2 for neighbors in graph.values())
+
+# Function to check if a graph is a path
+def is_path(graph):
+    end_nodes = sum(len(neighbors) == 1 for neighbors in graph.values())
+    return end_nodes == 2 and all(1 <= len(neighbors) <= 2 for neighbors in graph.values())
+
+# Function to check if the graph is a grid (approximate check)
+def is_grid(graph):
+    degree_counts = [len(neighbors) for neighbors in graph.values()]
+    return all(d in (2, 3, 4) for d in degree_counts)
+
+# Function to check if the graph is clustered (heuristic: presence of multiple small-degree nodes)
+def is_clustered(graph):
+    degree_counts = [len(neighbors) for neighbors in graph.values()]
+    return any(degree_counts.count(d) > len(degree_counts) * 0.1 for d in set(degree_counts))
+
+# Detect graph type by checking each pattern
+if is_star(graph):
+    print("Star")
+elif is_cycle(graph):
+    print("Cycle")
+elif is_path(graph):
+    print("Path")
+elif is_grid(graph):
+    print("Grid")
+elif is_complete(graph):
+    print("Complete")
+elif is_clustered(graph):
+    print("Clustered Graph")
+else:
+    print("Random Graph")
+```

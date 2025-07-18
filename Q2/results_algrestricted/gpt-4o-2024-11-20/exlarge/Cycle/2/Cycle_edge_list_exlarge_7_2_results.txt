@@ -1,0 +1,106 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The script uses a force-directed approach to iteratively adjust node positions based on graph-theoretic distances.
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+def compute_graph_layout(edge_list, iterations=1000, learning_rate=0.01):
+    # Step 1: Build adjacency list
+    adjacency_list = defaultdict(list)
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Step 2: Compute graph-theoretic distances using BFS
+    def bfs_distances(start_node):
+        distances = {start_node: 0}
+        queue = [start_node]
+        while queue:
+            current = queue.pop(0)
+            for neighbor in adjacency_list[current]:
+                if neighbor not in distances:
+                    distances[neighbor] = distances[current] + 1
+                    queue.append(neighbor)
+        return distances
+
+    all_distances = {}
+    for node in adjacency_list:
+        all_distances[node] = bfs_distances(node)
+
+    # Step 3: Initialize random positions for nodes
+    positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in adjacency_list}
+
+    # Step 4: Force-directed layout algorithm
+    for _ in range(iterations):
+        forces = {node: [0, 0] for node in adjacency_list}
+
+        # Compute repulsive forces
+        for u in adjacency_list:
+            for v in adjacency_list:
+                if u != v:
+                    dx = positions[u][0] - positions[v][0]
+                    dy = positions[u][1] - positions[v][1]
+                    distance = math.sqrt(dx**2 + dy**2) + 1e-6  # Avoid division by zero
+                    repulsive_force = 1 / distance**2
+                    forces[u][0] += repulsive_force * dx / distance
+                    forces[u][1] += repulsive_force * dy / distance
+
+        # Compute attractive forces
+        for u, v in edge_list:
+            dx = positions[u][0] - positions[v][0]
+            dy = positions[u][1] - positions[v][1]
+            distance = math.sqrt(dx**2 + dy**2) + 1e-6  # Avoid division by zero
+            target_distance = all_distances[u][v]
+            attractive_force = (distance - target_distance) / distance
+            forces[u][0] -= attractive_force * dx
+            forces[u][1] -= attractive_force * dy
+            forces[v][0] += attractive_force * dx
+            forces[v][1] += attractive_force * dy
+
+        # Update positions based on forces
+        for node in positions:
+            positions[node] = (
+                positions[node][0] + learning_rate * forces[node][0],
+                positions[node][1] + learning_rate * forces[node][1],
+            )
+
+    # Step 5: Normalize positions to fit in a unit square
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    normalized_positions = {
+        node: (
+            (pos[0] - min_x) / (max_x - min_x),
+            (pos[1] - min_y) / (max_y - min_y),
+        )
+        for node, pos in positions.items()
+    }
+
+    return normalized_positions
+
+# Input graph as edge list
+edge_list = [
+    (0, 1), (0, 76), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17),
+    (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25),
+    (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33),
+    (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41),
+    (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49),
+    (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57),
+    (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65),
+    (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73),
+    (73, 74), (74, 75), (75, 76)
+]
+
+# Generate layout
+layout = compute_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+This script computes a layout for the graph using a custom force-directed algorithm. The output is a JSON object containing the normalized positions of each node.

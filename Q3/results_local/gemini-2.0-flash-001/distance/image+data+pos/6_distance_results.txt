@@ -1,0 +1,10 @@
+The path from node 22 to node 9 is 22 -> 19 -> 1 -> 8 -> 9. The graph-theoretic distance is 4.
+The Euclidean distance between node 22 and node 9 is sqrt((0.82 - (-0.53))^2 + (0.53 - (-0.55))^2) = sqrt(1.35^2 + 1.08^2) = sqrt(1.8225 + 1.1664) = sqrt(2.9889) = 1.7288.
+
+Since 1.7288 < 4, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

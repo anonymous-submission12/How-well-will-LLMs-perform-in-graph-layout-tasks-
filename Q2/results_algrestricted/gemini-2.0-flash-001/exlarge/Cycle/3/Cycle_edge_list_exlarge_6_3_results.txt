@@ -1,0 +1,74 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layout algorithm that places nodes in a circle
+    if the graph is highly connected, or in a line if it is a chain. It attempts to
+    detect chain-like structures and lays them out linearly. Otherwise, it defaults
+    to a circular layout.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj_list = {}
+    for u, v in edge_list:
+        if u not in adj_list:
+            adj_list[u] = []
+        if v not in adj_list:
+            adj_list[v] = []
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+
+    num_nodes = len(set([u for u, v in edge_list] + [v for u, v in edge_list]))
+
+    # 2. Check for chain-like structure.  A chain has many nodes with degree 2, and a few with degree 1 (ends).
+    degree_counts = {}
+    for node in range(num_nodes):
+        degree = len(adj_list.get(node, []))
+        if degree not in degree_counts:
+            degree_counts[degree] = 0
+        degree_counts[degree] += 1
+
+    is_chain = False
+    if 1 in degree_counts and 2 in degree_counts:
+        if degree_counts[1] <= 2 and degree_counts[2] >= num_nodes - 2:
+            is_chain = True
+
+    # 3. Generate layout based on graph structure.
+    positions = {}
+    if is_chain:
+        # Linear layout
+        nodes = sorted(list(set([u for u, v in edge_list] + [v for u, v in edge_list])))
+        for i, node in enumerate(nodes):
+            positions[node] = (i, 0)  # Place nodes along the x-axis
+    else:
+        # Circular layout
+        import math
+        radius = 10  # Adjust radius as needed
+        for i in range(num_nodes):
+            angle = 2 * math.pi * i / num_nodes
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            positions[i] = (x, y)
+
+    return positions
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 75), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75)]
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

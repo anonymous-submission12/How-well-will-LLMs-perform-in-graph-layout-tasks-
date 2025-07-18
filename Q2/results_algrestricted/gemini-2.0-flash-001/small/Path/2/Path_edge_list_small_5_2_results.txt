@@ -1,0 +1,67 @@
+```python
+import json
+import math
+
+def graph_layout(edge_list):
+    """
+    Generates a layout for a graph, maintaining consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are (x, y) coordinates.  The layout is also returned as a JSON string.
+    """
+
+    # Determine the number of nodes
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    num_nodes = len(nodes)
+
+    # Initialize layout with nodes placed in a line
+    layout = {}
+    for i in range(num_nodes):
+        layout[i] = (i, 0)  # Place nodes along the x-axis
+
+    # Basic stress majorization (simplified for a linear graph)
+    for _ in range(100):  # Iterate to refine the layout
+        for u in range(num_nodes):
+            x_sum = 0
+            y_sum = 0
+            degree = 0
+            for v in range(num_nodes):
+                if (u, v) in edge_list or (v, u) in edge_list:
+                    degree += 1
+                    # Desired distance is 1 for adjacent nodes
+                    desired_distance = 1
+                    actual_distance = math.sqrt((layout[u][0] - layout[v][0])**2 + (layout[u][1] - layout[v][1])**2)
+
+                    if actual_distance > 0:
+                        x_sum += (layout[v][0] + (desired_distance / actual_distance) * (layout[v][0] - layout[u][0]))
+                        y_sum += (layout[v][1] + (desired_distance / actual_distance) * (layout[v][1] - layout[u][1]))
+                    else:
+                        # Handle the case where nodes are at the same location to avoid division by zero
+                        x_sum += layout[v][0]
+                        y_sum += layout[v][1]
+
+            if degree > 0:
+                layout[u] = (x_sum / degree, y_sum / degree)
+            else:
+                # Handle isolated nodes (if any)
+                layout[u] = (0, 0)
+
+    # Convert layout to JSON string
+    layout_json = json.dumps(layout)
+
+    return layout_json
+
+
+# Example usage with the provided graph data
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24)]
+layout_json = graph_layout(edge_list)
+print(layout_json)
+```

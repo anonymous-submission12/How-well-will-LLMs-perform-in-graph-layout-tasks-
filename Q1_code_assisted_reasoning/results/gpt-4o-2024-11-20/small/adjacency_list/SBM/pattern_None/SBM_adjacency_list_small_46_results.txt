@@ -1,0 +1,94 @@
+```python
+def graph_pattern_detection(adj_list):
+    def is_star(adj_list):
+        center_count = 0
+        leaf_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(adj_list) - 1:
+                center_count += 1
+            elif len(neighbors) == 1:
+                leaf_count += 1
+            else:
+                return False
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    def is_cycle(adj_list):
+        visited = set()
+        nodes = list(adj_list.keys())
+        if len(nodes) < 3:
+            return False
+        if not all(len(v) == 2 for v in adj_list.values()):  # Each node should be connected to exactly two neighbors
+            return False
+        
+        def dfs(node, parent):
+            visited.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor == parent:
+                    continue
+                elif neighbor in visited:
+                    continue
+                else:
+                    dfs(neighbor, node)
+        
+        dfs(nodes[0], None)
+        return len(visited) == len(nodes)
+
+    def is_path(adj_list):
+        endpoints = 0
+        for neighbors in adj_list.values():
+            if len(neighbors) == 1:
+                endpoints += 1
+            elif len(neighbors) > 2:
+                return False
+        return endpoints == 2
+
+    def is_grid(adj_list):
+        # A grid graph is difficult to verify with adjacency list alone; approximating for now
+        nodes = list(adj_list.keys())
+        if len(nodes) < 4:
+            return False
+        degree_counts = [len(v) for v in adj_list.values()]
+        return all(d <= 4 for d in degree_counts)  # Each node in a grid typically connects to 2-4 nodes
+
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered(adj_list):
+        clusters = 0
+        visited = set()
+        
+        def dfs(node):
+            stack = [node]
+            while stack:
+                current = stack.pop()
+                visited.add(current)
+                for neighbor in adj_list[current]:
+                    if neighbor not in visited:
+                        stack.append(neighbor)
+
+        for node in adj_list:
+            if node not in visited:
+                clusters += 1
+                dfs(node)
+
+        return clusters > 1
+
+    # Checks in order
+    if is_star(adj_list):
+        return "Star"
+    if is_cycle(adj_list):
+        return "Cycle"
+    if is_path(adj_list):
+        return "Path"
+    if is_grid(adj_list):
+        return "Grid"
+    if is_complete(adj_list):
+        return "Complete"
+    if is_clustered(adj_list):
+        return "Clustered graph"
+    return "Random graph"
+
+graph_data = {0: [1, 3, 4, 5, 12, 17, 19], 1: [0, 2, 3], 2: [1, 4], 3: [0, 1], 4: [0, 2, 5], 5: [0, 4], 6: [7, 9, 10], 7: [6, 8, 9, 10, 11, 17], 8: [7, 9, 10], 9: [6, 7, 8, 11], 10: [6, 7, 8, 11], 11: [7, 9, 10], 12: [0, 13, 15, 16, 17], 13: [12, 15, 16, 17], 14: [15, 16, 17], 15: [12, 13, 14, 16, 17], 16: [12, 13, 14, 15, 17], 17: [0, 7, 12, 13, 14, 15, 16], 18: [20, 22], 19: [0, 20, 21], 20: [18, 19, 21], 21: [19, 20, 22], 22: [18, 21]}
+print(graph_pattern_detection(graph_data))
+```

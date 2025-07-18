@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 27, in <module>
+    positions = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=2000, linLogMode=True, edgeWeightInfluence=1.0)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ForceAtlas2.forceatlas2_networkx_layout() got an unexpected keyword argument 'linLogMode'

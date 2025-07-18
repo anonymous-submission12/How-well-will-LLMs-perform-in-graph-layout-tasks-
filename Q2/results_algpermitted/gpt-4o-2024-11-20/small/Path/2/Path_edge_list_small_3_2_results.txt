@@ -1,0 +1,38 @@
+To produce a graph layout that maintains consistency between Euclidean distance and graph-theoretical distance, we can use the `spring_layout` algorithm provided by NetworkX. This algorithm simulates a force-directed layout, where nodes repel and edges act as springs to converge into a stable layout.
+
+Here's the Python code to generate the layout and produce the result in JSON format, using NetworkX for layout computation but without drawing the graph. The output is returned as a JSON object containing the node positions.
+
+```python
+import networkx as nx
+import json
+
+# Graph edges
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), 
+    (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), 
+    (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), 
+    (18, 19), (19, 20), (20, 21), (21, 22)
+]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate node positions using a spring layout
+positions = nx.spring_layout(G)
+
+# Convert positions to a JSON serializable format
+positions_json = {str(node): pos.tolist() for node, pos in positions.items()}
+
+# Print the layout in JSON format
+print(json.dumps(positions_json, indent=4))
+```
+
+### Explanation:
+- **Input Data**: The input is an edge list that defines the graph.
+- **Graph Construction**: Using NetworkX's `Graph` class, we construct the graph with `add_edges_from`.
+- **Spring Layout**: The `spring_layout` function in NetworkX computes a force-directed layout, preserving graph-theoretic distances.
+- **JSON Serialization**: Node positions returned by `spring_layout` are converted into a dictionary (`positions_json`) with the node IDs as string keys and their coordinates as lists.
+- **Output**: The layout positions are printed in JSON format, which can be saved or used further.
+
+Replace the `<graph data>` in the input with appropriate edge lists to reuse this script for other graphs.

@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+The graph provided is a star-shaped graph where node `0` is connected to all other nodes (1 through 20). To find the shortest path between node `14` and node `9`, we can observe that both nodes are directly connected to node `0`. Therefore, the shortest path from `14` to `9` is `14 -> 0 -> 9`, which has a length of 2.

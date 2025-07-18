@@ -1,0 +1,54 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 7), (1, 2), (1, 8), (2, 3), (2, 9), (3, 4), (3, 10), (4, 5), (4, 11), 
+             (5, 6), (5, 12), (6, 13), (7, 8), (7, 14), (8, 9), (8, 15), (9, 10), (9, 16), 
+             (10, 11), (10, 17), (11, 12), (11, 18), (12, 13), (12, 19), (13, 20), 
+             (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+
+# Create the graph from the edge list
+G = nx.Graph(edge_list)
+
+# Check graph properties
+def is_star(graph):
+    center_nodes = [node for node in graph.nodes if graph.degree[node] > 1]
+    return len(center_nodes) == 1 and all(graph.degree[node] == 1 for node in graph.nodes if node not in center_nodes)
+
+def is_cycle(graph):
+    return nx.is_connected(graph) and all(graph.degree[node] == 2 for node in graph.nodes) and len(graph.edges) == len(graph.nodes)
+
+def is_path(graph):
+    return nx.is_connected(graph) and sum(graph.degree[node] == 1 for node in graph.nodes) == 2 and all(graph.degree[node] <= 2 for node in graph.nodes)
+
+def is_grid(graph):
+    rows = int(len(graph.nodes) ** 0.5)
+    cols = rows
+    return len(graph.nodes) == rows * cols and all((node + 1 in graph.neighbors(node) or node + cols in graph.neighbors(node)) for node in graph.nodes if node + 1 < len(graph.nodes))
+
+def is_complete(graph):
+    n = len(graph.nodes)
+    return len(graph.edges) == n * (n - 1) // 2
+
+def is_clustered(graph):
+    return any(graph.subgraph(cluster).number_of_edges() > 0 for cluster in nx.connected_components(graph))
+
+def is_random(graph):
+    return not (is_star(graph) or is_cycle(graph) or is_path(graph) or is_grid(graph) or is_complete(graph) or is_clustered(graph))
+
+# Determine pattern
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered graph")
+elif is_random(G):
+    print("Random graph")
+```

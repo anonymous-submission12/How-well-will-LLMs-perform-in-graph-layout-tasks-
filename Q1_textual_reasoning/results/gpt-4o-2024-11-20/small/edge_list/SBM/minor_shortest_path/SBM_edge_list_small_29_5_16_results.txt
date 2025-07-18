@@ -1,0 +1,11 @@
+To calculate the shortest path between nodes `5` and `16` in the graph described by the edge list, we can treat it as an unweighted graph and use the Breadth-First Search (BFS) algorithm, which is efficient for finding the shortest path in such cases.
+
+Here is the result:
+
+```json
+{
+  "answer": 3
+}
+```
+
+The shortest path from node `5` to node `16` passes through the sequence: `5 -> 4 -> 17 -> 16`. The path length is 3.

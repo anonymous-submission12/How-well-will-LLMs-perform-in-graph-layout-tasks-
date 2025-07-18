@@ -1,0 +1,125 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Determine the number of nodes
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions.  Start with a circle.
+    positions = {}
+    for i in range(num_nodes):
+        angle = 2 * math.pi * i / num_nodes
+        positions[i] = (math.cos(angle), math.sin(angle))
+
+    # 3. Iteratively adjust positions to minimize stress.
+    # Stress is defined as the difference between the graph-theoretic distance
+    # and the Euclidean distance.
+
+    def compute_graph_theoretic_distances(edge_list, num_nodes):
+        """Computes all-pairs shortest path distances."""
+        distances = {}
+        for i in range(num_nodes):
+            distances[i] = {}
+            for j in range(num_nodes):
+                distances[i][j] = float('inf')
+            distances[i][i] = 0
+
+        for u, v in edge_list:
+            distances[u][v] = 1
+            distances[v][u] = 1
+
+        for k in range(num_nodes):
+            for i in range(num_nodes):
+                for j in range(num_nodes):
+                    distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
+        return distances
+
+    def compute_euclidean_distance(pos1, pos2):
+        """Computes the Euclidean distance between two points."""
+        return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+    def compute_stress(positions, graph_distances):
+        """Computes the stress of the layout."""
+        stress = 0
+        num_nodes = len(positions)
+        for i in range(num_nodes):
+            for j in range(i + 1, num_nodes):
+                d_graph = graph_distances[i][j]
+                d_euclidean = compute_euclidean_distance(positions[i], positions[j])
+                stress += (d_graph - d_euclidean)**2
+        return stress
+
+    graph_distances = compute_graph_theoretic_distances(edge_list, num_nodes)
+
+    # Optimization loop
+    num_iterations = 100
+    learning_rate = 0.01
+
+    for _ in range(num_iterations):
+        for i in range(num_nodes):
+            # Calculate the force on node i
+            force_x = 0
+            force_y = 0
+            for j in range(num_nodes):
+                if i != j:
+                    d_graph = graph_distances[i][j]
+                    d_euclidean = compute_euclidean_distance(positions[i], positions[j])
+                    
+                    #Attractive force if Euclidean distance is greater than graph distance
+                    #Repulsive force if Euclidean distance is less than graph distance
+                    force_magnitude = d_graph - d_euclidean
+                    
+                    dx = positions[j][0] - positions[i][0]
+                    dy = positions[j][1] - positions[i][1]
+                    
+                    #Avoid division by zero
+                    if d_euclidean > 0:
+                        force_x += force_magnitude * dx / d_euclidean
+                        force_y += force_magnitude * dy / d_euclidean
+                    
+            # Update the position of node i
+            positions[i] = (positions[i][0] + learning_rate * force_x,
+                            positions[i][1] + learning_rate * force_y)
+
+    # 4. Normalize positions to fit within a unit square.
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    range_x = max_x - min_x
+    range_y = max_y - min_y
+
+    if range_x == 0:
+        range_x = 1  # Avoid division by zero if all x-coordinates are the same
+    if range_y == 0:
+        range_y = 1  # Avoid division by zero if all y-coordinates are the same
+
+    normalized_positions = {}
+    for node, (x, y) in positions.items():
+        normalized_positions[node] = ((x - min_x) / range_x, (y - min_y) / range_y)
+
+    return normalized_positions
+
+
+# Example usage:
+edge_list = [(0, 1), (0, 39), (1, 2), (1, 40), (2, 3), (2, 41), (3, 4), (3, 42), (4, 5), (4, 43), (5, 6), (5, 44), (6, 7), (6, 45), (7, 8), (7, 46), (8, 9), (8, 47), (9, 10), (9, 48), (10, 11), (10, 49), (11, 12), (11, 50), (12, 13), (12, 51), (13, 14), (13, 52), (14, 15), (14, 53), (15, 16), (15, 54), (16, 17), (16, 55), (17, 18), (17, 56), (18, 19), (18, 57), (19, 20), (19, 58), (20, 21), (20, 59), (21, 22), (21, 60), (22, 23), (22, 61), (23, 24), (23, 62), (24, 25), (24, 63), (25, 26), (25, 64), (26, 27), (26, 65), (27, 28), (27, 66), (28, 29), (28, 67), (29, 30), (29, 68), (30, 31), (30, 69), (31, 32), (31, 70), (32, 33), (32, 71), (33, 34), (33, 72), (34, 35), (34, 73), (35, 36), (35, 74), (36, 37), (36, 75), (37, 38), (37, 76), (38, 77), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), (76, 77)]
+layout = layout_graph(edge_list)
+print(json.dumps(layout, indent=2))
+```

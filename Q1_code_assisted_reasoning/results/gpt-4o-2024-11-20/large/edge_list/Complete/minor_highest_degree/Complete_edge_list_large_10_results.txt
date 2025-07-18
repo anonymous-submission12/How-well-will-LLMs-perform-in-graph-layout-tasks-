@@ -1,0 +1,15 @@
+```python
+from collections import Counter
+
+# Define the edge list
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), ..., (47, 49), (48, 49)]
+
+# Flatten the edge list into a list of nodes and count their appearances
+degree_count = Counter(node for edge in edges for node in edge)
+
+# Find the maximum degree
+max_degree = max(degree_count.values())
+
+# Print the result
+print(max_degree)
+```

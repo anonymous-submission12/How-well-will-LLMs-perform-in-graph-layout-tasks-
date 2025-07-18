@@ -1,0 +1,14 @@
+To calculate the highest degree of any node in the provided graph, the degree of a node is the number of connections (edges) it has. Based on the given adjacency list, the degree of each node can be counted by examining the length of its list of connected nodes.
+
+Here is the result:
+
+```json
+{
+  "answer": 71
+}
+```
+
+Explanation:
+- Node `0` is connected to all other 71 nodes, so it has a degree of 71.
+- All other nodes (nodes `1` to `71`) are only connected to node `0`, so each of them has a degree of 1.
+- The highest degree among all nodes is 71, which belongs to node `0`.

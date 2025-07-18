@@ -1,0 +1,21 @@
+To find the shortest path between node '1' and node '18', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start at node '1'.
+2. Explore all its neighbors (nodes '0', '2', and '12').
+3. From these neighbors, explore their neighbors, and so on, until we reach node '18'.
+
+Using this approach, the shortest path from node '1' to node '18' is as follows:
+
+1 → 2 → 3 → 4 → 5 → 6 → 7 → 18
+
+The length of this path is 7 edges.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 7
+}
+```

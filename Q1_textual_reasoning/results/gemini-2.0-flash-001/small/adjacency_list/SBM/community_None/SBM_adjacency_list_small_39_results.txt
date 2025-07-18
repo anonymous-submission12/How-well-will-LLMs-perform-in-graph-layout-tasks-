@@ -1,0 +1,14 @@
+Based on the provided adjacency list, we can identify the connected components, which correspond to the communities.
+
+The graph consists of the following nodes: 0-22.
+
+Nodes 0-11 form a highly interconnected component.
+Nodes 12-22 form another highly interconnected component.
+
+Therefore, there are two distinct communities in the graph.
+
+```json
+{
+"answer": 2
+}
+```

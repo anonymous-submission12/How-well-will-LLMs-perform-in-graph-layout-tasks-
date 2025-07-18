@@ -1,0 +1,8 @@
+To determine the highest degree of all nodes in the given graph, we first calculate the degree of each node (how many edges are connected to it). Here's the solution:
+
+### Result
+```json
+{
+  "answer": 14
+}
+```

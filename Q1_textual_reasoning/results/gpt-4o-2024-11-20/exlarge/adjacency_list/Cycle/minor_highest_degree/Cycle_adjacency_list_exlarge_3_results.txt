@@ -1,0 +1,7 @@
+To calculate the highest degree of all nodes in the given graph, we need to compute the number of connections for each node and find the maximum among them. Here is the solution:
+
+```json
+{
+  "answer": 2
+}
+```

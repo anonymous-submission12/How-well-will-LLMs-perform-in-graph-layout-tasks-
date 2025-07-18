@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 47
+    print(shortest_path_length(adj_list, start_node, end_node)
+         ^
+SyntaxError: '(' was never closed

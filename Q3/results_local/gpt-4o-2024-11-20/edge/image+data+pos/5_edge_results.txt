@@ -1,0 +1,60 @@
+To determine whether the two edges intersect, we can use the mathematical approach of checking line segment intersection. The edges are defined by their endpoints, and the coordinates of the nodes are provided.
+
+### Edge Data:
+- Edge 1: (6, 4) → Coordinates: `[-0.3, 0.1]` and `[-0.44, 0.27]`
+- Edge 2: (21, 17) → Coordinates: `[0.06, -0.38]` and `[0.21, -0.64]`
+
+### Steps:
+1. Represent the edges as line segments using their endpoints.
+2. Use the orientation method to check if the two line segments intersect.
+
+### Orientation Method:
+The orientation of three points can be used to determine the relative position of the points. For two line segments, we check the orientation of the endpoints of one segment relative to the other segment.
+
+#### Formula:
+The orientation of three points `(p, q, r)` is determined by the value:
+\[ \text{val} = (q_y - p_y) \cdot (r_x - q_x) - (q_x - p_x) \cdot (r_y - q_y) \]
+- If `val == 0`, the points are collinear.
+- If `val > 0`, the orientation is clockwise.
+- If `val < 0`, the orientation is counterclockwise.
+
+#### Check Intersection:
+Two line segments `(p1, q1)` and `(p2, q2)` intersect if:
+1. The orientations of `(p1, q1, p2)` and `(p1, q1, q2)` are different.
+2. The orientations of `(p2, q2, p1)` and `(p2, q2, q1)` are different.
+
+### Calculation:
+Let:
+- `p1 = [-0.3, 0.1]`, `q1 = [-0.44, 0.27]`
+- `p2 = [0.06, -0.38]`, `q2 = [0.21, -0.64]`
+
+#### Orientation Values:
+1. Orientation of `(p1, q1, p2)`:
+   \[ \text{val} = (0.27 - 0.1) \cdot (0.06 - (-0.44)) - ((-0.44) - (-0.3)) \cdot (-0.38 - 0.27) \]
+   \[ \text{val} = 0.17 \cdot 0.5 - (-0.14) \cdot (-0.65) \]
+   \[ \text{val} = 0.085 - 0.091 = -0.006 \] (Counterclockwise)
+
+2. Orientation of `(p1, q1, q2)`:
+   \[ \text{val} = (0.27 - 0.1) \cdot (0.21 - (-0.44)) - ((-0.44) - (-0.3)) \cdot (-0.64 - 0.27) \]
+   \[ \text{val} = 0.17 \cdot 0.65 - (-0.14) \cdot (-0.91) \]
+   \[ \text{val} = 0.1105 - 0.1274 = -0.0169 \] (Counterclockwise)
+
+3. Orientation of `(p2, q2, p1)`:
+   \[ \text{val} = (-0.64 - (-0.38)) \cdot (-0.3 - 0.21) - (0.21 - 0.06) \cdot (0.1 - (-0.64)) \]
+   \[ \text{val} = -0.26 \cdot -0.51 - 0.15 \cdot 0.74 \]
+   \[ \text{val} = 0.1326 - 0.111 = 0.0216 \] (Clockwise)
+
+4. Orientation of `(p2, q2, q1)`:
+   \[ \text{val} = (-0.64 - (-0.38)) \cdot (-0.44 - 0.21) - (0.21 - 0.06) \cdot (0.27 - (-0.64)) \]
+   \[ \text{val} = -0.26 \cdot -0.65 - 0.15 \cdot 0.91 \]
+   \[ \text{val} = 0.169 - 0.1365 = 0.0325 \] (Clockwise)
+
+#### Conclusion:
+The orientations of `(p1, q1, p2)` and `(p1, q1, q2)` are the same (both counterclockwise). The orientations of `(p2, q2, p1)` and `(p2, q2, q1)` are the same (both clockwise). Therefore, the two line segments **do not intersect**.
+
+### Final Answer:
+```json
+{
+  "Answer": "No"
+}
+```

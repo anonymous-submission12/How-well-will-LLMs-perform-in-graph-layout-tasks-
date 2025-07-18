@@ -1,0 +1,111 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Helper function to check if the graph is a star
+    def is_star():
+        center_count = 0
+        leaf_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(adj_list) - 1:
+                center_count += 1
+            elif len(neighbors) == 1:
+                leaf_count += 1
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    # Helper function to check if the graph is a cycle
+    def is_cycle():
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != 2:
+                return False
+        return True
+
+    # Helper function to check if the graph is a path
+    def is_path():
+        end_nodes = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == 1:
+                end_nodes += 1
+            elif len(neighbors) > 2:
+                return False
+        return end_nodes == 2
+
+    # Helper function to check if the graph is complete
+    def is_complete():
+        n = len(adj_list)
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != n - 1:
+                return False
+        return True
+
+    # Helper function to check if the graph is a grid
+    def is_grid():
+        # A grid graph has nodes with degree 2, 3, or 4
+        for node, neighbors in adj_list.items():
+            if len(neighbors) not in {2, 3, 4}:
+                return False
+        return True
+
+    # Helper function to check if the graph is clustered
+    def is_clustered():
+        # A clustered graph has dense subgraphs with sparse connections between them
+        # Check for subgraphs with high internal connectivity
+        visited = set()
+        clusters = []
+
+        def dfs(node, cluster):
+            visited.add(node)
+            cluster.append(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    dfs(neighbor, cluster)
+
+        for node in adj_list:
+            if node not in visited:
+                cluster = []
+                dfs(node, cluster)
+                clusters.append(cluster)
+
+        # Check if each cluster is dense
+        for cluster in clusters:
+            cluster_size = len(cluster)
+            edge_count = 0
+            for node in cluster:
+                edge_count += len([neighbor for neighbor in adj_list[node] if neighbor in cluster])
+            edge_count //= 2  # Each edge is counted twice
+            if edge_count < (cluster_size * (cluster_size - 1)) // 4:  # Arbitrary density threshold
+                return False
+        return True
+
+    # Helper function to check if the graph is random
+    def is_random():
+        # A random graph does not fit any of the above patterns
+        return not (is_star() or is_cycle() or is_path() or is_complete() or is_grid() or is_clustered())
+
+    # Determine the graph pattern
+    if is_star():
+        return "Star"
+    elif is_cycle():
+        return "Cycle"
+    elif is_path():
+        return "Path"
+    elif is_complete():
+        return "Complete"
+    elif is_grid():
+        return "Grid"
+    elif is_clustered():
+        return "Clustered"
+    elif is_random():
+        return "Random"
+
+# Input adjacency list
+adj_list = {
+    0: [1, 2, 3, 4, 5, 6, 8, 15], 1: [0, 2, 5, 6], 2: [0, 1, 3, 4, 5, 6], 3: [0, 2, 5, 6],
+    4: [0, 2, 5, 6], 5: [0, 1, 2, 3, 4, 6], 6: [0, 1, 2, 3, 4, 5], 7: [8, 9, 10, 11, 12, 13],
+    8: [0, 7, 9, 11, 12], 9: [7, 8, 10, 11, 12, 13], 10: [7, 9, 13], 11: [7, 8, 9, 12],
+    12: [7, 8, 9, 11, 13, 15], 13: [7, 9, 10, 12], 14: [15, 16, 17, 18],
+    15: [0, 12, 14, 16, 18, 19, 20], 16: [14, 15, 17, 20], 17: [14, 16, 18, 19, 20],
+    18: [14, 15, 17, 19], 19: [15, 17, 18, 20], 20: [15, 16, 17, 19]
+}
+
+# Print the result
+print(determine_graph_pattern(adj_list))
+```

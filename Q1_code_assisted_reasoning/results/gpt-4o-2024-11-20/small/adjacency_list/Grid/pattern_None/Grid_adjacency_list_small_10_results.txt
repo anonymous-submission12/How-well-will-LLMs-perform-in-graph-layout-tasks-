@@ -1,0 +1,8 @@
+```python
+def identify_graph_pattern(adj_list):
+    num_nodes = len(adj_list)
+    
+    # Check for Grid pattern
+    grid_rows, grid_cols = 0, 0
+    for key, edges in adj_list.items():
+        if len(edges) == 4: 

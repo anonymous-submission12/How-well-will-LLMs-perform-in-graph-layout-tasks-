@@ -1,0 +1,60 @@
+Here's how we can determine the number of communities in the given graph data using a connected components approach. We treat each connected component as a community.
+
+```python
+def count_communities(edge_list):
+    """
+    Counts the number of communities in a graph represented by an edge list.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        The number of connected components (communities) in the graph.
+    """
+
+    # Build the graph as an adjacency list
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Find all nodes in the graph
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    # Function to perform Depth First Search (DFS)
+    def dfs(node, visited, component):
+        visited[node] = True
+        component.append(node)
+        for neighbor in graph.get(node, []):
+            if not visited.get(neighbor, False):
+                dfs(neighbor, visited, component)
+
+    # Find connected components
+    visited = {}
+    communities = []
+    for node in nodes:
+        if not visited.get(node, False):
+            component = []
+            dfs(node, visited, component)
+            communities.append(component)
+
+    return len(communities)
+
+
+edge_list = [(0, 1), (0, 3), (1, 2), (2, 5), (3, 4), (3, 5), (4, 5), (5, 11), (6, 8), (6, 9), (6, 10), (6, 11), (6, 13), (7, 10), (7, 11), (8, 9), (8, 10), (8, 11), (9, 10), (9, 11), (10, 11), (12, 13), (12, 15), (12, 16), (12, 17), (13, 15), (13, 17), (13, 25), (14, 15), (14, 17), (15, 16), (15, 17), (15, 22), (16, 17), (18, 19), (18, 21), (18, 22), (19, 20), (19, 21), (20, 22), (23, 24), (23, 25), (23, 26), (23, 27), (24, 25), (24, 26), (24, 27), (25, 26), (25, 27), (26, 27)]
+num_communities = count_communities(edge_list)
+print(num_communities)
+```
+
+```json
+{
+  "answer": 4
+}
+```

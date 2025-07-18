@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 10
+    ...
+    ^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?

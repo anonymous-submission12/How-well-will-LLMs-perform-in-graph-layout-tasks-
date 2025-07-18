@@ -1,0 +1,7 @@
+Layout 2 is a chain-like structure, which better reflects the graph-theoretic distances in the given graph data. Layout 1 has many nodes close to each other, which does not reflect the graph-theoretic distances.
+
+```json
+{
+"Answer": 2
+}
+```

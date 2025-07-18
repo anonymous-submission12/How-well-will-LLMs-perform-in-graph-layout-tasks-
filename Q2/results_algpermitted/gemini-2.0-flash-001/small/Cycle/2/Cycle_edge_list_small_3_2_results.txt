@@ -1,0 +1,41 @@
+```python
+import json
+import numpy as np
+from sklearn.manifold import MDS
+from scipy.sparse.csgraph import floyd_warshall
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node indices and values are [x, y] coordinates.
+    """
+
+    # 1. Create adjacency matrix
+    num_nodes = max(max(edge) for edge in edge_list) + 1
+    adj_matrix = np.zeros((num_nodes, num_nodes))
+    for u, v in edge_list:
+        adj_matrix[u, v] = 1
+        adj_matrix[v, u] = 1  # Assuming undirected graph
+
+    # 2. Calculate graph-theoretic distances (shortest paths)
+    dist_matrix = floyd_warshall(adj_matrix)
+
+    # 3. Use Multidimensional Scaling (MDS) to generate layout
+    mds = MDS(n_components=2, dissimilarity="precomputed", random_state=42)
+    positions = mds.fit_transform(dist_matrix)
+
+    # 4. Convert to JSON format
+    layout = {i: positions[i].tolist() for i in range(num_nodes)}
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+graph_layout_json = layout_graph(edge_list)
+print(graph_layout_json)
+```

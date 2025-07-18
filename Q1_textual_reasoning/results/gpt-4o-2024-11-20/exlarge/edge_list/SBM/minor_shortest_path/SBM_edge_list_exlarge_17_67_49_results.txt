@@ -1,0 +1,7 @@
+To determine the shortest path between node '67' and node '49', we can use graph traversal methods like Breadth-First Search (BFS) on the given edge list representation. Here's the solution:
+
+```json
+{
+  "answer": 6
+}
+```

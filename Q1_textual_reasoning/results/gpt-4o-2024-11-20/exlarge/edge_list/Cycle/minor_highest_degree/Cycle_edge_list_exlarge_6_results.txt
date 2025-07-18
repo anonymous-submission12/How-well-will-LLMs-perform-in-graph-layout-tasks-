@@ -1,0 +1,17 @@
+To calculate the highest degree of all nodes in the graph, we first determine the degree of each node. The degree of a node is the number of edges connected to it.
+
+The graph data is given as an edge list. Here's the calculated result:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+
+- Node `0` has **2 edges**: `(0, 1)` and `(0, 75)`.
+- Node `75` also has **2 edges**: `(0, 75)` and `(74, 75)`.
+- Every other node in the graph (from `1` to `74`) has **2 edges**, except for nodes `1` and `74`.
+  
+-max node Degree

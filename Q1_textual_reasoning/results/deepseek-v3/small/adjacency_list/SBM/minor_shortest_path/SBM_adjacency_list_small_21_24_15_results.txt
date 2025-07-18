@@ -1,0 +1,23 @@
+To find the shortest path between node '24' and '15', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start from node '24'.
+2. Explore all its neighbors.
+3. From each neighbor, explore their neighbors, and so on, until we reach node '15'.
+4. Keep track of the number of steps taken to reach each node.
+
+Let's perform the BFS:
+
+- **Step 1**: Start at node '24'. Neighbors: [10, 22, 23, 25, 26, 27, 28, 29].
+- **Step 2**: From node '10', neighbors: [11, 12, 13, 14, 15, 17, 18, 24]. We find node '15' here.
+
+So, the shortest path from '24' to '15' is: 24 → 10 → 15.
+
+The length of this path is 2.
+
+```json
+{
+  "answer": 2
+}
+```

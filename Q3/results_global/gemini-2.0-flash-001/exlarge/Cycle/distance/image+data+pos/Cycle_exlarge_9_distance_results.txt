@@ -1,0 +1,7 @@
+The graph data represents a path graph. Layout 2 arranges the nodes in a linear fashion, which perfectly reflects the graph-theoretic distances in a path graph. Layout 1, on the other hand, has many nodes close to each other that are far apart in the graph.
+
+```json
+{
+"Answer": 2
+}
+```

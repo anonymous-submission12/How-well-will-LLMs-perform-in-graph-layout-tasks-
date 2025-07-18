@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes '3' and '10' in the given graph, we can use the Breadth-First Search (BFS) algorithm. The graph is represented as an adjacency list, and the BFS algorithm will find the shortest path in an unweighted graph.
+
+Here is the result:
+
+```json
+{
+  "answer": 7
+}
+```
+
+Explanation:
+- The shortest path from node '3' to node '10' is: 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10.
+- This path has a length of 7.

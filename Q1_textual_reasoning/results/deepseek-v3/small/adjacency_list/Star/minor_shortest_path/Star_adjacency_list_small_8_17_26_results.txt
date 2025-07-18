@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+Explanation: The shortest path from node '17' to node '26' is through node '0'. The path is '17' → '0' → '26', which has a length of 2.

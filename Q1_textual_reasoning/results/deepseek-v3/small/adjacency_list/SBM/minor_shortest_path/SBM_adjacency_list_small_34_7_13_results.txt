@@ -1,0 +1,17 @@
+```json
+{
+  "answer": 5
+}
+``` 
+
+### Explanation:
+To find the shortest path between node '7' and '13', we can use the Breadth-First Search (BFS) algorithm. Here is the path:
+
+1. Start at node **7**.
+2. Move to node **8** (7 → 8).
+3. Move to node **6** (7 → 8 → 6).
+4. Move to node **15** (7 → 8 → 6 → 15).
+5. Move to node **14** (7 → 8 → 6 → 15 → 14).
+6. Move to node **13** (7 → 8 → 6 → 15 → 14 → 13).
+
+The shortest path length is **5**.

@@ -1,0 +1,36 @@
+Below is a Python script that takes the given edge list representation of a graph and generates a layout for the graph that minimizes edge crossings. It uses the `networkx` library to create the graph and the `kamada_kawai_layout` algorithm (designed to achieve a readable layout with minimal edge crossings). The layout is then printed in JSON format without using any plotting libraries.
+
+```python
+import json
+import networkx as nx
+
+# Define the edge list of the graph
+edge_list = [
+    (0, 1), (0, 12), (1, 2), (1, 13), (2, 3), (2, 14), (3, 4), (3, 15),
+    (4, 5), (4, 16), (5, 6), (5, 17), (6, 7), (6, 18), (7, 8), (7, 19),
+    (8, 9), (8, 20), (9, 10), (9, 21), (10, 11), (10, 22), (11, 23),
+    (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18),
+    (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)
+]
+
+# Create a graph using NetworkX
+graph = nx.Graph()
+graph.add_edges_from(edge_list)
+
+# Generate a layout using the Kamada-Kawai algorithm
+layout = nx.kamada_kawai_layout(graph)
+
+# Convert the layout to a JSON-serializable format
+layout_json = {node: pos.tolist() for node, pos in layout.items()}
+
+# Print the layout in JSON format
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation:** The script uses `networkx.Graph` to create an undirected graph from the given edge list.
+2. **Layout Algorithm:** The `kamada_kawai_layout` function from NetworkX computes the layout of the graph, aiming for a readable structure with minimal edge crossings.
+3. **JSON Serialization:** The positions from the layout (in dictionary format) are converted to a JSON-serializable format using Python's `json.dumps`, with indentation for readability.
+4. **Output:** The script prints the positions of the nodes in JSON format, where each key is a node and the value is a 2D coordinate.
+
+You can copy and paste the script into a Python environment to run it and compute the graph layout for your specified graph structure.

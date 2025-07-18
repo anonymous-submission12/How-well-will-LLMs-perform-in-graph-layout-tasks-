@@ -1,0 +1,14 @@
+To calculate the shortest path between nodes '5' and '15', we can observe that the graph provided represents a linear structure (a sequence of nodes connected sequentially from 0 to 22). In this case, the shortest path is the number of edges between node '5' and node '15'.
+
+The graph is sequential, so the shortest path length can be computed as the absolute difference between the indices of the two nodes:
+```
+Shortest path length = |15 - 5| = 10
+```
+
+Here is the JSON response wrapped in a code block:
+
+```json
+{
+  "answer": 10
+}
+```

@@ -1,0 +1,41 @@
+To determine if two line segments intersect, we can use the orientation test.  Let the two line segments be AB and CD.  The orientation of three points (A, B, C) is positive (clockwise), negative (counter-clockwise), or zero (collinear).
+
+1.  Calculate the orientation of (A, B, C) and (A, B, D). If the orientations have opposite signs, then C and D lie on different sides of line AB.
+2.  Calculate the orientation of (C, D, A) and (C, D, B). If the orientations have opposite signs, then A and B lie on different sides of line CD.
+3.  If both conditions are true, then the line segments intersect.
+
+Let A = (0.16, 0.36), B = (0.23, 0.51), C = (0.35, 0.56), and D = (0.43, 0.37).
+
+Orientation(A, B, C) = (Bx - Ax) * (Cy - Ay) - (By - Ay) * (Cx - Ax)
+= (0.23 - 0.16) * (0.56 - 0.36) - (0.51 - 0.36) * (0.35 - 0.16)
+= (0.07) * (0.20) - (0.15) * (0.19)
+= 0.014 - 0.0285
+= -0.0145
+
+Orientation(A, B, D) = (Bx - Ax) * (Dy - Ay) - (By - Ay) * (Dx - Ax)
+= (0.23 - 0.16) * (0.37 - 0.36) - (0.51 - 0.36) * (0.43 - 0.16)
+= (0.07) * (0.01) - (0.15) * (0.27)
+= 0.0007 - 0.0405
+= -0.0398
+
+Since Orientation(A, B, C) and Orientation(A, B, D) have the same sign (both negative), C and D are on the same side of line AB. Therefore, the segments do not intersect.
+
+Orientation(C, D, A) = (Dx - Cx) * (Ay - Cy) - (Dy - Cy) * (Ax - Cx)
+= (0.43 - 0.35) * (0.36 - 0.56) - (0.37 - 0.56) * (0.16 - 0.35)
+= (0.08) * (-0.20) - (-0.19) * (-0.19)
+= -0.016 - 0.0361
+= -0.0521
+
+Orientation(C, D, B) = (Dx - Cx) * (By - Cy) - (Dy - Cy) * (Bx - Cx)
+= (0.43 - 0.35) * (0.51 - 0.56) - (0.37 - 0.56) * (0.23 - 0.35)
+= (0.08) * (-0.05) - (-0.19) * (-0.12)
+= -0.004 - 0.0228
+= -0.0268
+
+Since Orientation(C, D, A) and Orientation(C, D, B) have the same sign (both negative), A and B are on the same side of line CD. Therefore, the segments do not intersect.
+
+```json
+{
+  "Answer": "No"
+}
+```

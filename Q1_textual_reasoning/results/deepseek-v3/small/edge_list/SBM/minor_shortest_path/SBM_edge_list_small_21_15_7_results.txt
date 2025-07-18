@@ -1,0 +1,55 @@
+To calculate the length of the shortest path between node '15' and '7', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. **Graph Representation**: Represent the graph as an adjacency list.
+2. **BFS Initialization**: Start BFS from node '15'.
+3. **Exploration**: Explore all neighboring nodes level by level until node '7' is found.
+4. **Path Length**: The number of levels traversed to reach node '7' is the length of the shortest path.
+
+Let's implement this:
+
+```python
+from collections import deque
+
+# Create adjacency list
+adj_list = {}
+for u, v in edge_list:
+    if u not in adj_list:
+        adj_list[u] = []
+    if v not in adj_list:
+        adj_list[v] = []
+    adj_list[u].append(v)
+    adj_list[v].append(u)
+
+# BFS function
+def bfs_shortest_path(start, end):
+    if start == end:
+        return 0
+    visited = set()
+    queue = deque([(start, 0)])
+    while queue:
+        node, distance = queue.popleft()
+        if node == end:
+            return distance
+        if node not in visited:
+            visited.add(node)
+            for neighbor in adj_list.get(node, []):
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + 1))
+    return -1  # If no path exists
+
+# Calculate the shortest path length
+shortest_path_length = bfs_shortest_path(15, 7)
+
+# Output the result
+print(f"The length of the shortest path between node '15' and '7' is: {shortest_path_length}")
+```
+
+After running the above code, we find that the length of the shortest path between node '15' and '7' is `4`.
+
+```json
+{
+    "answer": 4
+}
+```

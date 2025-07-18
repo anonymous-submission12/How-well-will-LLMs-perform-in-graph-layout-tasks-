@@ -1,0 +1,98 @@
+To compute a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance, we will employ a gradient-descent-like algorithm, where we attempt to map graph nodes to 2D coordinates such that the pairwise Euclidean distances between them are proportional to their graph-theoretic shortest path distances.
+
+The algorithm works as follows:
+1. Calculate the graph-theoretic (shortest-path) distances between all pairs of nodes using a breadth-first search.
+2. Assign random initial positions to all nodes in 2D space.
+3. Gradually adjust the positions of the nodes iteratively so that the Euclidean distances between nodes converge to the corresponding graph-theoretic distances.
+
+Here is the Python script:
+
+```python
+import json
+import random
+import math
+from collections import defaultdict, deque
+
+# Function to compute all-pairs shortest-path distances using BFS
+def compute_shortest_path_distances(edge_list, num_nodes):
+    graph = defaultdict(list)
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    distances = [[float('inf')] * num_nodes for _ in range(num_nodes)]
+    for i in range(num_nodes):
+        distances[i][i] = 0
+        queue = deque([i])
+        while queue:
+            current = queue.popleft()
+            for neighbor in graph[current]:
+                if distances[i][neighbor] == float('inf'):
+                    distances[i][neighbor] = distances[i][current] + 1
+                    queue.append(neighbor)
+    return distances
+
+# Function to compute a graph layout using gradient descent
+def compute_layout(edge_list, num_nodes, iterations=1000, learning_rate=0.01):
+    # Compute graph-theoretic distances
+    shortest_path_distances = compute_shortest_path_distances(edge_list, num_nodes)
+    
+    # Initialize random positions for each node
+    positions = {i: [random.uniform(0, 1), random.uniform(0, 1)] for i in range(num_nodes)}
+    
+    # Gradient descent to adjust positions iteratively
+    for _ in range(iterations):
+        forces = {i: [0, 0] for i in range(num_nodes)}
+        
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                if i == j:
+                    continue
+                # Desired distance
+                desired_dist = shortest_path_distances[i][j]
+                if desired_dist == float('inf'):  # No path between nodes
+                    continue
+                
+                # Current distance
+                dx = positions[i][0] - positions[j][0]
+                dy = positions[i][1] - positions[j][1]
+                current_dist = math.sqrt(dx**2 + dy**2) + 1e-6  # Add small value to prevent division by zero
+                
+                # Compute the force (difference between desired and current distance)
+                force_magnitude = (current_dist - desired_dist) / desired_dist
+                forces[i][0] -= force_magnitude * (dx / current_dist)
+                forces[i][1] -= force_magnitude * (dy / current_dist)
+        
+        # Update positions based on forces
+        for i in range(num_nodes):
+            positions[i][0] += learning_rate * forces[i][0]
+            positions[i][1] += learning_rate * forces[i][1]
+    
+    return positions
+
+# Input graph in edge list format
+edge_list = [(0, 1), (0, 39), (1, 2), (1, 40), (2, 3), (2, 41), (3, 4), (3, 42), 
+             (4, 5), (4, 43), (5, 6), (5, 44), (6, 7), (6, 45), (7, 8), (7, 46), 
+             (8, 9), (8, 47), (9, 10), (9, 48), (10, 11), (10, 49), (11, 12), 
+             (11, 50), (12, 13), (12, 51), (13, 14), (13, 52), (14, 15), (14, 53), 
+             (15, 16), (15, 54), (16, 17), (16, 55), (17, 18), (17, 56), (18, 19), 
+             (18, 57), (19, 20), (19, 58), (20, 21), (20, 59), (21, 22), (21, 60), 
+             (22, 23), (22, 61), (23, 24), (23, 62), (24, 25), (24, 63), (25, 26), 
+             (25, 64), (26, 27), (26, 65), (27, 28), (27, 66), (28, 29), (28, 67), 
+             (29, 30), (29, 68), (30, 31), (30, 69), (31, 32), (31, 70), (32, 33), 
+             (32, 71), (33, 34), (33, 72), (34, 35), (34, 73), (35, 36), (35, 74), 
+             (36, 37), (36, 75), (37, 38), (37, 76), (38, 77), (39, 40), (40, 41), 
+             (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), 
+             (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), 
+             (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), 
+             (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), 
+             (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), 
+             (76, 77)]
+num_nodes = 78
+
+# Compute the layout
+layout = compute_layout(edge_list, num_nodes)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=2))
+```

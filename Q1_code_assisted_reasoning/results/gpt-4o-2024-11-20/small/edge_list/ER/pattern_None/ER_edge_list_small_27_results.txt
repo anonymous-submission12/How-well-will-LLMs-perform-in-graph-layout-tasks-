@@ -1,0 +1,54 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 15), (0, 20), (1, 5), (1, 8), (1, 11), (1, 16), (1, 17), (1, 21), (1, 26), 
+             (2, 12), (2, 19), (2, 22), (2, 25), (3, 7), (3, 20), (4, 14), (4, 18), (4, 21), 
+             (5, 8), (5, 12), (5, 18), (6, 9), (6, 23), (7, 9), (7, 10), (7, 12), (8, 11), 
+             (8, 19), (8, 21), (8, 23), (8, 24), (9, 13), (9, 14), (9, 18), (9, 20), (9, 27), 
+             (10, 16), (10, 25), (11, 27), (14, 15), (14, 17), (14, 24), (15, 27), (17, 20), 
+             (17, 22), (18, 19), (20, 21), (21, 24), (25, 27)]
+
+# Create a graph and add the edges
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check for graph pattern
+def determine_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+
+    # Check for star graph (One central node connected to all others)
+    degrees = [deg for _, deg in G.degree()]
+    if degrees.count(n - 1) == 1 and degrees.count(1) == n - 1:
+        return "Star"
+
+    # Check for cycle graph (n nodes all connected in a cycle)
+    if nx.is_connected(G) and m == n and all(deg == 2 for deg in degrees):
+        return "Cycle"
+
+    # Check for path graph (n nodes connected in a single path)
+    if nx.is_connected(G) and m == n - 1 and degrees.count(1) == 2 and degrees.count(2) == n - 2:
+        return "Path"
+
+    # Check for grid graph (Special case: 2D grid structure)
+    try:
+        if nx.grid_2d_graph(int(n**0.5), int(n**0.5)).edges() == set(G.edges):
+            return "Grid"
+    except:
+        pass
+
+    # Check for complete graph (Clique: Every node connected to every other node)
+    if m == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check for clustered graph (Multiple distinct clusters)
+    clusters = list(nx.connected_components(G))
+    if len(clusters) > 1:
+        return "Clustered graph"
+
+    # If none of the above, assume it is a random graph
+    return "Random graph"
+
+print(determine_graph_pattern(G))
+```

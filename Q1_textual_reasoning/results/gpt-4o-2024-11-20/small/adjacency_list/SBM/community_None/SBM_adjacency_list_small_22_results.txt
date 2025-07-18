@@ -1,0 +1,7 @@
+To count the number of communities in the graph, we will use the concept of connected components. Connected components are subgraphs in which any two vertices are connected to each other by a path, and which are not connected to any additional vertices in the supergraph. Below is the JSON output containing the number of communities in the graph.
+
+```json
+{
+  "answer": 4
+}
+```

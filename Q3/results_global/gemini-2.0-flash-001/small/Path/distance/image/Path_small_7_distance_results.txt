@@ -1,0 +1,7 @@
+The first layout appears to better preserve graph-theoretic distance. In the second layout, many nodes are clustered together along a curve, making it difficult to visually estimate the actual path length between nodes in the original graph. The first layout spreads the nodes out more evenly, making it easier to see the connections and estimate distances.
+
+```json
+{
+"Answer": "1"
+}
+```

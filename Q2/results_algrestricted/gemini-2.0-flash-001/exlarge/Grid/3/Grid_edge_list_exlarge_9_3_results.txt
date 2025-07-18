@@ -1,0 +1,101 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a layered approach, assigning nodes to layers
+    based on their distance from a starting node.  Nodes within a layer are
+    then arranged to minimize crossings with edges connecting to the previous
+    layer.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build adjacency list
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent node order
+
+    # 2. Layer assignment (BFS from node 0)
+    layers = {}
+    visited = {nodes[0]}
+    queue = [(nodes[0], 0)]  # (node, layer)
+
+    while queue:
+        node, layer_num = queue.pop(0)
+        layers.setdefault(layer_num, []).append(node)
+        for neighbor in adj[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, layer_num + 1))
+
+    # Handle disconnected components by assigning them to layers based on node ID
+    unvisited_nodes = set(nodes) - visited
+    for node in unvisited_nodes:
+        layer_num = 0
+        layers.setdefault(layer_num, []).append(node)
+        visited.add(node)
+
+    # 3. Node ordering within layers (minimize crossings)
+    layer_positions = {}
+    for layer_num in sorted(layers.keys()):
+        layer = layers[layer_num]
+        if layer_num == 0:
+            # Initial layer: place nodes in order of their IDs
+            layer_positions[layer_num] = {node: i for i, node in enumerate(layer)}
+        else:
+            # Subsequent layers: order nodes based on the average position of their neighbors in the previous layer
+            neighbor_positions = {}
+            for node in layer:
+                neighbor_sum = 0
+                neighbor_count = 0
+                for neighbor in adj[node]:
+                    if neighbor in layers[layer_num - 1]:
+                        neighbor_sum += layer_positions[layer_num - 1][neighbor]
+                        neighbor_count += 1
+                if neighbor_count > 0:
+                    neighbor_positions[node] = neighbor_sum / neighbor_count
+                else:
+                    neighbor_positions[node] = float('inf')  # Place isolated nodes at the end
+
+            # Sort nodes based on neighbor positions
+            sorted_nodes = sorted(layer, key=lambda node: neighbor_positions[node])
+            layer_positions[layer_num] = {node: i for i, node in enumerate(sorted_nodes)}
+
+    # 4. Assign coordinates
+    layout = {}
+    x_spacing = 1
+    y_spacing = 1
+    for layer_num, layer in layers.items():
+        for node in layer:
+            x = layer_positions[layer_num][node] * x_spacing
+            y = -layer_num * y_spacing  # Invert y-axis for better visualization
+            layout[node] = (x, y)
+
+    return layout
+
+
+# Example usage with the provided graph data
+edge_list = [(0, 1), (0, 37), (1, 2), (1, 38), (2, 3), (2, 39), (3, 4), (3, 40), (4, 5), (4, 41), (5, 6), (5, 42), (6, 7), (6, 43), (7, 8), (7, 44), (8, 9), (8, 45), (9, 10), (9, 46), (10, 11), (10, 47), (11, 12), (11, 48), (12, 13), (12, 49), (13, 14), (13, 50), (14, 15), (14, 51), (15, 16), (15, 52), (16, 17), (16, 53), (17, 18), (17, 54), (18, 19), (18, 55), (19, 20), (19, 56), (20, 21), (20, 57), (21, 22), (21, 58), (22, 23), (22, 59), (23, 24), (23, 60), (24, 25), (24, 61), (25, 26), (25, 62), (26, 27), (26, 63), (27, 28), (27, 64), (28, 29), (28, 65), (29, 30), (29, 66), (30, 31), (30, 67), (31, 32), (31, 68), (32, 33), (32, 69), (33, 34), (33, 70), (34, 35), (34, 71), (35, 36), (35, 72), (36, 73), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73)]
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=2))
+```

@@ -1,0 +1,13 @@
+To evaluate which layout better preserves graph-theoretical distance, the distances between nodes in the layout should ideally reflect the shortest paths in the graph structure. Both images depict a star graph, where all peripheral nodes are directly connected to a central node, making the graph-theoretic distance between peripheral nodes and the center equal to 1, and between any two peripheral nodes equal to 2.
+
+In Answer 1, the peripheral nodes are spread out uniformly, making the visual distance from the center to any peripheral node relatively consistent. However, distances between peripheral nodes are exaggerated due to their radial positioning. 
+
+In Answer 2, the peripheral nodes are visually positioned closer to each other compared to Answer 1, providing a better reflection of the consistent graph-theoretic distance of 2 between them. 
+
+Thus, **Answer 2 better preserves graph-theoretic distance.**
+
+```json
+{
+  "Answer": 2
+}
+```

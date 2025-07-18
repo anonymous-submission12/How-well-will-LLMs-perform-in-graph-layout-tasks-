@@ -1,0 +1,13 @@
+To determine which graph layout better preserves graph-theoretic distance, we analyze the visual representation of distances between nodes:
+
+- **Layout 1**: Nodes appear scattered, with some edges crossing each other. The spatial arrangement may distort the perception of graph-theoretic distance because it is harder to visually trace shortest paths without crossing edges.
+
+- **Layout 2**: Nodes are arranged in a smoother, more linear or circular structure. This arrangement simplifies the visual inspection of graph-theoretic distances, as edges flow clearly without overlap, minimizing distortion.
+
+Thus, Layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,52 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 5), (0, 8), (0, 17), (1, 9), (1, 17), (1, 24), (2, 5), (3, 15), (3, 21), (3, 24), 
+             (4, 17), (4, 25), (5, 6), (5, 9), (5, 20), (5, 23), (5, 24), (5, 26), (6, 18), (6, 26), 
+             (7, 16), (8, 9), (8, 11), (8, 19), (8, 24), (9, 21), (9, 22), (10, 16), (11, 17), (12, 23), 
+             (12, 24), (13, 23), (14, 21), (15, 17), (15, 20), (15, 23), (15, 25), (16, 23), (16, 24), 
+             (17, 20), (20, 21), (21, 24), (21, 26), (23, 26)]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Determine the type of graph
+def determine_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check if it is a star graph
+    degrees = dict(G.degree)
+    if max(degrees.values()) == n - 1 and list(degrees.values()).count(1) == n - 1:
+        return "Star"
+    
+    # Check if it is a cycle graph
+    if nx.is_connected(G) and all(deg == 2 for deg in degrees.values()):
+        return "Cycle"
+    
+    # Check if it is a path graph
+    if nx.is_connected(G) and sorted(degrees.values()) == [1, 1] + [2] * (n - 2):  # Two nodes with degree 1, rest 2
+        return "Path"
+    
+    # Check if it is a grid graph (approximation: degrees must fit a 2D structure with most nodes of degree 4)
+    if all(deg in {2, 3, 4} for deg in degrees.values()):
+        # Approximation since exact grid detection requires more constraints
+        return "Grid"
+    
+    # Check if it is a complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clustered graph (using communities)
+    communities = list(nx.community.greedy_modularity_communities(G))
+    if len(communities) > 1:
+        return "Clustered graph"
+    
+    # If none of the above, assume it is a random graph
+    return "Random graph"
+
+# Print the result
+print(determine_graph_pattern(G))
+```

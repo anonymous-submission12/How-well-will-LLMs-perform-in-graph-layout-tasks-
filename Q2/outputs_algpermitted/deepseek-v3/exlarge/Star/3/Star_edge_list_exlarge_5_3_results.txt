@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/execute.py", line 76, in run_check
+    proc = _run_input_lines(cmd, input_lines, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/execute.py", line 96, in _run_input_lines
+    popen = subprocess.Popen(cmd, stdin=subprocess.PIPE, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/subprocess.py", line 1028, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/local/lib/python3.12/subprocess.py", line 1963, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: PosixPath('dot')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/code.py", line 28, in <module>
+    layout = g.pipe().decode('utf-8')
+             ^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/piping.py", line 104, in pipe
+    return self._pipe_legacy(format,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/_tools.py", line 171, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/piping.py", line 121, in _pipe_legacy
+    return self._pipe_future(format,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/piping.py", line 161, in _pipe_future
+    return self._pipe_lines(*args, input_encoding=self.encoding, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/piping.py", line 161, in pipe_lines
+    proc = execute.run_check(cmd, capture_output=True, quiet=quiet, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/execute.py", line 81, in run_check
+    raise ExecutableNotFound(cmd) from e
+graphviz.backend.execute.ExecutableNotFound: failed to execute PosixPath('dot'), make sure the Graphviz executables are on your systems' PATH

@@ -1,0 +1,9 @@
+```python
+from itertools import combinations
+
+# Function to calculate the showtest path
+def shortest_path(edge_list, start, end):
+    # Since the graph is complete, the shortest path distance is 1.
+    # As an optimization, we dont need hookupgraph,and node word use graph, b54, `{edge_list:}` use linked {5-rang}
+    retrun ;tag2-story-case ..
+ calc functionality

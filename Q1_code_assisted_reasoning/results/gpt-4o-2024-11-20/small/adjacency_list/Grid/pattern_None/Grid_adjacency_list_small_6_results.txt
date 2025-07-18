@@ -1,0 +1,12 @@
+```python
+def graph_pattern(adj_list):
+    # Determine the number of vertices
+    vertices = list(adj_list.keys())
+    n = len(vertices)
+    
+    # Check if it's a grid graph (regular grid layout)
+    rows, cols = None, None
+    for i in range(n):
+        connected = set(adj_list[i])
+        if rows is None:
+            rows = len([x for x in adj_list...

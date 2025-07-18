@@ -1,0 +1,65 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Helper functions
+    def is_star(adj_list):
+        center_candidates = [node for node in adj_list if len(adj_list[node]) == len(adj_list) - 1]
+        if len(center_candidates) == 1:
+            return all(len(adj_list[neighbor]) == 1 for neighbor in adj_list if neighbor != center_candidates[0])
+        return False
+
+    def is_cycle(adj_list):
+        total_nodes = len(adj_list)
+        total_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+        # In a cycle graph, every node has exactly two neighbors and edges = nodes
+        if all(len(adj_list[node]) == 2 for node in adj_list) and total_edges == total_nodes:
+            return True
+        return False
+
+    def is_path(adj_list):
+        endpoints = [node for node in adj_list if len(adj_list[node]) == 1]
+        if len(endpoints) == 2:
+            return all(len(adj_list[node]) <= 2 for node in adj_list)
+        return False
+
+    def is_grid(adj_list):
+        row_nodes = int(len(adj_list) ** 0.5)
+        total_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+        if row_nodes * row_nodes == len(adj_list):
+            max_edges = row_nodes * (row_nodes - 1) * 2
+            if total_edges == max_edges:
+                return True
+        return False
+
+    def is_complete(adj_list):
+        total_nodes = len(adj_list)
+        total_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+        if total_edges == total_nodes * (total_nodes - 1) // 2:
+            return True
+        return False
+
+    def is_clustered(adj_list):
+        return True  # A fallback condition
+
+    def is_random(adj_list):
+        return True  # A fallback condition
+
+    # Determine the graph pattern
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+adj_list = {0: [10, 12, 26, 27], 1: [18, 23], 2: [10, 11, 21, 22], 3: [6, 7, 21], 4: [13, 17], 5: [10, 16, 18], 6: [3, 11, 26, 27], 7: [3, 11, 13, 14, 16, 22, 25], 8: [12, 19, 20, 21], 9: [13, 20], 10: [0, 2, 5, 12, 17], 11: [2, 6, 7], 12: [0, 8, 10, 19], 13: [4, 7, 9, 19], 14: [7, 16, 24, 26], 15: [17, 26], 16: [5, 7, 14], 17: [4, 10, 15], 18: [1, 5, 22], 19: [8, 12, 13], 20: [8, 9, 21], 21: [2, 3, 8, 20, 25, 27], 22: [2, 7, 18], 23: [1, 24], 24: [14, 23, 27], 25: [7, 21], 26: [0, 6, 14, 15], 27: [0, 6, 21, 24]}
+pattern = determine_graph_pattern(adj_list)
+print(pattern)
+```

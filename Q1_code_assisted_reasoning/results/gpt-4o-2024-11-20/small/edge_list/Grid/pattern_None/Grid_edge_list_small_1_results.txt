@@ -1,0 +1,55 @@
+```python
+import networkx as nx
+
+# Input graph edge list
+edges = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), 
+         (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), 
+         (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), 
+         (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), 
+         (19, 20), (20, 21)]
+
+# Create graph using NetworkX
+G = nx.Graph(edges)
+
+# Check for graph patterns
+def graph_type(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    if nx.is_tree(G):
+        # Star check: one node connects to all other nodes
+        degrees = [deg for _, deg in G.degree()]
+        if max(degrees) == n - 1:
+            return "Star"
+        # Path check: degree of endpoints is 1 and all others 2
+        if sorted(degrees) == [1, 1] + [2] * (n - 2):
+            return "Path"
+    
+    if nx.is_connected(G) and all(deg == 2 for _, deg in G.degree()):
+        return "Cycle"
+    
+    # Grid check (NxM grid graph has specific edge count and degree distribution):
+    rows = cols = None
+    for r in range(1, int(n**0.5) + 1):
+        if n % r == 0:
+            c = n // r
+            if m == 2 * (r * c) - r - c:  # Edges in a grid
+                rows, cols = r, c
+                break
+    if rows and cols:
+        return "Grid"
+    
+    # Complete graph check (all nodes are connected with each other)
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Clustered graph check: communities have higher internal edge density
+    clustering = nx.average_clustering(G)
+    if clustering > 0.5:
+        return "Clustered graph"
+    
+    # If none of the above, classify it as Random graph
+    return "Random graph"
+
+print(graph_type(G))
+```

@@ -1,0 +1,70 @@
+Below is the Python script that computes a graph layout based on the Euclidean distance proportional to the graph-theoretic distance (shortest path distance). This script does not use any built-in layout functions from libraries like `networkx`. The positions of each node are calculated in such a way that respect for the graph-theoretic distance is maintained.
+
+```python
+import json
+from collections import defaultdict
+import math
+
+# Define the graph as edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), 
+             (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), 
+             (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), 
+             (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), 
+             (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), 
+             (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), 
+             (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), 
+             (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), 
+             (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), 
+             (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), 
+             (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), 
+             (69, 70), (70, 71)]
+
+# Step 1: Build adjacency list
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Step 2: Compute shortest path distances using BFS
+def bfs_shortest_path_distances(graph, start_node):
+    distances = {start_node: 0}
+    queue = [start_node]
+    visited = {start_node}
+    
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+    return distances
+
+shortest_distances = bfs_shortest_path_distances(graph, 0)  # Use node 0 as the reference
+
+# Step 3: Map graph-theoretic distances to 2D Euclidean coordinates
+positions = {}
+theta_increment = 2 * math.pi / len(shortest_distances)  # Positions will be distributed in a circular layout
+radius = 10   # Set a constant radius for spacing
+
+for node, distance in shortest_distances.items():
+    # Each node's angle (theta) is based on its graph-theoretic distance
+    theta = distance * theta_increment
+    x = radius * math.cos(theta)
+    y = radius * math.sin(theta)
+    positions[node] = (x, y)
+
+# Step 4: Convert positions into JSON format
+positions_json = json.dumps(positions, indent=4)
+
+# Print the final layout in JSON format
+print(positions_json)
+```
+
+### Explanation of the Approach:
+1. **Graph Representation:** The script builds an adjacency list from the given edge list for convenient traversal and manipulation.
+2. **Shortest Path Calculation:** BFS is used to compute the graph-theoretic distance from a reference node (`0`) to all other nodes.
+3. **Euclidean Layout:** Each node is positioned based on its graph-theoretic distance from the reference node. To maintain consistency between Euclidean and graph-theoretic distances, nodes are arranged on a circular layout, and angles (`theta`) are based on the computed distances.
+4. **Output in JSON:** The layout (node positions) is serialized into JSON and printed as the final output.
+
+This script outputs the node positions in JSON format, and any further visualization would require separate steps.

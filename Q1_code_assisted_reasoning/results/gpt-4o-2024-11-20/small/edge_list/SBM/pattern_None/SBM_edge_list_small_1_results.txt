@@ -1,0 +1,51 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 3), (0, 4), (0, 5), (1, 3), (1, 4), (1, 5), (2, 4), 
+             (2, 5), (3, 4), (3, 5), (4, 5), (4, 14), (6, 7), (6, 8), (6, 9), 
+             (6, 10), (7, 8), (7, 9), (7, 10), (8, 9), (8, 10), (8, 11), (9, 10), 
+             (11, 12), (11, 13), (11, 14), (11, 15), (12, 13), (12, 14), (12, 15), 
+             (13, 15), (14, 15), (15, 17), (16, 18), (16, 19), (16, 20), (17, 18), 
+             (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+# Build the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Analyze the graph pattern
+def graph_pattern(G):
+    # Check condition for star
+    degrees = [degree for node, degree in G.degree()]
+    if degrees.count(max(degrees)) == 1 and max(degrees) == (len(G.nodes()) - 1):
+        return "Star"
+
+    # Check condition for path (should be a single line of nodes, not closed)
+    if nx.is_path_graph(G):
+        return "Path"
+
+    # Check condition for cycle (closed chain, all nodes have degree 2)
+    if nx.is_cycle_graph(G):
+        return "Cycle"
+
+    # Check condition for grid (grid-like layout)
+    if nx.is_grid_graph(G.nodes):
+        return "Grid"
+
+    # Check condition for complete (all nodes connected to each other)
+    if nx.is_complete_graph(G):
+        return "Complete"
+
+    # Check for clusters (small highly-connected communities)
+    cluster_coeff = nx.average_clustering(G)
+    avg_degree = sum(degrees) / len(degrees)
+    if cluster_coeff > 0.5 and avg_degree > len(G.nodes()) // 2:
+        return "Clustered graph"
+
+    # Assume random graph otherwise
+    return "Random graph"
+
+# Output the result
+result = graph_pattern(G)
+print(result)
+```

@@ -1,0 +1,45 @@
+```python
+from collections import defaultdict
+
+def graph_pattern(adj_list):
+    # Count the number of nodes and edges
+    num_nodes = len(adj_list)
+    num_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for star pattern
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == num_nodes - 1]
+    if len(center_nodes) == 1:
+        return "Star"
+
+    # Check for cycle pattern
+    if num_edges == num_nodes and all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        return "Cycle"
+
+    # Check for path pattern
+    end_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == 1]
+    if len(end_nodes) == 2 and all(len(neighbors) <= 2 for neighbors in adj_list.values()):
+        return "Path"
+
+    # Check for grid pattern
+    # A grid graph is hard to detect without additional information, so we skip this check.
+
+    # Check for complete graph
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for clustered graph
+    # A clustered graph typically has dense subgraphs. We approximate this by checking for nodes with high connectivity.
+    cluster_threshold = num_nodes // 2
+    clusters = [node for node, neighbors in adj_list.items() if len(neighbors) > cluster_threshold]
+    if len(clusters) > 0:
+        return "Clustered"
+
+    # Default to random graph
+    return "Random"
+
+# Input adjacency list
+adj_list = {0: [5, 8, 12], 1: [15, 20, 22, 24], 2: [7, 9, 14, 19, 26], 3: [13], 4: [26], 5: [0, 10, 19, 21, 22, 24], 6: [9], 7: [2], 8: [0, 11], 9: [2, 6, 13, 15, 16, 18, 21, 24], 10: [5, 17, 18, 22], 11: [8, 14], 12: [0, 18, 26], 13: [3, 9, 21, 26], 14: [2, 11, 19, 25], 15: [1, 9, 18, 24], 16: [9, 19, 21], 17: [10, 25], 18: [9, 10, 12, 15, 26], 19: [2, 5, 14, 16, 21], 20: [1], 21: [5, 9, 13, 16, 19, 23], 22: [1, 5, 10, 25], 23: [21], 24: [1, 5, 9, 15], 25: [14, 17, 22], 26: [2, 4, 12, 13, 18]}
+
+# Determine the graph pattern
+print(graph_pattern(adj_list))
+```

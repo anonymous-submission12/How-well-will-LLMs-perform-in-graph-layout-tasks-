@@ -1,0 +1,12 @@
+To find the shortest path between nodes `17` and `32`, we can use a breadth-first search (BFS) as it is an appropriate algorithm for unweighted graphs. Here is the computation:
+
+1. Start from node `17` and explore all neighbors level by level.
+2. Stop when we reach node `32` and return the distance.
+
+I'll now compute the result.
+
+```json
+{
+  "answer": 6
+}
+```

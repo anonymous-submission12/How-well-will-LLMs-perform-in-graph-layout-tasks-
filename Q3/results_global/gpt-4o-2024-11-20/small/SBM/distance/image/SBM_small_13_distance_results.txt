@@ -1,0 +1,11 @@
+To determine which layout better preserves graph-theoretic distance, we need to evaluate how well the spatial arrangement of nodes reflects their shortest-path distances in the graph. 
+
+In the first image, the clusters of nodes are more compact, and the distances between clusters are visually exaggerated, which aligns well with the graph-theoretic distances. In the second image, the clusters are less compact, and the distances between clusters are less distinct, which may distort the perception of graph-theoretic distances.
+
+Thus, **Answer 1** better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 1
+}
+```

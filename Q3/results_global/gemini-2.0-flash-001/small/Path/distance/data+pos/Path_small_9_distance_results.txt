@@ -1,0 +1,9 @@
+The graph data represents a simple path graph. In an ideal layout that perfectly preserves graph-theoretic distance, the nodes would be placed along a straight line with equal spacing.
+
+Layout 1 appears to be a somewhat arbitrary arrangement of the nodes. Layout 2, however, appears to be a more linear arrangement, although not perfectly straight. Therefore, Layout 2 likely better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": "2"
+}
+```

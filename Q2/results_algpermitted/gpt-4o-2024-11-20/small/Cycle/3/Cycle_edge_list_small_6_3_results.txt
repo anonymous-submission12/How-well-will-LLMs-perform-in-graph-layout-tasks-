@@ -1,0 +1,28 @@
+```python
+import json
+import networkx as nx
+
+def generate_graph_layout(edge_list):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Generate positions using the Spring layout algorithm (which minimizes edge crossings)
+    positions = nx.spring_layout(G)
+    
+    # Convert the positions to a JSON-serializable format
+    layout_json = {node: {'x': pos[0], 'y': pos[1]} for node, pos in positions.items()}
+    
+    return json.dumps(layout_json, indent=4)
+
+# Input edge_list
+edge_list = [(0, 1), (0, 25), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+             (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25)]
+
+# Generate the layout
+layout_json = generate_graph_layout(edge_list)
+
+# Print the layout in JSON format
+print(layout_json)
+```

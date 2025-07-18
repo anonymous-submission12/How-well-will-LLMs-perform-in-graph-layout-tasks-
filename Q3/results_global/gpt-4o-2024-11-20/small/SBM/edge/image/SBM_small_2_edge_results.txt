@@ -1,0 +1,7 @@
+The second graph layout (Answer 2) has fewer edge crossings compared to the first graph layout (Answer 1).
+
+```json
+{
+  "Answer": 2
+}
+```

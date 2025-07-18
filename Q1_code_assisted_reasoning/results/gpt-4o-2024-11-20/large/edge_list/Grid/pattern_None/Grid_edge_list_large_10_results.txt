@@ -1,0 +1,54 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 10), (1, 2), (1, 11), (2, 3), (2, 12), (3, 4), (3, 13), (4, 5), (4, 14), (5, 6), (5, 15), 
+             (6, 7), (6, 16), (7, 8), (7, 17), (8, 9), (8, 18), (9, 19), (10, 11), (10, 20), (11, 12), (11, 21), 
+             (12, 13), (12, 22), (13, 14), (13, 23), (14, 15), (14, 24), (15, 16), (15, 25), (16, 17), (16, 26), 
+             (17, 18), (17, 27), (18, 19), (18, 28), (19, 29), (20, 21), (20, 30), (21, 22), (21, 31), (22, 23), 
+             (22, 32), (23, 24), (23, 33), (24, 25), (24, 34), (25, 26), (25, 35), (26, 27), (26, 36), (27, 28), 
+             (27, 37), (28, 29), (28, 38), (29, 39), (30, 31), (30, 40), (31, 32), (31, 41), (32, 33), (32, 42), 
+             (33, 34), (33, 43), (34, 35), (34, 44), (35, 36), (35, 45), (36, 37), (36, 46), (37, 38), (37, 47), 
+             (38, 39), (38, 48), (39, 49), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), 
+             (47, 48), (48, 49)]
+
+# Create the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check the graph pattern
+def check_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for star graph
+    degrees = [deg for _, deg in G.degree()]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for cycle graph
+    if nx.is_connected(G) and m == n and all(deg == 2 for _, deg in G.degree()):
+        return "Cycle"
+    
+    # Check for path graph
+    if nx.is_connected(G) and m == n - 1 and degrees.count(1) == 2 and degrees.count(2) == n - 2:
+        return "Path"
+    
+    # Check for grid graph
+    rows = int(n**0.5)
+    if rows * rows == n and all(deg <= 4 for _, deg in G.degree()):
+        return "Grid"
+    
+    # Check for complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clustered graph (heuristic: high clustering coefficient)
+    if nx.average_clustering(G) > 0.5:
+        return "Clustered graph"
+    
+    # Default to random graph
+    return "Random graph"
+
+print(check_graph_pattern(G))
+```

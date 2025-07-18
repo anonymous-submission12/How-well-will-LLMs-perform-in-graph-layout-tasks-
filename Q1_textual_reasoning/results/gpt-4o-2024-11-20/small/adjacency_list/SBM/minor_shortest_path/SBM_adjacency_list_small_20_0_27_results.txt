@@ -1,0 +1,13 @@
+To calculate the shortest path from node '0' to node '27', we use a Breadth-First Search (BFS) algorithm, which efficiently finds the shortest path in unweighted graphs. Here is the solution:
+
+```json
+{
+  "answer": 6
+}
+```
+
+Explanation:
+1. BFS starts from node '0'.
+2. Node '0' connects to nodes: [1, 3, 9].
+3. Searching level by level through connected nodes eventually reaches node '27'.
+4. The number of edges traversed (or levels) to reach node '27' from node '0' is **6**.

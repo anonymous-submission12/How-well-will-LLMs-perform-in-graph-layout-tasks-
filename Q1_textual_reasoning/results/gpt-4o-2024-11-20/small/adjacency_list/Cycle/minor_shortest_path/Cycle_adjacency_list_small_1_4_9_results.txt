@@ -1,0 +1,12 @@
+To compute the shortest path from node `4` to node `9` in the given adjacency list graph, we can use the Breadth-First Search (BFS) algorithm, which is suitable for unweighted graphs like this one. Let's proceed step-by-step:
+
+The graph represents a circular structure where nodes are connected linearly except for node `20`, which connects back to node `0`. Starting from node `4`, the shortest path to `9` is calculated as follows:
+
+The path `4 -> 5 -> 6 -> 7 -> 8 -> 9` contains **5 edges**.
+
+### JSON Output:
+```json
+{
+  "answer": 5
+}
+```

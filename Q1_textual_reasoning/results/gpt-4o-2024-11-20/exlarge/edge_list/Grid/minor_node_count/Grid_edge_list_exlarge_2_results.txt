@@ -1,0 +1,11 @@
+To calculate the number of nodes in the graph, we extract all unique nodes from the edge list and count them.
+
+Here is the solution:
+
+```json
+{
+  "answer": 80
+}
+``` 
+
+The graph contains 80 unique nodes, numbered from 0 to 79.

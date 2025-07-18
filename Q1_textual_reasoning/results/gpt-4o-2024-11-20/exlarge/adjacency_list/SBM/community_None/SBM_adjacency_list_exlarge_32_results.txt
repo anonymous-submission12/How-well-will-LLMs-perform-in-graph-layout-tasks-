@@ -1,0 +1,9 @@
+To find the number of communities in the graph represented by the given adjacency list, we can identify the connected components. Each connected component in an undirected graph represents a community.
+
+The following is the result based on the input adjacency list:
+
+```json
+{
+  "answer": 5
+}
+```

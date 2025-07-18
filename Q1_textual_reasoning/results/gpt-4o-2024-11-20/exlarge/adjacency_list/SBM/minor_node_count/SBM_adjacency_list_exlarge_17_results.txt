@@ -1,0 +1,9 @@
+To count the number of nodes in the graph, we simply need to count the keys in the adjacency list. Each key represents a unique node.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 76
+}
+```

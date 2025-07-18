@@ -1,0 +1,9 @@
+To calculate the number of communities in the graph, we need to detect connected components in the adjacency list representation provided. Connected components are subgraphs in which any two vertices are connected to each other, but which are isolated from the rest of the graph. The number of connected components corresponds to the number of communities.
+
+Let’s compute the number of communities:
+
+```json
+{
+  "answer": 5
+}
+```

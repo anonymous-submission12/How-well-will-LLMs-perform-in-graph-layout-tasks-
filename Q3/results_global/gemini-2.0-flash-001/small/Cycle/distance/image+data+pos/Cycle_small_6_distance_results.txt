@@ -1,0 +1,7 @@
+The graph data describes a path from node 0 to 25, with an additional edge between 0 and 25. Layout 2 arranges the nodes in a circular fashion, closely following the path structure. Layout 1 has many edge crossings and doesn't clearly represent the path. Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

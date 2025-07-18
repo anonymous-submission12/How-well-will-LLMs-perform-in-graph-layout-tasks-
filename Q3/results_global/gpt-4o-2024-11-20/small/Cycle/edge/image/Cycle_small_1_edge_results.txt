@@ -1,0 +1,12 @@
+To determine which graph layout has the fewest edge crossings, we visually inspect the images:
+
+- **Image 1**: Contains multiple edge crossings where lines intersect.
+- **Image 2**: Appears to have no edge crossings, as all edges are drawn without intersecting.
+
+Thus, **Image 2** has fewer edge crossings.
+
+```json
+{
+  "Answer": 2
+}
+```

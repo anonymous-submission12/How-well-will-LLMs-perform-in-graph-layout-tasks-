@@ -1,0 +1,15 @@
+To find the length of the shortest path between node `41` and `66` in the given graph, we can use Breadth-First Search (BFS), a common algorithm for finding shortest paths in an unweighted graph.
+
+### BFS Algorithm Steps:
+1. Initialize a queue and start from the source node `41`.
+2. Mark the starting node as visited and initialize its distance as `0`.
+3. Explore all adjacent nodes and add them to the queue, updating their distances.
+4. Repeat until either the target node `66` is reached or the queue is empty.
+
+Here is the computed result:
+
+```json
+{
+  "answer": 7
+}
+```

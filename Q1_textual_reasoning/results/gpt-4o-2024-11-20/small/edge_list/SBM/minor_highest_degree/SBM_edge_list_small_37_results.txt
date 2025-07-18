@@ -1,0 +1,9 @@
+To solve the problem, we first calculate the degree of each node, which is the number of edges connected to that node. Then, we determine the highest degree among all the nodes.
+
+Here is the result:
+
+```json
+{
+  "answer": 18
+}
+```

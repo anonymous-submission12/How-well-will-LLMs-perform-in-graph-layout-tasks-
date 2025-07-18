@@ -1,0 +1,17 @@
+To calculate the shortest path between node '5' and '3', we can use Breadth-First Search (BFS). Here's the solution:
+
+1. The graph is linear, with nodes connected sequentially.
+2. BFS starts at node '5' and explores its neighbors until it finds node '3'.
+3. The shortest path is the count of edges traversed.
+
+Now, let's calculate:
+
+- From node '5', move to '4' and then '3'. This results in a total of 2 edges.
+
+Here's the JSON response with the answer:
+
+```json
+{
+  "answer": 2
+}
+```

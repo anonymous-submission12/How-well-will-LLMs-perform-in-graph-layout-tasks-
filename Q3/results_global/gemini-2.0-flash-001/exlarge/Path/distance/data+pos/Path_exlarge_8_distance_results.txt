@@ -1,0 +1,7 @@
+The graph data represents a simple chain graph. Layout 2 appears to be a more faithful representation of this chain, as the nodes are arranged in a more linear fashion. Layout 1 has more nodes clustered together and doesn't preserve the equal distance between nodes as well as layout 2. Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

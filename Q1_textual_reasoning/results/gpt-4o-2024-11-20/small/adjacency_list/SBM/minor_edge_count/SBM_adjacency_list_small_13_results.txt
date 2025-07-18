@@ -1,0 +1,9 @@
+To count the number of edges in the graph, we must iterate through the adjacency list and sum up the lengths of all adjacency lists. Since each edge is counted twice in an undirected graph, once in the list of each of its endpoints, we divide the total count of edges by 2.
+
+Here's the result:
+
+```json
+{
+  "answer": 122
+}
+```

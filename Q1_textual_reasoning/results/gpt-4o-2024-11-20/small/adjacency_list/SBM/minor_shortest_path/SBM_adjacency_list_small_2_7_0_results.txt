@@ -1,0 +1,11 @@
+To calculate the shortest path between node '7' and node '0', we can use the Breadth-First Search (BFS) algorithm. Here's the solution:
+
+```json
+{
+  "answer": 6
+}
+```
+
+Explanation:
+- The shortest path from node '7' to node '0' traverses through the following nodes: `7 -> 13 -> 18 -> 21 -> 5 -> 0`.
+- This path has a length of 6 edges.

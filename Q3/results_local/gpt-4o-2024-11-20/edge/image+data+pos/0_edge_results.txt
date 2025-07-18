@@ -1,0 +1,32 @@
+To determine whether the line segments intersect, we can use a mathematical approach based on the orientation of the points.
+
+**Steps to determine intersection:**
+1. Compute the orientation of ordered triplets of points using the cross-product formula.
+2. Check if the line segments intersect based on orientation values.
+
+**The given line segments:**
+- Segment 1: From node 26 to node 30: Points (0.02, -0.85) and (0.13, -0.76)
+- Segment 2: From node 49 to node 48: Points (0.06, -0.64) and (0.13, -0.83)
+
+**Orientation Formula:**
+For three points \( p = (x_1, y_1) \), \( q = (x_2, y_2) \), \( r = (x_3, y_3) \):
+\[
+\text{Orientation}(p, q, r) = (q_y - p_y) \cdot (r_x - q_x) - (q_x - p_x) \cdot (r_y - q_y)
+\]
+- Result > 0: Clockwise
+- Result < 0: Counterclockwise
+- Result = 0: Collinear
+
+### Case-by-Case Analysis:
+1. Compute orientations for points defining both lines.
+2. Check general intersection conditions using a combination of clock-wise and counterclock-wise orientations.
+
+**Intersection Status:**  
+After computing orientations and verifying, the results show that the two edges do intersect.
+
+**Final Answer:**
+```json
+{
+  "Answer": "Yes"
+}
+```

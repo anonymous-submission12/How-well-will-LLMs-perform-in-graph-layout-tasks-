@@ -1,0 +1,23 @@
+To calculate the length of the shortest path between node '15' and '20', we can use a Breadth-First Search (BFS) algorithm. Here is the step-by-step process:
+
+1. **Graph Representation**: Represent the graph as an adjacency list.
+2. **BFS Initialization**: Start BFS from node '15'.
+3. **Exploration**: Explore all neighboring nodes level by level until node '20' is found.
+4. **Path Length**: The level at which node '20' is found is the length of the shortest path.
+
+Here is the JSON response with the calculated shortest path length:
+
+```json
+{
+  "answer": 4
+}
+```
+
+### Explanation:
+- **Step 1**: Start at node '15'.
+- **Step 2**: From '15', we can reach nodes '13', '14', '16', and '17' (level 1).
+- **Step 3**: From '13', we can reach '12', '16', '17', and '23' (level 2).
+- **Step 4**: From '23', we can reach '18', '20', '21', and '22' (level 3).
+- **Step 5**: From '20', we have reached the destination (level 4).
+
+Thus, the shortest path from node '15' to '20' is of length 4.

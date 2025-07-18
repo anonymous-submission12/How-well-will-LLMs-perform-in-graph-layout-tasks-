@@ -1,0 +1,45 @@
+```python
+import networkx as nx
+
+# Define the graph from the edge list
+edge_list = [(0, 1), (0, 3), (0, 14), (1, 16), (1, 17), (1, 24), (2, 9), (3, 7), (3, 8), (3, 12), (3, 21), (4, 5), (4, 6), (4, 8), (4, 21), (4, 22), (4, 24), (5, 22), (6, 16), (6, 17), (6, 24), (6, 25), (7, 18), (7, 19), (7, 22), (7, 24), (7, 28), (8, 10), (8, 13), (8, 16), (8, 21), (8, 24), (8, 28), (9, 11), (9, 23), (10, 11), (10, 15), (10, 25), (11, 17), (11, 21), (11, 23), (11, 28), (12, 16), (12, 18), (12, 19), (13, 23), (14, 17), (15, 22), (15, 28), (16, 23), (17, 18), (17, 22), (18, 25), (20, 21), (20, 24), (20, 25), (21, 24), (21, 27), (21, 28), (22, 26), (25, 28)]
+G = nx.Graph(edge_list)
+
+# Check for graph patterns
+def check_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for Star
+    degrees = [deg for _, deg in G.degree()]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(G) and m == n and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(G) and m == n - 1 and degrees.count(2) == n - 2 and degrees.count(1) == 2:
+        return "Path"
+    
+    # Check for Grid
+    # A grid graph has nodes arranged in a rectangular lattice structure
+    if nx.is_connected(G) and n > 4 and m == 2 * n - int((n ** 0.5) * 2):
+        return "Grid"
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered graph
+    # A clustered graph has dense subgraphs (communities) with sparse connections between them
+    communities = nx.algorithms.community.greedy_modularity_communities(G)
+    if len(communities) > 1:
+        return "Clustered graph"
+    
+    # Default to Random graph
+    return "Random graph"
+
+print(check_graph_pattern(G))
+```

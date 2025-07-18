@@ -1,0 +1,13 @@
+Based on the provided adjacency list, we can identify the connected components, which represent the communities.
+
+Nodes 0-7 form a highly connected component.
+Nodes 8-15 form another connected component.
+Nodes 16-22 form a third connected component.
+
+Therefore, there are 3 communities in the graph.
+
+```json
+{
+"answer": 3
+}
+```

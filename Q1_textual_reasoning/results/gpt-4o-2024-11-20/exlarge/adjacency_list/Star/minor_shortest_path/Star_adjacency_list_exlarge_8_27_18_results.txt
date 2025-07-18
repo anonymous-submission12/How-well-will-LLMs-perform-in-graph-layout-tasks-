@@ -1,0 +1,13 @@
+The graph is structured such that node `0` is connected to all other nodes, and all other nodes are only connected to node `0`. This is essentially a "star graph". Therefore, the shortest path between any two non-central nodes always goes through the central node `0`.
+
+For the shortest path between node `27` and node `18`:
+1. `27 -> 0` (1 step).
+2. `0 -> 18` (1 step).
+
+Thus, the shortest path contains 2 steps.
+
+```json
+{
+  "answer": 2
+}
+```

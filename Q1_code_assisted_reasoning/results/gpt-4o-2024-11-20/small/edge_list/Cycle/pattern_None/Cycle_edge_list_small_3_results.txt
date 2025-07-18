@@ -1,0 +1,40 @@
+```python
+def determine_graph_pattern(edge_list):
+    from collections import defaultdict
+
+    # Build adjacency list
+    adj_list = defaultdict(list)
+    for u, v in edge_list:
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+
+    # Check for Star pattern
+    degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+    if max(degrees.values()) == len(edge_list) and list(degrees.values()).count(1) == len(edge_list) - 1:
+        return "Star"
+
+    # Check for Cycle pattern
+    if len(edge_list) == len(adj_list) and all(deg == 2 for deg in degrees.values()):
+        return "Cycle"
+
+    # Check for Path pattern
+    if list(degrees.values()).count(1) == 2 and all(deg == 2 for deg in degrees.values() if deg != 1):
+        return "Path"
+
+    # Check for Complete pattern
+    n = len(adj_list)
+    if len(edge_list) == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check for Grid pattern (not implemented in detail here)
+    # Grid graphs are harder to identify without additional information.
+
+    # Check for Clustered graph (not implemented in detail here)
+    # Clustered graphs require community detection algorithms.
+
+    # Default to Random graph
+    return "Random"
+
+edge_list = [(0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+print(determine_graph_pattern(edge_list))
+```

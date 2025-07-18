@@ -1,0 +1,60 @@
+```python
+import networkx as nx
+
+# Create the graph from the edge list
+edge_list = [
+    (0, 10), (0, 20), (0, 23), (0, 34), (0, 39), (0, 43), (1, 12), (1, 28), (1, 37), (1, 39), (1, 44),
+    (2, 10), (2, 15), (2, 19), (2, 23), (2, 27), (3, 4), (3, 10), (3, 31), (3, 40), (3, 47), (4, 5),
+    (4, 14), (4, 17), (4, 25), (4, 36), (4, 47), (5, 10), (5, 14), (5, 21), (6, 12), (6, 17), (6, 27),
+    (6, 32), (6, 33), (6, 43), (7, 23), (7, 27), (7, 33), (8, 35), (8, 42), (9, 16), (9, 25), (10, 24),
+    (10, 25), (10, 32), (10, 42), (11, 15), (11, 32), (11, 36), (11, 41), (11, 45), (12, 35), (13, 19),
+    (13, 27), (13, 35), (14, 21), (14, 22), (14, 24), (15, 24), (15, 30), (15, 35), (15, 39), (16, 26),
+    (16, 39), (16, 43), (17, 27), (17, 41), (18, 20), (18, 44), (19, 42), (19, 43), (20, 28), (20, 32),
+    (21, 24), (21, 25), (21, 27), (21, 35), (21, 43), (22, 38), (22, 46), (23, 26), (23, 36), (23, 38),
+    (24, 40), (25, 28), (25, 35), (25, 43), (26, 33), (26, 34), (27, 32), (28, 36), (28, 45), (29, 36),
+    (29, 43), (30, 35), (32, 44), (33, 35), (34, 42), (35, 43), (36, 42), (37, 43), (37, 46), (38, 42),
+    (40, 44), (41, 43), (44, 46), (44, 47), (45, 46), (45, 47)
+]
+G = nx.Graph(edge_list)
+
+# Check patterns
+def check_pattern(graph):
+    n = len(graph.nodes)
+    m = len(graph.edges)
+    
+    # Check for Star
+    degrees = [deg for _, deg in graph.degree()]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(graph) and m == n and all(deg == 2 for _, deg in graph.degree()):
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(graph) and m == n - 1 and degrees.count(2) == n - 2 and degrees.count(1) == 2:
+        return "Path"
+    
+    # Check for Grid
+    try:
+        rows, cols = nx.grid_graph(dim=[len(graph.nodes), len(graph.nodes)]).graph['dims']
+        if m == rows * (cols - 1) + cols * (rows - 1):
+            return "Grid"
+    except Exception:
+        pass
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered
+    cliques = list(nx.find_cliques(graph))
+    max_clique_size = max(len(clique) for clique in cliques)
+    if max_clique_size > n // 2:  # Arbitrary threshold for "strong clustering"
+        return "Clustered graph"
+    
+    # Default to Random
+    return "Random graph"
+
+print(check_pattern(G))
+```

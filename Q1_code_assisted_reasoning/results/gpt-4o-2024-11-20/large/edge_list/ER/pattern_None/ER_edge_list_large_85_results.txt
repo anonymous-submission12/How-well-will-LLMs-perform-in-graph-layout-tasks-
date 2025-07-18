@@ -1,0 +1,53 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 22), (0, 29), (0, 32), (0, 43), (1, 20), (1, 24), (1, 40), (2, 11), (2, 29), (2, 34), (2, 35), 
+             (3, 27), (3, 29), (3, 39), (4, 5), (4, 6), (4, 14), (4, 18), (4, 22), (4, 29), (4, 33), (4, 43), 
+             (5, 12), (5, 18), (5, 35), (5, 38), (6, 11), (6, 15), (6, 20), (7, 16), (7, 28), (7, 32), (8, 34), 
+             (8, 41), (9, 18), (9, 23), (9, 31), (10, 22), (10, 27), (10, 36), (10, 38), (11, 16), (11, 26), 
+             (11, 27), (12, 20), (12, 23), (12, 29), (12, 35), (12, 43), (13, 27), (13, 29), (13, 35), (13, 40), 
+             (14, 17), (15, 24), (15, 42), (15, 43), (17, 31), (19, 23), (19, 34), (19, 37), (20, 22), (20, 30), 
+             (21, 30), (21, 31), (21, 33), (21, 34), (22, 26), (23, 41), (24, 37), (24, 39), (25, 30), (26, 40), 
+             (26, 42), (27, 34), (27, 39), (28, 31), (28, 32), (28, 39), (29, 36), (30, 34), (31, 39), (32, 37), 
+             (32, 40), (32, 42), (33, 36), (33, 37), (35, 38), (35, 42), (35, 43), (40, 43)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Check for patterns
+def determine_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for Star
+    degrees = [deg for _, deg in G.degree]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(G) and m == n and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(G) and m == n - 1 and degrees.count(1) == 2 and all(deg == 2 for deg in degrees if deg != 1):
+        return "Path"
+    
+    # Check for Grid
+    sqrt_n = int(n**0.5)
+    if sqrt_n * sqrt_n == n and m == 2 * n - 2:
+        return "Grid"
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered
+    if nx.number_connected_components(G) > 1:
+        return "Clustered"
+    
+    # Default to Random
+    return "Random"
+
+print(determine_pattern(G))
+```

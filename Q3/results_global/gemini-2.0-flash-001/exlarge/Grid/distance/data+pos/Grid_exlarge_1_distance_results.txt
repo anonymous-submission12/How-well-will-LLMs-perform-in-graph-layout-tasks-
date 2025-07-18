@@ -1,0 +1,13 @@
+Let's analyze how well each layout preserves graph-theoretic distances.  A good layout will have Euclidean distances between nodes that are proportional to the shortest path distances between those nodes in the graph.  Since calculating all shortest path distances and comparing them to Euclidean distances is computationally intensive, we can look for obvious distortions.
+
+In layout 1, nodes that are far apart in the graph appear to be close together in the layout, and vice versa. For example, node 24 and node 49 are connected by an edge, but are far apart in the layout.
+
+In layout 2, the nodes seem to be more evenly distributed, and nodes connected by edges are generally closer together in the layout.
+
+Therefore, layout 2 appears to better preserve graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

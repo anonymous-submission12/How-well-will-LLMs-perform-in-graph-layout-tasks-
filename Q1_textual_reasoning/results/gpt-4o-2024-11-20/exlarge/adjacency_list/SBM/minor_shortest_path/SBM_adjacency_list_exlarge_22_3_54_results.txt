@@ -1,0 +1,7 @@
+To calculate the shortest path between node '3' and node '54' in the given graph represented as an adjacency list, we can use the Breadth-First Search (BFS) algorithm. Here's the result:
+
+```json
+{
+  "answer": 5
+}
+```

@@ -1,0 +1,35 @@
+Here is the Python script to generate a layout for the given graph using the `networkx` library and the `spring_layout` algorithm, which ensures consistency between Euclidean distance and graph-theoretic distance. The output is in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the edge list
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16),
+    (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)
+]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate the layout using the spring layout algorithm
+# The spring layout ensures that the Euclidean distance reflects the graph-theoretic distance
+layout = nx.spring_layout(G)
+
+# Convert the layout to a JSON-serializable format
+layout_json = {node: position.tolist() for node, position in layout.items()}
+
+# Print the layout in JSON format
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation**: The `networkx` library is used to create a graph from the provided edge list.
+2. **Spring Layout**: The `spring_layout` algorithm is used to compute the positions of the nodes. This algorithm models the graph as a physical system where edges act as springs, ensuring that the Euclidean distance between nodes is proportional to their graph-theoretic distance.
+3. **JSON Serialization**: The layout is converted into a JSON-serializable format by converting NumPy arrays (used internally by `spring_layout`) to lists.
+4. **Output**: The layout is printed in JSON format, where each node is mapped to its 2D position.
+
+You can run this script to generate the layout for the given graph.

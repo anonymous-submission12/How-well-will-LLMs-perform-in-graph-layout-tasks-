@@ -1,0 +1,34 @@
+```python
+from collections import defaultdict, deque
+
+def bfs(start, visited, adj_list):
+    queue = deque([start])
+    visited[start] = True
+    while queue:
+        node = queue.popleft()
+        for neighbor in adj_list[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+
+def count_communities(adj_list):
+    visited = {node: False for node in adj_list}
+    community_count = 0
+    for node in adj_list:
+        if not visited[node]:
+            bfs(node, visited, adj_list)
+            community_count += 1
+    return community_count
+
+adj_list = {
+    0: [1, 3, 4, 5], 1: [0, 2, 4, 5], 2: [1, 3, 4, 17], 3: [0, 2, 5], 4: [0, 1, 2, 26], 
+    5: [0, 1, 3, 9], 6: [7, 8, 9, 10, 24], 7: [6, 8, 9, 10, 11], 8: [6, 7, 9, 10, 11, 12], 
+    9: [5, 6, 7, 8, 10, 11], 10: [6, 7, 8, 9, 11], 11: [7, 8, 9, 10, 12], 
+    12: [8, 11, 13, 14, 15, 16], 13: [12, 16], 14: [12, 15, 16], 15: [12, 14], 
+    16: [12, 13, 14], 17: [2, 18, 19, 20, 21], 18: [17, 19, 21], 19: [17, 18, 21], 
+    20: [17, 21], 21: [17, 18, 19, 20], 22: [24, 25, 26], 23: [25, 26], 
+    24: [6, 22, 25], 25: [22, 23, 24, 26], 26: [4, 22, 23, 25]
+}
+
+print(count_communities(adj_list))
+```

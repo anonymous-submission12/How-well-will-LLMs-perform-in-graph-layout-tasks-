@@ -1,0 +1,7 @@
+To count the number of unique nodes in the graph given as an edge list, we combine all node values from the pairs and determine the distinct nodes using a set. Below is the JSON response:
+
+```json
+{
+  "answer": 78
+}
+```

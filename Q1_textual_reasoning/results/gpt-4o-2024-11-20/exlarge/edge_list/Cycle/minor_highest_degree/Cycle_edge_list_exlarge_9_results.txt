@@ -1,0 +1,13 @@
+To find the highest degree of any node in the graph, we first compute the degree of each node (i.e., the number of edges connected to each node).
+
+The given graph is specified as an edge list. Here's how the degrees are computed:
+- For every edge (u, v), we add 1 to the degree count for both node u and node v.
+- At the end, we find the maximum degree among all nodes.
+
+Let's compute this and store the result in JSON format:
+
+```json
+{
+  "answer": 3
+}
+```

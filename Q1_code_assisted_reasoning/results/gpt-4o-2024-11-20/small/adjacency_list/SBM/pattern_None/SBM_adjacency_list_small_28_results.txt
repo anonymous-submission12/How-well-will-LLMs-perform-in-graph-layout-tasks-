@@ -1,0 +1,118 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Helper function to check if the graph is complete
+    def is_complete(adj_list):
+        n = len(adj_list)
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != n - 1:
+                return False
+        return True
+
+    # Helper function to check if the graph is a star
+    def is_star(adj_list):
+        center_count = 0
+        leaf_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(adj_list) - 1:
+                center_count += 1
+            elif len(neighbors) == 1:
+                leaf_count += 1
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    # Helper function to check if the graph is a cycle
+    def is_cycle(adj_list):
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != 2:
+                return False
+        return True
+
+    # Helper function to check if the graph is a path
+    def is_path(adj_list):
+        end_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == 1:
+                end_count += 1
+            elif len(neighbors) > 2:
+                return False
+        return end_count == 2
+
+    # Helper function to check if the graph is a grid
+    def is_grid(adj_list):
+        # A grid graph has a specific structure that is hard to determine from adjacency list alone.
+        # For simplicity, we will not implement this check.
+        return False
+
+    # Helper function to check if the graph is clustered
+    def is_clustered(adj_list):
+        # A clustered graph typically has dense subgraphs. We will check for subgraphs with high density.
+        clusters = []
+        visited = set()
+        for node in adj_list:
+            if node not in visited:
+                cluster = set()
+                stack = [node]
+                while stack:
+                    current = stack.pop()
+                    if current not in visited:
+                        visited.add(current)
+                        cluster.add(current)
+                        stack.extend(adj_list[current])
+                clusters.append(cluster)
+        for cluster in clusters:
+            edges = sum(len(adj_list[node]) for node in cluster) // 2
+            if edges < len(cluster) * (len(cluster) - 1) // 4:  # Arbitrary density threshold
+                return False
+        return True
+
+    # Helper function to check if the graph is random
+    def is_random(adj_list):
+        # If none of the above patterns match, we consider the graph random.
+        return True
+
+    # Determine the graph pattern
+    if is_complete(adj_list):
+        return "Complete"
+    elif is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+# Input adjacency list
+adj_list = {
+    0: [4, 5, 6, 8, 9, 10, 11],
+    1: [3, 4, 6, 7, 8, 9, 10],
+    2: [3, 4, 6, 7, 8, 9, 10],
+    3: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11],
+    4: [0, 1, 2, 3, 6, 7, 8, 9, 10],
+    5: [0, 3, 6, 7, 8, 9, 10],
+    6: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11],
+    7: [1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    8: [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11],
+    9: [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 22],
+    10: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    11: [0, 3, 6, 7, 8, 9],
+    12: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+    13: [12, 14, 15, 16, 18, 19, 20, 22, 23],
+    14: [12, 13, 15, 17, 18, 19, 20, 22, 23],
+    15: [12, 13, 14, 16, 17, 18, 19, 22, 23],
+    16: [12, 13, 15, 17, 18, 19, 22, 23],
+    17: [12, 14, 15, 16, 19, 20, 21, 22, 23],
+    18: [12, 13, 14, 15, 16, 20, 21, 23],
+    19: [12, 13, 14, 15, 16, 17, 21, 23],
+    20: [12, 13, 14, 17, 18, 21, 22],
+    21: [12, 17, 18, 19, 20, 22, 23],
+    22: [9, 12, 13, 14, 15, 16, 17, 20, 21],
+    23: [12, 13, 14, 15, 16, 17, 18, 19, 21]
+}
+
+# Output the result
+print(determine_graph_pattern(adj_list))
+```

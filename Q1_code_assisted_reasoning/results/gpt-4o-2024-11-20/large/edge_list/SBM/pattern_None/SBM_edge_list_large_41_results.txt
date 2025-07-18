@@ -1,0 +1,75 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 2), (0, 5), (0, 6), (0, 7), (0, 8), (0, 10), (0, 11), 
+             (1, 6), (1, 9), (1, 10), (1, 11), (2, 6), (2, 9), (2, 10), (2, 11), 
+             (3, 4), (3, 5), (3, 9), (3, 11), (4, 6), (4, 8), (4, 9), (4, 10), 
+             (4, 11), (4, 45), (5, 7), (5, 9), (5, 11), (6, 10), (7, 8), (7, 9), 
+             (7, 10), (7, 11), (8, 9), (9, 11), (9, 21), (10, 11), (12, 15), 
+             (12, 16), (12, 17), (12, 18), (12, 19), (12, 20), (12, 22), (13, 14), 
+             (13, 15), (13, 17), (13, 18), (13, 19), (13, 20), (13, 21), (13, 22), 
+             (13, 23), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 21), 
+             (14, 22), (14, 23), (15, 17), (15, 18), (15, 19), (15, 32), (16, 19), 
+             (16, 23), (17, 18), (18, 20), (18, 21), (18, 22), (18, 26), (19, 21), 
+             (19, 22), (19, 23), (20, 21), (20, 22), (21, 22), (21, 23), (22, 23), 
+             (22, 45), (23, 35), (24, 25), (24, 26), (24, 30), (25, 27), (25, 28), 
+             (25, 29), (25, 30), (26, 27), (26, 31), (27, 28), (27, 29), (27, 30), 
+             (27, 31), (28, 29), (28, 30), (28, 31), (29, 30), (29, 31), (29, 43), 
+             (32, 24), (32, 27), (32, 28), (32, 34), (33, 24), (33, 26), (33, 28), 
+             (33, 31), (33, 34), (33, 35), (34, 24), (34, 25), (34, 27), (34, 28), 
+             (34, 29), (34, 35), (35, 26), (35, 28), (35, 30), (36, 38), (36, 43), 
+             (36, 44), (37, 38), (37, 40), (37, 41), (37, 44), (38, 39), (38, 44), 
+             (38, 45), (38, 46), (39, 40), (39, 41), (39, 44), (39, 45), (39, 46), 
+             (40, 41), (40, 43), (40, 44), (40, 45), (40, 46), (41, 42), (41, 43), 
+             (41, 45), (42, 45), (42, 46), (43, 44), (43, 45), (44, 45), (44, 46), 
+             (45, 46)]
+
+# Create the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Helper functions to identify patterns
+def is_star(G):
+    degrees = [d for _, d in G.degree()]
+    return degrees.count(len(G.nodes) - 1) == 1 and degrees.count(1) == len(G.nodes) - 1
+
+def is_cycle(G):
+    return nx.is_connected(G) and all(d == 2 for _, d in G.degree())
+
+def is_path(G):
+    degrees = sorted(d for _, d in G.degree())
+    return nx.is_connected(G) and degrees.count(1) == 2 and all(d == 2 for d in degrees[1:-1])
+
+def is_grid(G):
+    # Check for a potential grid layout by looking at degree properties
+    sqrt_n = int(len(G.nodes) ** 0.5)
+    return nx.is_connected(G) and len(G.nodes) == sqrt_n**2 and (
+        sum(d == 2 for _, d in G.degree()) >= 2 * sqrt_n * (sqrt_n - 1))
+
+def is_complete(G):
+    n = len(G.nodes)
+    return G.number_of_edges() == n * (n - 1) // 2
+
+def is_clustered(G):
+    return max(nx.average_clustering(G), 0.4) > 0.4
+
+def is_random(G):
+    return not any([is_star(G), is_cycle(G), is_path(G), is_grid(G), is_complete(G), is_clustered(G)])
+
+# Check the graph pattern
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered graph")
+else:  # If no other specific pattern fits
+    print("Random graph")
+```

@@ -1,0 +1,7 @@
+To calculate the shortest path between node `60` and node `13`, we can use Breadth-First Search (BFS), which is well-suited for unweighted graphs like the given adjacency list. Below is the calculated solution encapsulated in JSON format:
+
+```json
+{
+  "answer": 8
+}
+```

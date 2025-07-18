@@ -1,0 +1,12 @@
+To calculate the shortest path between nodes `23` and `20` in the given graph (represented as an adjacency list), we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph because it explores all neighbors of a node before moving on to nodes at the next level.
+
+Here's the calculation:
+
+1. Starting at node `23`, we traverse its neighbors and continue level by level, keeping track of distances from the start node.
+2. Using BFS, we stop once we reach node `20` and return the distance.
+
+```json
+{
+  "answer": 6
+}
+```

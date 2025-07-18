@@ -1,0 +1,70 @@
+```python:/home/app/graph_analysis.py
+import networkx as nx
+
+adjacency_list = {
+    0: [1, 17, 34, 36, 37], 1: [0, 4, 6, 23, 26, 28, 32, 36, 39, 44], 
+    2: [6, 8, 15, 40, 46], 3: [5, 6, 33], 4: [1, 22, 29, 41, 43], 
+    5: [3, 19, 23, 34, 36, 45], 6: [1, 2, 3, 21, 32, 39, 42], 
+    7: [8], 8: [2, 7, 17, 30, 41, 43, 44], 9: [22, 24, 30, 31], 
+    10: [23, 31, 41], 11: [20, 27, 34, 38, 41, 44], 12: [16, 20, 21, 27, 29, 39, 44, 46], 
+    13: [23, 24, 26, 30, 32, 34], 14: [18, 28, 29, 30, 37], 15: [2], 
+    16: [12, 34, 44], 17: [0, 8, 21, 22, 35], 18: [14, 25, 32], 
+    19: [5, 33], 20: [11, 12, 40, 43], 21: [6, 12, 17, 25], 
+    22: [4, 9, 17, 26, 32, 33], 23: [1, 5, 10, 13, 24, 26, 35, 38, 42, 43], 
+    24: [9, 13, 23, 33, 38, 39], 25: [18, 21], 26: [1, 13, 22, 23, 31], 
+    27: [11, 12, 28, 34], 28: [1, 14, 27], 29: [4, 12, 14, 34, 43], 
+    30: [8, 9, 13, 14, 32, 40, 41, 43], 31: [9, 10, 26, 35], 
+    32: [1, 6, 13, 18, 22, 30], 33: [3, 19, 22, 24, 36, 43], 
+    34: [0, 5, 11, 13, 16, 27, 29, 35, 42], 35: [17, 23, 31, 34], 
+    36: [0, 1, 5, 33, 39], 37: [0, 14, 40, 43], 38: [11, 23, 24, 42], 
+    39: [1, 6, 12, 24, 36], 40: [2, 20, 30, 37], 41: [4, 8, 10, 11, 30, 43], 
+    42: [6, 23, 34, 38], 43: [4, 8, 20, 23, 29, 30, 33, 37, 41], 
+    44: [1, 8, 11, 12, 16], 45: [5], 46: [2, 12]
+}
+
+G = nx.Graph(adjacency_list)
+
+def is_star(graph):
+    degrees = [deg for _, deg in graph.degree()]
+    return degrees.count(max(degrees)) == 1 and max(degrees) == len(graph) - 1
+
+def is_cycle(graph):
+    return all(deg == 2 for _, deg in graph.degree()) and nx.is_connected(graph)
+
+def is_path(graph):
+    return sorted([deg for _, deg in graph.degree()]) == [1] + [2] * (len(graph) - 2) + [1]
+
+def is_complete(graph):
+    n = len(graph)
+    return all(deg == n - 1 for _, deg in graph.degree())
+
+def is_grid(graph):
+    nodes = len(graph)
+    sqrt_n = int(nodes ** 0.5)
+    return sqrt_n * sqrt_n == nodes and all(deg in [2, 3, 4] for _, deg in graph.degree())
+
+def is_clustered(graph):
+    clustering_coeff = nx.average_clustering(graph)
+    return clustering_coeff > 0.3  # Heuristic threshold for clustering
+
+def is_random(graph):
+    return not (is_star(graph) or is_cycle(graph) or is_path(graph) or is_grid(graph) or is_complete(graph) or is_clustered(graph))
+
+patterns = []
+if is_star(G):
+    patterns.append("Star")
+if is_cycle(G):
+    patterns.append("Cycle")
+if is_path(G):
+    patterns.append("Path")
+if is_grid(G):
+    patterns.append("Grid")
+if is_complete(G):
+    patterns.append("Complete")
+if is_clustered(G):
+    patterns.append("Clustered Graph")
+if is_random(G):
+    patterns.append("Random Graph")
+
+print(", ".join(patterns))
+```

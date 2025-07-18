@@ -1,0 +1,106 @@
+Here is a Python script that generates a layout for the given graph using a force-directed layout method. The code ensures that the Euclidean distance between nodes aligns closely with their graph-theoretic distance. This is done by simulating a basic force-directed algorithm without leveraging any existing layout library. The final output is in JSON format, containing node positions.
+
+```python
+import json
+import math
+import random
+
+def generate_graph_layout(edge_list, iterations=500, k=1, attraction_factor=0.01, repulsion_factor=1000):
+    # Initialize node positions randomly
+    nodes = set()
+    for edge in edge_list:  # Collect all unique nodes
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = list(nodes)
+    positions = {node: (random.uniform(-1, 1), random.uniform(-1, 1)) for node in nodes}  # Random initial positions
+
+    # Define helper functions for distance and force calculations
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+    def attractive_force(distance):
+        return attraction_factor * (distance ** 2) / k
+
+    def repulsive_force(distance):
+        return repulsion_factor / (distance ** 2) if distance > 0 else float('inf')
+
+    # Main force-directed algorithm loop
+    for _ in range(iterations):
+        # Initialize displacement to zero for all nodes
+        displacements = {node: [0, 0] for node in nodes}
+
+        # Repulsion: Calculate repulsion between all pairs of nodes
+        for i, node_u in enumerate(nodes):
+            for node_v in nodes[i + 1:]:
+                pos_u, pos_v = positions[node_u], positions[node_v]
+                dist = euclidean_distance(pos_u, pos_v)
+                force = repulsive_force(dist)
+                # Calculate displacement based on force direction
+                if dist > 0:
+                    dx = (pos_u[0] - pos_v[0]) / dist * force
+                    dy = (pos_u[1] - pos_v[1]) / dist * force
+                    displacements[node_u][0] += dx
+                    displacements[node_u][1] += dy
+                    displacements[node_v][0] -= dx
+                    displacements[node_v][1] -= dy
+
+        # Attraction: Calculate attraction along edges
+        for u, v in edge_list:
+            pos_u, pos_v = positions[u], positions[v]
+            dist = euclidean_distance(pos_u, pos_v)
+            force = attractive_force(dist)
+            # Calculate displacement based on force direction
+            if dist > 0:
+                dx = (pos_v[0] - pos_u[0]) / dist * force
+                dy = (pos_v[1] - pos_u[1]) / dist * force
+                displacements[u][0] += dx
+                displacements[u][1] += dy
+                displacements[v][0] -= dx
+                displacements[v][1] -= dy
+
+        # Update positions based on displacements
+        for node in nodes:
+            positions[node] = (
+                positions[node][0] + displacements[node][0],
+                positions[node][1] + displacements[node][1]
+            )
+
+    # Normalize positions to fit in a reasonable space
+    min_x = min(position[0] for position in positions.values())
+    max_x = max(position[0] for position in positions.values())
+    min_y = min(position[1] for position in positions.values())
+    max_y = max(position[1] for position in positions.values())
+    range_x = max_x - min_x
+    range_y = max_y - min_y
+    positions = {
+        node: (
+            (position[0] - min_x) / range_x * 100,
+            (position[1] - min_y) / range_y * 100
+        )
+        for node, position in positions.items()
+    }
+
+    # Convert output to JSON format
+    layout_json = json.dumps(positions, indent=4)
+    return layout_json
+
+# Graph data
+edge_list = [(0, 1), (0, 20), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout as JSON
+print(layout)
+```
+
+### Explanation of the Algorithm:
+- **Initialization**: Nodes are placed randomly in a 2D plane (`-1` to `1`).
+- **Force Dynamics**: The algorithm uses a force-directed method:
+  - *Repulsive forces*: Simulated between all pairs of nodes (push nodes apart).
+  - *Attractive forces*: Simulated along each edge (pull nodes closer).
+- **Iteration**: These forces are applied repeatedly for a fixed number of iterations (default: 500).
+- **Normalization**: After iteration, node positions are scaled to fit in a bounded space for uniformity.
+- **Output**: Final node positions are converted into JSON format.
+
+Run the script to generate a layout for the provided graph-edge list. The resulting JSON output will include the positions of each node.

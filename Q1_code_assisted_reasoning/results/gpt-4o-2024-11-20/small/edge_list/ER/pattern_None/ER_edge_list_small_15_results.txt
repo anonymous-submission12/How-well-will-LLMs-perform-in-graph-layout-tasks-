@@ -1,0 +1,83 @@
+```python
+from collections import defaultdict
+
+# Edge list
+edges = [(0, 5), (0, 6), (0, 10), (1, 19), (2, 5), (2, 8), (2, 22), (3, 10), (4, 12), 
+         (4, 16), (5, 18), (5, 21), (6, 12), (6, 25), (7, 11), (7, 17), (8, 9), (8, 12), 
+         (8, 13), (8, 19), (9, 15), (11, 12), (11, 15), (11, 18), (11, 19), (11, 20), 
+         (11, 25), (12, 19), (12, 22), (12, 25), (13, 16), (13, 25), (14, 20), (14, 21), 
+         (16, 21), (17, 23), (17, 24), (18, 23), (19, 23)]
+
+# Build adjacency list
+adj_list = defaultdict(set)
+for u, v in edges:
+    adj_list[u].add(v)
+    adj_list[v].add(u)
+
+# Number of vertices and edges
+vertices = set(adj_list.keys())
+num_vertices = len(vertices)
+num_edges = len(edges)
+
+# Helper function to check graph patterns
+def check_pattern():
+    # Check Star: One central vertex connected to all others
+    for v in vertices:
+        if len(adj_list[v]) == num_vertices - 1:
+            return "Star"
+
+    # Check Cycle: All vertices form a ring-like structure
+    visited = set()
+    def dfs(v, parent):
+        if v in visited:
+            return False
+        visited.add(v)
+        for neighbor in adj_list[v]:
+            if neighbor != parent and not dfs(neighbor, v):
+                return False
+        return True
+    if num_edges == num_vertices and dfs(next(iter(vertices)), -1) and len(visited) == num_vertices:
+        return "Cycle"
+
+    # Check Path: Vertices connected linearly
+    endpoint_count = sum(1 for v in vertices if len(adj_list[v]) == 1)
+    if endpoint_count == 2 and num_edges == num_vertices - 1:
+        return "Path"
+
+    # Check Grid: Rectangular grid-like structure (generally)
+    degree_count = defaultdict(int)
+    for v in vertices:
+        degree_count[len(adj_list[v])] += 1
+    if degree_count[4] > 0 or degree_count[3] > 0:
+        return "Grid"
+
+    # Check Complete: Every vertex connected to every other vertex
+    if num_edges == num_vertices * (num_vertices - 1) // 2:
+        return "Complete"
+
+    # Check Clustered graph: Groups of densely connected subgraphs
+    visited.clear()
+    def dfs_component(v):
+        component = {v}
+        stack = [v]
+        while stack:
+            node = stack.pop()
+            for neighbor in adj_list[node]:
+                if neighbor not in component:
+                    component.add(neighbor)
+                    stack.append(neighbor)
+        return component
+    components = []
+    for v in vertices:
+        if v not in visited:
+            component = dfs_component(v)
+            visited.update(component)
+            components.append(component)
+    if len(components) > 1:
+        return "Clustered graph"
+
+    # If none of the above patterns fit, classify as Random graph
+    return "Random graph"
+
+print(check_pattern())
+```

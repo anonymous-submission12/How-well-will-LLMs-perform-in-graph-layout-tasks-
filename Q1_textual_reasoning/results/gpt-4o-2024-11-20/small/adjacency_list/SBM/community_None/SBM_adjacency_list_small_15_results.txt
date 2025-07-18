@@ -1,0 +1,7 @@
+To determine the number of communities in the graph, we can use a community detection approach based on connectivity. Each connected subgraph forms a distinct community. Here’s the result:
+
+```json
+{
+  "answer": 2
+}
+```

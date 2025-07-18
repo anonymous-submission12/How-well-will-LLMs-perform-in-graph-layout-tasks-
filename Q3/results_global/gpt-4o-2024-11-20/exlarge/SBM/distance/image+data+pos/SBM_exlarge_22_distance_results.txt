@@ -1,0 +1,11 @@
+To compare which layout better preserves graph-theoretic distance, we use the node coordinate data associated with each layout (Answer 1 and Answer 2). Graph-theoretic distance is best preserved when the Euclidean distance in the layout is proportional to the shortest path length in the graph.
+
+The first image (Answer 1) appears to cluster nodes closer together in groups which correspond to their graph-theoretic proximities, maintaining a strong sense of adjacency based on the graph structure. The second image (Answer 2), while more spread out, might dilute the graph-theoretic meaning due to larger separations across groups.
+
+Thus, **Answer 1** better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 1
+}
+```

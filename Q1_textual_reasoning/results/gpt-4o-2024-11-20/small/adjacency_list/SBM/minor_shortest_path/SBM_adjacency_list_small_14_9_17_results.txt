@@ -1,0 +1,11 @@
+To find the shortest path between nodes '9' and '17', we can use the breadth-first search (BFS) algorithm since it's highly suitable for unweighted graphs like the one in adjacency list format provided.
+
+Here's the solution:
+
+```json
+{
+  "answer": 6
+}
+```
+
+Let me know if you'd like to see the step-by-step details of how BFS was applied.

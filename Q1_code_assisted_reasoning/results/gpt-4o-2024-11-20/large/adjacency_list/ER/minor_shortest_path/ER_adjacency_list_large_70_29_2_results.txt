@@ -1,0 +1,39 @@
+```python:/home/app/shortest_path.py
+from collections import deque
+
+# Graph representation
+graph = {
+    0: [14, 27], 1: [4, 12, 24, 26, 27, 28, 35, 42], 2: [13, 19, 22, 33, 35, 43], 3: [38], 
+    4: [1, 5, 13, 29, 32, 37, 40], 5: [4, 19, 20, 34, 36, 43], 6: [22], 7: [18, 27, 40, 43], 
+    8: [25, 34, 41], 9: [21, 22, 23], 10: [18, 28, 30, 37, 41], 11: [14, 24, 38], 
+    12: [1, 14, 20, 25, 40, 41], 13: [2, 4, 17, 18, 25, 31, 42], 14: [0, 11, 12, 18, 20, 30, 41], 
+    15: [18, 19, 40, 42], 16: [21, 25], 17: [13], 18: [7, 10, 13, 14, 15, 19, 38], 
+    19: [2, 5, 15, 18, 37, 43], 20: [5, 12, 14, 22, 27, 36], 21: [9, 16, 27, 30, 33], 
+    22: [2, 6, 9, 20, 38], 23: [9, 24, 26, 37, 38], 24: [1, 11, 23, 26, 27, 36], 
+    25: [8, 12, 13, 16, 28, 37], 26: [1, 23, 24, 30, 33, 43], 27: [0, 1, 7, 20, 21, 24, 28], 
+    28: [1, 10, 25, 27, 34], 29: [4, 41], 30: [10, 14, 21, 26, 31, 39, 40, 42], 
+    31: [13, 30, 37, 41], 32: [4], 33: [2, 21, 26], 34: [5, 8, 28], 35: [1, 2], 
+    36: [5, 20, 24], 37: [4, 10, 19, 23, 25, 31], 38: [3, 11, 18, 22, 23], 
+    39: [30], 40: [4, 7, 12, 15, 30], 41: [8, 10, 12, 14, 29, 31, 42], 
+    42: [1, 13, 15, 30, 41], 43: [2, 5, 7, 19, 26]
+}
+
+# Function to find the shortest path using BFS
+def shortest_path(graph, start, end):
+    queue = deque([(start, 0)])  # (node, distance)
+    visited = set()
+
+    while queue:
+        node, distance = queue.popleft()
+        if node == end:
+            return distance
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph.get(node, []):
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + 1))
+    return -1  # Return -1 if no path exists
+
+# Compute and print the shortest path length
+print(shortest_path(graph, 29, 2))
+```

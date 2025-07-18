@@ -1,0 +1,20 @@
+To determine the shortest path length between nodes '8' and '0', we can use the Breadth-First Search (BFS) algorithm because it effectively finds the shortest path in an unweighted graph. Let's calculate it:
+
+### Step-by-step BFS
+1. Start with node `8`.
+2. Explore all its immediate neighbors and keep track of visited nodes.
+3. Continue exploring neighbors level by level until reaching node `0`.
+4. Count the levels traversed, which will represent the shortest path length.
+
+### Traverse Adjacency List
+The adjacency list for the graph is provided. Using BFS, we compute the shortest path.
+
+### Solution
+Using BFS, we find that the shortest path from node `8` to node `0` has a length of **8**.
+
+### JSON Response
+```json
+{
+  "answer": 8
+}
+```

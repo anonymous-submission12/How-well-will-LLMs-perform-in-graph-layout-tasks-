@@ -1,0 +1,7 @@
+The graph data describes a path graph. Layout 2 arranges the nodes in a circular fashion, which better reflects the path structure compared to layout 1, which has many intersecting edges and nodes placed far apart despite being close in the graph.
+
+```json
+{
+"Answer": 2
+}
+```

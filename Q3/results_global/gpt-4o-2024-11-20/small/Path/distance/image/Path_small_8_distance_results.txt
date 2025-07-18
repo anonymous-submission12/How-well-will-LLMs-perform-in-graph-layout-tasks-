@@ -1,0 +1,7 @@
+The second image better preserves graph-theoretic distances because the layout represents the graph in a manner where vertices and edges are spaced proportionally to their connections, minimizing distortion in distance measurement.
+
+```json
+{
+  "Answer": 2
+}
+```

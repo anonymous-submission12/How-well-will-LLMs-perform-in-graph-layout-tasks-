@@ -1,0 +1,9 @@
+To calculate the length of the shortest path between nodes `44` and `31` in the given unweighted graph using breadth-first search (BFS), we find the shortest number of edges connecting the two nodes.
+
+Here's the solution:
+
+```json
+{
+  "answer": 2
+}
+```

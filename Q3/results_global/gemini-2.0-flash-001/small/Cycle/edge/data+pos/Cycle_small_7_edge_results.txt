@@ -1,0 +1,7 @@
+Based on the node coordinates, layout 2 appears to have fewer edge crossings. The nodes are arranged in a more circular fashion, which tends to minimize crossings for this type of graph structure. Layout 1 has more nodes clustered in the center, which likely leads to more crossings.
+
+```json
+{
+"Answer": 2
+}
+```

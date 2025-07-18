@@ -1,0 +1,12 @@
+To determine the shortest path length between nodes `27` and `19`, we can utilize the Breadth-First Search (BFS) algorithm. Here's the computation and the result:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation:
+- Starting at node `27`, progress step-by-step to reach node `19` via the BFS algorithm:
+  - From `27`: neighbors `[21, 26, 28]`.
+  - From these neighbors, continue until visiting `19` in 4 steps (`27 -> 26 -> 25 -> 19`).

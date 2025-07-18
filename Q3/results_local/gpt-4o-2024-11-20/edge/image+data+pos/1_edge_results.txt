@@ -1,0 +1,28 @@
+To determine whether the edges (2, 1) and (3, 6) intersect, we can apply the line segment intersection formula using their respective coordinates.
+
+### Node Coordinates:
+- Node 1: `[-0.8, 0.57]`
+- Node 2: `[-0.67, 0.44]`
+- Node 3: `[-0.69, 0.52]`
+- Node 6: `[-0.74, 0.36]`
+
+### Step-by-Step Method:
+1. **Edge 1 (2, 1)**: 
+   - Start point: `[-0.67, 0.44]`
+   - End point: `[-0.8, 0.57]`
+
+2. **Edge 2 (3, 6)**:
+   - Start point: `[-0.69, 0.52]`
+   - End point: `[-0.74, 0.36]`
+
+Using the line segment intersection test, we know:
+A pair of line segments intersects if the orientations of each segment relative to the endpoints of the other segment differ (using determinant-based calculations).
+
+After performing the calculations (or observing the visual), we can see that these edges **do intersect**.
+
+### Final Answer:
+```json
+{
+  "Answer": "Yes"
+}
+```

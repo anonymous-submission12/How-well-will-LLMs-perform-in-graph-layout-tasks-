@@ -1,0 +1,7 @@
+Both layouts appear to be radial layouts of a star graph. In a star graph, all nodes are directly connected to a central node. Both layouts visually represent this structure well. The graph-theoretic distance between any two leaf nodes is 2 (through the central node), and the distance between the central node and any leaf node is 1. Both layouts visually emphasize this. Therefore, both layouts preserve graph-theoretic distance equally well. Since the question asks for which *better* preserves the distance, and there is no discernible difference, I will arbitrarily choose the first one.
+
+```json
+{
+"Answer": "1"
+}
+```

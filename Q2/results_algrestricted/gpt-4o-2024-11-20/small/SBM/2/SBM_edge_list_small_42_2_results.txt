@@ -1,0 +1,116 @@
+To generate a layout for the graph while maintaining consistency between Euclidean distance and graph-theoretic distance, we can use a custom algorithm. The algorithm will compute the shortest path distances between all pairs of nodes (graph-theoretic distances) and then use a force-directed approach to iteratively adjust node positions to align Euclidean distances with these graph-theoretic distances.
+
+Below is the Python script to achieve this:
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+from itertools import combinations
+from queue import Queue
+
+def compute_shortest_path_lengths(edge_list, num_nodes):
+    """Compute shortest path lengths between all pairs of nodes using BFS."""
+    graph = defaultdict(list)
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    shortest_paths = {}
+    for node in range(num_nodes):
+        distances = {n: float('inf') for n in range(num_nodes)}
+        distances[node] = 0
+        q = Queue()
+        q.put(node)
+        
+        while not q.empty():
+            current = q.get()
+            for neighbor in graph[current]:
+                if distances[neighbor] == float('inf'):
+                    distances[neighbor] = distances[current] + 1
+                    q.put(neighbor)
+        
+        shortest_paths[node] = distances
+    return shortest_paths
+
+def initialize_positions(num_nodes, scale=10):
+    """Randomly initialize positions for nodes."""
+    return {i: (random.uniform(0, scale), random.uniform(0, scale)) for i in range(num_nodes)}
+
+def compute_force_layout(edge_list, num_nodes, iterations=1000, learning_rate=0.01):
+    """Compute graph layout using a force-directed approach."""
+    shortest_paths = compute_shortest_path_lengths(edge_list, num_nodes)
+    positions = initialize_positions(num_nodes)
+    
+    for _ in range(iterations):
+        forces = {i: [0, 0] for i in range(num_nodes)}
+        
+        for i, j in combinations(range(num_nodes), 2):
+            if i == j:
+                continue
+            
+            # Graph-theoretic distance
+            d_ij = shortest_paths[i][j]
+            if d_ij == float('inf'):
+                continue
+            
+            # Current Euclidean distance
+            x_i, y_i = positions[i]
+            x_j, y_j = positions[j]
+            dx = x_j - x_i
+            dy = y_j - y_i
+            euclidean_dist = math.sqrt(dx**2 + dy**2) + 1e-6  # Avoid division by zero
+            
+            # Force magnitude
+            force_magnitude = (euclidean_dist - d_ij) / d_ij
+            
+            # Update forces
+            forces[i][0] += force_magnitude * dx / euclidean_dist
+            forces[i][1] += force_magnitude * dy / euclidean_dist
+            forces[j][0] -= force_magnitude * dx / euclidean_dist
+            forces[j][1] -= force_magnitude * dy / euclidean_dist
+        
+        # Update positions
+        for i in range(num_nodes):
+            positions[i] = (
+                positions[i][0] + learning_rate * forces[i][0],
+                positions[i][1] + learning_rate * forces[i][1]
+            )
+    
+    return positions
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 7), (0, 9), (0, 10), (0, 11), (0, 12),
+    (1, 3), (1, 5), (1, 6), (1, 7), (1, 8), (1, 10), (1, 12), (2, 4), (2, 5), (2, 6),
+    (2, 7), (2, 9), (2, 10), (2, 11), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 10),
+    (3, 11), (3, 12), (3, 13), (4, 6), (4, 7), (4, 8), (4, 10), (4, 11), (4, 12),
+    (5, 6), (5, 7), (5, 9), (5, 10), (5, 12), (5, 21), (6, 7), (6, 9), (6, 10), (6, 11),
+    (7, 8), (7, 9), (7, 10), (7, 11), (8, 10), (8, 11), (8, 12), (9, 10), (9, 12),
+    (9, 16), (10, 12), (10, 23), (13, 14), (13, 15), (13, 17), (13, 18), (13, 20),
+    (13, 21), (13, 22), (13, 25), (14, 15), (14, 16), (14, 17), (14, 18), (14, 19),
+    (14, 21), (14, 22), (14, 23), (14, 24), (14, 25), (15, 16), (15, 17), (15, 18),
+    (15, 20), (15, 21), (15, 22), (15, 23), (15, 24), (15, 25), (16, 17), (16, 18),
+    (16, 19), (16, 20), (16, 21), (16, 22), (16, 25), (17, 19), (17, 20), (17, 23),
+    (17, 24), (18, 19), (18, 21), (18, 22), (18, 23), (18, 25), (19, 21), (19, 22),
+    (19, 23), (19, 25), (20, 22), (20, 23), (20, 24), (20, 25), (21, 22), (21, 24),
+    (21, 25), (22, 23), (22, 25), (23, 24), (23, 25), (24, 25)
+]
+
+# Number of nodes
+num_nodes = 26
+
+# Compute layout
+layout = compute_force_layout(edge_list, num_nodes)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Shortest Path Calculation**: The `compute_shortest_path_lengths` function uses BFS to calculate the shortest path (graph-theoretic distance) between all pairs of nodes.
+2. **Force-Directed Layout**: The `compute_force_layout` function adjusts node positions iteratively to align Euclidean distances with graph-theoretic distances.
+3. **Output**: The final positions of nodes are output in JSON format.
+
+This script avoids using any pre-built layout algorithms and adheres to the requirements.

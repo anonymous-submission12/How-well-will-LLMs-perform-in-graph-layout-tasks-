@@ -1,0 +1,12 @@
+To compute the shortest path between nodes 19 and 12, a breadth-first search (BFS) algorithm is appropriate. Below is the result:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation:
+
+1. Starting at node 19, the BFS explores its neighbors: 15, 17, 18, 20, and 21.
+2. Next, it explores the neighbors of these nodes, eventually reaching node 12 via the shortest path: `[19 -> 20 -> 3 -> 9 -> 12]`. The path length is 4.

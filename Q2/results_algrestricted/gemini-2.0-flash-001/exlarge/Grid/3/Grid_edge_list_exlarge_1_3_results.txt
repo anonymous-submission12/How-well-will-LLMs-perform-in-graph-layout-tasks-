@@ -1,0 +1,160 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layered approach.  It first identifies
+    a longest path in the graph and assigns nodes on that path to layers.
+    Then, it assigns remaining nodes to layers based on their distance from
+    the nodes on the longest path.  Finally, it positions nodes within each
+    layer to minimize crossings (a simple greedy approach is used).
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the graph representation (adjacency list)
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    nodes = list(graph.keys())
+    num_nodes = len(nodes)
+
+    # 2. Find a longest path (very basic approach - can be improved)
+    def find_longest_path(start_node):
+        longest_path = []
+        def dfs(node, path):
+            nonlocal longest_path
+            if len(path) > len(longest_path):
+                longest_path = path[:]
+
+            for neighbor in graph[node]:
+                if neighbor not in path:
+                    dfs(neighbor, path + [neighbor])
+
+        dfs(start_node, [start_node])
+        return longest_path
+
+    longest_path = []
+    for node in nodes:
+        path = find_longest_path(node)
+        if len(path) > len(longest_path):
+            longest_path = path
+
+    # 3. Assign nodes to layers
+    layers = {}
+    layer_assignment = {}
+    for i, node in enumerate(longest_path):
+        layers[i] = [node]
+        layer_assignment[node] = i
+
+    remaining_nodes = [node for node in nodes if node not in layer_assignment]
+
+    # Assign remaining nodes based on distance to the longest path
+    for node in remaining_nodes:
+        min_distance = float('inf')
+        closest_layer = -1
+        for layer_index in layers:
+            for layer_node in layers[layer_index]:
+                distance = shortest_path_length(graph, node, layer_node)
+                if distance < min_distance:
+                    min_distance = distance
+                    closest_layer = layer_index
+
+        if closest_layer != -1:
+            if closest_layer not in layers:
+                layers[closest_layer] = []
+            layers[closest_layer].append(node)
+            layer_assignment[node] = closest_layer
+        else:
+            # Handle isolated nodes (assign to layer 0)
+            if 0 not in layers:
+                layers[0] = []
+            layers[0].append(node)
+            layer_assignment[node] = 0
+
+    # Ensure all nodes are assigned to a layer
+    for node in nodes:
+        if node not in layer_assignment:
+            if 0 not in layers:
+                layers[0] = []
+            layers[0].append(node)
+            layer_assignment[node] = 0
+
+    # Reorganize layers to be contiguous
+    layer_list = sorted(layers.keys())
+    new_layers = {}
+    new_layer_assignment = {}
+    for i, layer_index in enumerate(layer_list):
+        new_layers[i] = layers[layer_index]
+        for node in layers[layer_index]:
+            new_layer_assignment[node] = i
+    layers = new_layers
+    layer_assignment = new_layer_assignment
+
+    # 4. Position nodes within each layer (minimize crossings - simple greedy)
+    positions = {}
+    x_spacing = 1.0
+    y_spacing = 1.0
+
+    for layer_index in sorted(layers.keys()):
+        layer_nodes = layers[layer_index]
+        # Sort nodes within the layer based on the average position of their neighbors in adjacent layers
+        def calculate_neighbor_position(node):
+            total_position = 0
+            neighbor_count = 0
+            for neighbor in graph[node]:
+                if neighbor in layer_assignment and layer_assignment[neighbor] != layer_index:
+                    if neighbor in positions:
+                        total_position += positions[neighbor][0]
+                        neighbor_count += 1
+            if neighbor_count > 0:
+                return total_position / neighbor_count
+            else:
+                return 0  # Default position if no neighbors in adjacent layers
+
+        layer_nodes.sort(key=calculate_neighbor_position)
+
+        for i, node in enumerate(layer_nodes):
+            x = i * x_spacing
+            y = layer_index * y_spacing
+            positions[node] = (x, y)
+
+    return positions
+
+def shortest_path_length(graph, start, target):
+    """Calculates the shortest path length between two nodes in a graph."""
+    if start == target:
+        return 0
+    visited = {start}
+    queue = [(start, 0)]  # (node, distance)
+    while queue:
+        node, distance = queue.pop(0)
+        for neighbor in graph[node]:
+            if neighbor == target:
+                return distance + 1
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+    return float('inf')  # No path found
+
+# Graph data
+edge_list = [(0, 1), (0, 25), (1, 2), (1, 26), (2, 3), (2, 27), (3, 4), (3, 28), (4, 5), (4, 29), (5, 6), (5, 30), (6, 7), (6, 31), (7, 8), (7, 32), (8, 9), (8, 33), (9, 10), (9, 34), (10, 11), (10, 35), (11, 12), (11, 36), (12, 13), (12, 37), (13, 14), (13, 38), (14, 15), (14, 39), (15, 16), (15, 40), (16, 17), (16, 41), (17, 18), (17, 42), (18, 19), (18, 43), (19, 20), (19, 44), (20, 21), (20, 45), (21, 22), (21, 46), (22, 23), (22, 47), (23, 24), (23, 48), (24, 49), (25, 26), (25, 50), (26, 27), (26, 51), (27, 28), (27, 52), (28, 29), (28, 53), (29, 30), (29, 54), (30, 31), (30, 55), (31, 32), (31, 56), (32, 33), (32, 57), (33, 34), (33, 58), (34, 35), (34, 59), (35, 36), (35, 60), (36, 37), (36, 61), (37, 38), (37, 62), (38, 39), (38, 63), (39, 40), (39, 64), (40, 41), (40, 65), (41, 42), (41, 66), (42, 43), (42, 67), (43, 44), (43, 68), (44, 45), (44, 69), (45, 46), (45, 70), (46, 47), (46, 71), (47, 48), (47, 72), (48, 49), (48, 73), (49, 74), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

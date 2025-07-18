@@ -1,0 +1,123 @@
+Here's a Python script that generates a graph layout while attempting to maintain consistency between Euclidean distance and graph-theoretic distance. The approach uses multidimensional scaling (MDS) to compute node positions based on shortest path distances:
+
+```python
+import json
+import numpy as np
+from collections import defaultdict
+
+def compute_shortest_paths(edge_list):
+    # Create adjacency list
+    adj = defaultdict(set)
+    for u, v in edge_list:
+        adj[u].add(v)
+        adj[v].add(u)
+    
+    nodes = list(adj.keys())
+    n = len(nodes)
+    node_index = {node: i for i, node in enumerate(nodes)}
+    
+    # Initialize distance matrix
+    dist = np.full((n, n), np.inf)
+    np.fill_diagonal(dist, 0)
+    
+    # Fill direct connections
+    for i, u in enumerate(nodes):
+        for v in adj[u]:
+            j = node_index[v]
+            dist[i, j] = 1
+    
+    # Floyd-Warshall algorithm for all pairs shortest paths
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i, j] > dist[i, k] + dist[k, j]:
+                    dist[i, j] = dist[i, k] + dist[k, j]
+    
+    return nodes, dist
+
+def mds_layout(shortest_paths, dim=2):
+    n = shortest_paths.shape[0]
+    
+    # Double centering
+    J = np.eye(n) - np.ones((n, n)) / n
+    B = -0.5 * J @ (shortest_paths ** 2) @ J
+    
+    # Eigen decomposition
+    eigenvalues, eigenvectors = np.linalg.eigh(B)
+    
+    # Sort eigenvalues and eigenvectors in descending order
+    idx = np.argsort(eigenvalues)[::-1]
+    eigenvalues = eigenvalues[idx]
+    eigenvectors = eigenvectors[:, idx]
+    
+    # Take top 'dim' eigenvectors
+    pos = eigenvectors[:, :dim] * np.sqrt(eigenvalues[:dim])
+    
+    return pos
+
+def generate_layout(edge_list):
+    # Compute shortest paths between all nodes
+    nodes, shortest_paths = compute_shortest_paths(edge_list)
+    
+    # Handle disconnected components (replace inf with max finite distance + 1)
+    max_finite = np.max(shortest_paths[np.isfinite(shortest_paths)])
+    shortest_paths[np.isinf(shortest_paths)] = max_finite + 1
+    
+    # Compute layout using MDS
+    positions = mds_layout(shortest_paths)
+    
+    # Normalize positions to [0, 1] range
+    min_pos = np.min(positions, axis=0)
+    max_pos = np.max(positions, axis=0)
+    positions = (positions - min_pos) / (max_pos - min_pos)
+    
+    # Create dictionary of node positions
+    layout = {nodes[i]: positions[i].tolist() for i in range(len(nodes))}
+    
+    return layout
+
+# Example usage
+edge_list = [('0', '10'), ('0', '14'), ('0', '15'), ('0', '40'), ('0', '42'), ('0', '47'), 
+             ('1', '17'), ('1', '19'), ('1', '26'), ('1', '27'), ('1', '28'), ('1', '36'), 
+             ('1', '41'), ('1', '54'), ('10', '2'), ('10', '29'), ('10', '42'), ('10', '47'), 
+             ('12', '33'), ('13', '32'), ('13', '57'), ('13', '6'), ('14', '16'), ('14', '24'), 
+             ('14', '3'), ('14', '33'), ('14', '34'), ('14', '37'), ('14', '38'), ('14', '40'), 
+             ('14', '43'), ('14', '50'), ('14', '52'), ('15', '18'), ('15', '24'), ('15', '40'), 
+             ('15', '45'), ('15', '55'), ('15', '59'), ('16', '38'), ('16', '50'), ('17', '13'), 
+             ('17', '22'), ('17', '25'), ('17', '27'), ('17', '31'), ('17', '57'), ('17', '6'), 
+             ('17', '9'), ('18', '21'), ('19', '30'), ('19', '54'), ('19', '7'), ('2', '44'), 
+             ('2', '61'), ('20', '16'), ('20', '18'), ('20', '38'), ('20', '50'), ('24', '18'), 
+             ('26', '25'), ('26', '27'), ('27', '25'), ('27', '7'), ('28', '20'), ('28', '30'), 
+             ('28', '8'), ('29', '18'), ('29', '21'), ('29', '24'), ('29', '35'), ('29', '43'), 
+             ('29', '52'), ('3', '59'), ('3', '8'), ('32', '60'), ('33', '16'), ('33', '21'), 
+             ('33', '34'), ('33', '38'), ('33', '43'), ('33', '50'), ('34', '49'), ('36', '20'), 
+             ('36', '23'), ('36', '37'), ('36', '39'), ('36', '59'), ('37', '16'), ('37', '21'), 
+             ('37', '33'), ('37', '34'), ('37', '43'), ('37', '45'), ('38', '43'), ('38', '52'), 
+             ('38', '58'), ('4', '51'), ('40', '33'), ('40', '36'), ('40', '37'), ('40', '52'), 
+             ('40', '7'), ('41', '13'), ('41', '54'), ('41', '57'), ('41', '9'), ('42', '2'), 
+             ('42', '30'), ('42', '47'), ('42', '50'), ('43', '46'), ('43', '53'), ('44', '20'), 
+             ('44', '34'), ('44', '38'), ('45', '18'), ('45', '21'), ('45', '23'), ('45', '24'), 
+             ('45', '29'), ('45', '50'), ('47', '20'), ('47', '28'), ('47', '30'), ('49', '46'), 
+             ('5', '13'), ('5', '56'), ('5', '57'), ('5', '9'), ('51', '11'), ('51', '18'), 
+             ('51', '21'), ('51', '23'), ('51', '24'), ('51', '29'), ('51', '45'), ('51', '50'), 
+             ('51', '55'), ('54', '13'), ('54', '57'), ('54', '6'), ('54', '7'), ('56', '6'), 
+             ('57', '39'), ('57', '48'), ('57', '6'), ('59', '45'), ('61', '37'), ('61', '53'), 
+             ('7', '30'), ('8', '20'), ('8', '37'), ('8', '45'), ('8', '59'), ('9', '13'), 
+             ('9', '32'), ('9', '57'), ('9', '6')]
+
+layout = generate_layout(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+This script:
+
+1. Computes all pairs shortest paths using the Floyd-Warshall algorithm
+2. Uses Multidimensional Scaling (MDS) to find node positions that approximate these distances in 2D space
+3. Normalizes the positions to fit within a [0, 1] range
+4. Outputs the layout as a JSON dictionary mapping node IDs to their [x, y] coordinates
+
+The MDS approach tries to preserve graph-theoretic distances (number of hops between nodes) as Euclidean distances in the layout. Nodes that are close in the graph (few hops apart) will tend to be close in the 2D layout, while distant nodes will be farther apart.
+
+Note that for large graphs, this approach can be computationally expensive due to the O(n³) complexity of the Floyd-Warshall algorithm. The implementation also handles disconnected components by assigning them a distance slightly larger than the maximum finite distance in the graph.

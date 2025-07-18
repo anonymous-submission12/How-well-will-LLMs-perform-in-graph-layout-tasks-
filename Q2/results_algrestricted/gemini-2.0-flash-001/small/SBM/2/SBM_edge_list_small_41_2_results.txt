@@ -1,0 +1,108 @@
+```python
+import json
+import math
+import random
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are (x, y) coordinates.  Returns in JSON format.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj = {}
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    # 2. Initialize node positions randomly.
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())
+
+    # 3. Iteratively refine the layout using a force-based approach.
+    num_iterations = 100
+    learning_rate = 0.1
+
+    for _ in range(num_iterations):
+        for node in nodes:
+            # Calculate the force on the current node.
+            force_x = 0.0
+            force_y = 0.0
+
+            for other_node in nodes:
+                if node == other_node:
+                    continue
+
+                # Calculate the graph-theoretic distance.
+                graph_dist = bfs_distance(adj, node, other_node)
+
+                # Calculate the Euclidean distance.
+                x1, y1 = layout[node]
+                x2, y2 = layout[other_node]
+                euclidean_dist = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+                # Calculate the force based on the difference between the distances.
+                diff = graph_dist - euclidean_dist
+                angle = math.atan2(y2 - y1, x2 - x1)
+                force_x += diff * math.cos(angle)
+                force_y += diff * math.sin(angle)
+
+            # Update the node's position based on the force.
+            x, y = layout[node]
+            x += learning_rate * force_x
+            y += learning_rate * force_y
+
+            # Keep the nodes within the unit square.
+            x = max(0.0, min(1.0, x))
+            y = max(0.0, min(1.0, y))
+
+            layout[node] = (x, y)
+
+    return json.dumps(layout)
+
+
+def bfs_distance(adj, start_node, end_node):
+    """
+    Calculates the graph-theoretic distance between two nodes using BFS.
+    """
+    if start_node == end_node:
+        return 0
+
+    queue = [(start_node, 0)]
+    visited = {start_node}
+
+    while queue:
+        node, dist = queue.pop(0)
+        if node == end_node:
+            return dist
+
+        for neighbor in adj[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+
+    return float('inf')  # Return infinity if no path exists
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 4), (1, 5), (1, 9), (2, 4), (2, 5), (2, 15), (3, 5), (4, 5), (6, 8), (6, 10), (6, 11), (7, 8), (7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 20), (9, 10), (9, 11), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (13, 14), (13, 15), (13, 17), (14, 17), (15, 16), (15, 17), (18, 19), (18, 20), (18, 22), (19, 20), (19, 22), (20, 22), (21, 22)]
+graph_layout_json = layout_graph(edge_list)
+print(graph_layout_json)
+```

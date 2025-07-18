@@ -1,0 +1,16 @@
+To calculate the length of the shortest path between node '0' and node '40' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+- Starting from node '0', we can reach node '1' directly.
+- From node '1', we can reach node '40' directly.
+- Therefore, the shortest path from node '0' to node '40' is `0 -> 1 -> 40`, which has a length of 2.
+
+Thus, the length of the shortest path is **2**.

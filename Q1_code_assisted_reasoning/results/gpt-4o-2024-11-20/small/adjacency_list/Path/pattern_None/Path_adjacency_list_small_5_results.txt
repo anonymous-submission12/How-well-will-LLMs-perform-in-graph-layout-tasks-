@@ -1,0 +1,42 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Count nodes and edges
+    nodes = len(adj_list)
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+    
+    # Check for Star
+    center_nodes = sum(1 for neighbors in adj_list.values() if len(neighbors) == nodes - 1)
+    leaf_nodes = sum(1 for neighbors in adj_list.values() if len(neighbors) == 1)
+    if center_nodes == 1 and leaf_nodes == nodes - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if all(len(neighbors) == 2 for neighbors in adj_list.values()) and edges == nodes:
+        return "Cycle"
+    
+    # Check for Path
+    if sum(len(neighbors) == 1 for neighbors in adj_list.values()) == 2 and \
+       sum(len(neighbors) == 2 for neighbors in adj_list.values()) == nodes - 2:
+        return "Path"
+    
+    # Check for Complete
+    if edges == nodes * (nodes - 1) // 2:
+        return "Complete"
+    
+    # Check for Grid (cannot fully determine grid without actual layout,
+    # so we will skip this check here)
+    
+    # Check for other categories like "Clustered" or "Random"
+    # (requires additional algorithms to classify, omitted here)
+    return "Unknown"
+
+# Graph in adjacency list format
+graph = {0: [1], 1: [0, 2], 2: [1, 3], 3: [2, 4], 4: [3, 5], 5: [4, 6], 6: [5, 7], 7: [6, 8], 8: [7, 9], 
+         9: [8, 10], 10: [9, 11], 11: [10, 12], 12: [11, 13], 13: [12, 14], 14: [13, 15], 15: [14, 16], 
+         16: [15, 17], 17: [16, 18], 18: [17, 19], 19: [18, 20], 20: [19, 21], 21: [20, 22], 22: [21, 23], 
+         23: [22, 24], 24: [23]}
+
+# Determine the pattern of the graph
+result = determine_graph_pattern(graph)
+print(result)
+```

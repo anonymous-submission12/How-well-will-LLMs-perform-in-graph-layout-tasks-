@@ -1,0 +1,9 @@
+To count the number of communities in the graph, we need to identify connected components in the edge list provided. Each connected component corresponds to one community.
+
+Here is the result:
+
+```json
+{
+  "answer": 5
+}
+```

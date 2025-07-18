@@ -1,0 +1,63 @@
+Below is the Python code to generate a graph layout while maintaining consistency between Euclidean distance and graph-theoretic distance. The script calculates a 2D layout by ensuring that nodes that are closer in graph-theoretic distance are also closer in Euclidean space.
+
+```python
+import json
+import math
+
+def generate_graph_layout(edge_list):
+    # Compute graph-theoretic distances using BFS
+    def bfs_distances(edges, start_node):
+        distances = {start_node: 0}
+        queue = [start_node]
+        visited = set(queue)
+
+        while queue:
+            current = queue.pop(0)
+            for neighbor in graph[current]:
+                if neighbor not in visited:
+                    distances[neighbor] = distances[current] + 1
+                    queue.append(neighbor)
+                    visited.add(neighbor)
+        return distances
+
+    # Build adjacency list representation of the graph
+    graph = {}
+    for edge in edge_list:
+        u, v = edge
+        graph.setdefault(u, []).append(v)
+        graph.setdefault(v, []).append(u)
+
+    # Select the starting node (node 0 for simplicity)
+    start_node = 0
+    distances = bfs_distances(edge_list, start_node)
+
+    # Sort nodes by their graph-theoretic distance
+    sorted_nodes = sorted(distances.keys(), key=lambda x: distances[x])
+
+    # Layout nodes along a straight line proportional to graph-theoretic distance
+    positions = {}
+    for node in sorted_nodes:
+        x = distances[node]  # Use graph-theoretic distance as the x-coordinate
+        y = 0  # All nodes are laid out in a straight line (y = 0)
+        positions[node] = (x, y)
+
+    # Output the layout in JSON format
+    return json.dumps(positions, indent=4)
+
+# Define the edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), 
+             (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), 
+             (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+
+# Generate the graph layout
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Explanation:
+
+1. **Graph-Theoretic Distance:** The distance between nodes in terms of the number of edges is calculated using Breadth-First Search (BFS).
+2. **Layout Generation:** Nodes are laid out on a straight line such that their x-coordinate corresponds to their graph-theoretic distance from the starting node. The y-coordinate is fixed at 0 for simplicity. This ensures consistent Euclidean and graph-theoretic distances.
+3. **JSON Output:** The final layout is represented as a dictionary where keys are node IDs and values are 2D coordinates `(x, y)`, serialized to JSON.
+
+This approach guarantees that nodes closer in the graph are closer in the layout while forming a simple spatial representation.

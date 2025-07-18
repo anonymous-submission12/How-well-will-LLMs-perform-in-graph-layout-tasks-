@@ -1,0 +1,14 @@
+To solve this, we will treat the input as a graph represented in edge list format, where each tuple `(u, v)` represents an undirected edge between nodes `u` and `v`. We need to calculate the shortest path length between nodes `1` and `0`.
+
+We can use the Breadth-First Search (BFS) algorithm, which efficiently finds the shortest path in an unweighted graph.
+
+Here is the calculated result:
+
+```json
+{
+  "answer": 1
+}
+```
+
+Explanation:
+- Nodes `1` and `0` are directly connected in the graph (as `(0, 1)` or `(1, 0)` is an edge in the graph), so the shortest path length is `1`.

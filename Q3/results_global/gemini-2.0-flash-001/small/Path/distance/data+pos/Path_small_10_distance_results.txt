@@ -1,0 +1,9 @@
+The graph data represents a simple path graph. The graph-theoretic distance between two nodes is the number of edges in the shortest path connecting them, which in this case is simply the absolute difference in their node indices. We want to compare how well the two layouts preserve these distances. A good layout will have Euclidean distances between nodes that are roughly proportional to their graph-theoretic distances.
+
+Layout 2 appears to be a much better embedding. The nodes are laid out in a line, which perfectly reflects the path structure of the graph. Layout 1, on the other hand, has nodes scattered all over the place, and the Euclidean distances between adjacent nodes are highly variable.
+
+```json
+{
+"Answer": "2"
+}
+```

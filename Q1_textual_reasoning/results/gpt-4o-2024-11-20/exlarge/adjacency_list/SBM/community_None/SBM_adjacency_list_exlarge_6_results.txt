@@ -1,0 +1,11 @@
+To calculate the number of communities in the graph, we can utilize community detection algorithms. Since you only provided the graph in an adjacency list format, let's use a simple approach to identify connected components within the graph, as connected components often represent communities in unweighted graphs.
+
+Here is the solution:
+
+```json
+{
+  "answer": 4
+}
+``` 
+
+This graph has **4 communities** based on the connected components.

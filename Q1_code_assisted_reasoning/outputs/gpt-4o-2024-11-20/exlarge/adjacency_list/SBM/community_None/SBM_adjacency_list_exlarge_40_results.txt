@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 48
+    ...
+      ^
+SyntaxError: ':' expected after dictionary key

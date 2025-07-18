@@ -1,0 +1,99 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(edges, layout):
+    """Calculates the number of edge crossings in a given layout."""
+    crossing_number = 0
+    n = len(edges)
+    for i in range(n):
+        for j in range(i + 1, n):
+            a, b = edges[i]
+            c, d = edges[j]
+
+            # Ensure all nodes have positions
+            if a not in layout or b not in layout or c not in layout or d not in layout:
+                continue
+
+            x1, y1 = layout[a]
+            x2, y2 = layout[b]
+            x3, y3 = layout[c]
+            x4, y4 = layout[d]
+
+            # Check if line segments (x1, y1)-(x2, y2) and (x3, y3)-(x4, y4) intersect
+            def ccw(x1, y1, x2, y2, x3, y3):
+                return (y3 - y1) * (x2 - x1) > (y2 - y1) * (x3 - x1)
+
+            if ccw(x1, y1, x3, y3, x4, y4) != ccw(x2, y2, x3, y3, x4, y4) and \
+               ccw(x1, y1, x2, y2, x3, y3) != ccw(x1, y1, x2, y2, x4, y4):
+                crossing_number += 1
+
+    return crossing_number
+
+
+def initial_layout(nodes):
+    """Generates a random initial layout for the nodes."""
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Assign random x, y coordinates
+    return layout
+
+
+def optimize_layout(edges, initial_layout, iterations=1000, step_size=0.01):
+    """Optimizes the layout to minimize edge crossings using a simple iterative approach."""
+    layout = initial_layout.copy()
+    best_layout = layout.copy()
+    min_crossing_number = calculate_crossing_number(edges, layout)
+
+    nodes = list(layout.keys())
+
+    for _ in range(iterations):
+        node_to_move = random.choice(nodes)
+        original_position = layout[node_to_move]
+
+        # Try moving the node in a random direction
+        dx = random.uniform(-step_size, step_size)
+        dy = random.uniform(-step_size, step_size)
+        layout[node_to_move] = (original_position[0] + dx, original_position[1] + dy)
+
+        # Calculate the new crossing number
+        new_crossing_number = calculate_crossing_number(edges, layout)
+
+        # If the new layout is better, keep the change. Otherwise, revert.
+        if new_crossing_number < min_crossing_number:
+            min_crossing_number = new_crossing_number
+            best_layout = layout.copy()
+        else:
+            layout[node_to_move] = original_position  # Revert the move
+
+    return best_layout
+
+
+def generate_graph_layout(edges):
+    """Generates a graph layout that minimizes edge crossings."""
+    nodes = set()
+    for edge in edges:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    # 1. Generate an initial random layout
+    initial_layout_data = initial_layout(nodes)
+
+    # 2. Optimize the layout to minimize edge crossings
+    optimized_layout = optimize_layout(edges, initial_layout_data)
+
+    return optimized_layout
+
+
+# Graph data
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 6), (1, 2), (1, 3), (1, 24), (2, 3), (2, 4), (3, 4), (5, 6), (5, 7), (5, 8), (5, 9), (6, 7), (6, 8), (6, 9), (6, 29), (7, 8), (7, 9), (7, 23), (8, 9), (10, 11), (10, 13), (10, 14), (11, 12), (11, 14), (11, 28), (12, 13), (12, 26), (15, 16), (15, 17), (15, 18), (15, 19), (16, 17), (16, 19), (16, 26), (17, 18), (20, 21), (20, 22), (20, 23), (20, 24), (21, 22), (21, 23), (22, 23), (22, 24), (25, 26), (25, 27), (25, 28), (25, 29), (26, 27), (26, 28), (26, 29), (27, 28), (28, 29)]
+
+# Generate the graph layout
+layout = generate_graph_layout(edges)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

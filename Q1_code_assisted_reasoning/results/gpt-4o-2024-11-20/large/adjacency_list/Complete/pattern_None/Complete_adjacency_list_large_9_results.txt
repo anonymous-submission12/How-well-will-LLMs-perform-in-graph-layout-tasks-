@@ -1,0 +1,22 @@
+```python
+def identify_graph_pattern(adjacency_list):
+    nodes = list(adjacency_list.keys())
+    n = len(nodes)
+    
+    # Check if it's a Complete Graph
+    is_complete = all(len(adjacency_list[node]) == n - 1 for node in nodes)
+    if is_complete:
+        return "Complete"
+
+    # Check if it's a Star Graph
+    central_nodes = sum(1 for node in nodes if len(adjacency_list[node]) == n - 1)
+    leaf_nodes = sum(1 for node in nodes if len(adjacency_list[node]) == 1)
+    if central_nodes == 1 and leaf_nodes == n - 1:
+        return "Star"
+
+    return "Other"
+
+adjacency_list = {
+    0: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48], 
+    1: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48], 
+    2: [0, 1, 3, 4, 5, 6, 7, 8,

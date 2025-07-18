@@ -1,0 +1,14 @@
+To calculate the shortest path between nodes `62` and `12`, observe that the graph provided is a star graph. Node `0` is the central hub, and all other nodes are directly connected to it. Thus, the shortest path between any two nodes that are not `0` will pass through node `0`.
+
+### Steps:
+1. Node `62` and node `12` are both directly connected to node `0`.
+2. The shortest path from `62` → `0` → `12` consists of 2 edges.
+
+Hence, the length of the shortest path is `2`.
+
+### Output:
+```json
+{
+  "answer": 2
+}
+```

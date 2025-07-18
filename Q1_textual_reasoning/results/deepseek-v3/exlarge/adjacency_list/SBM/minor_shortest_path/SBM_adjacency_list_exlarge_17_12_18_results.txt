@@ -1,0 +1,17 @@
+To calculate the shortest path between node '12' and '18' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 5
+}
+```
+
+### Explanation:
+- Starting from node '12', we explore its neighbors: [0, 1, 7, 49].
+- From these nodes, we continue to explore their neighbors until we reach node '18'.
+- The shortest path found is: 12 → 7 → 10 → 17 → 14 → 18.
+- The length of this path is 5 edges.
+
+Thus, the shortest path from node '12' to '18' has a length of 5.

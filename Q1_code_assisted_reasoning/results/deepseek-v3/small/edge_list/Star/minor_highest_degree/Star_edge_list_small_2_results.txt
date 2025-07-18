@@ -1,0 +1,15 @@
+```python
+from collections import defaultdict
+
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21)]
+
+degree = defaultdict(int)
+
+for u, v in edge_list:
+    degree[u] += 1
+    degree[v] += 1
+
+max_degree = max(degree.values())
+
+print(max_degree)
+```

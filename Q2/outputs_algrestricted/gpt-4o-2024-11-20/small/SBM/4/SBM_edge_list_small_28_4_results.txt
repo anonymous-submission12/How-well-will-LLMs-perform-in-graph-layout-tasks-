@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 59, in <module>
+    layout_json = generate_graph_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 29, in generate_graph_layout
+    community_centers[comm] = (radius * nx.utils.cos(angle), radius * nx.utils.sin(angle))
+                                        ^^^^^^^^^^^^
+AttributeError: module 'networkx.utils' has no attribute 'cos'

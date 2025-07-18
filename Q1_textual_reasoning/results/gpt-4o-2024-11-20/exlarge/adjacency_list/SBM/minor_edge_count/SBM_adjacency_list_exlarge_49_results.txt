@@ -1,0 +1,9 @@
+To count the number of edges in the graph, we need to observe the adjacency list. Each edge is represented twice (once for each vertex it connects). To get the total number of edges, we can calculate the sum of the lengths of all adjacency lists and divide by 2.
+
+Now, let's calculate the number of edges.
+
+```json
+{
+  "answer": 289
+}
+```

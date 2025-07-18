@@ -1,0 +1,7 @@
+Based on the provided adjacency list, node '9' is connected to node '0', and node '4' is also connected to node '0'. Therefore, the shortest path between node '9' and node '4' is: 9 -> 0 -> 4.  The length of this path is 2.
+
+```json
+{
+"answer": 2
+}
+```

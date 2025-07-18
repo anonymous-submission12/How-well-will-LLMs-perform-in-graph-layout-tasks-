@@ -1,0 +1,12 @@
+Based on visual inspection:
+
+Layout 1 has multiple edge crossings.
+Layout 2 has one edge crossing.
+
+Therefore, layout 2 has the fewest edge crossings.
+
+```json
+{
+"Answer": 2
+}
+```

@@ -1,0 +1,11 @@
+The graph is a simple path. The graph-theoretic distance between two nodes is the number of edges in the shortest path between them, which is simply the absolute difference in their indices. We want to compare how well the Euclidean distance between nodes in each layout approximates this graph-theoretic distance.
+
+Layout 1 has nodes scattered somewhat randomly. Layout 2 appears to be laid out in a more linear fashion. Since the graph is a path, a linear layout should preserve graph-theoretic distance better.
+
+Therefore, Layout 2 should better preserve graph-theoretic distance.
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,52 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Count the number of nodes and edges
+    num_nodes = len(adj_list)
+    num_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for Star pattern
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == num_nodes - 1]
+    if len(center_nodes) == 1:
+        return "Star"
+
+    # Check for Cycle pattern
+    if all(len(neighbors) == 2 for neighbors in adj_list.values()) and num_edges == num_nodes:
+        return "Cycle"
+
+    # Check for Path pattern
+    end_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == 1]
+    if len(end_nodes) == 2 and all(len(neighbors) <= 2 for neighbors in adj_list.values()):
+        return "Path"
+
+    # Check for Grid pattern
+    # A grid graph has nodes arranged in a 2D grid, each connected to its adjacent nodes.
+    # This is a complex check, so we simplify by checking degree distribution.
+    degree_counts = defaultdict(int)
+    for neighbors in adj_list.values():
+        degree_counts[len(neighbors)] += 1
+    if 2 in degree_counts and 3 in degree_counts and 4 in degree_counts:
+        return "Grid"
+
+    # Check for Complete pattern
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for Clustered graph
+    # A clustered graph has groups of nodes with high connectivity within groups and sparse connectivity between groups.
+    # Simplified check: if there are nodes with significantly higher degrees than others.
+    max_degree = max(len(neighbors) for neighbors in adj_list.values())
+    avg_degree = sum(len(neighbors) for neighbors in adj_list.values()) / num_nodes
+    if max_degree > 2 * avg_degree:
+        return "Clustered graph"
+
+    # Default to Random graph
+    return "Random graph"
+
+# Input adjacency list
+adj_list = {0: [5, 6, 10, 20], 1: [21], 2: [19, 21], 3: [20, 21], 4: [5, 17], 5: [0, 4, 14, 20], 6: [0, 7, 10, 12, 17, 21], 7: [6, 9, 13, 16, 19], 8: [10, 15, 17, 18], 9: [7, 11, 15], 10: [0, 6, 8, 11], 11: [9, 10, 17, 20], 12: [6], 13: [7, 18, 20], 14: [5, 19], 15: [8, 9], 16: [7], 17: [4, 6, 8, 11], 18: [8, 13], 19: [2, 7, 14], 20: [0, 3, 5, 11, 13], 21: [1, 2, 3, 6]}
+
+# Determine the graph pattern
+print(determine_graph_pattern(adj_list))
+```

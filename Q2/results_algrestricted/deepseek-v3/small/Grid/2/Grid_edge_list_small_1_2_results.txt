@@ -1,0 +1,92 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a force-directed layout approach. This approach simulates physical forces between nodes and edges to position the nodes in a way that minimizes edge crossings and keeps connected nodes close together.
+
+Below is a Python script that implements a simple force-directed layout algorithm. The script will output the graph layout in JSON format.
+
+```python
+import json
+import math
+import random
+
+# Define the graph as an edge list
+edges = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), 
+         (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), 
+         (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), 
+         (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), 
+         (20, 21)]
+
+# Initialize node positions randomly
+nodes = set()
+for edge in edges:
+    nodes.add(edge[0])
+    nodes.add(edge[1])
+nodes = list(nodes)
+
+# Initialize positions randomly
+positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in nodes}
+
+# Parameters for the force-directed layout
+k = 1.0  # Optimal distance between nodes
+iterations = 100
+temperature = 1.0
+cooling_factor = 0.95
+
+# Force-directed layout algorithm
+for iteration in range(iterations):
+    # Calculate repulsive forces
+    for i in range(len(nodes)):
+        for j in range(i + 1, len(nodes)):
+            node1 = nodes[i]
+            node2 = nodes[j]
+            x1, y1 = positions[node1]
+            x2, y2 = positions[node2]
+            dx = x2 - x1
+            dy = y2 - y1
+            distance = math.sqrt(dx * dx + dy * dy)
+            if distance > 0:
+                force = (k * k) / distance
+                positions[node1] = (x1 - force * dx / distance, y1 - force * dy / distance)
+                positions[node2] = (x2 + force * dx / distance, y2 + force * dy / distance)
+
+    # Calculate attractive forces
+    for edge in edges:
+        node1, node2 = edge
+        x1, y1 = positions[node1]
+        x2, y2 = positions[node2]
+        dx = x2 - x1
+        dy = y2 - y1
+        distance = math.sqrt(dx * dx + dy * dy)
+        if distance > 0:
+            force = (distance * distance) / k
+            positions[node1] = (x1 + force * dx / distance, y1 + force * dy / distance)
+            positions[node2] = (x2 - force * dx / distance, y2 - force * dy / distance)
+
+    # Cool down the temperature
+    temperature *= cooling_factor
+
+# Normalize positions to fit within a unit square
+min_x = min(pos[0] for pos in positions.values())
+min_y = min(pos[1] for pos in positions.values())
+max_x = max(pos[0] for pos in positions.values())
+max_y = max(pos[1] for pos in positions.values())
+
+for node in positions:
+    x, y = positions[node]
+    x = (x - min_x) / (max_x - min_x)
+    y = (y - min_y) / (max_y - min_y)
+    positions[node] = (x, y)
+
+# Output the layout in JSON format
+layout = {str(node): {"x": pos[0], "y": pos[1]} for node, pos in positions.items()}
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Initialization**: The nodes are initialized with random positions within a unit square.
+2. **Force-Directed Layout**:
+   - **Repulsive Forces**: Nodes repel each other to avoid overlap.
+   - **Attractive Forces**: Connected nodes attract each other to keep edges short.
+3. **Cooling**: The temperature decreases over iterations to reduce the movement of nodes as the layout stabilizes.
+4. **Normalization**: The positions are normalized to fit within a unit square.
+5. **Output**: The final positions are output in JSON format.
+
+This script will generate a layout that attempts to maintain consistency between Euclidean distance and graph-theoretic distance. The output will be a JSON object where each node is mapped to its `(x, y)` coordinates.

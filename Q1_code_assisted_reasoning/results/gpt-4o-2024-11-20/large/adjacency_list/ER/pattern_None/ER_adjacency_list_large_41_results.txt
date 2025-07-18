@@ -1,0 +1,60 @@
+```python
+def graph_pattern(graph):
+    # Count nodes and edges
+    num_nodes = len(graph)
+    num_edges = sum(len(neighbors) for neighbors in graph.values()) // 2
+    
+    # Check for patterns
+    
+    # 1. Star: One central node connected to all others
+    central_nodes = [node for node, neighbors in graph.items() if len(neighbors) == num_nodes - 1]
+    if len(central_nodes) == 1:
+        return "Star"
+
+    # 2. Cycle: All nodes form a closed loop, every node connected to exactly two neighbors
+    if all(len(neighbors) == 2 for neighbors in graph.values()) and num_edges == num_nodes:
+        return "Cycle"
+
+    # 3. Path: All nodes form a single line, exactly two nodes with one neighbor, others with two
+    end_nodes = [node for node, neighbors in graph.items() if len(neighbors) == 1]
+    if len(end_nodes) == 2 and all(len(neighbors) <= 2 for neighbors in graph.values()):
+        return "Path"
+
+    # 4. Grid: Regular 2D grid structure
+    rows, cols = divmod(num_nodes, int(num_edges**0.5))
+    if rows * cols == num_nodes and num_edges == 2 * (rows * cols - rows - cols):
+        return "Grid"
+
+    # 5. Complete: Every node is connected to every other node
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # 6. Clustered: Groups of densely connected nodes
+    for node, neighbors in graph.items():
+        cluster_size = len(neighbors) + 1
+        if all(len(graph[neighbor]) >= cluster_size - 1 for neighbor in neighbors):
+            return "Clustered"
+    
+    # 7. Random: No discernible pattern
+    return "Random"
+
+# Input graph data
+graph = {0: [7, 11, 22, 28, 33, 37], 1: [17, 21, 43, 45], 2: [9, 15, 17, 18, 30, 37, 47], 
+         3: [8, 9, 11, 20, 36], 4: [20, 28], 5: [15, 19, 24], 6: [33, 37, 39], 
+         7: [0, 8, 10, 26, 35, 42, 43], 8: [3, 7, 19, 23, 35, 44], 9: [2, 3, 10, 13, 27], 
+         10: [7, 9, 11, 26], 11: [0, 3, 10, 41], 12: [38, 47], 13: [9, 36, 40, 41, 43, 46, 48], 
+         14: [30, 31, 37, 43, 48], 15: [2, 5, 16, 18, 33, 40, 45, 48], 16: [15, 17, 27, 47], 
+         17: [1, 2, 16, 27], 18: [2, 15, 22, 30, 36, 44], 19: [5, 8, 32, 37, 48], 
+         20: [3, 4, 24, 44], 21: [1, 22, 27], 22: [0, 18, 21, 25, 37, 44], 
+         23: [8, 33], 24: [5, 20, 31, 35], 25: [22, 26, 31, 40], 26: [7, 10, 25], 
+         27: [9, 16, 17, 21, 31], 28: [0, 4], 29: [48], 30: [2, 14, 18, 34, 38], 
+         31: [14, 24, 25, 27, 38, 40, 41], 32: [19, 39, 47], 33: [0, 6, 15, 23, 34, 38, 41], 
+         34: [30, 33, 39], 35: [7, 8, 24, 36, 47], 36: [3, 13, 18, 35, 44], 
+         37: [0, 2, 6, 14, 19, 22, 41], 38: [12, 30, 31, 33, 48], 39: [6, 32, 34], 
+         40: [13, 15, 25, 31], 41: [11, 13, 31, 33, 37], 42: [7], 43: [1, 7, 13, 14, 46, 48], 
+         44: [8, 18, 20, 22, 36], 45: [1, 15], 46: [13, 43], 47: [2, 12, 16, 32, 35], 
+         48: [13, 14, 15, 19, 29, 38, 43]}
+
+# Output result
+print(graph_pattern(graph))
+```

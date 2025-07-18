@@ -1,0 +1,45 @@
+Here is a Python script that generates a layout for the given graph using the Kamada-Kawai layout algorithm, which aims to maintain consistency between Euclidean distance and graph-theoretic distance. The final output is in JSON format for the node positions.
+
+```python
+import json
+import networkx as nx
+
+def generate_graph_layout(edge_list):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Generate layout using Kamada-Kawai algorithm
+    pos = nx.kamada_kawai_layout(G)
+    
+    # Convert positions to JSON format
+    pos_json = {node: list(map(float, coords)) for node, coords in pos.items()}
+    return json.dumps(pos_json, indent=4)
+
+# Input graph edge list
+edge_list = [
+    (0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), 
+    (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), 
+    (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), 
+    (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)
+]
+
+# Generate and output the layout as JSON
+graph_layout_json = generate_graph_layout(edge_list)
+print(graph_layout_json)
+```
+
+### Explanation:
+1. **Graph Creation**:
+   - The `networkx.Graph()` object is created, and the edges specified in `edge_list` are added to represent the graph structure.
+
+2. **Kamada-Kawai Layout**:
+   - The `kamada_kawai_layout` algorithm determines node positions while aiming to maintain consistency between Euclidean and graph-theoretic distances. This is achieved by optimizing a spring-force-based energy function.
+
+3. **JSON Formatting**:
+   - The positions of nodes are converted into a dictionary format, with node identifiers as keys and their corresponding coordinates as values. These coordinates are serialized into JSON format for compact and structured output.
+
+4. **Output**:
+   - The layout positions are printed in JSON format.
+
+Let me know if you need further explanation or modifications.

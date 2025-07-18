@@ -1,0 +1,17 @@
+To count the number of communities in the graph, we need to identify groups of nodes that are densely connected internally and sparsely connected to nodes outside their group. Observing the adjacency list structure, we can see that the nodes can be grouped into two distinct communities based on the connections provided.
+
+### Community 1:
+Nodes 0 to 11 form a densely connected group.
+
+### Community 2:
+Nodes 12 to 22 form another densely connected group.
+
+Thus, there are **2 communities** in the graph.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

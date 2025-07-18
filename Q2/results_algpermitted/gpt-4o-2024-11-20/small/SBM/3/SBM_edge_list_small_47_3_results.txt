@@ -1,0 +1,49 @@
+Below is a Python script that generates a layout for the graph provided using the `graph-tool` library. This script applies a layout algorithm that minimizes edge crossings (e.g., `sfdp_layout`), computes the node positions, and outputs the layout in JSON format.
+
+```python
+import json
+from graph_tool.all import Graph, sfdp_layout
+
+def generate_graph_layout(edge_list):
+    # Create a graph-tool graph
+    g = Graph()
+    
+    # Add vertices
+    max_vertex = max(max(edge) for edge in edge_list)
+    g.add_vertex(max_vertex + 1)
+    
+    # Add edges from the edge list
+    for edge in edge_list:
+        g.add_edge(edge[0], edge[1])
+    
+    # Compute layout using the sfdp_layout algorithm
+    pos = sfdp_layout(g)
+    
+    # Convert positions to JSON format
+    layout = {int(v): (float(pos[v][0]), float(pos[v][1])) for v in g.vertices()}
+    return json.dumps(layout, indent=4)
+
+# Input edge list
+edge_list = [
+    (0, 4), (0, 5), (0, 7), (1, 2), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 5),
+    (2, 6), (3, 5), (3, 6), (3, 7), (3, 22), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7),
+    (6, 7), (8, 10), (8, 11), (8, 12), (8, 13), (8, 14), (8, 15), (9, 11), (9, 12),
+    (9, 13), (9, 14), (9, 15), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15),
+    (11, 12), (11, 13), (12, 13), (12, 14), (12, 15), (13, 14), (13, 15), (14, 18),
+    (16, 17), (16, 18), (16, 20), (16, 21), (16, 22), (17, 19), (17, 20), (17, 21),
+    (17, 22), (18, 19), (18, 20), (18, 21), (18, 22), (19, 20), (19, 21), (19, 22),
+    (20, 21)
+]
+
+# Generate and print graph layout
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Notes:
+1. This script uses the `graph-tool` library's `sfdp_layout` algorithm to generate a force-directed layout.
+2. You can install `graph-tool` if it's not already installed. It is a powerful Python library for graph analysis, but its installation might require some dependencies.
+3. The output layout is structured as a JSON object, where keys represent vertex IDs, and values are tuples of `(x, y)` coordinates for the respective vertices.
+4. This script avoids graphical visualization and instead focuses solely on computing and exporting the layout.
+
+Let me know if you'd like to adapt it further or need help installing `graph-tool`.

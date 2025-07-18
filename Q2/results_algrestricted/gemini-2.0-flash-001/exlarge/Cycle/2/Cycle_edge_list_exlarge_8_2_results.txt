@@ -1,0 +1,129 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Determine the nodes in the graph.
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    # 2. Initialize node positions.  Start with a simple linear layout.
+    layout = {}
+    num_nodes = len(nodes)
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = math.cos(angle) * 10  # Scale for better spacing
+        y = math.sin(angle) * 10
+        layout[node] = (x, y)
+
+    # 3. Iteratively adjust node positions to minimize stress.
+    #    Stress is defined as the difference between graph-theoretic distance
+    #    and Euclidean distance.
+
+    def calculate_graph_distance(start_node, end_node, edges):
+        """Calculates the shortest path distance between two nodes."""
+        distances = {node: float('inf') for node in nodes}
+        distances[start_node] = 0
+        visited = set()
+        queue = [start_node]
+
+        while queue:
+            current_node = queue.pop(0)
+            if current_node == end_node:
+                break
+            if current_node in visited:
+                continue
+            visited.add(current_node)
+
+            for edge in edges:
+                if edge[0] == current_node:
+                    neighbor = edge[1]
+                    if distances[neighbor] > distances[current_node] + 1:
+                        distances[neighbor] = distances[current_node] + 1
+                        queue.append(neighbor)
+                elif edge[1] == current_node:
+                    neighbor = edge[0]
+                    if distances[neighbor] > distances[current_node] + 1:
+                        distances[neighbor] = distances[current_node] + 1
+                        queue.append(neighbor)
+
+        return distances[end_node]
+
+    def calculate_euclidean_distance(node1, node2, layout):
+        """Calculates the Euclidean distance between two nodes."""
+        x1, y1 = layout[node1]
+        x2, y2 = layout[node2]
+        return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+    def calculate_stress(layout, edges):
+        """Calculates the stress of the layout."""
+        stress = 0
+        for i in range(len(nodes)):
+            for j in range(i + 1, len(nodes)):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                graph_distance = calculate_graph_distance(node1, node2, edges)
+                euclidean_distance = calculate_euclidean_distance(node1, node2, layout)
+                stress += (euclidean_distance - graph_distance)**2
+        return stress
+
+    def adjust_layout(layout, edges, learning_rate=0.01):
+        """Adjusts the layout to minimize stress."""
+        for node in nodes:
+            dx = 0
+            dy = 0
+            for other_node in nodes:
+                if node == other_node:
+                    continue
+                graph_distance = calculate_graph_distance(node, other_node, edges)
+                euclidean_distance = calculate_euclidean_distance(node, other_node, layout)
+
+                x1, y1 = layout[node]
+                x2, y2 = layout[other_node]
+
+                # Calculate force components based on stress
+                force = (euclidean_distance - graph_distance) / euclidean_distance
+                dx += force * (x2 - x1)
+                dy += force * (y2 - y1)
+
+            # Update node position
+            x, y = layout[node]
+            layout[node] = (x - learning_rate * dx, y - learning_rate * dy)
+        return layout
+
+    # Iteration to refine the layout
+    num_iterations = 100
+    for iteration in range(num_iterations):
+        layout = adjust_layout(layout, edge_list)
+        stress = calculate_stress(layout, edge_list)
+        #print(f"Iteration {iteration + 1}: Stress = {stress}") # Optional: Monitor stress
+
+    return layout
+
+
+# Graph data
+edge_list = [(0, 1), (0, 77), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), (76, 77)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

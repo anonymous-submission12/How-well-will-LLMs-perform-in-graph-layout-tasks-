@@ -1,0 +1,18 @@
+To calculate the length of the shortest path between node '3' and node '0', we can use a Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start from node '3'.
+2. Explore all its neighboring nodes.
+3. Continue this process until node '0' is reached.
+4. The number of steps taken to reach node '0' is the length of the shortest path.
+
+From the given edge list, we can see that node '3' is directly connected to node '0' via the edge (0, 3). Therefore, the shortest path length is 1.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 1
+}
+```

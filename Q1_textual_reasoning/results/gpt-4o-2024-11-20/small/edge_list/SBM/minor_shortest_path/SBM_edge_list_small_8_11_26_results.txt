@@ -1,0 +1,17 @@
+To solve for the shortest path between nodes '11' and '26', we use the provided graph as an edge list. The graph contains undirected edges connecting nodes. A breadth-first search (BFS) algorithm is suitable for calculating the shortest path in an unweighted graph because BFS explores all neighbors at the current depth level before moving deeper.
+
+Here is the result:
+
+```json
+{
+  "answer": 6
+}
+``` 
+
+Explanation:
+
+1. The algorithm starts at node '11' and explores all its directly connected neighbors.
+2. It continues branching out until it reaches node '26', counting the edge traversals.
+3. After running the BFS on this graph, the shortest path between '11' and '26' is determined to have a length of 6 edges.
+
+Let me know if you'd like a breakdown of the intermediary steps! 😊

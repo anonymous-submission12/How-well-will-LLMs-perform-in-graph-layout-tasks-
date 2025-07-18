@@ -1,0 +1,33 @@
+```python
+from collections import deque
+
+def shortest_path_length(edges, start, end):
+    graph = {}
+    for u, v in edges:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    visited = set()
+    queue = deque([(start, 0)])
+    
+    while queue:
+        node, distance = queue.popleft()
+        if node == end:
+            return distance
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                queue.append((neighbor, distance + 1))
+    
+    return -1
+
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20)]
+start = 13
+end = 16
+
+print(shortest_path_length(edges, start, end))
+```

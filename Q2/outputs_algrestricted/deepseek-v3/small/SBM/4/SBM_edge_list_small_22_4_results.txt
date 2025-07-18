@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 65, in <module>
+    communities = louvain_community_detection(graph)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 61, in louvain_community_detection
+    optimize_modularity()
+  File "/tmp/code.py", line 51, in optimize_modularity
+    move_node(node, new_community)
+  File "/tmp/code.py", line 38, in move_node
+    communities[new_community].append(node)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 1

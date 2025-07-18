@@ -1,0 +1,14 @@
+From the image:
+
+- The graph-theoretic distance corresponds to the shortest path in terms of edges traversed between the source node (21) and target node (12). In this graph, the path consists of multiple edges.
+- The Euclidean distance is the straight-line distance between node 21 (source) and node 12 (target). Observing this, the straight-line distance is shorter compared to the total length of the path traversed along nodes.
+
+Thus:
+"Euclidean distance is less than graph-theoretic distance."
+
+Final Answer in JSON format:
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

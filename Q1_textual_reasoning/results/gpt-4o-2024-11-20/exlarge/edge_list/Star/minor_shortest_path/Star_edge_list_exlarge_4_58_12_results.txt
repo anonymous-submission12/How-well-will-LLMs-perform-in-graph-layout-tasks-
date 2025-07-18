@@ -1,0 +1,9 @@
+The graph data provided represents a star graph, where node `0` is connected to all other nodes (nodes `1` through `73`). In this configuration, the shortest path between any two nodes (e.g., `58` and `12`) will always pass through the central node `0`.
+
+Thus, the shortest path length between node `58` and node `12` is `2` (as the path is `58 -> 0 -> 12`).
+
+```json
+{
+  "answer": 2
+}
+```

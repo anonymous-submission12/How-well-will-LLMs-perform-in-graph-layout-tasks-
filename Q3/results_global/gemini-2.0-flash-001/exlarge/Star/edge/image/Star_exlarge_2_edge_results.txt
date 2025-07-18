@@ -1,0 +1,7 @@
+Both images appear to have a similar number of edge crossings. However, upon closer inspection, the first image seems to have slightly more edge crossings near the center node.
+
+```json
+{
+"Answer": "2"
+}
+```

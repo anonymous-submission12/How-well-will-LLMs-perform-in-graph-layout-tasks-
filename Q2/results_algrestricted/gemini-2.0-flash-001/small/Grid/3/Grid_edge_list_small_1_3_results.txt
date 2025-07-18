@@ -1,0 +1,111 @@
+```python
+import json
+
+def generate_layout(edges):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a simple layering approach.  It first identifies
+    nodes with degree 1 as starting points for layers.  Then, it iteratively
+    builds layers by following the edges.  Nodes are placed on a line within
+    each layer to minimize crossings based on the average position of their
+    neighbors in adjacent layers.
+
+    Args:
+        edges: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build adjacency list
+    adj = {}
+    for u, v in edges:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Find starting nodes (degree 1)
+    start_nodes = [node for node in adj if len(adj[node]) == 1]
+
+    # If no degree 1 nodes, pick an arbitrary node
+    if not start_nodes:
+        start_nodes = [next(iter(adj))]
+
+    # 3. Build layers
+    layers = []
+    visited = set()
+    queue = [(node, 0) for node in start_nodes]  # (node, layer_index)
+
+    while queue:
+        node, layer_index = queue.pop(0)
+        if node in visited:
+            continue
+        visited.add(node)
+
+        # Add node to layer
+        while len(layers) <= layer_index:
+            layers.append([])
+        layers[layer_index].append(node)
+
+        # Add neighbors to queue
+        for neighbor in adj[node]:
+            if neighbor not in visited:
+                queue.append((neighbor, layer_index + 1))
+
+    # Remove duplicates from layers while preserving order
+    unique_layers = []
+    seen = set()
+    for layer in layers:
+        unique_layer = []
+        for node in layer:
+            if node not in seen:
+                unique_layer.append(node)
+                seen.add(node)
+        if unique_layer:
+            unique_layers.append(unique_layer)
+
+    # 4. Calculate initial x positions within each layer
+    positions = {}
+    for i, layer in enumerate(unique_layers):
+        for j, node in enumerate(layer):
+            positions[node] = (j, i)  # Initial x position based on order in layer
+
+    # 5. Iteratively adjust x positions to minimize crossings
+    num_iterations = 10
+    for _ in range(num_iterations):
+        for i, layer in enumerate(unique_layers):
+            for node in layer:
+                neighbors_x = []
+                for neighbor in adj[node]:
+                    if neighbor in positions:
+                        neighbors_x.append(positions[neighbor][0])
+
+                if neighbors_x:
+                    avg_x = sum(neighbors_x) / len(neighbors_x)
+                    positions[node] = (avg_x, i)  # Update x position
+
+    # 6. Normalize x positions to be integers
+    min_x = min(x for x, y in positions.values())
+    for node in positions:
+        x, y = positions[node]
+        positions[node] = (int(round(x - min_x)), y)
+
+    return positions
+
+
+# Graph data
+edges = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Generate layout
+layout = generate_layout(edges)
+
+# Convert to JSON
+layout_json = json.dumps(layout, indent=4)
+
+# Print JSON output
+print(layout_json)
+```

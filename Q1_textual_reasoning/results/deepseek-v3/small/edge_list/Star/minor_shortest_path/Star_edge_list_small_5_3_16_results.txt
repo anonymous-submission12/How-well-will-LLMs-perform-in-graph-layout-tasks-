@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+### Explanation:
+The graph provided is a star-shaped graph where node `0` is connected to all other nodes (including nodes `3` and `16`). The shortest path from node `3` to node `16` is through node `0`. Therefore, the path is `3 -> 0 -> 16`, which has a length of 2.

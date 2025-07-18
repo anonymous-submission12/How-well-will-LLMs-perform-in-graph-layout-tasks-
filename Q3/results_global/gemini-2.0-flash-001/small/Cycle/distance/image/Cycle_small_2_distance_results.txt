@@ -1,0 +1,7 @@
+Based on the images, layout 2 appears to better preserve graph-theoretic distance. In layout 1, there are many edge crossings and nodes are placed in a way that doesn't reflect their actual distance in the graph. Layout 2 has fewer crossings and the nodes are arranged in a more ordered fashion, which is more likely to reflect the graph-theoretic distance.
+
+```json
+{
+"Answer": "2"
+}
+```

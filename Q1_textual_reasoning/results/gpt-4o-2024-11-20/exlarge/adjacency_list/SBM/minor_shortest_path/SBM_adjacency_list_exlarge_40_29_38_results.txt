@@ -1,0 +1,12 @@
+To calculate the shortest path between nodes `29` and `38` in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the result:
+
+```json
+{
+  "answer": 1
+}
+```
+
+### Explanation:
+- Node `29` is directly connected to node `38` in the adjacency list. Therefore, the shortest path length is `1`.

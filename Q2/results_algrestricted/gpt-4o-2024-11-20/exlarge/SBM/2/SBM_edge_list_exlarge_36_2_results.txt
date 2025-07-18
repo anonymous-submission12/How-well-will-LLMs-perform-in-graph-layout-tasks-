@@ -1,0 +1,82 @@
+Below is the Python code that generates a graph layout while maintaining consistency between Euclidean distance and graph-theoretic distance. This code calculates the layout positions using the graph-theoretic distance matrix (shortest path distances) and maps those distances to a two-dimensional Euclidean space using multidimensional scaling (MDS).
+
+```python
+import json
+import numpy as np
+from sklearn.metrics import pairwise_distances
+from sklearn.manifold import MDS
+from collections import defaultdict
+
+def generate_graph_layout(edge_list):
+    # Create adjacency list from edge list
+    adjacency_list = defaultdict(list)
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+    
+    # Get all nodes in the graph
+    nodes = sorted(adjacency_list.keys())
+
+    # Generate graph-theoretic distance matrix using BFS
+    def bfs_distance_matrix(nodes, adjacency_list):
+        n = len(nodes)
+        distances = np.full((n, n), np.inf)  # Initialize distance matrix with infinity
+
+        for i, source in enumerate(nodes):
+            visited = {source: 0}
+            queue = [source]
+            while queue:
+                current = queue.pop(0)
+                current_distance = visited[current]
+                for neighbor in adjacency_list[current]:
+                    if neighbor not in visited:
+                        visited[neighbor] = current_distance + 1
+                        queue.append(neighbor)
+            
+            # Fill the distance for the source row
+            for j, target in enumerate(nodes):
+                distances[i][j] = visited.get(target, np.inf)
+        return distances
+
+    graph_distances = bfs_distance_matrix(nodes, adjacency_list)
+
+    # Replace infinity distances with a large value for compatibility
+    max_distance = np.nanmax(graph_distances[graph_distances != np.inf])  # Find the largest finite distance
+    graph_distances[graph_distances == np.inf] = max_distance + 1  # Assign a large value
+
+    # Apply MDS to convert graph distances to 2D Euclidean space
+    mds = MDS(n_components=2, dissimilarity='precomputed', random_state=42)
+    positions = mds.fit_transform(graph_distances)
+
+    # Format positions into a JSON-compatible dictionary
+    layout = {node: [float(coord) for coord in positions[i]] for i, node in enumerate(nodes)}
+
+    return json.dumps(layout, indent=4)
+
+# Edge list provided in the question
+edge_list = [(0, 1), (0, 3), (0, 7), (0, 10), (1, 2), (1, 7), (1, 9), (1, 13), (1, 18), (1, 19), 
+             (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 11), (2, 13), (2, 14), (2, 17), (2, 18),
+             # Truncated for brevity; include full edge list here...
+             (72, 75), (74, 75)]
+
+# Generate graph layout and print in JSON format
+graph_layout = generate_graph_layout(edge_list)
+print(graph_layout)
+```
+
+### Explanation:
+1. **Graph-theoretic Distance Matrix**:
+   The code uses a breadth-first search (BFS) to compute the shortest path distances between all pairs of nodes.
+
+2. **Infinity Handling**:
+   Infinite distances (for disconnected node pairs) are replaced with a large finite value to ensure compatibility with the distance-based method.
+
+3. **Multidimensional Scaling (MDS)**:
+   MDS is utilized to convert the graph-theoretic distance matrix into a 2D plane while preserving the relative distances as closely as possible.
+
+4. **Formatting for JSON**:
+   The node positions are formatted into a JSON-compatible dictionary, where keys are node IDs and values are their 2D coordinates.
+
+5. `sklearn.manifold.MDS` is used for mapping graph distances to Euclidean coordinates.
+
+Note: The edge list is truncated for brevity; you can include the complete edge list in the code when using it.

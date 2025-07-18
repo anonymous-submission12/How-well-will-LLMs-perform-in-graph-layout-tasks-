@@ -1,0 +1,21 @@
+To calculate the length of the shortest path between node '26' and '24', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. **Graph Representation**: The graph is represented as an adjacency list.
+2. **BFS Initialization**: Start from node '26' and explore its neighbors level by level.
+3. **Termination**: The algorithm terminates when node '24' is found.
+
+Let's perform the BFS:
+
+- **Level 0**: Start at node '26'.
+- **Level 1**: Neighbors of '26' are '21', '22', '23', '24', '25', '27'.
+- **Level 2**: Node '24' is found in the first level of neighbors.
+
+Thus, the shortest path from '26' to '24' is of length 1.
+
+```json
+{
+  "answer": 1
+}
+```

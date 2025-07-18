@@ -1,0 +1,66 @@
+To generate a layout for the graph that keeps the community structure clear, we can use the `networkx` library to handle the graph and community detection, and the `community` library (which is part of `python-louvain`) to detect communities. We will then use the `spring_layout` algorithm from `networkx` to generate positions for the nodes, but we will adjust the positions based on the detected communities to ensure that nodes within the same community are placed closer together.
+
+Here is the Python script that accomplishes this:
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+
+# Define the graph using the provided edge list
+edge_list = [(0, 1), (0, 3), (1, 2), (2, 5), (3, 4), (3, 5), (4, 5), (5, 11), 
+             (6, 8), (6, 9), (6, 10), (6, 11), (6, 13), (7, 10), (7, 11), 
+             (8, 9), (8, 10), (8, 11), (9, 10), (9, 11), (10, 11), (12, 13), 
+             (12, 15), (12, 16), (12, 17), (13, 15), (13, 17), (13, 25), 
+             (14, 15), (14, 17), (15, 16), (15, 17), (15, 22), (16, 17), 
+             (18, 19), (18, 21), (18, 22), (19, 20), (19, 21), (20, 22), 
+             (23, 24), (23, 25), (23, 26), (23, 27), (24, 25), (24, 26), 
+             (24, 27), (25, 26), (25, 27), (26, 27)]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Detect communities using the Louvain method
+partition = community_louvain.best_partition(G)
+
+# Generate a layout using the spring layout algorithm
+pos = nx.spring_layout(G, seed=42)
+
+# Adjust positions based on communities
+community_pos = {}
+for node, community_id in partition.items():
+    if community_id not in community_pos:
+        community_pos[community_id] = []
+    community_pos[community_id].append(pos[node])
+
+# Calculate the center of each community
+community_centers = {}
+for community_id, positions in community_pos.items():
+    x_coords = [p[0] for p in positions]
+    y_coords = [p[1] for p in positions]
+    center_x = sum(x_coords) / len(x_coords)
+    center_y = sum(y_coords) / len(y_coords)
+    community_centers[community_id] = (center_x, center_y)
+
+# Adjust node positions to be closer to their community center
+for node, (x, y) in pos.items():
+    community_id = partition[node]
+    center_x, center_y = community_centers[community_id]
+    pos[node] = (x + (center_x - x) * 0.5, y + (center_y - y) * 0.5)
+
+# Convert the positions to a JSON-compatible format
+layout = {str(node): {"x": float(x), "y": float(y)} for node, (x, y) in pos.items()}
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation**: The graph is created from the provided edge list.
+2. **Community Detection**: The Louvain method is used to detect communities in the graph.
+3. **Layout Generation**: The `spring_layout` algorithm is used to generate initial positions for the nodes.
+4. **Community-Based Adjustment**: The positions of nodes are adjusted to be closer to the center of their respective communities.
+5. **JSON Output**: The final layout is converted to a JSON format, where each node is associated with its `x` and `y` coordinates.
+
+This script will output the graph layout in JSON format, which can be used for further processing or visualization.

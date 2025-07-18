@@ -1,0 +1,69 @@
+Below is a Python script to generate a layout for the graph you provided. The implementation will manually compute positions of nodes with the goal of minimizing edge crossings in a straightforward radial layout approach. The output will present the coordinates of each node in JSON format.
+
+```python
+import json
+import math
+
+def compute_layout(graph_edges):
+    # Step 1: Extract unique nodes from the edge list
+    nodes = set()
+    for u, v in graph_edges:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # Step 2: Compute radial coordinates
+    num_nodes = len(nodes)
+    radius = 10  # Set an arbitrary radius for the radial layout
+    angle_increment = 2 * math.pi / num_nodes  # Angle step between nodes
+
+    # Assign positions to nodes
+    positions = {}
+    for i, node in enumerate(nodes):
+        angle = i * angle_increment
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[node] = (x, y)
+
+    return positions
+
+# Input graph in edge list format
+edges = [
+    (0, 1), (0, 78), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17),
+    (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25),
+    (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33),
+    (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41),
+    (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49),
+    (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57),
+    (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65),
+    (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73),
+    (73, 74), (74, 75), (75, 76), (76, 77), (77, 78)
+]
+
+# Compute layout
+layout = compute_layout(edges)
+
+# Convert to JSON output
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```
+
+### How It Works:
+1. Extracts all unique nodes from the edge list.
+2. Assigns each node a position on a circle (radial layout). The circle's radius is fixed, and angular positions are evenly distributed.
+3. Produces a dictionary where keys are node IDs, and values are (x, y) tuples representing node coordinates.
+4. The output is formatted into JSON for clarity and easy integration.
+
+### Example Output:
+The resulting JSON output will look something like this (truncated for clarity):
+```json
+{
+    "0": [10.0, 0.0],
+    "1": [9.921147, 1.253332],
+    "2": [9.685831, 2.486898],
+    ...
+}
+```
+
+This layout minimizes edge crossings for linear or circular graphs naturally due to its symmetry.

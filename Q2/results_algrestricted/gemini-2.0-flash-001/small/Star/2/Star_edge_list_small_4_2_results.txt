@@ -1,0 +1,125 @@
+```python
+import json
+import math
+import random
+
+def layout_graph(edge_list, dimensions=2, iterations=100, initial_temperature=1.0, cooling_rate=0.95):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance using a force-based approach.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+        dimensions: The number of dimensions for the layout (default: 2).
+        iterations: The number of iterations to run the layout algorithm (default: 100).
+        initial_temperature: The initial temperature for simulated annealing (default: 1.0).
+        cooling_rate: The cooling rate for simulated annealing (default: 0.95).
+
+    Returns:
+        A dictionary where keys are node indices and values are lists representing
+        the coordinates of the node in the layout.  Returns in JSON format.
+    """
+
+    # 1. Initialize node positions randomly
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    num_nodes = len(nodes)
+    positions = {node: [random.random() for _ in range(dimensions)] for node in nodes}
+
+    # 2. Define force functions
+    def attractive_force(dist, ideal_dist):
+        """Attracts nodes that are connected by an edge."""
+        return (dist - ideal_dist) * 0.1  # Adjust the scaling factor as needed
+
+    def repulsive_force(dist):
+        """Repels nodes that are close to each other."""
+        if dist == 0:
+            return float('inf')  # Avoid division by zero
+        return 1.0 / (dist * dist)  # Adjust the scaling factor as needed
+
+    def euclidean_distance(pos1, pos2):
+        """Calculates the Euclidean distance between two points."""
+        return math.sqrt(sum([(p1 - p2)**2 for p1, p2 in zip(pos1, pos2)]))
+
+    def graph_theoretic_distance(node1, node2, edge_list, num_nodes):
+        """Calculates the shortest path distance between two nodes."""
+        # Use BFS to find the shortest path
+        queue = [(node1, 0)]  # (node, distance)
+        visited = {node1}
+        
+        adj = {node: [] for node in range(num_nodes)}
+        for u, v in edge_list:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        while queue:
+            curr_node, dist = queue.pop(0)
+            if curr_node == node2:
+                return dist
+
+            for neighbor in adj[curr_node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+
+        return float('inf')  # Return infinity if no path exists
+
+    # 3. Iterate and update positions
+    temperature = initial_temperature
+    for _ in range(iterations):
+        for node1 in nodes:
+            force = [0.0] * dimensions
+            for node2 in nodes:
+                if node1 == node2:
+                    continue
+
+                pos1 = positions[node1]
+                pos2 = positions[node2]
+                euclid_dist = euclidean_distance(pos1, pos2)
+                graph_dist = graph_theoretic_distance(node1, node2, edge_list, num_nodes)
+
+                # Attractive force for connected nodes
+                if (node1, node2) in edge_list or (node2, node1) in edge_list:
+                    attractive = attractive_force(euclid_dist, 1.0)  # Ideal distance of 1
+                    for i in range(dimensions):
+                        force[i] += attractive * (pos2[i] - pos1[i])
+
+                # Repulsive force for all nodes
+                repulsive = repulsive_force(euclid_dist)
+                for i in range(dimensions):
+                    force[i] -= repulsive * (pos2[i] - pos1[i])
+
+            # Update position with simulated annealing
+            for i in range(dimensions):
+                positions[node1][i] += force[i] * temperature
+
+        temperature *= cooling_rate
+
+    # 4. Normalize positions to [0, 1]
+    min_vals = [float('inf')] * dimensions
+    max_vals = [float('-inf')] * dimensions
+
+    for node in nodes:
+        for i in range(dimensions):
+            min_vals[i] = min(min_vals[i], positions[node][i])
+            max_vals[i] = max(max_vals[i], positions[node][i])
+
+    for node in nodes:
+        for i in range(dimensions):
+            if max_vals[i] - min_vals[i] != 0:
+                positions[node][i] = (positions[node][i] - min_vals[i]) / (max_vals[i] - min_vals[i])
+            else:
+                positions[node][i] = 0.5  # Handle the case where all values are the same
+
+    # Convert to JSON format
+    return json.dumps(positions)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23)]
+layout = layout_graph(edge_list)
+print(layout)
+```

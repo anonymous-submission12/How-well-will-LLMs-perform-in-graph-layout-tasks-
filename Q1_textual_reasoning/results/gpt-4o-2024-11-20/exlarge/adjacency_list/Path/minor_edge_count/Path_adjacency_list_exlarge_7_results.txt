@@ -1,0 +1,9 @@
+To count the number of edges in the graph, we can iterate through the adjacency list and count all the connections. Since each edge is represented twice (once for each vertex it connects), we divide the total count by 2 to get the actual number of edges.
+
+Here is the result:
+
+```json
+{
+  "answer": 75
+}
+```

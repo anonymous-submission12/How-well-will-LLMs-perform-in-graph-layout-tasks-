@@ -1,0 +1,26 @@
+To calculate the length of the shortest path between node '12' and '16', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. **Graph Representation**: Represent the graph using an adjacency list.
+2. **BFS Initialization**: Start BFS from node '12'.
+3. **Exploration**: Explore all nodes level by level until node '16' is found.
+4. **Path Length**: The level at which node '16' is found is the length of the shortest path.
+
+Let's perform the BFS:
+
+- **Level 0**: Start at node '12'.
+- **Level 1**: Explore neighbors of '12' → ['8', '9', '10', '13', '14', '15'].
+- **Level 2**: Explore neighbors of '8' → ['1', '9', '10', '11', '12', '13', '14'].
+- **Level 3**: Explore neighbors of '1' → ['2', '3', '5', '6', '7', '19', '20'].
+- **Level 4**: Explore neighbors of '19' → ['16', '17', '18', '20', '21', '22', '23'].
+
+Node '16' is found at level 4. Therefore, the length of the shortest path between node '12' and '16' is 4.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 4
+}
+```

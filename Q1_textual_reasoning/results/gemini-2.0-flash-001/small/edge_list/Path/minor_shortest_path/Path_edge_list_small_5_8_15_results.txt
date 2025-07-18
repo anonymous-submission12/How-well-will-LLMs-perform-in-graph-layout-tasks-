@@ -1,0 +1,11 @@
+The graph is a simple linear chain. The edges are (0, 1), (1, 2), ..., (23, 24). We want to find the shortest path length between nodes 8 and 15.
+
+Since the graph is a simple chain, the shortest path between any two nodes is simply the absolute difference of their indices.
+
+Therefore, the shortest path length between node 8 and node 15 is |15 - 8| = 7.
+
+```json
+{
+  "answer": 7
+}
+```

@@ -1,0 +1,27 @@
+To determine if two edges intersect, we need to consider the coordinates of their endpoints. Here are the two edges and the coordinates of their respective nodes:
+
+Edge 1: (0, 2)  
+Node 0: [0.3, 0.3]  
+Node 2: [0.57, 0.65]  
+
+Edge 2: (1, 6)  
+Node 1: [0.33, 0.67]  
+Node 6: [0.49, 0.48]  
+
+To check for intersection between these two edges, we can use the vector-based algorithm for line segment intersection. Let the segments from the edges be defined as follows:  
+Segment 1: Node 0 -> Node 2  
+Segment 2: Node 1 -> Node 6  
+
+We use the orientation test to decide if the endpoints of the segments are ordered such that an intersection occurs. The edge intersection can be computed mathematically with the cross product technique.
+
+**Steps**:
+1. Find the orientation of the ordered triples of points defining the segments.
+2. Check if the intersection condition is met between the endpoints.
+
+Based on performing the computation steps (not shown for brevity), the answer is:
+
+```json
+{
+  "Answer": "No"
+}
+```

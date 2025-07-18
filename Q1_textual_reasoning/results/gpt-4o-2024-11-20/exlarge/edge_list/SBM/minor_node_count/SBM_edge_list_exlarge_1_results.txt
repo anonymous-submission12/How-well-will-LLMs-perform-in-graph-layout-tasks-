@@ -1,0 +1,7 @@
+To determine the number of unique nodes in the graph, we need to extract all nodes from the edge list and find the unique ones using a set. Here's the answer in JSON format:
+
+```json
+{
+  "answer": 76
+}
+```

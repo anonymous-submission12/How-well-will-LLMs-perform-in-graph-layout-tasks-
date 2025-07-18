@@ -1,0 +1,7 @@
+To count the number of nodes in the graph, the solution involves simply determining the number of keys in the provided adjacency list (one key per node in the graph). Here's the result:
+
+```json
+{
+  "answer": 78
+}
+```

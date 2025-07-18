@@ -1,0 +1,7 @@
+After carefully examining both images, it's clear that the second image has significantly fewer edge crossings than the first.
+
+```json
+{
+"Answer": "2"
+}
+```

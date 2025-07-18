@@ -1,0 +1,10 @@
+To calculate the shortest path between nodes '51' and '50', we can use a graph traversal algorithm such as Breadth-First Search (BFS) since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 2
+}
+``` 
+
+Explanation:
+- From the edge list, we can see that node '51' is directly connected to node '50'. Therefore, the shortest path length is 1.

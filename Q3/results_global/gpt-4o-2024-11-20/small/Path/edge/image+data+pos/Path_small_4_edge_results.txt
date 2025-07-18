@@ -1,0 +1,13 @@
+Looking at the two graphs provided:
+
+In **image 1**, there are multiple edge crossings.
+
+In **image 2**, the edges are arranged such that no crossings occur. The graph is laid out in a simple, straight-line fashion.
+
+Thus, **image 2** has fewer edge crossings.
+
+```json
+{
+  "Answer": "2"
+}
+```

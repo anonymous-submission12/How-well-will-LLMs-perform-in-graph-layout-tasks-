@@ -1,0 +1,7 @@
+```json
+{
+  "answer": null
+}
+```
+
+The graph provided does not contain a node labeled '42' or '10'. Therefore, it is impossible to calculate the shortest path between these two nodes as they do not exist in the graph.

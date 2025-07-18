@@ -1,0 +1,81 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper functions
+    def is_star():
+        center_count = sum(len(neighbors) > 1 for neighbors in adj_list.values())
+        return center_count == 1 and all(len(neighbors) <= 1 for node, neighbors in adj_list.items() if len(neighbors) <= 1)
+
+    def is_cycle():
+        visited = set()
+        def dfs(node, parent):
+            visited.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    if not dfs(neighbor, node):
+                        return False
+                elif neighbor != parent:
+                    return False
+            return True
+        start_node = next(iter(adj_list))
+        return dfs(start_node, None) and len(visited) == len(adj_list)
+
+    def is_path():
+        endpoints = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return endpoints == 2 and all(len(neighbors) <= 2 for neighbors in adj_list.values())
+
+    def is_grid():
+        rows = defaultdict(list)
+        cols = defaultdict(list)
+        for node, neighbors in adj_list.items():
+            for neighbor in neighbors:
+                rows[node].append(neighbor)
+                cols[neighbor].append(node)
+        return all(len(rows[node]) <= 4 for node in rows) and all(len(cols[node]) <= 4 for node in cols)
+
+    def is_complete():
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered():
+        clusters = []
+        visited = set()
+        def dfs(node, cluster):
+            visited.add(node)
+            cluster.append(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    dfs(neighbor, cluster)
+        for node in adj_list:
+            if node not in visited:
+                cluster = []
+                dfs(node, cluster)
+                clusters.append(cluster)
+        return len(clusters) > 1
+
+    def is_random():
+        return True  # Default fallback if no other pattern matches
+
+    # Check patterns
+    if is_star():
+        return "Star"
+    elif is_cycle():
+        return "Cycle"
+    elif is_path():
+        return "Path"
+    elif is_grid():
+        return "Grid"
+    elif is_complete():
+        return "Complete"
+    elif is_clustered():
+        return "Clustered"
+    else:
+        return "Random"
+
+# Input graph data
+adj_list = {0: [19], 1: [16], 2: [4, 8, 17, 29], 3: [9, 27], 4: [2, 7, 22, 27], 5: [12, 16, 25, 26, 27], 6: [19, 24], 7: [4, 14, 27], 8: [2, 15, 18], 9: [3, 18], 10: [21, 22], 11: [15, 29], 12: [5, 18], 13: [16, 18], 14: [7, 15, 19, 22, 25, 28], 15: [8, 11, 14, 23], 16: [1, 5, 13, 18, 19, 21, 28], 17: [2], 18: [8, 9, 12, 13, 16, 19], 19: [0, 6, 14, 16, 18, 21, 22, 29], 20: [24], 21: [10, 16, 19], 22: [4, 10, 14, 19, 27], 23: [15], 24: [6, 20], 25: [5, 14, 29], 26: [5], 27: [3, 4, 5, 7, 22], 28: [14, 16], 29: [2, 11, 19, 25]}
+
+# Determine graph pattern
+print(determine_graph_pattern(adj_list))
+```

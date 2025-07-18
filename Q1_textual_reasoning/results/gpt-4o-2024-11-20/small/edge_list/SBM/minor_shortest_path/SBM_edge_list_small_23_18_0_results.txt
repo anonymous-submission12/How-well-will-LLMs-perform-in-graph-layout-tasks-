@@ -1,0 +1,9 @@
+To calculate the shortest path length between node `18` and node `0`, I will utilize the graph's edge list representation. Using the data provided, the shortest path can be computed using a Breadth-First Search (BFS) algorithm on an unweighted graph.
+
+Here is the result:
+
+```json
+{
+  "answer": 3
+}
+```

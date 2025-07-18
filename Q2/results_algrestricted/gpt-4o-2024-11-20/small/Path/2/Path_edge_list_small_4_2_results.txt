@@ -1,0 +1,64 @@
+Here's the Python code designed to generate a consistent layout for the graph. The layout maintains consistency between Euclidean distance (in 2D space) and graph-theoretic (shortest path) distance. The code calculates positions systematically rather than relying on pre-built algorithms.
+
+```python
+import json
+import math
+
+def calculate_graph_layout(edge_list):
+    # Step 1: Build adjacency list to represent the graph
+    adjacency_list = {}
+    for u, v in edge_list:
+        if u not in adjacency_list:
+            adjacency_list[u] = []
+        if v not in adjacency_list:
+            adjacency_list[v] = []
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+    
+    # Step 2: Breadth-First Search (BFS) to assign shortest path distances from node 0
+    distances = {}
+    visited = set()
+    queue = [(0, 0)]  # (current_node, current_distance_from_start)
+    
+    while queue:
+        node, dist = queue.pop(0)
+        if node in visited:
+            continue
+        visited.add(node)
+        distances[node] = dist
+        for neighbor in adjacency_list[node]:
+            if neighbor not in visited:
+                queue.append((neighbor, dist + 1))
+    
+    # Step 3: Generate a graph layout based on shortest path distances
+    positions = {}
+    for node, distance in distances.items():
+        # Assign positions in a spiral manner based on distance
+        angle = distance * (math.pi / 4)  # Spread nodes evenly
+        radius = distance  # Use distance as radius to ensure consistency
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[node] = {"x": x, "y": y}
+    
+    return positions
+
+
+# Input: Graph edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+             (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)]
+
+# Generate the layout
+layout = calculate_graph_layout(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The adjacency list helps represent the graph directly from the edge list.
+2. **Shortest Path Calculation**: BFS determines the minimum hop distance (graph-theoretic distance) from node 0 to all other nodes.
+3. **Position Assignment**: Nodes are placed in polar coordinates — radius corresponds to distance, and angle increases with distance to distribute nodes in a visually proportional manner.
+4. **Output**: Positions are generated using Euclidean coordinates (x, y) and are returned in JSON format.
+
+Feel free to further customize the layout logic or integrate additional constraints as needed!

@@ -1,0 +1,52 @@
+To determine the relationship between the Euclidean distance and the graph-theoretic distance between the source node 3 and the target node 25, let's perform the necessary calculations step by step.
+
+### Step 1: Graph-Theoretic Distance
+The graph-theoretic distance is defined as the shortest path (in terms of number of edges) between two nodes in the graph. From the given subgraph data:
+- Graph: [(1, 2), (1, 24), (2, 3), (24, 25)]
+
+Shortest path from node 3 to node 25:
+- 3 → 2 → 1 → 24 → 25 (length = 4 edges)
+
+Thus, the **graph-theoretic distance** is 4.
+
+### Step 2: Euclidean Distance
+The Euclidean distance between two nodes is computed using the formula:
+\[
+d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\]
+
+From the given coordinates:
+- Node 3: (0.33, 0.23)
+- Node 25: (-0.77, 0.86)
+
+Plugging in the coordinates:
+\[
+d = \sqrt{((-0.77 - 0.33)^2) + ((0.86 - 0.23)^2)}
+\]
+\[
+d = \sqrt{((-1.1)^2) + ((0.63)^2)}
+\]
+\[
+d = \sqrt{(1.21) + (0.3969)}
+\]
+\[
+d = \sqrt{1.6069}
+\]
+\[
+d \approx 1.2675
+\]
+
+Thus, the **Euclidean distance** is approximately **1.27**.
+
+### Step 3: Compare Euclidean Distance and Graph-Theoretic Distance
+- **Euclidean Distance**: ~1.27
+- **Graph-Theoretic Distance**: 4
+
+Clearly, the Euclidean distance (1.27) is less than the graph-theoretic distance (4).
+
+### Final Answer
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

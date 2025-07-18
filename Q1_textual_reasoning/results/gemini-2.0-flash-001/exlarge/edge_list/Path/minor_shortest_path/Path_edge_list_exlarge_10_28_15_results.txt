@@ -1,0 +1,9 @@
+The graph is a simple linear chain. To find the shortest path between nodes '28' and '15', we simply need to calculate the absolute difference between their indices.
+
+|28 - 15| = 13
+
+```json
+{
+ "answer": 13
+}
+```

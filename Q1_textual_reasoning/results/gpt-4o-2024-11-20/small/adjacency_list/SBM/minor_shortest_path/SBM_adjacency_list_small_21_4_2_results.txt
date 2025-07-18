@@ -1,0 +1,10 @@
+To calculate the shortest path between node '4' and node '2', we can use the Breadth-First Search (BFS) algorithm. Here's the solution:
+
+```json
+{
+  "answer": 1
+}
+```
+
+### Explanation:
+In the given adjacency list, node '4' is directly connected to node '2'. Therefore, the shortest path length between node '4' and node '2' is **1**.

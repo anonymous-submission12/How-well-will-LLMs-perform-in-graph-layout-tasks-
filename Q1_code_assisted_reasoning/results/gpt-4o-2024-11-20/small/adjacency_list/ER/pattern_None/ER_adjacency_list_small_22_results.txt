@@ -1,0 +1,19 @@
+```python
+from itertools import combinations
+
+def classify_graph(adj_list):
+    # Check Star Pattern
+    if any(len(neighbors) == len(adj_list) - 1 for neighbors in adj_list.values()):
+        return "Star"
+
+    # Check Cycle Pattern
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+    if edges == len(adj_list) and all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        return "Cycle"
+
+    # Check Path Pattern
+    if sum(len(neighbors) == 1 for neighbors in adj_list.values()) == 2 and all(len(neighbors) <= 2 for neighbors in adj_list.values()):
+        return "Path"
+
+    # Check Grid Pattern - This requires heuristics since grid is less strict format.
+    # Skip explicit Check for Grid as it does seem Notices . they may be 

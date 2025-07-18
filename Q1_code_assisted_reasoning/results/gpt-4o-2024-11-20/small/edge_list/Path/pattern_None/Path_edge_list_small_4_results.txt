@@ -1,0 +1,25 @@
+```python
+def determine_pattern(edge_list):
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+
+    # Check for Path graph
+    degrees = {node: 0 for node in nodes}
+    for edge in edge_list:
+        degrees[edge[0]] += 1
+        degrees[edge[1]] += 1
+
+    # Path graph has two nodes with degree 1, and the rest with degree 2
+    num_degree_1 = sum(1 for degree in degrees.values() if degree == 1)
+    num_degree_2 = sum(1 for degree in degrees.values() if degree == 2)
+    if num_degree_1 == 2 and num_degree_2 == (len(nodes) - 2):
+        return "Path"
+
+    return "Unknown"
+
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), 
+             (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)]
+print(determine_pattern(edge_list))
+```

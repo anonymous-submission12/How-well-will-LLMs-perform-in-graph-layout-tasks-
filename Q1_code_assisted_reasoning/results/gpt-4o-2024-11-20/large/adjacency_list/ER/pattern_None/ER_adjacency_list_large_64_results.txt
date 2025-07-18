@@ -1,0 +1,9 @@
+```python
+def identify_graph_pattern(adj_list):
+    # Helper function to check for each graph pattern
+    def is_star():
+        hub_candidates = [node for node, neighbors in adj_list.items() if len(neighbors) >= len(adj_list) - 1]
+        return any(all(set(adj_list[hub]) == set(adj_list.keys()) - {hub} for hub in hub_candidates),)
+
+    def is_cycle():
+        all_visited.append = path.Cycle, gridComplete,cgraph.random_graph.","

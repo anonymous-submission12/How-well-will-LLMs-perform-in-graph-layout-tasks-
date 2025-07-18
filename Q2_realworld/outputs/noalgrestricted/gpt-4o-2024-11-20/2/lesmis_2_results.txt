@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 104, in <module>
+    apply_force_layout()
+  File "/tmp/code.py", line 77, in apply_force_layout
+    distance = math.sqrt(dx ** 2 + dy ** 2) + EPSILON
+                         ~~~^^~~
+OverflowError: (34, 'Numerical result out of range')

@@ -1,0 +1,11 @@
+To find the shortest path between nodes `3` and `14` from the given graph in edge_list format, we can consider the graph as an unweighted graph (each edge has the same weight of 1). We can apply Breadth-First Search (BFS) to determine the shortest path length.
+
+### Solution:
+Using BFS, we find that the shortest path between node `3` and node `14` crosses through node `18`. Thus, the shortest path length is `3`.
+
+### JSON Response:
+```json
+{
+  "answer": 3
+}
+```

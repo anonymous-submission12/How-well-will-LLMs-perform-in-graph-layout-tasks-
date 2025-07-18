@@ -1,0 +1,43 @@
+```python
+def determine_graph_pattern(edge_list):
+    # Create adjacency list
+    adjacency_list = {}
+    for u, v in edge_list:
+        if u not in adjacency_list:
+            adjacency_list[u] = []
+        if v not in adjacency_list:
+            adjacency_list[v] = []
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Check for Path graph
+    degree_counts = [len(adjacency_list[node]) for node in adjacency_list]
+    if degree_counts.count(1) == 2 and degree_counts.count(2) == len(degree_counts) - 2:
+        return "Path"
+
+    # Check for Cycle graph
+    if degree_counts.count(2) == len(degree_counts) and len(edge_list) == len(adjacency_list):
+        return "Cycle"
+
+    # Check for Star graph
+    if degree_counts.count(1) == len(degree_counts) - 1 and degree_counts.count(len(degree_counts) - 1) == 1:
+        return "Star"
+
+    # Check for Complete graph
+    n = len(adjacency_list)
+    if len(edge_list) == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check for Grid graph (simplified check for rectangular grid)
+    if len(edge_list) == 2 * (len(adjacency_list) - 1):
+        return "Grid"
+
+    # Check for Clustered graph (simplified check for clusters)
+    # This requires more advanced analysis, skipping for now.
+
+    # Default to Random graph
+    return "Random"
+
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+print(determine_graph_pattern(edge_list))
+```

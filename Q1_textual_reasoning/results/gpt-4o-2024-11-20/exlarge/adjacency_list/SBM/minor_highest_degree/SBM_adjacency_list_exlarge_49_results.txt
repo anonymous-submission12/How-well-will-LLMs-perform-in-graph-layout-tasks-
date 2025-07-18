@@ -1,0 +1,102 @@
+To calculate the highest degree of all nodes in the graph, we need to determine the maximum number of edges connected to each node (degree) from the adjacency list.
+
+Here is the solution:
+
+1. For each node in the adjacency list, calculate its degree by finding the length of its adjacency list.
+2. Find the maximum degree among all nodes.
+
+### Calculation
+
+```
+Degree of node:
+- Node 0: degree = 4
+- Node 1: degree = 5
+- Node 2: degree = 3
+- Node 3: degree = 5
+- Node 4: degree = 4
+- Node 5: degree = 6
+- Node 6: degree = 6
+- Node 7: degree = 4
+- Node 8: degree = 7
+- Node 9: degree = 4
+- Node 10: degree = 4
+- Node 11: degree = 6
+- Node 12: degree = 7
+- Node 13: degree = 7
+- Node 14: degree = 8
+- Node 15: degree = 5
+- Node 16: degree = 3
+- Node 17: degree = 9
+- Node 18: degree = 9
+- Node 19: degree = 4
+- Node 20: degree = 5
+- Node 21: degree = 6
+- Node 22: degree = 6
+- Node 23: degree = 6
+- Node 24: degree = 7
+- Node 25: degree = 6
+- Node 26: degree = 4
+- Node 27: degree = 3
+- Node 28: degree = 2
+- Node 29: degree = 5
+- Node 30: degree = 6
+- Node 31: degree = 3
+- Node 32: degree = 4
+- Node 33: degree = 5
+- Node 34: degree = 4
+- Node 35: degree = 6
+- Node 36: degree = 3
+- Node 37: degree = 4
+- Node 38: degree = 4
+- Node 39: degree = 4
+- Node 40: degree = 3
+- Node 41: degree = 4
+- Node 42: degree = 4
+- Node 43: degree = 2
+- Node 44: degree = 3
+- Node 45: degree = 7
+- Node 46: degree = 3
+- Node 47: degree = 5
+- Node 48: degree = 4
+- Node 49: degree = 6
+- Node 50: degree = 3
+- Node 51: degree = 5
+- Node 52: degree = 8
+- Node 53: degree = 6
+- Node 54: degree = 3
+- Node 55: degree = 4
+- Node 56: degree = 6
+- Node 57: degree = 4
+- Node 58: degree = 5
+- Node 59: degree = 6
+- Node 60: degree = 9
+- Node 61: degree = 5
+- Node 62: degree = 5
+- Node 63: degree = 4
+- Node 64: degree = 4
+- Node 65: degree = 5
+- Node 66: degree = 6
+- Node 67: degree = 5
+- Node 68: degree = 5
+- Node 69: degree = 2
+- Node 70: degree = 6
+- Node 71: degree = 4
+- Node 72: degree = 4
+- Node 73: degree = 4
+- Node 74: degree = 2
+- Node 75: degree = 1
+- Node 76: degree = 5
+- Node 77: degree = 4
+- Node 78: degree = 8
+```
+
+### Result
+
+The maximum degree is **9**, which corresponds to nodes 17, 18, and 60.
+
+### Output
+```json
+{
+  "answer": 9
+}
+```

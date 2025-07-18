@@ -1,0 +1,31 @@
+Here's how we can approach this problem:
+
+1.  **Identify Connected Components:** The communities in a graph often correspond to its connected components. A connected component is a set of nodes where there's a path between any two nodes within the set, but no path to any node outside the set.
+
+2.  **Algorithm (Depth First Search):** Use Depth First Search (DFS) to find connected components.
+
+    *   Start at an arbitrary node.
+    *   Perform DFS to visit all reachable nodes.  Mark these nodes as visited.
+    *   If there are unvisited nodes, start a new DFS from one of them.  Each DFS discovers a new connected component.
+
+3.  **Implementation (Conceptual):**
+
+    *   Create a `visited` set to keep track of visited nodes.
+    *   Iterate through the nodes. If a node hasn't been visited:
+        *   Increment the component count.
+        *   Perform DFS starting from that node.
+
+4.  **Apply to the Given Graph:**
+
+    Given the edge list, the nodes present are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+
+    *   Nodes 0 to 12 are connected to each other.
+    *   Nodes 13 to 25 are connected to each other.
+
+    Therefore, there are two connected components.
+
+```json
+{
+ "answer": 2
+}
+```

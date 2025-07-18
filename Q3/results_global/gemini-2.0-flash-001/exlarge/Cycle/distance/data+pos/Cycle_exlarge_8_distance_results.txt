@@ -1,0 +1,7 @@
+The graph has a simple path structure. Layout 2 appears to place the nodes in a more linear fashion, which better reflects the graph-theoretic distances. Layout 1 has more nodes clustered together.
+
+```json
+{
+"Answer": "2"
+}
+```

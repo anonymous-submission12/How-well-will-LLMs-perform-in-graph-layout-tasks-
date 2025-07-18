@@ -1,0 +1,15 @@
+To calculate the highest degree of all nodes in the graph provided using the adjacency list:
+
+- We determine the degree of each node by counting the number of edges it has (i.e., the length of the adjacency list for each node).
+- Then, we find the maximum degree among all nodes.
+
+Here is the result:
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation:
+- Every node in the graph appears to connect to at most two other nodes, indicating that the graph is a linear chain. Hence, the maximum degree is 2.

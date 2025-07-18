@@ -1,0 +1,41 @@
+```python
+import networkx as nx
+
+# Input graph
+edge_list = [(0, 5), (1, 17), (1, 21), (1, 22), (2, 19), (2, 20), (3, 6), (3, 8), 
+             (4, 11), (4, 18), (4, 20), (5, 7), (5, 21), (6, 12), (6, 19), (6, 21), 
+             (7, 17), (8, 14), (8, 19), (9, 21), (9, 22), (10, 13), (10, 16), (10, 21), 
+             (11, 15), (11, 17), (11, 21), (13, 16), (13, 17), (13, 19), (15, 20), 
+             (16, 20), (17, 19), (19, 21)]
+
+# Create graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Get graph properties
+num_nodes = G.number_of_nodes()
+num_edges = G.number_of_edges()
+degrees = [deg for _, deg in G.degree()]
+
+# Identify the graph pattern
+if all(deg == num_nodes - 1 for deg in degrees):
+    result = "Complete"
+elif all(deg <= 2 for deg in degrees):
+    if nx.is_connected(G) and num_edges == num_nodes:
+        result = "Cycle"
+    elif nx.is_connected(G) and num_edges == num_nodes - 1:
+        result = "Path"
+    else:
+        result = "Unknown"
+elif any(degrees.count(deg) > 1 and deg == len(G.edges(0)) for deg in degrees):
+    result = "Star"
+elif len(set(degrees)) == 1 and all(deg == 4 for deg in degrees) and num_nodes >= 4:
+    # Simplified approximation assuming regular grid with degree 4
+    result = "Grid"
+elif nx.algorithms.community.quality.modularity(G, list(nx.algorithms.community.greedy_modularity_communities(G))) > 0.3:
+    result = "Clustered graph"
+else:
+    result = "Random graph"
+
+print(result)
+```

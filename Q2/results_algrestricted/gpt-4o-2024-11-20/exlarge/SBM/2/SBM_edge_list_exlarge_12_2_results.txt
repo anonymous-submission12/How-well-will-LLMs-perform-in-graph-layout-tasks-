@@ -1,0 +1,107 @@
+To generate a layout for the graph based on the consistency between Euclidean distance and graph-theoretic distance as per your requirements, you can utilize a force-directed approach implemented manually. Here's the Python script:
+
+```python
+import json
+import numpy as np
+from scipy.spatial import distance
+from collections import defaultdict
+
+def graph_layout(edge_list, dim=2, iterations=1000, learning_rate=0.01):
+    # Initialize variables
+    nodes = {node for edge in edge_list for node in edge}
+    num_nodes = len(nodes)
+
+    # Adjacency dictionary to store neighbors
+    adjacency_dict = defaultdict(set)
+    for u, v in edge_list:
+        adjacency_dict[u].add(v)
+        adjacency_dict[v].add(u)
+
+    # Calculate shortest path distances using Floyd-Warshall Algorithm
+    dist = {node: {node: float('inf') for node in nodes} for node in nodes}
+    for node in nodes:
+        dist[node][node] = 0  # Distance to itself is 0
+    for u, v in edge_list:
+        dist[u][v] = 1
+        dist[v][u] = 1
+    for k in nodes:
+        for i in nodes:
+            for j in nodes:
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Normalize shortest path distances
+    max_dist = max(max(dist[row].values()) for row in dist)
+    for i in nodes:
+        for j in nodes:
+            dist[i][j] /= max_dist
+
+    # Initialize random positions in a unit square
+    positions = {node: np.random.rand(dim) for node in nodes}
+
+    # Helper to compute graph-theoretic distances
+    def graph_distance(u, v):
+        return dist[u][v]
+
+    # Iterative force-directed layout computation
+    for _ in range(iterations):
+        deltas = {node: np.zeros(dim) for node in nodes}  # Change in position for each node
+
+        for i in nodes:
+            for j in nodes:
+                if i == j:
+                    continue
+                u_pos, v_pos = positions[i], positions[j]
+                euclidean_dist = np.linalg.norm(u_pos - v_pos)
+                graph_dist = graph_distance(i, j)
+                
+                # Calculate the force based on distance inconsistency
+                force = (euclidean_dist - graph_dist) * (u_pos - v_pos) / (euclidean_dist + 1e-6)
+                deltas[i] -= learning_rate * force
+                deltas[j] += learning_rate * force
+
+        # Update positions
+        for node in nodes:
+            positions[node] += deltas[node]
+
+    # Transform output to JSON-compatible format
+    layout = {node: pos.tolist() for node, pos in positions.items()}
+    return layout
+
+# Example input (Graph edge list)
+edge_list = [
+    (0, 1), (0, 5), (0, 6), (0, 9), (0, 11), (1, 3), (1, 5), (1, 7), (1, 9), 
+    (1, 18), (1, 77), (2, 4), (2, 5), (3, 5), (3, 6), (3, 8), (3, 11), (3, 12), 
+    (3, 46), (4, 6), (4, 10), (4, 12), (5, 9), (5, 11), (6, 7), (6, 9), (6, 11), 
+    (7, 8), (7, 12), (8, 9), (8, 11), (8, 12), (9, 10), (9, 12), (13, 18), 
+    (13, 21), (13, 23), (13, 24), (14, 16), (14, 20), (14, 21), (14, 22), 
+    (14, 25), (15, 16), (15, 17), (15, 18), (15, 19), (15, 20), (15, 23), 
+    (15, 24), (15, 25), (16, 18), (16, 20), (16, 23), (16, 25), (17, 22), 
+    (17, 23), (17, 24), (17, 25), (18, 20), (18, 22), (18, 25), (19, 20), 
+    (19, 22), (19, 25), (20, 22), (20, 23), (20, 25), (21, 23), (21, 31), 
+    (22, 25), (23, 24), (23, 51), (25, 33), (26, 28), (26, 29), (26, 30), 
+    (27, 28), (27, 30), (28, 30), (28, 31), (28, 56), (29, 30), (30, 31), 
+    (32, 28), (32, 31), (32, 33), (32, 34), (32, 35), (32, 36), (32, 38), 
+    (33, 27), (33, 30), (33, 31), (33, 34), (33, 36), (33, 38), (34, 35), 
+    (34, 37), (35, 26), (35, 31), (35, 36), (35, 38), (35, 40), (36, 26), 
+    (36, 29), (36, 38), (37, 26), (37, 28), (37, 31), (37, 38), (38, 26), 
+    (38, 29), (39, 40), (39, 43), (39, 44), (39, 48), (39, 49), (39, 51), 
+    (40, 41), (40, 45), (40, 48), (40, 49), (41, 43), (41, 46), (41, 47), 
+    (41, 50), (42, 43), (42, 45), (42, 48), (42, 49), (43, 44), (43, 46), 
+    (43, 48), (43, 50), (43, 51), (43, 52), (44, 48), (44, 49), (44, 50), 
+    (46, 47), (46, 48), (46, 50), (47, 48), (48, 51), (49, 50), (49, 51), 
+    (52, 54), (52, 57), (52, 58), (53, 55), (54, 55), (54, 57), (55, 57), 
+    (55, 58), (55, 61), (55, 63), (56, 59), (57, 61), (59, 60), (60, 61), 
+    (64, 53), (64, 59), (64, 60), (64, 62), (65, 67), (65, 71), (65, 73), 
+    (65, 74), (65, 76), (66, 67), (66, 69), (66, 70), (66, 71), (66, 74), 
+    (67, 68), (67, 73), (67, 75), (67, 76), (68, 70), (68, 74), (68, 75), 
+    (69, 71), (69, 72), (69, 73), (70, 76), (71, 72), (71, 74), (71, 75), 
+    (71, 76), (71, 77), (72, 73), (72, 75), (72, 77), (73, 74), (73, 77), 
+    (74, 77), (75, 77)
+]
+
+# Run layout generation
+layout_results = graph_layout(edge_list)
+
+# Print JSON output
+print(json.dumps(layout_results, indent=2))
+```

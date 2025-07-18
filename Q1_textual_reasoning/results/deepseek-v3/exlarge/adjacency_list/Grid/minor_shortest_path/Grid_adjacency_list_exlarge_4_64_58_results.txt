@@ -1,0 +1,16 @@
+To find the shortest path between node '64' and '58', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 6
+}
+```
+
+### Explanation:
+- Starting from node '64', we explore its neighbors: '38', '63', and '65'.
+- From these nodes, we continue to explore their neighbors until we reach node '58'.
+- The shortest path from '64' to '58' involves 6 edges, hence the length of the shortest path is 6.
+
+The path is: `64 -> 63 -> 62 -> 61 -> 60 -> 59 -> 58`.

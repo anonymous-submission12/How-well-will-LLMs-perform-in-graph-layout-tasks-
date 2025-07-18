@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+The graph is a star-shaped graph where node `0` is connected to all other nodes (including nodes `19` and `20`). To find the shortest path between node `20` and node `19`, we can go from node `20` to node `0` and then from node `0` to node `19`. This path consists of 2 edges, so the length of the shortest path is `2`.

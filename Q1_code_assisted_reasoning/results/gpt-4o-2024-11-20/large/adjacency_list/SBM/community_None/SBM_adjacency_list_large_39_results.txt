@@ -1,0 +1,28 @@
+```python
+from collections import defaultdict
+
+# Function for DFS traversal
+def dfs(node, graph, visited):
+    visited.add(node)
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            dfs(neighbor, graph, visited)
+
+# Function to count communities
+def count_communities(graph):
+    visited = set()
+    communities = 0
+    
+    for node in graph:
+        if node not in visited:
+            communities += 1
+            dfs(node, graph, visited)
+    
+    return communities
+
+# Input adjacency list
+graph = {0: [1, 2, 3, 4, 5, 8], 1: [0, 2, 3, 4, 5, 6], 2: [0, 1, 3, 4, 5, 6, 8], 3: [0, 1, 2, 4, 7, 8, 20, 35], 4: [0, 1, 2, 3, 6, 7, 8, 24], 5: [0, 1, 2, 6, 7, 8, 10], 6: [1, 2, 4, 5], 7: [3, 4, 5], 8: [0, 2, 3, 4, 5], 9: [11, 12, 13, 14, 15, 16], 10: [5, 12, 13, 16, 17, 36], 11: [9, 14, 15, 16], 12: [9, 10, 13, 14, 15, 16, 17, 38], 13: [9, 10, 12, 14, 15, 16, 17], 14: [9, 11, 12, 13, 15, 16], 15: [9, 11, 12, 13, 14, 16, 17], 16: [9, 10, 11, 12, 13, 14, 15, 17, 35], 17: [10, 12, 13, 15, 16, 24], 18: [20, 21, 22, 23, 24], 19: [20, 22, 23, 24, 25], 20: [3, 18, 19, 22, 23, 24, 25], 21: [18, 22, 24, 25, 30], 22: [18, 19, 20, 21], 23: [18, 19, 20, 25], 24: [4, 17, 18, 19, 20, 21], 25: [19, 20, 21, 23], 32: [28, 29, 31, 33], 33: [29, 30, 32], 26: [27, 29, 30, 39], 27: [26, 28], 28: [27, 29, 30, 31, 32, 34], 29: [26, 28, 30, 32, 33], 30: [21, 26, 28, 29, 33], 31: [28, 32], 34: [28, 35, 36, 40, 41], 35: [3, 16, 34, 36, 37, 38, 40, 41], 36: [10, 34, 35, 38, 40, 41], 37: [35, 39, 40, 41], 38: [12, 35, 36, 39, 41], 39: [26, 37, 38, 40], 40: [34, 35, 36, 37, 39, 41], 41: [34, 35, 36, 37, 38, 40]}
+
+# Count communities and print the result
+print(count_communities(graph))
+```

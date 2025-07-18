@@ -1,0 +1,7 @@
+To evaluate which graph layout better preserves graph-theoretic distance, we analyze the spatial positioning of nodes relative to actual graph distances (in terms of edges). The graph layout in the first image clusters interconnected nodes closer together spatially, reflecting their graph-theoretic proximity well. The second layout, however, stretches the graph too far spatially, making nodes that are relatively close in graph distance appear much farther apart. Consequently, **Answer 1** better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 1
+}
+```

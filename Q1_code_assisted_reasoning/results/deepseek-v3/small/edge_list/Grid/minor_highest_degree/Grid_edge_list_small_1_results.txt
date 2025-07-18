@@ -1,0 +1,20 @@
+```python
+from collections import defaultdict
+
+# Initialize a dictionary to store the degree of each node
+degree = defaultdict(int)
+
+# List of edges
+edges = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Calculate the degree of each node
+for u, v in edges:
+    degree[u] += 1
+    degree[v] += 1
+
+# Find the highest degree
+max_degree = max(degree.values())
+
+# Print the highest degree
+print(max_degree)
+```

@@ -1,0 +1,18 @@
+```json
+{
+  "answer": 6
+}
+``` 
+
+### Explanation:
+To find the shortest path between node '21' and '6', we can use the Breadth-First Search (BFS) algorithm. Here's the step-by-step path:
+
+1. **21 → 17**: Direct connection.
+2. **17 → 2**: Direct connection.
+3. **2 → 4**: Direct connection.
+4. **4 → 26**: Direct connection.
+5. **26 → 25**: Direct connection.
+6. **25 → 24**: Direct connection.
+7. **24 → 6**: Direct connection.
+
+Thus, the shortest path from node '21' to '6' involves 6 edges, so the length of the shortest path is **6**.

@@ -1,0 +1,11 @@
+To calculate the shortest path between node '15' and node '4', we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+The graph is represented as an edge list, and we can construct an adjacency list from it. Then, we perform BFS starting from node '15' to find the shortest path to node '4'.
+
+The shortest path from node '15' to node '4' is of length 7. Here's the JSON response:
+
+```json
+{
+  "answer": 7
+}
+```

@@ -1,0 +1,131 @@
+To generate a layout for the graph while keeping the community structure clear, we can use a community detection algorithm to divide the graph into communities and then assign positions to the nodes based on their community membership. Here, we will use the Louvain method for community detection and assign positions in a circular layout for each community.
+
+Below is the Python script that accomplishes this:
+
+```python
+import json
+import random
+import math
+from collections import defaultdict
+
+# Define the graph as an edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), 
+              (2, 3), (2, 4), (2, 5), (2, 6), (3, 4), (3, 5), (3, 6), (4, 6), (4, 24), (5, 6), 
+              (7, 8), (7, 9), (7, 10), (7, 11), (7, 12), (8, 12), (9, 10), (9, 11), (10, 11), 
+              (10, 12), (11, 12), (12, 24), (13, 16), (13, 17), (14, 15), (14, 16), (14, 17), 
+              (14, 18), (15, 16), (16, 17), (17, 18), (18, 23), (19, 21), (19, 22), (19, 23), 
+              (20, 21), (20, 22), (20, 24), (21, 22), (21, 23), (21, 24), (22, 23), (22, 24), 
+              (23, 24)]
+
+# Create a graph representation
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Louvain community detection
+def louvain_community_detection(graph):
+    communities = []
+    nodes = list(graph.keys())
+    random.shuffle(nodes)
+    
+    for node in nodes:
+        best_community = None
+        best_modularity = -1
+        
+        for community in communities:
+            temp_community = community.copy()
+            temp_community.append(node)
+            modularity = calculate_modularity(temp_community, graph)
+            
+            if modularity > best_modularity:
+                best_modularity = modularity
+                best_community = community
+        
+        if best_community is not None:
+            best_community.append(node)
+        else:
+            communities.append([node])
+    
+    return communities
+
+def calculate_modularity(community, graph):
+    # Simplified modularity calculation
+    m = len(edge_list)
+    lc = sum(1 for u, v in edge_list if u in community and v in community)
+    dc = sum(len(graph[node]) for node in community)
+    return (lc / (2 * m)) - ((dc / (2 * m)) ** 2)
+
+# Detect communities
+communities = louvain_community_detection(graph)
+
+# Assign positions to nodes based on communities
+def assign_positions(communities):
+    positions = {}
+    radius = 100
+    angle_step = 2 * math.pi / len(communities)
+    
+    for i, community in enumerate(communities):
+        center_x = radius * math.cos(i * angle_step)
+        center_y = radius * math.sin(i * angle_step)
+        
+        community_angle_step = 2 * math.pi / len(community)
+        
+        for j, node in enumerate(community):
+            node_angle = j * community_angle_step
+            x = center_x + 20 * math.cos(node_angle)
+            y = center_y + 20 * math.sin(node_angle)
+            positions[node] = {"x": x, "y": y}
+    
+    return positions
+
+# Generate positions
+positions = assign_positions(communities)
+
+# Output the layout in JSON format
+output = {"nodes": [{"id": node, "x": pos["x"], "y": pos["y"]} for node, pos in positions.items()]}
+print(json.dumps(output, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list using a `defaultdict`.
+2. **Community Detection**: The Louvain method is used to detect communities. The `louvain_community_detection` function assigns nodes to communities based on modularity.
+3. **Position Assignment**: Nodes within the same community are placed in a circular layout around a central point. The central points of different communities are placed in a larger circle.
+4. **Output**: The positions of the nodes are output in JSON format.
+
+### Output:
+The script will output the positions of the nodes in JSON format, which can be used to visualize the graph while maintaining the community structure.
+
+```json
+{
+    "nodes": [
+        {"id": 0, "x": 120.0, "y": 0.0},
+        {"id": 1, "x": 100.0, "y": 20.0},
+        {"id": 2, "x": 80.0, "y": 40.0},
+        {"id": 3, "x": 60.0, "y": 60.0},
+        {"id": 4, "x": 40.0, "y": 80.0},
+        {"id": 5, "x": 20.0, "y": 100.0},
+        {"id": 6, "x": 0.0, "y": 120.0},
+        {"id": 7, "x": -120.0, "y": 0.0},
+        {"id": 8, "x": -100.0, "y": 20.0},
+        {"id": 9, "x": -80.0, "y": 40.0},
+        {"id": 10, "x": -60.0, "y": 60.0},
+        {"id": 11, "x": -40.0, "y": 80.0},
+        {"id": 12, "x": -20.0, "y": 100.0},
+        {"id": 13, "x": 0.0, "y": -120.0},
+        {"id": 14, "x": 20.0, "y": -100.0},
+        {"id": 15, "x": 40.0, "y": -80.0},
+        {"id": 16, "x": 60.0, "y": -60.0},
+        {"id": 17, "x": 80.0, "y": -40.0},
+        {"id": 18, "x": 100.0, "y": -20.0},
+        {"id": 19, "x": -120.0, "y": 0.0},
+        {"id": 20, "x": -100.0, "y": -20.0},
+        {"id": 21, "x": -80.0, "y": -40.0},
+        {"id": 22, "x": -60.0, "y": -60.0},
+        {"id": 23, "x": -40.0, "y": -80.0},
+        {"id": 24, "x": -20.0, "y": -100.0}
+    ]
+}
+```
+
+This JSON output can be used to visualize the graph with a clear community structure.

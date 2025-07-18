@@ -1,0 +1,20 @@
+To calculate the length of the shortest path between node '8' and node '78', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Given the edge list, we can construct the graph and then perform BFS starting from node '8' until we reach node '78'. The length of the shortest path will be the number of edges traversed.
+
+Here is the JSON response with the answer:
+
+```json
+{
+  "answer": 70
+}
+```
+
+### Explanation:
+- The graph is a linear chain from node '0' to node '79'.
+- Node '8' is connected to node '7' and node '9'.
+- Node '78' is connected to node '77' and node '79'.
+- The shortest path from node '8' to node '78' involves traversing from node '8' to node '78' directly along the chain.
+- The number of edges between node '8' and node '78' is 70.
+
+Thus, the length of the shortest path is 70.

@@ -1,0 +1,18 @@
+```python
+def graph_pattern(adj_list):
+    nodes = list(adj_list.keys())
+    edges = sum(len(adj_list[node]) for node in nodes) // 2
+
+    # Check for Cycle pattern
+    if all(len(adj_list[node]) == 2 for node in nodes) and edges == len(nodes):
+        return "Cycle"
+
+    return "Unknown"
+
+# Graph adjacency list
+adj_list = {0: [1, 21], 1: [0, 2], 2: [1, 3], 3: [2, 4], 4: [3, 5], 5: [4, 6], 6: [5, 7], 7: [6, 8], 8: [7, 9], 
+            9: [8, 10], 10: [9, 11], 11: [10, 12], 12: [11, 13], 13: [12, 14], 14: [13, 15], 15: [14, 16], 
+            16: [15, 17], 17: [16, 18], 18: [17, 19], 19: [18, 20], 20: [19, 21], 21: [0, 20]}
+
+print(graph_pattern(adj_list))
+```

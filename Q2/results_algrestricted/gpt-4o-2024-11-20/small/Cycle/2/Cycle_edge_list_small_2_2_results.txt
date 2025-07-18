@@ -1,0 +1,55 @@
+To generate a layout for the graph while maintaining consistency between Euclidean distance and graph-theoretic distance, we can use a custom algorithm. The algorithm will calculate positions for each node based on their shortest path distances from a reference node. Here's the Python script:
+
+```python
+import json
+import math
+from collections import defaultdict, deque
+
+def calculate_shortest_path_distances(edge_list, start_node):
+    """Calculate shortest path distances from the start_node to all other nodes."""
+    graph = defaultdict(list)
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    distances = {start_node: 0}
+    queue = deque([start_node])
+    
+    while queue:
+        current = queue.popleft()
+        for neighbor in graph[current]:
+            if neighbor not in distances:
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+    
+    return distances
+
+def generate_graph_layout(edge_list):
+    """Generate a graph layout based on shortest path distances."""
+    # Step 1: Calculate shortest path distances from an arbitrary start node (e.g., node 0)
+    start_node = 0
+    distances = calculate_shortest_path_distances(edge_list, start_node)
+    
+    # Step 2: Assign positions based on distances
+    positions = {}
+    angle_step = 2 * math.pi / len(distances)  # Spread nodes in a circular layout
+    for node, distance in distances.items():
+        angle = node * angle_step
+        radius = distance  # Use graph-theoretic distance as radius
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[node] = {"x": x, "y": y}
+    
+    return positions
+
+# Input graph data
+edge_list = [(0, 1), (0, 21), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+This script calculates the shortest path distances from a reference node (node 0) and assigns positions to nodes based on these distances. The nodes are spread in a circular layout, with the radius proportional to the graph-theoretic distance. The final output is a JSON representation of the layout.

@@ -1,0 +1,10 @@
+To calculate the shortest path between nodes '57' and '36' in the given graph structure using the adjacency list format, we apply a breadth-first search (BFS) technique. Here's the solution:
+
+```json
+{
+  "answer": 6
+}
+```
+
+Explanation:
+The shortest path between node '57' and '36' is of length 6.

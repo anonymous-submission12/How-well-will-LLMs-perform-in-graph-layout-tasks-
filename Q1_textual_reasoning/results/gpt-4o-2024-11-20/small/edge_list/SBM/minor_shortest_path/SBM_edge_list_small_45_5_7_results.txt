@@ -1,0 +1,9 @@
+To calculate the shortest path length between nodes '5' and '7', we can use a breadth-first search (BFS) algorithm, which is well-suited for unweighted graphs.
+
+Here is the solution:
+
+```json
+{
+  "answer": 3
+}
+```

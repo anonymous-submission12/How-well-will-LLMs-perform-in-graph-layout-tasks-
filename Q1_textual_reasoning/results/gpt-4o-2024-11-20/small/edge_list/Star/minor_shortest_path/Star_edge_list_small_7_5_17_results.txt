@@ -1,0 +1,27 @@
+To solve the problem, we will analyze the graph provided in the `edge_list` format. The graph edges are as follows:
+
+```
+(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), 
+(0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), 
+(0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), 
+(0, 23), (0, 24), (0, 25), (0, 26)
+```
+
+From this edge list, it is clear that node `0` is the center of a star graph as it connects to every other node in the graph. Thus, the connections form a "star" with node `0` as the central node.
+
+Now, to compute the shortest path between node `5` and node `17`:
+1. Node `5` connects directly to node `0`.
+2. Node `17` also connects directly to node `0`.
+3. Hence, the shortest path between node `5` and node `17` is through node `0`.
+
+The length of this path is `2` because:
+- From `5` to `0` (1 step).
+- From `0` to `17` (1 step).
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

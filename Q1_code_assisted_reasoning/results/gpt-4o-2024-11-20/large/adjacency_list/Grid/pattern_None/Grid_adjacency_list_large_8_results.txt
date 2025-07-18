@@ -1,0 +1,8 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Check if the graph is a grid
+    def is_grid(adj_list):
+        rows = []
+        for node, neighbors in adj_list.items():
+            rows.append(len(neighbors))
+        return all(rows.count(rows[0]) == len(rows)) and rows[0]==

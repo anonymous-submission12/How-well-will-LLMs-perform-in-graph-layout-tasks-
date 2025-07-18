@@ -1,0 +1,16 @@
+To count the number of communities in the graph, we analyze the edge list by identifying connected components. Based on the edge list you've provided, let me compute the connected components for your graph.
+
+### Community Detection
+The graph represents two distinct groups of nodes connected internally:
+1. Nodes from `0` to `11` form a highly interconnected community.
+2. Nodes from `12` to `23` form another highly interconnected community.
+
+### Final Answer
+There are **2 communities** in total.
+
+### JSON Response
+```json
+{
+  "answer": 2
+}
+```

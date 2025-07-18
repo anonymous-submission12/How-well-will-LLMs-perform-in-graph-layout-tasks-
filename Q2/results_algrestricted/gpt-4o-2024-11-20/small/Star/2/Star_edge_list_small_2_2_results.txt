@@ -1,0 +1,95 @@
+Here is a Python script to compute a consistent layout for the given graph by maintaining consistency between Euclidean distance and graph-theoretic distance. The approach relies on optimizing positions of nodes such that their Euclidean distances approximate their graph-theoretic distances as closely as possible, without utilizing existing layout algorithms.
+
+```python
+import json
+import numpy as np
+
+def graph_layout(edge_list, dim=2, iterations=1000, learning_rate=0.01):
+    """
+    Generate a layout for the graph that maintains consistency between
+    Euclidean and graph-theoretic distances.
+
+    Parameters:
+        edge_list: List of edges in the graph, e.g., [(0, 1), (1, 2), ...]
+        dim: Number of dimensions for the graph layout (default: 2 for 2D)
+        iterations: Number of optimization iterations
+        learning_rate: Step size for position updates
+
+    Returns:
+        A dictionary with node indices as keys and position arrays as values
+    """
+    # Step 1: Identify all unique nodes
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(nodes)  # Ensure reproducible ordering
+    node_indices = {node: i for i, node in enumerate(nodes)}
+
+    # Step 2: Construct an adjacency matrix for graph-theoretic distances
+    num_nodes = len(nodes)
+    inf = float('inf')
+    adj_matrix = np.full((num_nodes, num_nodes), inf)
+    np.fill_diagonal(adj_matrix, 0)  # Distance from a node to itself is 0
+
+    for u, v in edge_list:
+        idx_u, idx_v = node_indices[u], node_indices[v]
+        adj_matrix[idx_u][idx_v] = 1
+        adj_matrix[idx_v][idx_u] = 1
+
+    # Use the Floyd-Warshall algorithm to compute all-pairs shortest paths
+    for k in range(num_nodes):
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                adj_matrix[i][j] = min(adj_matrix[i][j], adj_matrix[i][k] + adj_matrix[k][j])
+    
+    graph_distances = adj_matrix
+
+    # Step 3: Initialize random positions for each node
+    positions = np.random.rand(num_nodes, dim)  # Random positions in chosen dimension
+
+    # Step 4: Optimization loop to adjust positions
+    for _ in range(iterations):
+        position_updates = np.zeros_like(positions)
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                if i != j and graph_distances[i][j] < inf:
+                    # Target distance (graph-theoretic distance)
+                    target_dist = graph_distances[i][j]
+                    
+                    # Current Euclidean distance
+                    current_dist = np.linalg.norm(positions[i] - positions[j])
+                    if current_dist > 0:
+                        # Compute the force and update positions
+                        force = learning_rate * (current_dist - target_dist) / current_dist
+                        position_updates[i] -= force * (positions[i] - positions[j])
+                        position_updates[j] += force * (positions[i] - positions[j])
+        
+        # Apply position updates
+        positions += position_updates
+
+    # Step 5: Map positions back to nodes
+    layout = {node: positions[node_indices[node]].tolist() for node in nodes}
+    return layout
+
+
+# Input: edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), 
+             (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), 
+             (0, 18), (0, 19), (0, 20), (0, 21)]
+
+# Generate layout
+layout = graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Input Parsing**: The edge list is parsed to determine all nodes and construct an adjacency matrix representing graph-theoretic distances.
+2. **Shortest Paths**: The Floyd-Warshall algorithm computes graph-theoretic distances between all pairs of nodes.
+3. **Initialization**: Random 2D positions are assigned to the nodes.
+4. **Optimization**: A gradient-descent-like approach adjusts positions such that Euclidean distances approximate graph-theoretic distances. Forces between pairs of nodes are computed, and their positions are updated iteratively.
+5. **Output**: The node positions are returned as a dictionary in JSON format with node IDs as keys.
+
+Run this script, and it will output the graph layout positions in JSON format.

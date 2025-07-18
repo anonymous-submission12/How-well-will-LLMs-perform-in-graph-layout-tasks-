@@ -1,0 +1,9 @@
+To compute the shortest path, I will use the **Breadth-First Search (BFS)** algorithm since the graph is unweighted. The BFS algorithm explores all possible paths incrementally and guarantees the shortest path in an unweighted graph.
+
+Here is the calculated result.
+
+```json
+{
+  "answer": 6
+}
+```

@@ -1,0 +1,129 @@
+```python
+import json
+import random
+from collections import defaultdict
+
+def community_detection(edge_list):
+    """
+    Detects communities in a graph using a simple label propagation algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary mapping each node to its community ID.
+    """
+
+    # Build adjacency list
+    adj = defaultdict(list)
+    nodes = set()
+    for u, v in edge_list:
+        adj[u].append(v)
+        adj[v].append(u)
+        nodes.add(u)
+        nodes.add(v)
+
+    # Initialize each node to its own community
+    communities = {node: node for node in nodes}
+
+    # Iterate until convergence
+    changed = True
+    while changed:
+        changed = False
+        for node in nodes:
+            # Find the most frequent community among neighbors
+            neighbor_communities = defaultdict(int)
+            for neighbor in adj[node]:
+                neighbor_communities[communities[neighbor]] += 1
+
+            if neighbor_communities:
+                most_frequent_community = max(neighbor_communities, key=neighbor_communities.get)
+
+                # Update community if a neighbor has a more frequent community
+                if most_frequent_community != communities[node]:
+                    communities[node] = most_frequent_community
+                    changed = True
+
+    return communities
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for the graph, keeping the community structure clear.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary mapping each node to its (x, y) coordinates.
+    """
+
+    # Detect communities
+    communities = community_detection(edge_list)
+
+    # Calculate community centers
+    community_centers = {}
+    for community_id in set(communities.values()):
+        community_centers[community_id] = (random.random(), random.random())  # Initialize randomly
+
+    # Assign initial positions based on community centers with some random variation
+    node_positions = {}
+    for node, community_id in communities.items():
+        center_x, center_y = community_centers[community_id]
+        node_positions[node] = (center_x + random.uniform(-0.1, 0.1), center_y + random.uniform(-0.1, 0.1))
+
+    # Simple force-directed layout within communities (without using networkx)
+    for _ in range(100):  # Iterate for a fixed number of steps
+        for node in node_positions:
+            x, y = node_positions[node]
+            fx = 0
+            fy = 0
+
+            # Attraction to community center
+            community_id = communities[node]
+            center_x, center_y = community_centers[community_id]
+            fx += (center_x - x) * 0.1
+            fy += (center_y - y) * 0.1
+
+            # Repulsion from other nodes in the same community
+            for other_node, other_community_id in communities.items():
+                if node != other_node and community_id == other_community_id:
+                    ox, oy = node_positions[other_node]
+                    dx = x - ox
+                    dy = y - oy
+                    distance = (dx**2 + dy**2)**0.5
+                    if distance < 0.2:  # Avoid division by zero and very strong forces
+                        if distance == 0:
+                            distance = 0.01
+                            dx = 0.01
+                            dy = 0.01
+                        fx += dx / distance * 0.01
+                        fy += dy / distance * 0.01
+
+            # Attraction to connected nodes
+            neighbors = []
+            for u, v in edge_list:
+                if u == node:
+                    neighbors.append(v)
+                elif v == node:
+                    neighbors.append(u)
+
+            for neighbor in neighbors:
+                nx, ny = node_positions[neighbor]
+                fx += (nx - x) * 0.05
+                fy += (ny - y) * 0.05
+
+            # Update position
+            x += fx
+            y += fy
+            node_positions[node] = (x, y)
+
+    return node_positions
+
+
+# Example usage with the provided graph data
+edge_list = [(0, 1), (0, 3), (0, 4), (0, 5), (1, 2), (1, 4), (1, 5), (2, 3), (2, 4), (2, 17), (3, 5), (4, 26), (5, 9), (6, 7), (6, 8), (6, 9), (6, 10), (6, 24), (7, 8), (7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 11), (8, 12), (9, 10), (9, 11), (10, 11), (11, 12), (12, 13), (12, 14), (12, 15), (12, 16), (13, 16), (14, 15), (14, 16), (17, 18), (17, 19), (17, 20), (17, 21), (18, 19), (18, 21), (19, 21), (20, 21), (22, 24), (22, 25), (22, 26), (23, 25), (23, 26), (24, 25), (25, 26)]
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

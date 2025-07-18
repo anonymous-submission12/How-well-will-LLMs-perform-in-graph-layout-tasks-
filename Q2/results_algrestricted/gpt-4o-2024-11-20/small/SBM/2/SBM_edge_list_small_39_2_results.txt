@@ -1,0 +1,78 @@
+The following Python script generates a graph layout that preserves consistency between Euclidean distance and graph-theoretic distance. It implements a custom layout algorithm that distributes nodes while taking pairwise shortest paths into account. When completed, the positions of the nodes are exported in JSON format.
+
+```python
+import numpy as np
+import json
+from collections import defaultdict
+from scipy.spatial.distance import pdist, squareform
+from scipy.optimize import minimize
+
+def create_adjacency_list(edge_list):
+    adjacency_list = defaultdict(set)
+    for u, v in edge_list:
+        adjacency_list[u].add(v)
+        adjacency_list[v].add(u)
+    return adjacency_list
+
+def floyd_warshall(adjacency_list, n):
+    # Initialize graph distances
+    distances = np.full((n, n), float('inf'))
+    for i in range(n):
+        distances[i, i] = 0
+    for node, neighbors in adjacency_list.items():
+        for neighbor in neighbors:
+            distances[node, neighbor] = 1
+
+    # Run the Floyd-Warshall algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                distances[i, j] = min(distances[i, j], distances[i, k] + distances[k, j])
+
+    return distances
+
+def stress_majorization_layout(edge_list, dimensions=2):
+    nodes = list(set([node for edge in edge_list for node in edge]))
+    n = len(nodes)
+    node_index = {node: idx for idx, node in enumerate(nodes)}
+
+    adjacency_list = create_adjacency_list(edge_list)
+    graph_distances = floyd_warshall(adjacency_list, n)
+
+    # Ensure all distances are finite
+    max_distance = np.max(graph_distances[graph_distances < float('inf')])
+    graph_distances[graph_distances == float('inf')] = max_distance * 2
+
+    # Objective function: minimize stress
+    def stress_function(flat_positions):
+        positions = flat_positions.reshape((n, dimensions))
+        euclidean_distances = squareform(pdist(positions))
+        difference = (euclidean_distances - graph_distances)
+        np.fill_diagonal(difference, 0)  # Ignore self-distance
+        return np.sum((difference ** 2) / (graph_distances + 1e-4))  # Avoid division by zero
+
+    # Initial positions (randomized)
+    initial_positions = np.random.rand(n, dimensions)
+    result = minimize(stress_function, initial_positions.ravel(), method='L-BFGS-B')
+    optimized_positions = result.x.reshape((n, dimensions))
+
+    # Create JSON layout
+    layout = {nodes[i]: optimized_positions[i].tolist() for i in range(n)}
+    return layout
+
+if __name__ == "__main__":
+    edge_list = [
+        (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), 
+        (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (2, 3), (2, 4), 
+        (2, 5), (2, 6), (2, 8), (2, 9), (2, 10), (3, 5), (3, 6), (3, 9), (3, 10), (4, 5), (4, 6), (4, 7), 
+        (4, 9), (5, 6), (5, 7), (5, 9), (5, 11), (6, 7), (6, 9), (6, 11), (7, 9), (7, 11), (8, 9), (8, 11), 
+        (9, 10), (9, 11), (10, 11), (10, 12), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (12, 18), 
+        (12, 19), (12, 20), (12, 22), (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 20), (13, 21), 
+        (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 22), (15, 17), (15, 18), (15, 19), (15, 20), 
+        (15, 21), (15, 22), (16, 18), (16, 20), (16, 21), (16, 22), (17, 18), (17, 19), (17, 22), (18, 19), 
+        (18, 20), (18, 21), (18, 22), (19, 22), (20, 22), (21, 22)
+    ]
+
+    layout = stress_majorization_layout(edge_list)
+    print(json.dumps(layout, indent=4))
+```

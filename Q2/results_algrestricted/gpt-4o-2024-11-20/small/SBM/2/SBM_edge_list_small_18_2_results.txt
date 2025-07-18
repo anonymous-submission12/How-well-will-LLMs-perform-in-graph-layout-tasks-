@@ -1,0 +1,77 @@
+To generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a custom algorithm. One approach is to use multidimensional scaling (MDS), which attempts to preserve pairwise distances between nodes. Below is the Python code to compute the layout and output it in JSON format.
+
+```python
+import json
+import numpy as np
+from scipy.spatial.distance import squareform
+from scipy.sparse.csgraph import shortest_path
+
+def generate_graph_layout(edge_list):
+    # Step 1: Create adjacency matrix
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = sorted(nodes)
+    n = len(nodes)
+    node_index = {node: i for i, node in enumerate(nodes)}
+    
+    adjacency_matrix = np.zeros((n, n))
+    for u, v in edge_list:
+        adjacency_matrix[node_index[u], node_index[v]] = 1
+        adjacency_matrix[node_index[v], node_index[u]] = 1
+    
+    # Step 2: Compute shortest path distances (graph-theoretic distances)
+    graph_distances = shortest_path(adjacency_matrix, directed=False, unweighted=True)
+    
+    # Step 3: Apply multidimensional scaling (MDS)
+    # Convert graph distances to a condensed distance matrix
+    condensed_distances = squareform(graph_distances)
+    
+    # Perform classical MDS
+    # Compute the double-centered distance matrix
+    J = np.eye(n) - np.ones((n, n)) / n
+    B = -0.5 * J @ graph_distances @ J
+    
+    # Compute eigenvalues and eigenvectors
+    eigvals, eigvecs = np.linalg.eigh(B)
+    
+    # Sort eigenvalues and eigenvectors in descending order
+    idx = np.argsort(eigvals)[::-1]
+    eigvals = eigvals[idx]
+    eigvecs = eigvecs[:, idx]
+    
+    # Use the top two eigenvectors for 2D layout
+    X = eigvecs[:, :2] * np.sqrt(eigvals[:2])
+    
+    # Step 4: Map positions back to nodes
+    layout = {nodes[i]: X[i].tolist() for i in range(n)}
+    
+    return layout
+
+# Input edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 4), (0, 5), (0, 6), (0, 7), (0, 9), (1, 2), (1, 4), (1, 5), (1, 6), (1, 8), (1, 9),
+    (2, 6), (2, 7), (2, 8), (2, 9), (2, 10), (3, 4), (3, 5), (3, 6), (3, 8), (4, 6), (4, 7), (4, 9), (5, 7),
+    (5, 8), (5, 9), (5, 23), (6, 7), (6, 9), (6, 23), (7, 8), (7, 9), (8, 9), (10, 11), (10, 12), (10, 14),
+    (10, 15), (10, 17), (11, 12), (11, 13), (11, 14), (11, 15), (11, 17), (11, 18), (11, 19), (12, 13), (12, 18),
+    (12, 19), (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 19), (13, 22), (13, 23), (14, 15), (14, 17),
+    (14, 18), (14, 19), (15, 17), (15, 19), (16, 17), (16, 18), (16, 19), (17, 18), (18, 19), (20, 21), (20, 22),
+    (20, 23), (20, 24), (20, 25), (20, 26), (20, 28), (21, 22), (21, 23), (21, 24), (21, 26), (21, 27), (22, 23),
+    (22, 24), (22, 25), (22, 26), (22, 27), (22, 28), (23, 24), (23, 26), (23, 27), (23, 28), (24, 25), (24, 28),
+    (25, 26), (25, 28), (26, 27), (26, 28), (27, 28)
+]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Adjacency Matrix**: The graph is represented as an adjacency matrix.
+2. **Shortest Path Distances**: The graph-theoretic distances are computed using the shortest path algorithm.
+3. **Multidimensional Scaling (MDS)**: Classical MDS is applied to preserve pairwise distances in a 2D layout.
+4. **Output**: The layout is returned as a dictionary mapping node IDs to 2D coordinates, and the final result is printed in JSON format.
+
+This approach ensures that the Euclidean distances in the layout are consistent with the graph-theoretic distances.

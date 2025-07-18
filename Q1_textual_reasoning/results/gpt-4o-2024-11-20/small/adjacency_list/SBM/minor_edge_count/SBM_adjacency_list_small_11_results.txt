@@ -1,0 +1,12 @@
+To calculate the number of edges in a graph represented as an adjacency list, we need to consider that each edge is represented twice (once for each vertex in the edge). To find the total number of edges, sum up the lengths of all adjacency lists and divide by 2.
+
+Here’s the computation:
+
+```json
+{
+  "answer": 122
+}
+}
+```
+
+This implies Extra ans added check again

@@ -1,0 +1,13 @@
+To calculate the shortest path between node '11' and '3', we observe that the graph is represented as an edge list. All nodes are directly connected to node '0', forming a star topology. Therefore, the shortest path between any two nodes in this graph passes through node '0'.
+
+The shortest path from node '11' to node '3' is:
+- From node '11' to node '0' (1 step).
+- From node '0' to node '3' (1 step).
+
+Thus, the total length of the shortest path is 2.
+
+```json
+{
+  "answer": 2
+}
+```

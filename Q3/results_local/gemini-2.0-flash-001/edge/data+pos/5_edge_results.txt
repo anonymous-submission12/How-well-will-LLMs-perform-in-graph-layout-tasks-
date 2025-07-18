@@ -1,0 +1,36 @@
+Let the given edges be $AB$ and $CD$, where $A = (6, 4)$, $B = (21, 17)$.
+The coordinates of the nodes are:
+$17: (0.21, -0.64)$
+$4: (-0.44, 0.27)$
+$21: (0.06, -0.38)$
+$6: (-0.3, 0.1)$
+
+The edges are $AB$ and $CD$, where $A$ corresponds to node 6, $B$ corresponds to node 17, $C$ corresponds to node 4, and $D$ corresponds to node 21.
+So, $A = (-0.3, 0.1)$, $B = (0.21, -0.64)$, $C = (-0.44, 0.27)$, $D = (0.06, -0.38)$.
+
+To determine if the line segments $AB$ and $CD$ intersect, we can use the orientation test.
+The orientation of three points $(x_1, y_1)$, $(x_2, y_2)$, and $(x_3, y_3)$ is given by the sign of the determinant:
+$D = (x_2 - x_1)(y_3 - y_1) - (x_3 - x_1)(y_2 - y_1)$
+If $D > 0$, the orientation is counterclockwise.
+If $D < 0$, the orientation is clockwise.
+If $D = 0$, the points are collinear.
+
+For the segments to intersect, the following conditions must be met:
+1. $orientation(A, B, C) \times orientation(A, B, D) \le 0$
+2. $orientation(C, D, A) \times orientation(C, D, B) \le 0$
+
+$orientation(A, B, C) = (-0.3 - 0.21)(0.27 - (-0.64)) - (-0.44 - 0.21)(0.1 - (-0.64)) = (-0.51)(0.91) - (-0.65)(0.74) = -0.4641 + 0.481 = 0.0169 > 0$
+$orientation(A, B, D) = (-0.3 - 0.21)(-0.38 - (-0.64)) - (0.06 - 0.21)(0.1 - (-0.64)) = (-0.51)(0.26) - (-0.15)(0.74) = -0.1326 + 0.111 = -0.0216 < 0$
+$orientation(A, B, C) \times orientation(A, B, D) = (0.0169) \times (-0.0216) = -0.00036504 \le 0$
+
+$orientation(C, D, A) = (-0.44 - 0.06)(0.1 - (-0.38)) - (-0.3 - 0.06)(0.27 - (-0.38)) = (-0.5)(0.48) - (-0.36)(0.65) = -0.24 + 0.234 = -0.006 < 0$
+$orientation(C, D, B) = (-0.44 - 0.06)(-0.64 - (-0.38)) - (0.21 - 0.06)(0.27 - (-0.38)) = (-0.5)(-0.26) - (0.15)(0.65) = 0.13 - 0.0975 = 0.0325 > 0$
+$orientation(C, D, A) \times orientation(C, D, B) = (-0.006) \times (0.0325) = -0.000195 \le 0$
+
+Since both conditions are met, the line segments intersect.
+
+```json
+{
+  "Answer": "Yes"
+}
+```

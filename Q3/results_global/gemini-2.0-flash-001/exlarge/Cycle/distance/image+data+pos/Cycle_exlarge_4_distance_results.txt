@@ -1,0 +1,7 @@
+The graph data represents a path. Layout 2 arranges the nodes in a snake-like fashion, which visually represents the path structure more clearly than layout 1. Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

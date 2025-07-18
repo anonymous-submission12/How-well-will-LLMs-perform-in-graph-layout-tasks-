@@ -1,0 +1,83 @@
+Below is the Python code to generate a graph layout using a method that attempts to maintain consistency between Euclidean distance and graph-theoretic distance. To achieve this, a multidimensional scaling (MDS)-inspired approach is used without relying on any existing graph layout algorithms.
+
+```python
+import numpy as np
+import json
+
+def calculate_shortest_path_lengths(edges, num_nodes):
+    """Calculate shortest path lengths using Floyd-Warshall Algorithm."""
+    # Initialize distance matrix
+    dist = np.full((num_nodes, num_nodes), np.inf)
+    np.fill_diagonal(dist, 0)
+
+    # Fill edge distances
+    for u, v in edges:
+        dist[u, v] = 1
+        dist[v, u] = 1
+    
+    # Apply Floyd-Warshall to compute all-pairs shortest paths
+    for k in range(num_nodes):
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
+    
+    return dist
+
+def generate_layout(edges, num_nodes, dim=2):
+    """Generate graph layout maintaining consistency between graph distance and Euclidean distance."""
+    # Step 1: Compute shortest path distances between all node pairs
+    shortest_path_dists = calculate_shortest_path_lengths(edges, num_nodes)
+    
+    # Step 2: Double centering for classical MDS
+    squared_dists = shortest_path_dists ** 2
+    mean_row = np.mean(squared_dists, axis=1)
+    mean_col = np.mean(squared_dists, axis=0)
+    grand_mean = np.mean(squared_dists)
+    
+    # Create the centering matrix
+    B = -0.5 * (squared_dists - mean_row[:, np.newaxis] - mean_col[np.newaxis, :] + grand_mean)
+
+    # Step 3: Compute the largest `dim` eigenvalues and eigenvectors
+    eigvals, eigvecs = np.linalg.eigh(B)
+    sorted_indices = np.argsort(eigvals)[::-1]  # Sort eigenvalues in descending order
+    eigvals = eigvals[sorted_indices]
+    eigvecs = eigvecs[:, sorted_indices]
+    
+    # Filter out negative eigenvalues (numerical inaccuracies might produce small negatives)
+    positive_eigvals = np.maximum(eigvals[:dim], 0)
+    coords = eigvecs[:, :dim] * np.sqrt(positive_eigvals)
+    
+    # Step 4: Generate positions mapping
+    positions = {i: coords[i].tolist() for i in range(num_nodes)}
+    return positions
+
+# Input edge list and number of nodes
+edge_list = [(0, 1), (0, 25), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), 
+             (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), 
+             (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25)]
+num_nodes = 26
+
+# Generate layout
+layout = generate_layout(edge_list, num_nodes)
+
+# Output layout as JSON
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+
+1. **Shortest Path Calculation**:
+   - The `calculate_shortest_path_lengths` function computes the graph-theoretic shortest path between all pairs of nodes using the Floyd-Warshall algorithm.
+
+2. **MDS-inspired Approach**:
+   - After computing the shortest path distance matrix, classical multidimensional scaling (MDS) is applied. The matrix `B` is constructed via double centering of the squared distances.
+   - Eigen decomposition is then performed on `B` to obtain the `dim` (here, 2) largest eigenvectors corresponding to the largest eigenvalues.
+   - The resulting eigenvectors are scaled by the square root of their eigenvalues to produce 2D coordinates for each node.
+
+3. **Normalization**:
+   - Positive eigenvalues are enforced to account for numerical inaccuracies when computing eigen decomposition of `B`.
+
+4. **Output**:
+   - The final node positions are collected in a dictionary indexed by the node index and converted into JSON format.
+
+Run the code to get the graph layout in JSON format. This layout ensures that the Euclidean distances are as consistent with the graph-theoretic distances as possible.

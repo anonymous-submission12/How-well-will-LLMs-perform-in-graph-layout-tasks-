@@ -1,0 +1,33 @@
+```python
+from collections import defaultdict, deque
+
+# Define graph adjacency list from the input edge_list
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11),
+         (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21),
+         (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31),
+         (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (0, 41),
+         (0, 42), (0, 43), (0, 44), (0, 45), (0, 46)]
+
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Use BFS to find the shortest path length between node 15 and node 0
+def shortest_path_length(graph, start, end):
+    queue = deque([(start, 0)])  # (current_node, distance)
+    visited = set()
+    visited.add(start)
+    while queue:
+        current, distance = queue.popleft()
+        if current == end:
+            return distance
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+    return -1  # If no path exists
+
+# Calculate and print the shortest path length
+print(shortest_path_length(graph, 15, 0))
+```

@@ -1,0 +1,14 @@
+To determine the number of communities in the graph, we can use a community detection algorithm such as the Louvain method or the Girvan-Newman algorithm. However, since I cannot run code directly, I will analyze the graph structure manually based on the edge list provided.
+
+From the edge list, it appears that the graph is divided into two main communities:
+
+1. **Community 1**: Nodes 0-24 are densely connected among themselves, with some connections to nodes 25-49.
+2. **Community 2**: Nodes 25-72 are also densely connected among themselves, with some connections to nodes 0-24.
+
+Given the structure, it seems there are **2 main communities** in the graph.
+
+```json
+{
+  "answer": 2
+}
+```

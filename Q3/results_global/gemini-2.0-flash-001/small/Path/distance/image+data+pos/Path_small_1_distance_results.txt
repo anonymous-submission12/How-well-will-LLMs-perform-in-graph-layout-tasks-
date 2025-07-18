@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve graph-theoretic distance. In layout 1, nodes that are close in the graph are sometimes placed far apart in the layout, and vice versa. Layout 2 places adjacent nodes close to each other in the layout, and nodes further apart in the graph are also further apart in the layout.
+
+```json
+{
+"Answer": 2
+}
+```

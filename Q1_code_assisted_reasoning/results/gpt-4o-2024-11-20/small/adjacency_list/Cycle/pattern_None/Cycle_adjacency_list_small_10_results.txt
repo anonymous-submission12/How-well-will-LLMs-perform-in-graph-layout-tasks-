@@ -1,0 +1,19 @@
+```python
+def determine_graph_pattern(adj_list):
+    n = len(adj_list)
+
+    # Check for complete graph
+    is_complete = all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+    if is_complete:
+        return "Complete"
+
+    # Check for cycle
+    is_cycle = all(len(neighbors) == 2 for neighbors in adj_list.values()) and all(set(range(n)) == {node for node, _ in adj_list.items()})
+    if is_cycle:
+        return "Cycle"
+
+# above shifted >>
+
+adj_list python would keep execution once ! deeps down
+
+```

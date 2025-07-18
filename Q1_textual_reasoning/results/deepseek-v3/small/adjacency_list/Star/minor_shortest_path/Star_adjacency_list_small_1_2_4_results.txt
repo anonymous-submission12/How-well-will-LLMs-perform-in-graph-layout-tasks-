@@ -1,0 +1,11 @@
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+The graph is structured such that node `0` is connected to all other nodes (including nodes `2` and `4`), and all other nodes are only connected back to node `0`. Therefore, the shortest path from node `2` to node `4` is:
+- `2` → `0` → `4`
+
+This path has a length of `2` (since it involves traversing two edges).

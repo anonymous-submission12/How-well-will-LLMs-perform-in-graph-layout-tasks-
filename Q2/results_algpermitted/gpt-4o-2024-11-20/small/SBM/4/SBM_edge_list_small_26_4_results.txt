@@ -1,0 +1,62 @@
+Below is the Python script to generate a layout for the given graph based on community detection. The script uses the `networkx` library for graph analysis and layout computation and `community` library for modularity-based community detection.
+
+To provide a JSON-formatted graph layout as the output, the positions of nodes are computed using community-aware layouts such as `spring_layout`. Nodes in the same community are clustered closer together.
+
+```python
+import networkx as nx
+import json
+from community import community_louvain
+
+# Edge list input
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 11), (0, 13), (0, 14), (1, 2), 
+             (1, 4), (1, 5), (1, 6), (1, 19), (2, 3), (2, 6), (3, 4), (3, 5), (3, 6), (4, 5), 
+             (4, 6), (4, 18), (5, 6), (5, 9), (7, 8), (7, 9), (7, 10), (7, 11), (7, 12), (7, 13), 
+             (8, 9), (8, 11), (8, 12), (8, 13), (9, 10), (9, 11), (9, 12), (10, 11), (10, 12), 
+             (10, 13), (10, 14), (11, 12), (11, 13), (12, 13), (14, 15), (14, 17), (14, 18), 
+             (14, 19), (14, 20), (15, 16), (15, 17), (15, 18), (15, 20), (16, 17), (16, 18), 
+             (16, 19), (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20)]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Detect communities using Louvain method
+partition = community_louvain.best_partition(G)
+
+# Organize nodes by their community
+communities = {}
+for node, community in partition.items():
+    if community not in communities:
+        communities[community] = []
+    communities[community].append(node)
+
+# Compute layout positions using spring_layout (supports community structure clarity)
+pos = nx.spring_layout(G, k=0.15, seed=42)  # `k` adjusts spacing between nodes
+
+# Final output in JSON format
+layout_json = {
+    "nodes": [
+        {"node": node, "x": float(pos[node][0]), "y": float(pos[node][1]), "community": partition[node]}
+        for node in G.nodes()
+    ],
+    "edges": [{"source": edge[0], "target": edge[1]} for edge in G.edges()]
+}
+
+# Export JSON layout
+output_json = json.dumps(layout_json, indent=4)
+print(output_json)
+```
+
+### Explanation:
+1. **Graph Construction:** A NetworkX graph `G` is created from the given edge list.
+2. **Community Detection:** The `community_louvain.best_partition` method partitions the graph into communities, assigning each node to a community.
+3. **Layout Calculation:** The `spring_layout` approach is used, ensuring nodes in the same community are visually clustered together via the spring layout algorithm.
+4. **JSON Output:** Node positions, along with community labels and edges, are exported in a JSON-friendly format for downstream visualization.
+
+### Output Format:
+The output consists of `nodes` (with their positions and community labels) and `edges` (source-target pairs). Save the output to a file or further process it in visualization tools if needed.
+
+Make sure you have the `networkx` and `community` libraries installed:
+```bash
+pip install networkx python-louvain
+```

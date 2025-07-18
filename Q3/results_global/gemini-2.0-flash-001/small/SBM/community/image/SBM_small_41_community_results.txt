@@ -1,0 +1,7 @@
+Based on the images, layout 2 visually separates the clusters of nodes more clearly than layout 1. This makes the community structure more apparent.
+
+```json
+{
+"Answer": "2"
+}
+```

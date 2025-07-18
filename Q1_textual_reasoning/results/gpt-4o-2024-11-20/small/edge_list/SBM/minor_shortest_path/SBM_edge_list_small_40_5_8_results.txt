@@ -1,0 +1,13 @@
+To solve this problem, I'll compute the shortest path from node '5' to node '8' on the given graph, represented by the edge list. Here's the calculated result:
+
+```json
+{
+  "answer": 4
+}
+``` 
+
+Explanation:
+1. The graph is undirected, so connections are bidirectional.
+2. A breadth-first search (BFS) is the most efficient way to calculate the minimum path length, as all edge weights are equal.
+
+Following the BFS traversal, the shortest path from node '5' to node '8' passes through nodes '5 → 0 → 6 → 8', with a length of 4 steps.

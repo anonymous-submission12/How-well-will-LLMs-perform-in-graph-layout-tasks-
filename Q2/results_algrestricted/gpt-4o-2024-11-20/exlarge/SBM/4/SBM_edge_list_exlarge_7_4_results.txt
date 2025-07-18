@@ -1,0 +1,83 @@
+Below is a Python script designed to generate a custom layout for a graph based on the input edge list while preserving community structure. The script uses a modularity-based community detection algorithm to identify communities, then assigns positions to the nodes to reflect their community memberships.
+
+```python
+import networkx as nx
+import community
+import json
+import random
+import math
+
+def generate_custom_layout(edge_list):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+
+    # Detect communities using the Louvain modularity-based method
+    partition = community.best_partition(G)
+
+    # Group nodes by their communities
+    communities = {}
+    for node, comm in partition.items():
+        if comm not in communities:
+            communities[comm] = []
+        communities[comm].append(node)
+
+    # Define layout dimensions and properties
+    num_communities = len(communities)
+    radius = 10
+    angle_step = 2 * math.pi / num_communities
+
+    positions = {}
+
+    # Assign positions to the nodes based on communities
+    for i, (community_id, nodes) in enumerate(communities.items()):
+        # Central position of community i
+        center_x = math.cos(i * angle_step) * radius
+        center_y = math.sin(i * angle_step) * radius
+        
+        # Position nodes within their community in a small circular pattern
+        community_radius = 3  # Smaller radius for nodes within the community
+        community_angle_step = 2 * math.pi / len(nodes)
+        
+        for j, node in enumerate(nodes):
+            node_x = center_x + community_radius * math.cos(j * community_angle_step)
+            node_y = center_y + community_radius * math.sin(j * community_angle_step)
+            positions[node] = (node_x, node_y)
+    
+    # Return positions as a JSON object
+    return json.dumps(positions, indent=4)
+
+# Example usage
+edge_list = [
+    (0, 1), (0, 3), (0, 7), (0, 9), (0, 12), (0, 13), (0, 15), (0, 71), (1, 3), (1, 4), 
+    (1, 5), (1, 8), (1, 9), (1, 10), (2, 3), (2, 4), (2, 5), (2, 7), (2, 9), (2, 12), 
+    (2, 67), (3, 4), (3, 9), (3, 10), (3, 12), (3, 13), (3, 15), (3, 69), (4, 7), (4, 8), 
+    (4, 11), (4, 14), (5, 11), (5, 14), (5, 15), (6, 7), (6, 10), (6, 12), (6, 13), (6, 15),
+    # ... (shortened for brevity; include complete edge list)
+]
+
+layout_json = generate_custom_layout(edge_list)
+print(layout_json)
+```
+
+### Key Aspects of the Code:
+1. **Community Detection**:
+   - The `community.best_partition` function (from the `python-louvain` library) detects communities based on modularity optimization.
+   - Nodes are grouped into communities.
+
+2. **Custom Layout**:
+   - Each community is allocated to a specific region of the 2D space, forming a larger circle for communities.
+   - Within each community, nodes are arranged in a smaller circle around the community center.
+
+3. **Output**:
+   - The positions of nodes are returned as a JSON string, with node coordinates (x, y) to represent the layout.
+
+4. **JSON Format**:
+   - The output JSON format ensures compatibility for further usage in downstream tasks or visualization in other frameworks.
+
+5. **Dependencies**:
+   - Ensure you have the `python-louvain` library installed. Install it via `pip install python-louvain`.
+
+### Notes:
+- Replace the truncated edge list with the complete edge list from your input.
+- The layout algorithm is deterministic in terms of community structure, but randomization can be added for fine-tuning if needed.

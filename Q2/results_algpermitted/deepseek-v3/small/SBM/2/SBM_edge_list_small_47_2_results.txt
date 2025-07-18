@@ -1,0 +1,51 @@
+To generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance, we can use the `networkx` library to create the graph and compute the layout using the `spring_layout` algorithm, which is designed to minimize the difference between Euclidean and graph-theoretic distances. The final layout will be output in JSON format.
+
+Here is the Python script to achieve this:
+
+```python
+import networkx as nx
+import json
+
+# Define the edge list
+edge_list = [
+    (0, 4), (0, 5), (0, 7), (1, 2), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 5), (2, 6), 
+    (3, 5), (3, 6), (3, 7), (3, 22), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7), (6, 7), 
+    (8, 10), (8, 11), (8, 12), (8, 13), (8, 14), (8, 15), (9, 11), (9, 12), (9, 13), 
+    (9, 14), (9, 15), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15), (11, 12), 
+    (11, 13), (12, 13), (12, 14), (12, 15), (13, 14), (13, 15), (14, 18), (16, 17), 
+    (16, 18), (16, 20), (16, 21), (16, 22), (17, 19), (17, 20), (17, 21), (17, 22), 
+    (18, 19), (18, 20), (18, 21), (18, 22), (19, 20), (19, 21), (19, 22), (20, 21)
+]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Compute the layout using the spring layout algorithm
+pos = nx.spring_layout(G, k=0.15, iterations=50)
+
+# Convert the layout to a dictionary with node IDs as keys and positions as values
+layout = {node: [float(pos[node][0]), float(pos[node][1])] for node in G.nodes()}
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation**: The graph is created using the `networkx.Graph()` class, and edges are added using the `add_edges_from()` method.
+2. **Layout Calculation**: The `spring_layout` algorithm is used to compute the positions of the nodes. The `k` parameter controls the optimal distance between nodes, and `iterations` controls the number of iterations to run the algorithm.
+3. **JSON Output**: The positions are converted to a dictionary where each node ID maps to its position. This dictionary is then serialized to JSON format using `json.dumps()`.
+
+### Output:
+The script will output the graph layout in JSON format, where each node is associated with its 2D coordinates. This JSON can be used for further processing or visualization in other tools.
+
+```json
+{
+    "0": [0.1234, 0.5678],
+    "1": [0.2345, 0.6789],
+    ...
+    "22": [0.9876, 0.5432]
+}
+```
+
+This JSON output represents the positions of each node in the graph, which can be used for further analysis or visualization.

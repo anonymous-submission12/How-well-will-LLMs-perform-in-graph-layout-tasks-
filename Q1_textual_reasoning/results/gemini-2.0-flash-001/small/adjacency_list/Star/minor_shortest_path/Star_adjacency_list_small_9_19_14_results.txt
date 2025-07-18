@@ -1,0 +1,7 @@
+The graph provided is structured such that node 0 is connected to all other nodes (1-28), and all other nodes are only connected to node 0.  Therefore, to find the shortest path between node 19 and node 14, we can go from node 19 to node 0, and then from node 0 to node 14. This path will have a length of 2.
+
+```json
+{
+"answer": 2
+}
+```

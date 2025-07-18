@@ -1,0 +1,12 @@
+To calculate the shortest path between nodes '11' and '14', we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 4
+}
+```
+
+### Explanation:
+1. The graph is represented as an edge list.
+2. Using BFS, we start from node '11' and explore its neighbors level by level until we reach node '14'.
+3. The shortest path from '11' to '14' is: 11 → 10 → 9 → 8 → 7 → 14, which has a length of 4.

@@ -1,0 +1,7 @@
+Looking at the images, **Layout 2** has fewer edge crossings compared to **Layout 1**. In Layout 2, the graph is spread out with fewer overlaps between edges, whereas Layout 1 appears to have significantly more edge crossings due to its compact and dense layout. 
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,83 @@
+```python
+from collections import defaultdict
+
+def classify_graph(adj_list):
+    # Number of vertices and edges
+    n = len(adj_list)
+    m = sum(len(v) for v in adj_list.values()) // 2
+    
+    # Check for star graph
+    degrees = [len(adj_list[node]) for node in adj_list]
+    if degrees.count(1) == n - 1 and degrees.count(n - 1) == 1:
+        return "Star"
+    
+    # Check for cycle graph
+    if all(deg == 2 for deg in degrees):
+        visited = set()
+        def dfs(node, parent):
+            if node in visited:
+                return False
+            visited.add(node)
+            return all(neighbor == parent or dfs(neighbor, node) for neighbor in adj_list[node] if neighbor != parent)
+        if len(visited) == n and dfs(next(iter(adj_list)), None):
+            return "Cycle"
+    
+    # Check for path graph
+    if degrees.count(1) == 2 and degrees.count(2) == n - 2:
+        visited = set()
+        def dfs(node):
+            visited.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    dfs(neighbor)
+        dfs(next(iter(adj_list)))
+        if len(visited) == n:
+            return "Path"
+    
+    # Check for grid (approximation)
+    grid_edges = lambda r, c: 2 * r * c - r - c
+    is_grid = any(grid_edges(r, c) == m for r in range(1, n + 1) for c in range(1, n + 1) if r * c == n)
+    if is_grid:
+        return "Grid"
+    
+    # Check for complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clustered graph (number of connected components > 1)
+    visited = set()
+    def dfs(node):
+        visited.add(node)
+        for neighbor in adj_list[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+    components = 0
+    for node in adj_list:
+        if node not in visited:
+            components += 1
+            dfs(node)
+    if components > 1:
+        return "Clustered Graph"
+    
+    # Default to random graph if no other category applies
+    return "Random Graph"
+
+adjacency_list = {
+    0: [4, 33, 44], 1: [3, 7, 21, 27, 29, 36, 39, 43], 2: [12, 13, 24], 3: [1, 9, 10, 24, 27, 30, 34], 
+    4: [0, 9, 28, 41, 42, 43], 5: [38, 40], 6: [15, 27, 28, 36, 43], 7: [1, 23, 26, 30, 35], 
+    8: [12, 24, 38], 9: [3, 4, 18, 24, 28, 34, 45], 10: [3, 21, 42, 44, 45], 11: [39], 
+    12: [2, 8, 41], 13: [2, 15, 30, 40], 14: [25], 15: [6, 13, 28, 43, 44], 16: [20, 32], 
+    17: [20, 44], 18: [9, 28, 44], 19: [27, 32, 40, 43], 20: [16, 17, 22, 30, 34, 39, 41], 
+    21: [1, 10, 27, 37, 38], 22: [20, 32, 35], 23: [7, 32, 33, 43], 
+    24: [2, 3, 8, 9, 30, 31, 38], 25: [14, 27, 28, 37], 26: [7, 33, 35], 
+    27: [1, 3, 6, 19, 21, 25, 31, 37, 42], 28: [4, 6, 9, 15, 18, 25, 41], 
+    29: [1, 43], 30: [3, 7, 13, 20, 24, 31, 38], 31: [24, 27, 30], 
+    32: [16, 19, 22, 23, 36], 33: [0, 23, 26, 37, 38, 40, 45], 
+    34: [3, 9, 20], 35: [7, 22, 26, 44], 36: [1, 6, 32], 37: [21, 25, 27, 33, 43], 
+    38: [5, 8, 21, 24, 30, 33, 44], 39: [1, 11, 20], 40: [5, 13, 19, 33], 
+    41: [4, 12, 20, 28], 42: [4, 10, 27], 43: [1, 4, 6, 15, 19, 23, 29, 37], 
+    44: [0, 10, 15, 17, 18, 35, 38], 45: [9, 10, 33]
+}
+
+print(classify_graph(adjacency_list))
+```

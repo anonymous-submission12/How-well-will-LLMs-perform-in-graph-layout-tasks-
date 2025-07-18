@@ -1,0 +1,125 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a simple layering approach.  It first identifies a longest path
+    in the graph and places those nodes in a straight line.  Then, it iteratively adds
+    nodes connected to the existing layout, placing them in layers to minimize crossings
+    with existing edges.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the graph representation (adjacency list)
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    nodes = list(graph.keys())
+    num_nodes = len(nodes)
+
+    # 2. Find a "longest" path (simple heuristic: start at node 0 and traverse)
+    longest_path = []
+    visited = set()
+    current_node = 0
+
+    def dfs(node, path):
+        nonlocal longest_path
+        visited.add(node)
+        path.append(node)
+
+        if len(path) > len(longest_path):
+            longest_path = path[:]
+
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor, path)
+
+        path.pop()
+        visited.remove(node)
+
+    dfs(current_node, [])
+
+    # 3. Initialize layout with the longest path
+    layout = {}
+    for i, node in enumerate(longest_path):
+        layout[node] = (i, 0)  # Place nodes in a horizontal line
+
+    # 4. Add remaining nodes in layers
+    remaining_nodes = set(nodes) - set(longest_path)
+    layer = 1
+
+    while remaining_nodes:
+        new_layer_nodes = set()
+        for node in remaining_nodes:
+            # Check if the node is connected to the existing layout
+            for neighbor in graph[node]:
+                if neighbor in layout:
+                    new_layer_nodes.add(node)
+                    break
+
+        if not new_layer_nodes:
+            # Handle disconnected components (place them randomly)
+            node = remaining_nodes.pop()
+            layout[node] = (num_nodes + layer, layer)
+            layer += 1
+            continue
+
+        # Calculate x positions to minimize crossings (simple heuristic: average neighbor x)
+        node_positions = {}
+        for node in new_layer_nodes:
+            x_sum = 0
+            neighbor_count = 0
+            for neighbor in graph[node]:
+                if neighbor in layout:
+                    x_sum += layout[neighbor][0]
+                    neighbor_count += 1
+            if neighbor_count > 0:
+                node_positions[node] = x_sum / neighbor_count
+            else:
+                node_positions[node] = num_nodes + layer # Place randomly if no neighbors in layout
+
+        # Sort nodes by their calculated x positions
+        sorted_nodes = sorted(new_layer_nodes, key=lambda node: node_positions[node])
+
+        # Assign x positions based on sorted order
+        for i, node in enumerate(sorted_nodes):
+            layout[node] = (i, layer)
+
+        remaining_nodes -= new_layer_nodes
+        layer += 1
+
+    return layout
+
+
+# Graph data
+edge_list = [(0, 1), (0, 76), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11),
+             (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21),
+             (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31),
+             (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41),
+             (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51),
+             (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61),
+             (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71),
+             (71, 72), (72, 73), (73, 74), (74, 75), (75, 76)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Convert to JSON
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

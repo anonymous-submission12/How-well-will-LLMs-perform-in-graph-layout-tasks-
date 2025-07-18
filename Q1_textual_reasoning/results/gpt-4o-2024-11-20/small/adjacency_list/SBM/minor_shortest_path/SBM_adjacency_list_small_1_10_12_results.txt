@@ -1,0 +1,18 @@
+To calculate the shortest path between nodes '10' and '12', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the solution:
+
+1. Start BFS from node '10'.
+2. Traverse the graph level by level until we reach node '12'.
+3. Keep track of visited nodes to avoid cycles.
+4. Count the number of edges traversed to reach node '12'.
+
+After performing the BFS, the shortest path length between nodes '10' and '12' is **3**.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 3
+}
+```

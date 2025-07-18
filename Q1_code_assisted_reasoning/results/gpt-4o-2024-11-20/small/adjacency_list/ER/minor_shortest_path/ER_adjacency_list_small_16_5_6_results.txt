@@ -1,0 +1,21 @@
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, target):
+    queue = deque([(start, 0)])  # Store tuples of (node, distance)
+    visited = set()
+
+    while queue:
+        current_node, dist = queue.popleft()
+        if current_node == target:
+            return dist
+        if current_node not in visited:
+            visited.add(current_node)
+            for neighbor in graph[current_node]:
+                queue.append((neighbor, dist + 1))
+
+    return -1  # If no path exists
+
+graph = {0: [5, 8, 12], 1: [15, 20, 22, 24], 2: [7, 9, 14, 19, 26], 3: [13], 4: [26], 5: [0, 10, 19, 21, 22, 24], 6: [9], 7: [2], 8: [0, 11], 9: [2, 6, 13, 15, 16, 18, 21, 24], 10: [5, 17, 18, 22], 11: [8, 14], 12: [0, 18, 26], 13: [3, 9, 21, 26], 14: [2, 11, 19, 25], 15: [1, 9, 18, 24], 16: [9, 19, 21], 17: [10, 25], 18: [9, 10, 12, 15, 26], 19: [2, 5, 14, 16, 21], 20: [1], 21: [5, 9, 13, 16, 19, 23], 22: [1, 5, 10, 25], 23: [21], 24: [1, 5, 9, 15], 25: [14, 17, 22], 26: [2, 4, 12, 13, 18]}
+print(bfs_shortest_path(graph, 5, 6))
+```

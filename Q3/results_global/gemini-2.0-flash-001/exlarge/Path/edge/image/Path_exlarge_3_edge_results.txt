@@ -1,0 +1,10 @@
+Based on visual inspection:
+
+Layout 1 has a significant number of edge crossings.
+Layout 2 has fewer edge crossings.
+
+```json
+{
+"Answer": "2"
+}
+```

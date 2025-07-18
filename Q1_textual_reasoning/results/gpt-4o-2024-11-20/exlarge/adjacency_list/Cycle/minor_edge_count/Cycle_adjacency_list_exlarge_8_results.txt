@@ -1,0 +1,12 @@
+To count the number of edges in the graph, we proceed as follows:
+
+1. In an undirected graph represented as an adjacency list, each edge is listed twice (once for each direction).
+2. Thus, we count all entries in the adjacency list (the total number of connections) and divide by 2 to get the total number of unique edges.
+
+### Calculation:
+- Number of entries in the adjacency list:
+  For each node, we count its neighbors:
+  ```
+  Total connections = Sum of lengths of adjacency lists = 2 for each node (except the start node & end node which each connect back to a cycle=154
+  Total connections -> count ansers ...
+```

@@ -1,0 +1,50 @@
+```python
+import igraph as ig
+import leidenalg
+import json
+
+def generate_community_layout(edge_list):
+    """
+    Generates a graph layout that emphasizes community structure using the Leiden algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A JSON string representing the graph layout, where each node has 'x' and 'y' coordinates.
+    """
+
+    # Create an iGraph graph from the edge list
+    graph = ig.Graph.TupleList(edge_list, directed=False)
+
+    # Perform community detection using the Leiden algorithm
+    partition = leidenalg.find_partition(
+        graph, leidenalg.ModularityVertexPartition
+    )
+
+    # Use the Fruchterman-Reingold layout algorithm, but weight edges based on whether they are within a community
+    weights = []
+    for edge in graph.es:
+        source = edge.source
+        target = edge.target
+        if partition[source] == partition[target]:
+            weights.append(1.0)  # Higher weight for intra-community edges
+        else:
+            weights.append(0.1)  # Lower weight for inter-community edges
+
+    layout = graph.layout_fruchterman_reingold(weights=weights, maxiter=1000)
+
+    # Prepare the layout data in JSON format
+    node_positions = {}
+    for i, vertex in enumerate(graph.vs):
+        node_positions[i] = {"x": layout[i][0], "y": layout[i][1]}
+
+    return json.dumps(node_positions, indent=4)
+
+
+# Example usage with your provided graph data
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (1, 3), (1, 4), (1, 6), (2, 3), (2, 5), (2, 6), (3, 5), (3, 6), (4, 5), (5, 6), (5, 11), (6, 17), (7, 8), (7, 9), (7, 10), (7, 11), (7, 12), (7, 13), (8, 9), (8, 10), (8, 11), (8, 13), (9, 10), (9, 11), (9, 12), (9, 13), (10, 11), (10, 13), (11, 12), (11, 13), (11, 18), (12, 13), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 17), (15, 18), (15, 19), (15, 20), (16, 17), (16, 18), (16, 19), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+layout_json = generate_community_layout(edge_list)
+print(layout_json)
+```

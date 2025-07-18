@@ -1,0 +1,56 @@
+```python
+import networkx as nx
+
+edges = [(0, 1), (0, 23), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)]
+
+G = nx.Graph(edges)
+n = len(G.nodes)
+m = len(G.edges)
+degrees = [d for _, d in G.degree()]
+
+def is_star():
+    # A star graph has one central node with degree n-1, and the rest have degree 1
+    return degrees.count(1) == n - 1 and degrees.count(n - 1) == 1
+
+def is_cycle():
+    # A cycle graph has each node with degree 2, and m == n
+    return all(d == 2 for d in degrees) and m == n
+
+def is_path():
+    # A path graph has two end nodes with degree 1, the rest nodes have degree 2, and m == n-1
+    return degrees.count(1) == 2 and degrees.count(2) == n - 2 and m == n - 1
+
+def is_complete():
+    # A complete graph has m = n*(n-1)/2 and each node has degree n-1
+    return m == n * (n - 1) // 2 and all(d == n - 1 for d in degrees)
+
+def is_grid():
+    # General grid patterns are hard to check without explicit dimensions. Skipping detection.
+    return False
+
+def is_clustered_graph():
+    # If there's a strong modular structure (clusters of nodes), the graph might be clustered
+    # More precise definitions involve modularity maximization algorithms; skipping.
+    return False
+
+def is_random_graph():
+    # Random graph is usually defined probabilistically; not identifiable from structure directly
+    return False
+
+if is_star():
+    print("Star")
+elif is_cycle():
+    print("Cycle")
+elif is_path():
+    print("Path")
+elif is_complete():
+    print("Complete")
+elif is_grid():
+    print("Grid")
+elif is_clustered_graph():
+    print("Clustered graph")
+elif is_random_graph():
+    print("Random graph")
+else:
+    print("Unknown")
+```

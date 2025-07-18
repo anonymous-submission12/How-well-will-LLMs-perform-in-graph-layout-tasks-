@@ -1,0 +1,12 @@
+To calculate the highest degree of all nodes, we need to check the size of the neighbor list for each node in the adjacency list. Here's the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+Explanation:
+
+- Most nodes in the graph have a degree of 2 since they are connected to two neighbors.
+- The nodes 0 and 71 have a degree of 3 because they form connections as part of a cycle (connected to two neighbors and each other). Hence, the maximum degree is 3.

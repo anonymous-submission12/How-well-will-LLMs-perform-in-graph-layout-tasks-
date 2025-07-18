@@ -1,0 +1,106 @@
+To generate a layout for the graph while keeping the community structure clear, we can use a community detection algorithm to partition the graph into communities and then assign positions to the nodes based on their community membership. Here, I'll use the Louvain method for community detection and then assign positions in a circular layout for each community.
+
+Below is the Python code that accomplishes this:
+
+```python
+import json
+import random
+import math
+from collections import defaultdict
+
+# Louvain method for community detection
+def louvain_communities(edges):
+    # Initialize each node as its own community
+    communities = {node: i for i, node in enumerate(set([n for edge in edges for n in edge]))}
+    
+    # Function to calculate modularity
+    def modularity(communities, edges):
+        m = len(edges)
+        degrees = defaultdict(int)
+        for u, v in edges:
+            degrees[u] += 1
+            degrees[v] += 1
+        q = 0
+        for u, v in edges:
+            if communities[u] == communities[v]:
+                q += 1 - (degrees[u] * degrees[v]) / (2 * m)
+        return q / (2 * m)
+    
+    # Iteratively optimize communities
+    improved = True
+    while improved:
+        improved = False
+        for node in communities:
+            best_community = communities[node]
+            best_q = modularity(communities, edges)
+            for neighbor in [v for u, v in edges if u == node] + [u for u, v in edges if v == node]:
+                original_community = communities[node]
+                communities[node] = communities[neighbor]
+                new_q = modularity(communities, edges)
+                if new_q > best_q:
+                    best_q = new_q
+                    best_community = communities[neighbor]
+                else:
+                    communities[node] = original_community
+            if communities[node] != best_community:
+                communities[node] = best_community
+                improved = True
+    return communities
+
+# Function to generate positions for nodes in a circular layout
+def circular_layout(communities):
+    layout = {}
+    community_nodes = defaultdict(list)
+    for node, community in communities.items():
+        community_nodes[community].append(node)
+    
+    for community, nodes in community_nodes.items():
+        radius = len(nodes) * 10  # Adjust radius based on community size
+        angle = 2 * math.pi / len(nodes)
+        for i, node in enumerate(nodes):
+            x = radius * math.cos(i * angle)
+            y = radius * math.sin(i * angle)
+            layout[node] = (x, y)
+    
+    return layout
+
+# Main function to generate the layout
+def generate_layout(edges):
+    communities = louvain_communities(edges)
+    layout = circular_layout(communities)
+    return layout
+
+# Example usage
+edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), 
+         (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), 
+         (2, 3), (2, 4), (2, 5), (2, 6), (2, 8), (2, 9), (2, 10), 
+         (3, 5), (3, 6), (3, 9), (3, 10), 
+         (4, 5), (4, 6), (4, 7), (4, 9), 
+         (5, 6), (5, 7), (5, 9), (5, 11), 
+         (6, 7), (6, 9), (6, 11), 
+         (7, 9), (7, 11), 
+         (8, 9), (8, 11), 
+         (9, 10), (9, 11), 
+         (10, 11), (10, 12), 
+         (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (12, 18), (12, 19), (12, 20), (12, 22), 
+         (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 20), (13, 21), 
+         (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 22), 
+         (15, 17), (15, 18), (15, 19), (15, 20), (15, 21), (15, 22), 
+         (16, 18), (16, 20), (16, 21), (16, 22), 
+         (17, 18), (17, 19), (17, 22), 
+         (18, 19), (18, 20), (18, 21), (18, 22), 
+         (19, 22), (20, 22), (21, 22)]
+
+layout = generate_layout(edges)
+
+# Convert layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```
+
+### Explanation:
+1. **Community Detection**: The `louvain_communities` function uses the Louvain method to detect communities in the graph. It iteratively optimizes the modularity of the community structure.
+2. **Circular Layout**: The `circular_layout` function assigns positions to nodes in a circular layout based on their community membership. Nodes within the same community are placed in a circle, and the radius of the circle is proportional to the size of the community.
+3. **JSON Output**: The final layout is converted to JSON format, which can be used for further processing or visualization.
+
+This code does not use any existing graph layout algorithms or visualization libraries, and it outputs the layout in JSON format as required.

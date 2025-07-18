@@ -1,0 +1,14 @@
+To determine the number of communities in the graph, we need to identify the connected components. Each connected component represents a community. Here is the computation:
+
+The given adjacency_list suggests three distinct communities:
+1. Nodes `{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}` form one community.
+2. Nodes `{10, 11, 12, 13, 14, 15, 16, 17, 18, 19}` form another community.
+3. Nodes `{20, 21, 22, 23, 24, 25, 26, 27, 28}` form the third community.
+
+Thus, the graph has **3 communities**.
+
+```json
+{
+  "answer": 3
+}
+```

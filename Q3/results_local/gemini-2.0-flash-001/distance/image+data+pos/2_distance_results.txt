@@ -1,0 +1,9 @@
+The graph theoretic distance between node 3 and node 25 is 4, since the path is 3 -> 2 -> 1 -> 24 -> 25.
+The Euclidean distance between node 3 and node 25 is sqrt((-0.77 - 0.33)^2 + (0.86 - 0.23)^2) = sqrt((-1.1)^2 + (0.63)^2) = sqrt(1.21 + 0.3969) = sqrt(1.6069) = 1.2676.
+Since the graph theoretic distance is 4 and the Euclidean distance is 1.2676, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

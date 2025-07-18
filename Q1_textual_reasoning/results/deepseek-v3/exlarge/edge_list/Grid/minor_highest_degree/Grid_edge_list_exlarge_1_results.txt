@@ -1,0 +1,39 @@
+To calculate the highest degree of all nodes in the graph, we need to count the number of edges connected to each node and then find the maximum degree among all nodes.
+
+Here is the calculation:
+
+1. Initialize a dictionary to store the degree of each node.
+2. Iterate through the edge list and increment the degree count for each node involved in an edge.
+3. Find the maximum degree from the dictionary.
+
+Let's perform the calculation:
+
+```python
+from collections import defaultdict
+
+# Initialize a dictionary to store the degree of each node
+degree = defaultdict(int)
+
+# Iterate through the edge list and increment the degree count for each node
+for edge in edge_list:
+    degree[edge[0]] += 1
+    degree[edge[1]] += 1
+
+# Find the maximum degree
+max_degree = max(degree.values())
+
+# Output the result as a JSON
+result = {
+    "answer": max_degree
+}
+
+print(result)
+```
+
+Given the edge list provided, the highest degree of all nodes in the graph is 3.
+
+```json
+{
+    "answer": 3
+}
+```

@@ -1,0 +1,9 @@
+To determine which graph layout has the fewest edge crossings, we visually inspect the images. 
+
+In both images, the edges radiate outward from a central node, and there are no visible edge crossings in either layout. Therefore, both layouts have the same number of edge crossings: zero.
+
+```json
+{
+  "Answer": "Both layouts have the same number of edge crossings."
+}
+```

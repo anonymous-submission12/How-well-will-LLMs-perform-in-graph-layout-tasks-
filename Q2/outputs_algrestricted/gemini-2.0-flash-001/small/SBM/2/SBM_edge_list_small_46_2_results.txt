@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 109, in <module>
+    layout = layout_graph(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 44, in layout_graph
+    euclidean_dist = math.sqrt((layout[u][0] - layout[v][0])**2 + (layout[u][1] - layout[v][1])**2)
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

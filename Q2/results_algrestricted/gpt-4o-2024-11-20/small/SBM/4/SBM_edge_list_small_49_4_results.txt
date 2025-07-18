@@ -1,0 +1,88 @@
+Below is a Python script to determine a graph layout based on its community structure. The script first uses a modularity-based community detection algorithm to identify communities within the graph. Then, it positions the nodes based on their communities, ensuring that communities are spatially distinct, keeping the structure clear.
+
+```python
+import networkx as nx
+import json
+from networkx.algorithms.community import greedy_modularity_communities
+from itertools import cycle
+import random
+
+def generate_community_layout(edge_list):
+    # Create the graph from the edge list.
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Perform community detection using a modularity-based algorithm.
+    communities = list(greedy_modularity_communities(G))
+    
+    # Assign each node to a community
+    node_to_community = {}
+    for i, comm in enumerate(communities):
+        for node in comm:
+            node_to_community[node] = i
+    
+    # Generate positions for each community centroids
+    num_communities = len(communities)
+    community_positions = generate_community_positions(num_communities)
+    
+    # Assign positions for individual nodes within each community.
+    positions = {}
+    random.seed(42)  # For reproducibility
+    for community_idx, community in enumerate(communities):
+        cx, cy = community_positions[community_idx]  # Community center
+        community_size = len(community)
+        
+        # Spread nodes randomly but tightly around the center of the community
+        for node in community:
+            positions[node] = (
+                cx + random.uniform(-0.5, 0.5),  # X-coordinate adjustment
+                cy + random.uniform(-0.5, 0.5)   # Y-coordinate adjustment
+            )
+    
+    # Convert the positions to JSON-compatible format.
+    return json.dumps(positions, indent=2)
+
+def generate_community_positions(num_communities):
+    """
+    Generate distinct positions for community centers
+    arranged roughly in a circle for visual clarity.
+    """
+    angle_steps = 360 / num_communities
+    radius = 10  # Distance from the center
+    positions = []
+    for i in range(num_communities):
+        angle = i * angle_steps
+        x = radius * math.cos(math.radians(angle))
+        y = radius * math.sin(math.radians(angle))
+        positions.append((x, y))
+    return positions
+
+# Input data: the edge list of the graph
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 7), (0, 9), (0, 10), (0, 11),
+    (0, 12), (0, 13), (1, 2), (1, 5), (1, 6), (1, 8), (1, 9), (1, 10),
+    (1, 11), (1, 12), (1, 13), (2, 3), (2, 6), (2, 7), (2, 9), (2, 11),
+    (2, 12), (2, 13), (3, 4), (3, 6), (3, 7), (3, 8), (3, 11), (3, 13),
+    (4, 5), (4, 6), (4, 8), (4, 9), (4, 10), (4, 11), (5, 6), (5, 7),
+    (5, 9), (5, 10), (5, 11), (5, 12), (5, 13), (6, 7), (6, 8), (6, 10),
+    (6, 11), (6, 12), (6, 13), (7, 8), (7, 9), (7, 11), (7, 12), (8, 9),
+    (8, 10), (8, 11), (8, 12), (8, 13), (9, 10), (9, 12), (9, 13), (10, 11),
+    (10, 12), (10, 13), (11, 13), (11, 22), (12, 13), (14, 16), (14, 17),
+    (14, 18), (14, 19), (14, 20), (14, 21), (14, 25), (14, 26), (15, 16),
+    (15, 19), (15, 21), (15, 23), (15, 25), (15, 26), (16, 17), (16, 18),
+    (16, 19), (16, 20), (16, 21), (16, 23), (16, 25), (16, 26), (17, 18),
+    (17, 19), (17, 20), (17, 21), (17, 25), (17, 26), (18, 19), (18, 21),
+    (18, 22), (18, 23), (18, 25), (18, 26), (19, 20), (19, 22), (19, 24),
+    (19, 25), (19, 26), (20, 22), (20, 23), (20, 26), (21, 22), (21, 23),
+    (21, 25), (21, 26), (22, 23), (22, 25), (22, 26), (23, 24), (23, 25),
+    (23, 26), (24, 25)
+]
+
+# Generate the layout
+layout = generate_community_layout(edge_list)
+
+# Print the JSON layout
+print(layout)
+```
+
+The script ensures that positions of nodes are influenced by their respective community, making use of modularity-based detection. After this, communities are positioned in relative space using a circular arrangement strategy to keep their relationships clear. Translation of node locations into JSON-compatible structure is the final output, and no visualization step is included as per the requirement.

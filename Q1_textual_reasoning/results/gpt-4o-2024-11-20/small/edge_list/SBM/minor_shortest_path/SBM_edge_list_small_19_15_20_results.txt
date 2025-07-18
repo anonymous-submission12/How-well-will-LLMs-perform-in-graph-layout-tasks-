@@ -1,0 +1,10 @@
+To calculate the shortest path between nodes `15` and `20`, we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 1
+}
+```
+
+### Explanation:
+From the edge list provided, node `15` is directly connected to node `20`. Therefore, the shortest path length between `15` and `20` is `1`.

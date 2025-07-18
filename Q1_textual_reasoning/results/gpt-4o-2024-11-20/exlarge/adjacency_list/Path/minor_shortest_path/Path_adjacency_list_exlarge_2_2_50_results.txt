@@ -1,0 +1,7 @@
+To solve this problem, we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph. Let's calculate the shortest path between nodes '2' and '50'.
+
+```json
+{
+  "answer": 48
+}
+```

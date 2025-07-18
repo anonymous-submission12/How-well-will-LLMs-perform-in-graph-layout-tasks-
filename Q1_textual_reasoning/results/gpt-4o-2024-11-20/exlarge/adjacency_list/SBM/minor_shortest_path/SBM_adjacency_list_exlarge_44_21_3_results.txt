@@ -1,0 +1,9 @@
+To determine the shortest path between node '21' and node '3' in the graph provided, we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph.
+
+Below is the calculation of the shortest path, and the result wrapped in the required format.
+
+```json
+{
+  "answer": 6
+}
+```

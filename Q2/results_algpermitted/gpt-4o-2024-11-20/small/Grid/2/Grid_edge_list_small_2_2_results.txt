@@ -1,0 +1,40 @@
+Here is a Python script that uses the Fruchterman-Reingold force-directed algorithm (a common layout algorithm that maintains consistency between graph-theoretic distance and Euclidean distance), provided by the `networkx` library, to generate a layout for your given graph. The script outputs the node positions in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the edge list for the graph
+edge_list = [
+    (0, 1), (0, 5), (1, 2), (1, 6), (2, 3), (2, 7), (3, 4), (3, 8), 
+    (4, 9), (5, 6), (5, 10), (6, 7), (6, 11), (7, 8), (7, 12), 
+    (8, 9), (8, 13), (9, 14), (10, 11), (10, 15), (11, 12), 
+    (11, 16), (12, 13), (12, 17), (13, 14), (13, 18), (14, 19), 
+    (15, 16), (15, 20), (16, 17), (16, 21), (17, 18), (17, 22), 
+    (18, 19), (18, 23), (19, 24), (20, 21), (21, 22), (22, 23), (23, 24)
+]
+
+# Create a graph object using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Compute the layout for the graph
+# We use the Fruchterman-Reingold force-directed algorithm
+layout = nx.spring_layout(G)
+
+# Convert the layout to a JSON-compliant format
+layout_json = {node: list(position) for node, position in layout.items()}
+
+# Print the layout in JSON format
+print(json.dumps(layout_json, indent=2))
+```
+
+### Explanation:
+1. **Input Graph**: The `edge_list` is read into a `networkx` graph object `G`.
+2. **Layout Calculation**: We use `nx.spring_layout`, which implements the Fruchterman-Reingold force-directed algorithm. This algorithm positions nodes in 2D space such that the geometric distance between nodes reflects the graph-theoretic distances.
+3. **Formatting for JSON**: NetworkX returns positions as a dictionary with nodes as keys and position tuples as values. We transform it into a format that JSON can serialize (`list` for positions).
+4. **Output**: The final positions are output in JSON format, making it easy to use in other applications.
+
+### Notes:
+- The layout is calculated in 2D space. If you want to project it into 3D, you can use `nx.spring_layout(G, dim=3)` and adjust the script accordingly.
+- This code does not generate a visual representation of the graph; it only outputs the layout coordinates for each node.

@@ -1,0 +1,75 @@
+Here’s the Python script that generates a layout for the provided graph while attempting to minimize edge crossings. The node positions are calculated heuristically using a simplistic approach. The output of the script will be the positions of the nodes in JSON format:
+
+```python
+import json
+import math
+
+def generate_layout(edge_list):
+    """
+    Generate a graph layout for the given edge list.
+    The algorithm attempts to heuristically minimize edge crossings.
+    :param edge_list: List of edges represented as (node1, node2)
+    :return: Node positions in JSON format
+    """
+    
+    # Extract all unique nodes from the edge list
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+    
+    # Identify the central node (the one with the most connections)
+    degree_count = {node: 0 for node in nodes}
+    for edge in edge_list:
+        degree_count[edge[0]] += 1
+        degree_count[edge[1]] += 1
+    central_node = max(degree_count, key=degree_count.get)
+    
+    # Create positions for each node
+    node_positions = {}
+    
+    # Place the central node at the origin (0, 0)
+    node_positions[central_node] = (0, 0)
+    
+    # Place connected nodes on a circle around the central node
+    neighbors = [edge[1] for edge in edge_list if edge[0] == central_node] + \
+                [edge[0] for edge in edge_list if edge[1] == central_node]
+    radius = 10  # Radius of the circle
+    angle_increment = 2 * math.pi / len(neighbors) if neighbors else 0
+    
+    for i, neighbor in enumerate(sorted(neighbors)):
+        angle = i * angle_increment
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        node_positions[neighbor] = (x, y)
+    
+    # Convert positions to JSON format
+    return json.dumps(node_positions, indent=4)
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9),
+    (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17),
+    (0, 18), (0, 19), (0, 20), (0, 21)
+]
+
+# Generate and print the layout
+layout = generate_layout(edge_list)
+print(layout)
+```
+
+### Explanation of the Code:
+
+1. **Identifying Unique Nodes**: All nodes from the graph are identified using a set.
+   
+2. **Central Node**: The central node is identified as the node having the most edges (highest degree).
+
+3. **Placing the Central Node**: The central node is placed at the origin \((0, 0)\) of the layout.
+
+4. **Placing Neighboring Nodes**: 
+   - The direct neighbors of the central node are evenly distributed on a circle centered at the origin.
+   - The radius of the circle and the angular increments between the neighbors are computed.
+
+5. **Output Format**: The computed positions of the nodes are outputted as a JSON-formatted dictionary.
+
+This approach is designed for simplicity and works well for star-like graphs such as the one provided, where most edges connect to a single central node. Note that it may not minimize edge crossings in more complex graphs.

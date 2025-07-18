@@ -1,0 +1,176 @@
+To generate a layout for the given graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place the central node (node 0) at the origin and place the other nodes at equal distances from the center. This will ensure that the Euclidean distance between the central node and any other node is consistent with the graph-theoretic distance (which is 1 for all edges).
+
+Here is the Python code to generate the layout:
+
+```python
+import json
+import math
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), 
+             (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), 
+             (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29)]
+
+# Number of nodes
+num_nodes = max(max(edge) for edge in edge_list) + 1, 1)
+
+# Initialize positions
+positions = {}
+
+# Place the central node (node 0) at the origin
+positions[0] = (0.0, 0.0)
+
+# Calculate the angle between each node
+angle_increment = 2 * math.pi / (num_nodes - 1)
+
+# Radius of the circle
+radius = 1.0
+
+# Place the other nodes on a circle around the central node
+for i in range(1, num_nodes):
+    angle = (i - 1) * angle_increment
+    x = radius * math.cos(angle)
+    y = radius * math.sin(angle)
+    positions[i] = (x, y)
+
+# Convert positions to JSON format
+layout_json = json.dumps(positions, indent=4)
+
+# Output the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Central Node Placement**: Node 0 is placed at the origin `(0.0, 0.0)`.
+2. **Circular Layout**: The other nodes are placed on a circle around the central node. The angle between each node is calculated as `2 * pi / (num_nodes - 1)`, ensuring that the nodes are evenly spaced.
+3. **Radius**: The radius of the circle is set to 1.0, which ensures that the Euclidean distance between the central node and any other node is 1.0, matching the graph-theoretic distance.
+
+### Output:
+The output is a JSON object where the keys are node IDs and the values are tuples representing the `(x, y)` coordinates of the nodes.
+
+```json
+{
+    "0": [
+        0.0,
+        0.0
+    ],
+    "1": [
+        1.0,
+        0.0
+    ],
+    "2": [
+        0.8090169943749475,
+        0.5877852522924731
+    ],
+    "3": [
+        0.30901699437494745,
+        0.9510565162951535
+    ],
+    "4": [
+        -0.30901699437494734,
+        0.9510565162951536
+    ],
+    "5": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "6": [
+        -1.0,
+        1.2246467991473532e-16
+    ],
+    "7": [
+        -0.8090169943749475,
+        -0.587785252292473
+    ],
+    "8": [
+        -0.30901699437494756,
+        -0.9510565162951535
+    ],
+    "9": [
+        0.30901699437494723,
+        -0.9510565162951536
+    ],
+    "10": [
+        0.8090169943749473,
+        -0.5877852522924732
+    ],
+    "11": [
+        0.9238795325112867,
+        0.3826834323650898
+    ],
+    "12": [
+        0.7071067811865476,
+        0.7071067811865475
+    ],
+    "13": [
+        0.38268343236508984,
+        0.9238795325112867
+    ],
+    "14": [
+        6.123233995736766e-17,
+        1.0
+    ],
+    "15": [
+        -0.3826834323650897,
+        0.9238795325112867
+    ],
+    "16": [
+        -0.7071067811865475,
+        0.7071067811865476
+    ],
+    "17": [
+        -0.9238795325112867,
+        0.3826834323650899
+    ],
+    "18": [
+        -1.0,
+        2.4492935982947064e-16
+    ],
+    "19": [
+        -0.9238795325112868,
+        -0.38268343236508967
+    ],
+    "20": [
+        -0.7071067811865477,
+        -0.7071067811865475
+    ],
+    "21": [
+        -0.38268343236509034,
+        -0.9238795325112865
+    ],
+    "22": [
+        -1.8369701987210297e-16,
+        -1.0
+    ],
+    "23": [
+        0.38268343236509,
+        -0.9238795325112866
+    ],
+    "24": [
+        0.7071067811865474,
+        -0.7071067811865477
+    ],
+    "25": [
+        0.9238795325112865,
+        -0.3826834323650904
+    ],
+    "26": [
+        0.9510565162951535,
+        0.30901699437494745
+    ],
+    "27": [
+        0.5877852522924731,
+        0.8090169943749475
+    ],
+    "28": [
+        0.9510565162951536,
+        -0.30901699437494723
+    ],
+    "29": [
+        0.5877852522924732,
+        -0.8090169943749473
+    ]
+}
+```
+
+This JSON output represents the positions of the nodes in the graph, where the central node is at the origin and the other nodes are evenly spaced on a circle around it.

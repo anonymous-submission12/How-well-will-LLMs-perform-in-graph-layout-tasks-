@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 47, in <module>
+    layout_json = generate_community_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 29, in generate_community_layout
+    if partition[source] == partition[target]:
+                            ~~~~~~~~~^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/igraph/clustering.py", line 83, in __getitem__
+    raise IndexError("cluster index out of range")
+IndexError: cluster index out of range

@@ -1,0 +1,55 @@
+Below is the Python script that generates a layout for the graph using the `pygraphviz` library, which provides access to Graphviz layout algorithms. The script outputs the layout in JSON format.
+
+```python
+import pygraphviz as pgv
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a directed graph using pygraphviz
+    graph = pgv.AGraph(strict=False, directed=False)
+
+    # Add edges to the graph
+    for edge in edge_list:
+        graph.add_edge(edge[0], edge[1])
+
+    # Use the 'dot' layout algorithm to minimize edge crossings
+    graph.layout(prog='dot')
+
+    # Extract node positions from the graph
+    positions = {}
+    for node in graph.nodes():
+        pos = node.attr['pos']
+        if pos:
+            x, y = map(float, pos.split(','))
+            positions[node] = {'x': x, 'y': y}
+
+    # Convert positions to JSON format
+    return json.dumps(positions, indent=4)
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), 
+    (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), 
+    (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), 
+    (21, 22)
+]
+
+# Generate layout and print the result
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Explanation:
+1. **Graph Creation**: The script uses `pygraphviz` to create a graph and add edges from the provided edge list.
+2. **Layout Algorithm**: The `dot` layout algorithm is used to minimize edge crossings. You can replace `'dot'` with other Graphviz layout algorithms like `'neato'`, `'fdp'`, or `'sfdp'` if needed.
+3. **Node Positions**: After applying the layout, the positions of nodes are extracted from the `pos` attribute.
+4. **JSON Output**: The positions are formatted into a JSON object for easy use.
+
+### Requirements:
+- Install `pygraphviz` if not already installed:
+  ```bash
+  pip install pygraphviz
+  ```
+
+### Output:
+The script outputs the node positions in JSON format, where each node is represented by its coordinates (`x` and `y`).

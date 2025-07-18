@@ -1,0 +1,54 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 2), (0, 3), (0, 4), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), 
+             (1, 5), (1, 6), (1, 8), (1, 9), (1, 10), (2, 3), (2, 6), (3, 4), 
+             (3, 7), (3, 9), (4, 5), (4, 7), (4, 14), (4, 19), (5, 6), (5, 7), 
+             (5, 8), (5, 10), (6, 7), (6, 8), (6, 9), (6, 10), (7, 8), (8, 10), 
+             (11, 13), (11, 16), (11, 18), (11, 19), (11, 20), (12, 13), (12, 14), 
+             (12, 15), (12, 16), (12, 19), (13, 15), (13, 16), (13, 18), (13, 19), 
+             (13, 20), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (15, 17), 
+             (15, 18), (15, 19), (15, 20), (16, 19), (17, 18), (17, 20), (18, 19), 
+             (18, 20)]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check the graph pattern
+def determine_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for star graph
+    degrees = [deg for _, deg in G.degree()]
+    if max(degrees) == n - 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for cycle graph
+    if nx.is_connected(G) and m == n and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for path graph
+    if nx.is_connected(G) and m == n - 1 and degrees.count(1) == 2 and degrees.count(2) == n - 2:
+        return "Path"
+    
+    # Check for grid graph
+    if nx.is_connected(G) and all(deg in [2, 3, 4] for deg in degrees):
+        return "Grid"
+    
+    # Check for complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clustered graph
+    clusters = list(nx.connected_components(G))
+    if len(clusters) > 1:
+        return "Clustered graph"
+    
+    # Default to random graph
+    return "Random graph"
+
+print(determine_graph_pattern(G))
+```

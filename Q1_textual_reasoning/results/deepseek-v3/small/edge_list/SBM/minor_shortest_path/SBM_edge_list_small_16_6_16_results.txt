@@ -1,0 +1,19 @@
+To calculate the shortest path between node '6' and '16', we can use the Breadth-First Search (BFS) algorithm, which is suitable for unweighted graphs. Here's the step-by-step process:
+
+1. Start from node '6'.
+2. Explore all its neighbors.
+3. Continue exploring neighbors level by level until node '16' is reached.
+
+Let's perform the BFS:
+
+- **Level 0**: Start at node '6'.
+- **Level 1**: Neighbors of '6' are [0, 1, 2, 3, 4, 5, 15].
+- **Level 2**: Neighbors of '15' are [6, 16, 17, 18].
+  
+At this point, we find node '16' in the neighbors of '15'. Therefore, the shortest path from '6' to '16' is 2 steps.
+
+```json
+{
+  "answer": 2
+}
+```

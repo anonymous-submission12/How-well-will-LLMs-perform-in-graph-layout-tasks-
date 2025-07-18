@@ -1,0 +1,53 @@
+Below is the Python script that generates a layout for the graph using the `pygraphviz` library, which provides access to Graphviz's layout algorithms. The script outputs the layout in JSON format.
+
+```python
+import pygraphviz as pgv
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a directed graph using pygraphviz
+    graph = pgv.AGraph(strict=False, directed=False)
+
+    # Add edges to the graph
+    for edge in edge_list:
+        graph.add_edge(edge[0], edge[1])
+
+    # Use the 'neato' layout algorithm to minimize edge crossings
+    graph.layout(prog='neato')
+
+    # Extract node positions from the graph
+    positions = {}
+    for node in graph.nodes():
+        pos = node.attr['pos']
+        if pos:
+            x, y = map(float, pos.split(','))
+            positions[int(node)] = {'x': x, 'y': y}
+
+    # Return the positions in JSON format
+    return json.dumps(positions, indent=4)
+
+# Edge list provided in the problem
+edge_list = [
+    (0, 1), (0, 6), (1, 2), (1, 7), (2, 3), (2, 8), (3, 4), (3, 9), (4, 5), (4, 10), 
+    (5, 11), (6, 7), (6, 12), (7, 8), (7, 13), (8, 9), (8, 14), (9, 10), (9, 15), 
+    (10, 11), (10, 16), (11, 17), (12, 13), (12, 18), (13, 14), (13, 19), (14, 15), 
+    (14, 20), (15, 16), (15, 21), (16, 17), (16, 22), (17, 23), (18, 19), (18, 24), 
+    (19, 20), (19, 25), (20, 21), (20, 26), (21, 22), (21, 27), (22, 23), (22, 28), 
+    (23, 29), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)
+]
+
+# Generate the layout
+layout_json = generate_graph_layout(edge_list)
+
+# Print the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Graph Creation**: The script uses `pygraphviz` to create a graph and add edges from the provided edge list.
+2. **Layout Algorithm**: The `neato` layout algorithm is used, which is suitable for minimizing edge crossings in undirected graphs.
+3. **Node Positions**: After applying the layout, the positions of nodes are extracted and stored in a dictionary.
+4. **JSON Output**: The positions are converted to JSON format for easy use and visualization.
+
+### Output:
+The script will output a JSON object where each key is a node ID, and the value is a dictionary containing the `x` and `y` coordinates of the node.

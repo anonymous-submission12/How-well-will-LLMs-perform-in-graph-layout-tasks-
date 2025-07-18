@@ -1,0 +1,36 @@
+```python
+def identify_graph_pattern(adj_list):
+    nodes = len(adj_list)
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for a cycle
+    if all(len(neighbors) == 2 for neighbors in adj_list.values()) and edges == nodes:
+        return "Cycle"
+
+    # Check for a path
+    if sum(len(neighbors) == 1 for neighbors in adj_list.values()) == 2 and \
+       all(len(neighbors) in (1, 2) for neighbors in adj_list.values()) and \
+       edges == nodes - 1:
+        return "Path"
+
+    # Check for a star
+    center_count = sum(len(neighbors) == nodes - 1 for neighbors in adj_list.values())
+    if center_count == 1 and edges == nodes - 1:
+        return "Star"
+
+    # Check for a complete graph
+    if edges == nodes * (nodes - 1) // 2:
+        return "Complete"
+
+    # Check for a grid (simple case: rectangular grid)
+    row_lengths = set(len(neighbors) for neighbors in adj_list.values())
+    if 2 in row_lengths and 3 in row_lengths:
+        return "Grid"
+
+    # Check for clustered or random (non-specific fallback)
+    return "Clustered/Random Graph"
+
+
+adjacency_list = {0: [1, 27], 1: [0, 2], 2: [1, 3], 3: [2, 4], 4: [3, 5], 5: [4, 6], 6: [5, 7], 7: [6, 8], 8: [7, 9], 9: [8, 10], 10: [9, 11], 11: [10, 12], 12: [11, 13], 13: [12, 14], 14: [13, 15], 15: [14, 16], 16: [15, 17], 17: [16, 18], 18: [17, 19], 19: [18, 20], 20: [19, 21], 21: [20, 22], 22: [21, 23], 23: [22, 24], 24: [23, 25], 25: [24, 26], 26: [25, 27], 27: [0, 26]}
+print(identify_graph_pattern(adjacency_list))
+```

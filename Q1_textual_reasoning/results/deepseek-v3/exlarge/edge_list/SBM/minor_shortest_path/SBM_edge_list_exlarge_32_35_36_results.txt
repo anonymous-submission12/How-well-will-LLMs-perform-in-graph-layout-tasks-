@@ -1,0 +1,14 @@
+To calculate the length of the shortest path between node '35' and '36', we can use a Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the calculated shortest path length:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+- The shortest path from node '35' to '36' involves the following sequence of nodes: `35 -> 38 -> 36`.
+- The length of this path is 3, as it includes 3 nodes: '35', '38', and '36'.
+- This is the minimal number of edges required to traverse from '35' to '36'.

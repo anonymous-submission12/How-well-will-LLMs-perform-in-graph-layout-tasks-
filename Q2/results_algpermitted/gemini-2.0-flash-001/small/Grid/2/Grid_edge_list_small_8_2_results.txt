@@ -1,0 +1,44 @@
+```python
+import json
+import numpy as np
+import scipy
+from scipy.sparse.csgraph import shortest_path
+from scipy.sparse import csr_matrix
+from sklearn.manifold import MDS
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node IDs and values are [x, y] coordinates.
+    """
+
+    # 1. Create an adjacency matrix from the edge list.
+    num_nodes = max(max(u, v) for u, v in edge_list) + 1
+    adj_matrix = np.zeros((num_nodes, num_nodes))
+    for u, v in edge_list:
+        adj_matrix[u, v] = 1
+        adj_matrix[v, u] = 1  # Assuming an undirected graph
+
+    # 2. Calculate the shortest path distance matrix.
+    graph = csr_matrix(adj_matrix)
+    dist_matrix = shortest_path(graph, directed=False)
+
+    # 3. Use Multidimensional Scaling (MDS) to generate a 2D layout.
+    mds = MDS(n_components=2, dissimilarity="precomputed", random_state=42, normalized_stress='auto')
+    positions = mds.fit_transform(dist_matrix)
+
+    # 4. Convert the layout to a JSON format.
+    layout = {str(i): positions[i].tolist() for i in range(num_nodes)}
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 14), (1, 2), (1, 15), (2, 3), (2, 16), (3, 4), (3, 17), (4, 5), (4, 18), (5, 6), (5, 19), (6, 7), (6, 20), (7, 8), (7, 21), (8, 9), (8, 22), (9, 10), (9, 23), (10, 11), (10, 24), (11, 12), (11, 25), (12, 13), (12, 26), (13, 27), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27)]
+layout_json = layout_graph(edge_list)
+print(layout_json)
+```

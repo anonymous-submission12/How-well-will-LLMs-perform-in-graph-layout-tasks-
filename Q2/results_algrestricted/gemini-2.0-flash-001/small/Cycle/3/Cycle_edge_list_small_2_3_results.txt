@@ -1,0 +1,72 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(edges, layout):
+    """Calculates the number of edge crossings in a given layout."""
+    crossing_number = 0
+    for i in range(len(edges)):
+        for j in range(i + 1, len(edges)):
+            x1, y1 = layout[edges[i][0]]
+            x2, y2 = layout[edges[i][1]]
+            x3, y3 = layout[edges[j][0]]
+            x4, y4 = layout[edges[j][1]]
+
+            # Check if the line segments (x1, y1)-(x2, y2) and (x3, y3)-(x4, y4) intersect
+            def ccw(a, b, c):
+                return (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0])
+
+            if ccw((x1, y1), (x3, y3), (x4, y4)) != ccw((x2, y2), (x3, y3), (x4, y4)) and \
+               ccw((x1, y1), (x2, y2), (x3, y3)) != ccw((x1, y1), (x2, y2), (x4, y4)):
+                crossing_number += 1
+    return crossing_number
+
+def initial_layout(nodes):
+    """Generates a random initial layout for the nodes."""
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Assign random x, y coordinates
+    return layout
+
+def hill_climbing_layout(edges, iterations=1000):
+    """
+    Generates a graph layout using a hill-climbing algorithm to minimize edge crossings.
+    """
+    nodes = set()
+    for edge in edges:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    nodes = list(nodes)
+    best_layout = initial_layout(nodes)
+    best_crossing_number = calculate_crossing_number(edges, best_layout)
+
+    for _ in range(iterations):
+        # Create a neighbor layout by slightly perturbing the current layout
+        neighbor_layout = {}
+        for node in nodes:
+            neighbor_layout[node] = (best_layout[node][0] + random.uniform(-0.05, 0.05),
+                                      best_layout[node][1] + random.uniform(-0.05, 0.05))
+
+        # Calculate the crossing number for the neighbor layout
+        neighbor_crossing_number = calculate_crossing_number(edges, neighbor_layout)
+
+        # If the neighbor layout has fewer crossings, update the best layout
+        if neighbor_crossing_number < best_crossing_number:
+            best_layout = neighbor_layout
+            best_crossing_number = neighbor_crossing_number
+
+    return best_layout
+
+# Graph data
+edges = [(0, 1), (0, 21), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+
+# Generate the graph layout
+layout = hill_climbing_layout(edges)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

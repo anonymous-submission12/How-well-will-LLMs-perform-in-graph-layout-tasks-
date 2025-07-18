@@ -1,0 +1,7 @@
+Based on visual inspection, Layout 2 appears to have fewer edge crossings than Layout 1.
+
+```json
+{
+"Answer": "2"
+}
+```

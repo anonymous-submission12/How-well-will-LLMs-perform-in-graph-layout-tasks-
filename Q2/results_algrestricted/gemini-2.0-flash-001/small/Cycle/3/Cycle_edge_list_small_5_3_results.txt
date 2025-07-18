@@ -1,0 +1,91 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(edges, layout):
+    """Calculates the number of edge crossings in a given layout."""
+    crossing_number = 0
+    n = len(edges)
+    for i in range(n):
+        for j in range(i + 1, n):
+            a, b = edges[i]
+            c, d = edges[j]
+
+            # Get coordinates from layout
+            x1, y1 = layout[a]['x'], layout[a]['y']
+            x2, y2 = layout[b]['x'], layout[b]['y']
+            x3, y3 = layout[c]['x'], layout[c]['y']
+            x4, y4 = layout[d]['x'], layout[d]['y']
+
+            # Check if line segments (x1, y1)-(x2, y2) and (x3, y3)-(x4, y4) intersect
+            def ccw(x1, y1, x2, y2, x3, y3):
+                return (y3 - y1) * (x2 - x1) > (y2 - y1) * (x3 - x1)
+
+            if ccw(x1, y1, x3, y3, x4, y4) != ccw(x2, y2, x3, y3, x4, y4) and \
+               ccw(x1, y1, x2, y2, x3, y3) != ccw(x1, y1, x2, y2, x4, y4):
+                crossing_number += 1
+
+    return crossing_number
+
+
+def generate_graph_layout(edges, num_iterations=1000):
+    """Generates a graph layout to minimize edge crossings."""
+
+    nodes = set()
+    for u, v in edges:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    # Initialize layout with random positions
+    layout = {}
+    for node in nodes:
+        layout[node] = {'x': random.random(), 'y': random.random()}
+
+    best_layout = layout.copy()
+    min_crossings = calculate_crossing_number(edges, layout)
+
+    # Iteratively improve the layout
+    for _ in range(num_iterations):
+        # Pick a random node and slightly adjust its position
+        node_to_move = random.choice(nodes)
+        original_x = layout[node_to_move]['x']
+        original_y = layout[node_to_move]['y']
+
+        # Small random displacement
+        dx = random.uniform(-0.05, 0.05)
+        dy = random.uniform(-0.05, 0.05)
+
+        layout[node_to_move]['x'] += dx
+        layout[node_to_move]['y'] += dy
+
+        # Keep coordinates within [0, 1] range
+        layout[node_to_move]['x'] = max(0, min(1, layout[node_to_move]['x']))
+        layout[node_to_move]['y'] = max(0, min(1, layout[node_to_move]['y']))
+
+        # Calculate the new crossing number
+        new_crossings = calculate_crossing_number(edges, layout)
+
+        # If the new layout is better, keep it; otherwise, revert the change
+        if new_crossings < min_crossings:
+            min_crossings = new_crossings
+            best_layout = layout.copy()
+        else:
+            layout[node_to_move]['x'] = original_x
+            layout[node_to_move]['y'] = original_y
+
+    # Convert the layout to the desired JSON format
+    json_layout = {}
+    for node in best_layout:
+        json_layout[str(node)] = best_layout[node]  # Convert node to string for JSON
+
+    return json_layout
+
+
+# Example usage with the provided graph data
+edges = [(0, 1), (0, 24), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24)]
+layout = generate_graph_layout(edges)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

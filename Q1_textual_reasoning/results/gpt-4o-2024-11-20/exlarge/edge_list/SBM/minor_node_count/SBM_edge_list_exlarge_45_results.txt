@@ -1,0 +1,7 @@
+To determine the number of nodes in the graph, we need to extract all unique nodes from the edge list. Here's the result:
+
+```json
+{
+  "answer": 75
+}
+```

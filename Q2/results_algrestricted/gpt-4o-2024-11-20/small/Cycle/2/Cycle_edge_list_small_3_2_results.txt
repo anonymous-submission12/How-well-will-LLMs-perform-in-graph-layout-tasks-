@@ -1,0 +1,74 @@
+Below is the Python script to create a layout for the graph while maintaining consistency between Euclidean distance and graph-theoretic distance. The algorithm uses a simple force-directed layout calculation based on node repulsion and edge attraction, without any reliance on existing layout algorithms.
+
+```python
+import json
+import math
+
+def generate_layout(edge_list, iterations=500, k=1.0):
+    # Initialize node positions randomly
+    import random
+    nodes = {node for edge in edge_list for node in edge}
+    positions = {node: [random.uniform(0, 1), random.uniform(0, 1)] for node in nodes}
+    forces = {node: [0, 0] for node in nodes}
+    
+    # Helper function to compute Euclidean distance
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+    # Main force-directed layout algorithm
+    for _ in range(iterations):
+        # Reset forces
+        for node in nodes:
+            forces[node] = [0, 0]
+        
+        # Compute repulsive forces between all pairs of nodes
+        for node1 in nodes:
+            for node2 in nodes:
+                if node1 != node2:
+                    delta_x = positions[node1][0] - positions[node2][0]
+                    delta_y = positions[node1][1] - positions[node2][1]
+                    distance = euclidean_distance(positions[node1], positions[node2]) + 0.01
+                    repulsive_force = k**2 / distance
+                    forces[node1][0] += repulsive_force * (delta_x / distance)
+                    forces[node1][1] += repulsive_force * (delta_y / distance)
+        
+        # Compute attractive forces along graph edges
+        for edge in edge_list:
+            node1, node2 = edge
+            delta_x = positions[node2][0] - positions[node1][0]
+            delta_y = positions[node2][1] - positions[node1][1]
+            distance = euclidean_distance(positions[node1], positions[node2]) + 0.01
+            attractive_force = (distance**2) / k
+            forces[node1][0] += attractive_force * (delta_x / distance)
+            forces[node1][1] += attractive_force * (delta_y / distance)
+            forces[node2][0] -= attractive_force * (delta_x / distance)
+            forces[node2][1] -= attractive_force * (delta_y / distance)
+        
+        # Update positions based on forces
+        for node in nodes:
+            positions[node][0] += forces[node][0] * 0.01  # Scale updates for stability
+            positions[node][1] += forces[node][1] * 0.01
+
+    # Convert positions to a JSON-serializable format
+    layout = {node: {'x': positions[node][0], 'y': positions[node][1]} for node in nodes}
+    return layout
+
+# Input graph
+edge_list = [(0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10),
+             (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19),
+             (19, 20), (20, 21), (21, 22)]
+
+# Generate and output layout
+layout = generate_layout(edge_list)
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Node Initialization**: Each node is assigned a random (x, y) position within a unit square `[0, 1]`.
+2. **Force Calculation**: 
+   - Repulsive forces are computed between all pairs of nodes using Coulomb's law.
+   - Attractive forces are computed for nodes connected by edges using Hooke's law.
+3. **Iterative Updates**: Forces are applied iteratively to adjust node positions.
+4. **Output**: The computed positions are returned in JSON format. Each node is assigned a dictionary with 'x' and 'y' coordinates.
+
+Run this code, and it will output the graph layout in JSON format. The positions are computed such that Euclidean distance reflects the graph-theoretic distance based on the principles of the force-directed layout method.

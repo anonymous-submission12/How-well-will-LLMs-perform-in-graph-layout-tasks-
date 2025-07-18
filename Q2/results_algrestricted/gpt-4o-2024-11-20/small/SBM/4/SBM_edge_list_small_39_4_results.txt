@@ -1,0 +1,77 @@
+Below is the Python script that uses module-based community detection to divide the graph into communities and generates a layout for the graph. The layout assigns separate positions while keeping the community structure clear. The final output of the layout is in JSON format.
+
+```python
+import networkx as nx
+import community  # python-louvain
+import json
+import math
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), 
+             (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), 
+             (2, 3), (2, 4), (2, 5), (2, 6), (2, 8), (2, 9), (2, 10), (3, 5), (3, 6), (3, 9), 
+             (3, 10), (4, 5), (4, 6), (4, 7), (4, 9), (5, 6), (5, 7), (5, 9), (5, 11), (6, 7), 
+             (6, 9), (6, 11), (7, 9), (7, 11), (8, 9), (8, 11), (9, 10), (9, 11), (10, 11), 
+             (10, 12), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (12, 18), (12, 19), 
+             (12, 20), (12, 22), (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 20), 
+             (13, 21), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 22), (15, 17), 
+             (15, 18), (15, 19), (15, 20), (15, 21), (15, 22), (16, 18), (16, 20), (16, 21), 
+             (16, 22), (17, 18), (17, 19), (17, 22), (18, 19), (18, 20), (18, 21), (18, 22), 
+             (19, 22), (20, 22), (21, 22)]
+
+# Step 1: Create the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Step 2: Detect communities using the Louvain method
+partition = community.best_partition(G)  # Dictionary {node: community_id}
+
+# Step 3: Determine the number of communities
+communities = {}
+for node, community_id in partition.items():
+    if community_id not in communities:
+        communities[community_id] = []
+    communities[community_id].append(node)
+
+# Step 4: Layout generation - Assign positions while keeping community structure clear
+positions = {}
+radius_gap = 10  # Gap between communities
+node_gap = 1.5   # Gap between nodes in the same community
+
+for i, (community_id, nodes) in enumerate(communities.items()):
+    # Angle between nodes in the community's circular layout
+    angle_gap = 2 * math.pi / len(nodes)
+    
+    # Center of the community's circle
+    center_x = radius_gap * math.cos(2 * math.pi * i / len(communities))
+    center_y = radius_gap * math.sin(2 * math.pi * i / len(communities))
+    
+    # Assign positions for every node in this community
+    for j, node in enumerate(nodes):
+        angle = angle_gap * j
+        x = center_x + node_gap * math.cos(angle)
+        y = center_y + node_gap * math.sin(angle)
+        positions[node] = (x, y)
+
+# Step 5: Output the layout as JSON
+layout_json = json.dumps(positions, indent=4)
+print(layout_json)
+```
+
+### Explanation of the Code:
+1. **Community Detection**: The script uses the Louvain method (`python-louvain` library) to detect communities.
+2. **Layout Generation**: Each community is arranged in a circular layout, and communities themselves are spaced apart radially from the center to ensure clarity of structure. Each community's nodes are evenly distributed around their respective circles.
+3. **Output**: The final graph layout is output as a JSON-formatted string containing node positions.
+
+### Output Format:
+The resulting JSON object has nodes as keys and their corresponding 2D coordinates `(x, y)` as values:
+```json
+{
+    "0": [x0, y0],
+    "1": [x1, y1],
+    ...
+}
+```
+
+### Notes:
+- Install the required `community` library using `pip install python-louvain` if not already installed.

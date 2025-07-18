@@ -1,0 +1,12 @@
+The graph has a simple path structure. We need to compare how well the two layouts preserve the graph distances. In a perfect layout, nodes that are close in the graph should also be close in the layout.
+
+Layout 1: The nodes are scattered somewhat randomly.
+Layout 2: The nodes are laid out in a more linear fashion, which better reflects the path structure of the graph.
+
+Therefore, layout 2 is likely to better preserve graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

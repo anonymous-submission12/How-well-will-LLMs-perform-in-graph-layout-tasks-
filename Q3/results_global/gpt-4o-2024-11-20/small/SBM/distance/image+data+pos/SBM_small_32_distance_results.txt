@@ -1,0 +1,11 @@
+To evaluate which layout better preserves graph-theoretic distance, we compute node distances on each layout using the Euclidean distances between their coordinates and compare them to the graph-theoretic distances derived from the adjacency list.
+
+The layout in Answer 2 is visually more compact and appears to group nodes closer together based on their graph-theoretic connections, while Answer 1 is spread more uniformly, which might distort the distances.
+
+Given the compactness and similarity to graph-theoretic clusters in Answer 2, this layout better preserves graph-theoretic distances.
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,13 @@
+To calculate the shortest path between node `3` and node `22`, we can represent the graph as a set of vertices and edges using the given edge list and perform a shortest path search (e.g., using BFS for an unweighted graph).
+
+Here's the solution wrapped in a JSON:
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation:
+1. Node `3` is directly connected to node `22` via edge `(3, 22)`.
+2. Hence, the length of the shortest path between node `3` and node `22` is `2` steps.

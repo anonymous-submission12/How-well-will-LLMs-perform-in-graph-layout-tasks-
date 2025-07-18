@@ -1,0 +1,98 @@
+Below is the Python code that computes a graph layout using a custom algorithm. The layout ensures that the Euclidean distance between nodes approximates their graph-theoretic distances. The output is a JSON object specifying the positions of nodes in 2D. The algorithm uses a force-directed style approach but does not rely on any pre-implemented layout functions.
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+def compute_graph_layout(edge_list):
+    def bfs_distances(graph, start_node):
+        """Compute shortest path distances using BFS."""
+        distances = {node: float('inf') for node in graph}
+        distances[start_node] = 0
+        queue = [start_node]
+        while queue:
+            current = queue.pop(0)
+            current_dist = distances[current]
+            for neighbor in graph[current]:
+                if distances[neighbor] == float('inf'):
+                    distances[neighbor] = current_dist + 1
+                    queue.append(neighbor)
+        return distances
+
+    # Step 1: Represent the graph as an adjacency list
+    graph = defaultdict(list)
+    nodes = set()
+    for u, v in edge_list:
+        graph[u].append(v)
+        graph[v].append(u)
+        nodes.update([u, v])
+    nodes = list(nodes)
+
+    # Step 2: Compute pairwise graph-theoretic distances
+    all_pair_distances = {}
+    for node in nodes:
+        all_pair_distances[node] = bfs_distances(graph, node)
+    
+    # Step 3: Initialize random positions for nodes
+    positions = {node: [random.uniform(0, 1), random.uniform(0, 1)] for node in nodes}
+    
+    # Step 4: Iteratively adjust positions to minimize the difference between
+    #         graph-theoretic distances and Euclidean distances
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)
+    
+    def force_update(positions, learning_rate=0.01):
+        new_positions = {}
+        for i in nodes:
+            total_dx, total_dy = 0, 0
+            for j in nodes:
+                if i != j:
+                    # Desired distance from graph
+                    desired_dist = all_pair_distances[i][j]
+                    if desired_dist == float('inf'):
+                        continue
+                    actual_dist = euclidean_distance(positions[i], positions[j])
+                    if actual_dist == 0:
+                        continue
+                    # Force vector (based on attractive/repulsive forces)
+                    diff_x = positions[j][0] - positions[i][0]
+                    diff_y = positions[j][1] - positions[i][1]
+                    factor = learning_rate * (actual_dist - desired_dist) / actual_dist
+                    total_dx += factor * diff_x
+                    total_dy += factor * diff_y
+            # Update position
+            new_positions[i] = [
+                positions[i][0] + total_dx,
+                positions[i][1] + total_dy
+            ]
+        return new_positions
+
+    # Iterative optimization
+    ITERATIONS = 1000
+    for _ in range(ITERATIONS):
+        positions = force_update(positions)
+
+    # Step 5: Prepare output format
+    layout = {node: {"x": positions[node][0], "y": positions[node][1]} for node in nodes}
+    return layout
+
+# Edge list from input
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 11), (0, 13), (0, 14), 
+             (1, 2), (1, 4), (1, 5), (1, 6), (1, 19), (2, 3), (2, 6), (3, 4), (3, 5), 
+             (3, 6), (4, 5), (4, 6), (4, 18), (5, 6), (5, 9), (7, 8), (7, 9), (7, 10), 
+             (7, 11), (7, 12), (7, 13), (8, 9), (8, 11), (8, 12), (8, 13), (9, 10), 
+             (9, 11), (9, 12), (10, 11), (10, 12), (10, 13), (10, 14), (11, 12), 
+             (11, 13), (12, 13), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), 
+             (15, 16), (15, 17), (15, 18), (15, 20), (16, 17), (16, 18), (16, 19), 
+             (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20)]
+
+# Compute the layout
+layout = compute_graph_layout(edge_list)
+
+# Output the layout as JSON
+print(json.dumps(layout, indent=4))
+``` 
+
+This script ensures that the layout is computed without relying on pre-existing graph layout algorithms. It uses a force-directed method based on pairwise shortest-path distances from breadth-first search (BFS). The iterative adjustment step minimizes the difference between graph-theoretic and Euclidean distances across all nodes. The final layout is printed in JSON format.

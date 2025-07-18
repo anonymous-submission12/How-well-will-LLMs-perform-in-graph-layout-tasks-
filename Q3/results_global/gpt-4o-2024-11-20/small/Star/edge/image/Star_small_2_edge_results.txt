@@ -1,0 +1,12 @@
+To determine which graph layout has fewer edge crossings, we visually inspect the images:
+
+- **Image 1**: The edges appear to cross multiple times near the center.
+- **Image 2**: The edges are arranged more evenly, resulting in fewer crossings near the center.
+
+Based on this observation, **Image 2** has fewer edge crossings.
+
+```json
+{
+  "Answer": 2
+}
+```

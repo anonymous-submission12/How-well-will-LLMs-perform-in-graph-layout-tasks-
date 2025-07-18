@@ -1,0 +1,114 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(graph, layout):
+    """Calculates the number of edge crossings in a given layout.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+        layout: A dictionary where keys are node IDs and values are (x, y) coordinates.
+
+    Returns:
+        The number of edge crossings.
+    """
+    crossings = 0
+    edges = list(graph)  # Ensure edges is a list
+    n = len(edges)
+    for i in range(n):
+        for j in range(i + 1, n):
+            edge1 = edges[i]
+            edge2 = edges[j]
+
+            # Extract coordinates
+            x1, y1 = layout[edge1[0]]
+            x2, y2 = layout[edge1[1]]
+            x3, y3 = layout[edge2[0]]
+            x4, y4 = layout[edge2[1]]
+
+            # Check if bounding boxes overlap (fast check)
+            if max(x1, x2) < min(x3, x4) or max(x3, x4) < min(x1, x2) or max(y1, y2) < min(y3, y4) or max(y3, y4) < min(y1, y2):
+                continue  # No intersection possible
+
+            # Orientation test (collinearity check is implicit)
+            def orientation(p, q, r):
+                val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+                if val == 0:
+                    return 0  # Collinear
+                return 1 if val > 0 else -1  # Clockwise or counterclockwise
+
+            o1 = orientation((x1, y1), (x2, y2), (x3, y3))
+            o2 = orientation((x1, y1), (x2, y2), (x4, y4))
+            o3 = orientation((x3, y3), (x4, y4), (x1, y1))
+            o4 = orientation((x3, y3), (x4, y4), (x2, y2))
+
+            if o1 != o2 and o3 != o4:
+                crossings += 1
+
+    return crossings
+
+
+def initial_layout(graph):
+    """Generates a random initial layout for the graph."""
+    nodes = set()
+    for edge in graph:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Assign random coordinates
+
+    return layout
+
+
+def optimize_layout(graph, initial_layout, iterations=100, move_factor=0.05):
+    """Optimizes the layout to minimize edge crossings using a simple iterative approach."""
+    layout = initial_layout
+    best_layout = layout.copy()
+    min_crossings = calculate_crossing_number(graph, layout)
+
+    for _ in range(iterations):
+        # Pick a random node
+        node_to_move = random.choice(list(layout.keys()))
+
+        # Calculate current crossings
+        current_crossings = calculate_crossing_number(graph, layout)
+
+        # Store the original position
+        original_x, original_y = layout[node_to_move]
+
+        # Move the node slightly in a random direction
+        dx = random.uniform(-move_factor, move_factor)
+        dy = random.uniform(-move_factor, move_factor)
+        layout[node_to_move] = (original_x + dx, original_y + dy)
+
+        # Calculate new crossings
+        new_crossings = calculate_crossing_number(graph, layout)
+
+        # Accept the move if it reduces crossings, otherwise revert
+        if new_crossings < current_crossings:
+            if new_crossings < min_crossings:
+                min_crossings = new_crossings
+                best_layout = layout.copy()
+        else:
+            layout[node_to_move] = (original_x, original_y)  # Revert the move
+
+    return best_layout
+
+
+# Graph data
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 6), (0, 7), (0, 9), (0, 10), (1, 2), (1, 3), (1, 5), (1, 8), (1, 9), (1, 10), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 10), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (3, 18), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (5, 6), (5, 9), (5, 10), (6, 7), (6, 9), (6, 20), (7, 8), (7, 9), (7, 10), (8, 9), (8, 10), (9, 20), (11, 12), (11, 13), (11, 14), (11, 17), (11, 18), (11, 19), (11, 20), (12, 13), (12, 14), (12, 15), (12, 16), (12, 18), (12, 19), (13, 14), (13, 15), (13, 17), (13, 19), (13, 20), (14, 15), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 18), (15, 19), (16, 17), (16, 18), (16, 19), (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+# Generate initial layout
+init_layout = initial_layout(edge_list)
+
+# Optimize the layout
+optimized_layout = optimize_layout(edge_list, init_layout)
+
+# Convert layout to JSON format
+layout_json = json.dumps(optimized_layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

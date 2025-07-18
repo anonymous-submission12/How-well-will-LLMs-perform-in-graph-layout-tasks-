@@ -1,0 +1,35 @@
+```python
+import networkx as nx
+import json
+
+def generate_graph_layout(edge_list):
+    """
+    Generates a graph layout that minimizes edge crossings using the Kamada-Kawai layout algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node IDs and values are
+        lists containing the x and y coordinates of the node.
+    """
+
+    graph = nx.Graph()
+    graph.add_edges_from(edge_list)
+
+    # Use the Kamada-Kawai layout algorithm to minimize edge crossings.
+    pos = nx.kamada_kawai_layout(graph)
+
+    # Convert the layout to a JSON format.
+    layout_json = {}
+    for node, coordinates in pos.items():
+        layout_json[node] = [coordinates[0], coordinates[1]]
+
+    return json.dumps(layout_json)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```

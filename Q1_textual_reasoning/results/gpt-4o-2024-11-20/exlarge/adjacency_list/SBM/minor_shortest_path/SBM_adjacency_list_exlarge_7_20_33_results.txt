@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes '20' and '33', we can use the Breadth-First Search (BFS) algorithm. Here's the solution:
+
+```json
+{
+  "answer": 8
+}
+```

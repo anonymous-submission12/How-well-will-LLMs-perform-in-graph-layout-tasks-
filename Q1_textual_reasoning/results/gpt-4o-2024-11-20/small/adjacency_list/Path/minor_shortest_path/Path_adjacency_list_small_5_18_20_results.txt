@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '18' and '20', we can observe that the graph is structured as a linear chain. Each node is connected to its immediate neighbors, and the shortest path between any two nodes is simply the difference in their indices.
+
+The shortest path between node '18' and node '20' is:
+
+\[
+\text{Length} = |20 - 18| = 2
+\]
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

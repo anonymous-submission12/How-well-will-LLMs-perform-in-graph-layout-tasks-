@@ -1,0 +1,40 @@
+Below is the Python code to generate a graph layout based on community structure using a modularity-based community detection algorithm. The code outputs the layout in JSON format.
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+
+    # Detect communities using the Louvain method
+    partition = community_louvain.best_partition(G)
+
+    # Group nodes by their community
+    communities = {}
+    for node, community_id in partition.items():
+        if community_id not in communities:
+            communities[community_id] = []
+        communities[community_id].append(node)
+
+    # Initialize positions dictionary
+    positions = {}
+
+    # Assign positions to nodes based on their community
+    community_center = {}
+    community_radius = 10  # Distance between communities
+    node_spacing = 2       # Distance between nodes within a community
+
+    for community_id, nodes in communities.items():
+        # Calculate a center for each community
+        angle = (community_id / len(communities)) * 2 * 3.14159  # Spread communities in a circle
+        community_center[community_id] = (community_radius * community_id * 0.5 * nx.utils.random_state().rand(), 
+        )
+        
+        # Arrange nodes in a circular layout within the community
+        for i, node in enumerate(nodes):
+            angle = (i / len(nodes)) * 2 * 3.14159
+            x = community_center[community_id][0] + node_spacing * 

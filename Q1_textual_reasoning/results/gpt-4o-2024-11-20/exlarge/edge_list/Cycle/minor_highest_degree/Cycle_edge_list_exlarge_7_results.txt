@@ -1,0 +1,14 @@
+To calculate the highest degree of all nodes in the graph, we can count the number of occurrences of each node in the given edge list and find the maximum count. Below is the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+Explanation:
+- Node `0` appears twice: in edges `(0, 1)` and `(0, 76)`.
+- Node `76` also appears twice: in edges `(75, 76)` and `(0, 76)`.
+- Every other node from `1` to `75` appears exactly twice because they form a chain.
+
+Nodes `0` and `76` have the highest degree, which is `3`.

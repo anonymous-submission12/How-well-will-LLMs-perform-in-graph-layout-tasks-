@@ -1,0 +1,62 @@
+Here's how we can solve this problem:
+
+1.  **Represent the graph:** The input is given as an edge list. We can represent the graph using a dictionary where keys are nodes and values are lists of their neighbors.
+2.  **Breadth-First Search (BFS):**  BFS is suitable for finding the shortest path in an unweighted graph. We start at node '17' and explore its neighbors, then their neighbors, and so on, until we reach node '7'. We keep track of the distance from the starting node.
+3.  **Track Visited Nodes:** To prevent cycles, we mark nodes as visited during the BFS.
+4.  **Return the Distance:** Once node '7' is found, we return its distance from node '17'. If node '7' is not reachable from '17', we return -1.
+
+```python
+from collections import deque
+
+def shortest_path(graph_data, start_node, end_node):
+    """
+    Calculates the length of the shortest path between two nodes in a graph.
+
+    Args:
+        graph_data: A list of tuples representing the edges of the graph.
+        start_node: The starting node.
+        end_node: The destination node.
+
+    Returns:
+        The length of the shortest path, or -1 if no path exists.
+    """
+
+    graph = {}
+    for u, v in graph_data:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    if start_node not in graph or end_node not in graph:
+        return -1  # Handle cases where start or end node is not in the graph
+
+    queue = deque([(start_node, 0)])  # (node, distance)
+    visited = {start_node}
+
+    while queue:
+        node, distance = queue.popleft()
+
+        if node == end_node:
+            return distance
+
+        if node in graph:
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, distance + 1))
+
+    return -1  # No path found
+graph_data = [(0, 1), (0, 20), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+
+answer = shortest_path(graph_data, 17, 7)
+print(answer)
+```
+
+```json
+{
+  "answer": 10
+}
+```

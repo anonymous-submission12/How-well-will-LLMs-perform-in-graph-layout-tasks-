@@ -1,0 +1,7 @@
+To compute the number of communities in your graph, I identified the connected components of the graph, since communities correspond to these components.
+
+```json
+{
+  "answer": 3
+}
+```

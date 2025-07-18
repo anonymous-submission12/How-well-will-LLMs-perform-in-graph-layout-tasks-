@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 99, in <module>
+    layout = generate_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 61, in generate_layout
+    communities = louvain_communities(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 54, in louvain_communities
+    if move_node(node):
+       ^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 37, in move_node
+    gain = (1 / (2 * len(edge_list))) * (len(adj_list[node] & adj_list[neighbor]) - (degrees[node] * degrees[neighbor]) / (2 * len(edge_list)))
+                                                                                     ^^^^^^^
+NameError: name 'degrees' is not defined

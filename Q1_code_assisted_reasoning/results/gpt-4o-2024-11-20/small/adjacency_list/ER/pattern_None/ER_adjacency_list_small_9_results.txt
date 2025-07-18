@@ -1,0 +1,86 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper function to count edges
+    def count_edges(adj_list):
+        edge_count = 0
+        for node, neighbors in adj_list.items():
+            edge_count += len(neighbors)
+        return edge_count // 2  # Each edge is counted twice
+
+    # Check for Star pattern
+    def is_star(adj_list):
+        center_count = sum(len(neighbors) > 1 for neighbors in adj_list.values())
+        return center_count == 1 and count_edges(adj_list) == len(adj_list) - 1
+
+    # Check for Cycle pattern
+    def is_cycle(adj_list):
+        return all(len(neighbors) == 2 for neighbors in adj_list.values()) and count_edges(adj_list) == len(adj_list)
+
+    # Check for Path pattern
+    def is_path(adj_list):
+        end_points = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return end_points == 2 and count_edges(adj_list) == len(adj_list) - 1
+
+    # Check for Grid pattern
+    def is_grid(adj_list):
+        # Grid graphs are harder to detect without specific dimensions.
+        # For simplicity, we check if most nodes have 2-4 neighbors.
+        neighbor_counts = [len(neighbors) for neighbors in adj_list.values()]
+        return all(2 <= count <= 4 for count in neighbor_counts)
+
+    # Check for Complete pattern
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return count_edges(adj_list) == n * (n - 1) // 2
+
+    # Check for Clustered graph
+    def is_clustered(adj_list):
+        # Clustered graphs typically have groups of nodes with high connectivity.
+        # For simplicity, we check if there are nodes with significantly higher degree than average.
+        neighbor_counts = [len(neighbors) for neighbors in adj_list.values()]
+        avg_degree = sum(neighbor_counts) / len(neighbor_counts)
+        return any(count > avg_degree * 1.5 for count in neighbor_counts)
+
+    # Check for Random graph
+    def is_random(adj_list):
+        # Random graphs typically have no discernible pattern.
+        # For simplicity, we check if the graph doesn't fit other patterns.
+        return not (is_star(adj_list) or is_cycle(adj_list) or is_path(adj_list) or is_grid(adj_list) or is_complete(adj_list) or is_clustered(adj_list))
+
+    # Determine the graph pattern
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    elif is_random(adj_list):
+        return "Random"
+    else:
+        return "Unknown"
+
+# Input graph data
+adjacency_list = {
+    0: [11, 26], 1: [7], 2: [12, 13, 14, 15, 23], 3: [5, 11, 14, 16, 19],
+    4: [7, 10, 19, 20, 23, 28, 29], 5: [3, 6, 8, 14, 16, 20, 29],
+    6: [5, 8, 9, 12, 23, 28], 7: [1, 4, 13, 14, 21], 8: [5, 6, 14, 16, 24, 25, 27],
+    9: [6, 17, 18, 23], 10: [4, 27], 11: [0, 3, 22], 12: [2, 6, 23],
+    13: [2, 7], 14: [2, 3, 5, 7, 8, 25, 26], 15: [2, 24, 27, 28, 29],
+    16: [3, 5, 8, 17, 24, 28, 29], 17: [9, 16, 18], 18: [9, 17, 19, 29],
+    19: [3, 4, 18, 24, 28], 20: [4, 5, 24, 25], 21: [7, 28], 22: [11, 27],
+    23: [2, 4, 6, 9, 12], 24: [8, 15, 16, 19, 20, 29], 25: [8, 14, 20],
+    26: [0, 14], 27: [8, 10, 15, 22], 28: [4, 6, 15, 16, 19, 21],
+    29: [4, 5, 15, 16, 18, 24]
+}
+
+# Output the result
+print(determine_graph_pattern(adjacency_list))
+```

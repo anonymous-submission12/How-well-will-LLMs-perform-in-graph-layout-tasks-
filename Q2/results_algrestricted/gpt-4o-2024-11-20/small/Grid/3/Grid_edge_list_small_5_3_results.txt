@@ -1,0 +1,97 @@
+Below is a Python script that takes a graph defined by its edge list and computes a layout where the positions of nodes are specified as (x, y) coordinates. The algorithm attempts to reduce edge crossings by iteratively adjusting node positions based on repulsion between nodes and attraction along edges. This is a simple force-directed layout implemented manually, without relying on existing layout algorithms.
+
+```python
+import json
+import random
+
+def generate_graph_layout(edges, iterations=500, width=1000, height=1000, repulsion=1000, attraction=0.05):
+    # Initialize node positions randomly within the specified canvas size
+    nodes = {node for edge in edges for node in edge}
+    positions = {node: (random.uniform(0, width), random.uniform(0, height)) for node in nodes}
+    
+    def distance(p1, p2):
+        """Calculate the Euclidean distance between two points."""
+        return ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**0.5
+
+    def apply_forces():
+        """Adjust positions based on attraction and repulsion forces."""
+        # Initialize force accumulators
+        forces = {node: [0, 0] for node in nodes}
+        
+        # Repulsion forces between all nodes
+        for node1 in nodes:
+            for node2 in nodes:
+                if node1 != node2:
+                    x1, y1 = positions[node1]
+                    x2, y2 = positions[node2]
+                    dist = distance((x1, y1), (x2, y2))
+                    if dist > 0:  # Avoid division by zero
+                        force = repulsion / (dist**2)
+                        forces[node1][0] += force * (x1 - x2) / dist
+                        forces[node1][1] += force * (y1 - y2) / dist
+        
+        # Attraction forces along edges
+        for edge in edges:
+            node1, node2 = edge
+            x1, y1 = positions[node1]
+            x2, y2 = positions[node2]
+            dist = distance((x1, y1), (x2, y2))
+            force = attraction * dist
+            forces[node1][0] -= force * (x1 - x2) / dist
+            forces[node1][1] -= force * (y1 - y2) / dist
+            forces[node2][0] += force * (x1 - x2) / dist
+            forces[node2][1] += force * (y1 - y2) / dist
+        
+        # Update positions based on forces
+        for node in nodes:
+            x, y = positions[node]
+            fx, fy = forces[node]
+            positions[node] = (x + fx, y + fy)
+
+    # Iteratively adjust positions
+    for _ in range(iterations):
+        apply_forces()
+    
+    # Normalize positions to fit within the canvas
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+    
+    normalized_positions = {
+        node: (
+            width * (pos[0] - min_x) / (max_x - min_x),
+            height * (pos[1] - min_y) / (max_y - min_y)
+        )
+        for node, pos in positions.items()
+    }
+    
+    return normalized_positions
+
+# Define the graph as an edge list
+edge_list = [
+    (0, 1), (0, 6), (1, 2), (1, 7), (2, 3), (2, 8), (3, 4), (3, 9),
+    (4, 5), (4, 10), (5, 11), (6, 7), (6, 12), (7, 8), (7, 13),
+    (8, 9), (8, 14), (9, 10), (9, 15), (10, 11), (10, 16), (11, 17),
+    (12, 13), (12, 18), (13, 14), (13, 19), (14, 15), (14, 20),
+    (15, 16), (15, 21), (16, 17), (16, 22), (17, 23), (18, 19),
+    (18, 24), (19, 20), (19, 25), (20, 21), (20, 26), (21, 22),
+    (21, 27), (22, 23), (22, 28), (23, 29), (24, 25), (25, 26),
+    (26, 27), (27, 28), (28, 29)
+]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Force-directed Algorithm**: The positions of the nodes are calculated based on repulsion (between all pairs of nodes) and attraction (along the edges connecting nodes). This results in a layout that minimizes edge crossings and produces an intuitive arrangement.
+2. **Normalization**: After the iterative forces are applied, the node coordinates are normalized to fit within a canvas size (width x height).
+3. **Input and Output**:
+   - Input: The edge list of the graph.
+   - Output: JSON representing the coordinates of each node.
+
+You can run this script and copy the JSON output for any visualization or further processing.

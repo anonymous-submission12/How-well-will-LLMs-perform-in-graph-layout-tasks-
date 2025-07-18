@@ -1,0 +1,13 @@
+To assess which layout better preserves graph-theoretic distance, we calculate the Euclidean distance between node coordinates and compare it to the graph-theoretic distance. Graph-theoretic distance (from the `subgraph_data`) is the number of edges on the shortest path between nodes.
+
+### Analysis:
+- **Layout 1** has higher distortions of distances due to non-uniform node placements and inconsistencies with graph-theoretic distances (e.g., closer nodes in terms of edges are spread far apart geometrically).
+- **Layout 2** places nodes more uniformly and consistently with graph-theoretic distances. It visually resembles more linear alignment, corresponding better with the "spherical" chain-like property of the graph.
+
+Thus, Layout 2 better preserves graph-theoretic distances.
+
+```json
+{
+  "Answer": 2
+}
+```

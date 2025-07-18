@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes `32` and `17` in the graph provided in edge list format, we can use a graph traversal algorithm such as Breadth-First Search (BFS). BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here's the JSON answer:
+
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+
+1. Node `32` connects directly to `16` and `48`.
+2. Node `16` connects directly to `17`.
+3. Therefore, the shortest path from `32` to `17` is: `32 -> 16 -> 17`, requiring **2 steps**.

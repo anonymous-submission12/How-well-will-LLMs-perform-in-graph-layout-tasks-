@@ -1,0 +1,13 @@
+To determine the number of communities in the graph, we use community detection algorithms, such as modularity-based methods (e.g., Louvain algorithm). These algorithms identify groups of nodes (communities) densely connected internally while sparsely connected externally.
+
+Using the provided edge list, the graph reveals clusters of interconnected nodes forming distinct communities.
+
+Here is the JSON output with the detected number of communities:
+
+```json
+{
+  "answer": 5
+}
+``` 
+
+Let me know if further analysis or clarification is needed!

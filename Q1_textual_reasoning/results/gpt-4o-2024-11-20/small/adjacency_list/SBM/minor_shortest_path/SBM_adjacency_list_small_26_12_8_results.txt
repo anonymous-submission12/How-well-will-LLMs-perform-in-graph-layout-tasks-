@@ -1,0 +1,14 @@
+To calculate the shortest path between node '12' and '8', we can use the breadth-first search (BFS) algorithm. BFS ensures we find the shortest path in an unweighted graph like the one given.
+
+### Calculation:
+1. Start from node '12'.
+2. Explore all neighboring nodes level by level until reaching node '8'.
+
+The shortest path from node '12' to '8' is directly 1 step, because the two nodes are immediate neighbors in the graph.
+
+### JSON Output:
+```json
+{
+  "answer": 1
+}
+```

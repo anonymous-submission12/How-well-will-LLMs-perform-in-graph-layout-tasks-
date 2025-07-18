@@ -1,0 +1,94 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The output is in JSON format.
+
+```python
+import json
+import numpy as np
+
+def generate_graph_layout(edge_list):
+    # Step 1: Create adjacency list
+    adjacency_list = {}
+    for u, v in edge_list:
+        if u not in adjacency_list:
+            adjacency_list[u] = []
+        if v not in adjacency_list:
+            adjacency_list[v] = []
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Step 2: Compute graph-theoretic distances using BFS
+    def bfs_distances(start_node):
+        distances = {node: float('inf') for node in adjacency_list}
+        distances[start_node] = 0
+        queue = [start_node]
+        while queue:
+            current = queue.pop(0)
+            for neighbor in adjacency_list[current]:
+                if distances[neighbor] == float('inf'):
+                    distances[neighbor] = distances[current] + 1
+                    queue.append(neighbor)
+        return distances
+
+    # Compute pairwise graph-theoretic distances
+    nodes = list(adjacency_list.keys())
+    distances = {node: bfs_distances(node) for node in nodes}
+
+    # Step 3: Assign initial random positions
+    positions = {node: np.random.rand(2) for node in nodes}
+
+    # Step 4: Optimize positions to maintain consistency between Euclidean and graph-theoretic distances
+    def stress_function(positions_array):
+        positions_dict = {node: positions_array[2 * i:2 * i + 2] for i, node in enumerate(nodes)}
+        stress = 0
+        for i, u in enumerate(nodes):
+            for j, v in enumerate(nodes):
+                if u != v:
+                    d_graph = distances[u][v]
+                    d_euclidean = np.linalg.norm(positions_dict[u] - positions_dict[v])
+                    stress += (d_euclidean - d_graph) ** 2
+        return stress
+
+    def gradient_descent(positions_array, learning_rate=0.01, iterations=1000):
+        for _ in range(iterations):
+            grad = np.zeros_like(positions_array)
+            positions_dict = {node: positions_array[2 * i:2 * i + 2] for i, node in enumerate(nodes)}
+            for i, u in enumerate(nodes):
+                for j, v in enumerate(nodes):
+                    if u != v:
+                        d_graph = distances[u][v]
+                        d_euclidean = np.linalg.norm(positions_dict[u] - positions_dict[v])
+                        if d_euclidean == 0:
+                            continue
+                        diff = 2 * (d_euclidean - d_graph) / d_euclidean
+                        grad[2 * i:2 * i + 2] += diff * (positions_dict[u] - positions_dict[v])
+                        grad[2 * j:2 * j + 2] -= diff * (positions_dict[u] - positions_dict[v])
+            positions_array -= learning_rate * grad
+        return positions_array
+
+    # Flatten positions for optimization
+    positions_array = np.array([coord for pos in positions.values() for coord in pos])
+    optimized_positions_array = gradient_descent(positions_array)
+
+    # Convert back to dictionary format
+    optimized_positions = {node: optimized_positions_array[2 * i:2 * i + 2].tolist() for i, node in enumerate(nodes)}
+
+    return optimized_positions
+
+# Input graph data
+edge_list = [(0, 1), (0, 26), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26)]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list for efficient traversal.
+2. **Graph-Theoretic Distance**: Breadth-First Search (BFS) is used to compute the shortest path (graph-theoretic distance) between all pairs of nodes.
+3. **Initial Positions**: Nodes are assigned random initial positions in 2D space.
+4. **Stress Minimization**: A custom optimization process minimizes the stress function, which measures the difference between Euclidean and graph-theoretic distances.
+5. **Gradient Descent**: The positions are iteratively updated using gradient descent to minimize the stress function.
+6. **Output**: The final positions are output in JSON format.
+
+This approach avoids using any pre-built layout algorithms and adheres to the requirement of maintaining consistency between Euclidean and graph-theoretic distances.

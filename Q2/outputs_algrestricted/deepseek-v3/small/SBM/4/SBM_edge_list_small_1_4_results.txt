@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 43
+    center = (community_spacing * math.cos(2 * math.pi * i / len(communities)),
+             ^
+SyntaxError: '(' was never closed

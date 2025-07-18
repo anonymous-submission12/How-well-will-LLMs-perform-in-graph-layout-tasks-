@@ -1,0 +1,7 @@
+Without executing a crossing counting algorithm, it is difficult to determine the exact number of edge crossings in each layout. However, based on a visual estimation of the node positions, layout 2 appears to have fewer crossings.
+
+```json
+{
+"Answer": 2
+}
+```

@@ -1,0 +1,86 @@
+```python
+import json
+import random
+
+def generate_layout(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple force-directed layout algorithm. It initializes
+    node positions randomly and then iteratively adjusts them based on attractive
+    and repulsive forces.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Initialization
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    positions = {node: (random.random(), random.random()) for node in nodes}
+
+    # 2. Force-Directed Layout
+    iterations = 100  # Number of iterations for the algorithm
+    attraction_strength = 0.1  # Strength of attractive forces
+    repulsion_strength = 10  # Strength of repulsive forces
+    damping_factor = 0.5  # Damping factor to slow down movement
+
+    for _ in range(iterations):
+        forces = {node: [0, 0] for node in nodes}  # Initialize forces to zero
+
+        # Calculate attractive forces
+        for u, v in edge_list:
+            x1, y1 = positions[u]
+            x2, y2 = positions[v]
+            dx = x2 - x1
+            dy = y2 - y1
+            distance = max(0.01, (dx**2 + dy**2)**0.5)  # Avoid division by zero
+            force = attraction_strength * distance
+            forces[u][0] += force * dx / distance
+            forces[u][1] += force * dy / distance
+            forces[v][0] -= force * dx / distance
+            forces[v][1] -= force * dy / distance
+
+        # Calculate repulsive forces
+        for u in nodes:
+            for v in nodes:
+                if u != v:
+                    x1, y1 = positions[u]
+                    x2, y2 = positions[v]
+                    dx = x2 - x1
+                    dy = y2 - y1
+                    distance = max(0.01, (dx**2 + dy**2)**0.5)  # Avoid division by zero
+                    force = repulsion_strength / distance**2
+                    forces[u][0] -= force * dx / distance
+                    forces[u][1] -= force * dy / distance
+                    forces[v][0] += force * dx / distance
+                    forces[v][1] += force * dy / distance
+
+        # Update positions based on forces
+        for node in nodes:
+            forces[node][0] *= damping_factor
+            forces[node][1] *= damping_factor
+            positions[node] = (positions[node][0] + forces[node][0], positions[node][1] + forces[node][1])
+
+            # Keep nodes within bounds (0 to 1)
+            positions[node] = (max(0, min(1, positions[node][0])), max(0, min(1, positions[node][1])))
+
+    # 3. Return Layout
+    return positions
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 20), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+layout = generate_layout(edge_list)
+
+# Convert layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

@@ -1,0 +1,7 @@
+To determine which layout better preserves graph-theoretic distances, the node coordinates in each layout need to reflect correct approximations of shortest path distances between nodes in the graph structure. Given the visual representations of both layouts, **Layout 2** showcases a clearer separation of graph communities and spacing proportional to the structural graph-theoretic distances.
+
+```json
+{
+  "Answer": 2
+}
+```

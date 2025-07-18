@@ -1,0 +1,58 @@
+Below is the Python code to process the graph provided in the `edge_list` format and generate a layout that preserves community structure. The code uses the `networkx` library for graph analysis, including community detection, and utilizes the `python-louvain` package for community detection based on modularity optimization.
+
+The output is provided as a JSON structure containing the positions of each node in the graph.
+
+```python
+import json
+import networkx as nx
+from community import community_louvain
+
+def generate_graph_layout(edge_list):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Detect communities using the Louvain algorithm
+    partition = community_louvain.best_partition(G)
+    
+    # Assign positions to nodes based on communities (using spring layout)
+    pos = nx.spring_layout(G, scale=1, k=0.3, weight='weight')  # k controls spacing scale
+    
+    # Organize positions in a JSON-friendly format
+    layout = {node: {'x': pos[node][0], 'y': pos[node][1], 'community': partition[node]} for node in G.nodes()}
+    
+    # Return JSON output
+    return json.dumps(layout, indent=4)
+
+# Replace graph_data with your edge list
+graph_data = [
+    (0, 1), (0, 4), (0, 5), (0, 8), (1, 2), (1, 5), (1, 6), (1, 24),
+    (2, 3), (2, 5), (2, 6), (3, 4), (3, 9), (4, 6), (5, 6), (7, 8),
+    (7, 9), (7, 11), (7, 12), (7, 13), (8, 9), (8, 10), (8, 13), (8, 14),
+    (9, 10), (9, 11), (9, 12), (10, 11), (10, 12), (11, 12), (11, 13), (11, 20),
+    (14, 15), (14, 16), (14, 17), (14, 19), (14, 20), (15, 18), (15, 19), (15, 20),
+    (16, 17), (16, 19), (16, 20), (17, 18), (17, 19), (18, 20), (21, 22), (21, 23),
+    (21, 24), (21, 26), (21, 27), (22, 25), (22, 26), (22, 27), (23, 24), (23, 25),
+    (23, 26), (23, 27), (24, 25), (24, 26), (24, 27), (25, 27), (26, 27)
+]
+
+layout_json = generate_graph_layout(graph_data)
+print(layout_json)
+```
+
+### Explanation of the Code:
+1. **Graph Creation:**
+   - `networkx` creates a graph `G` from the provided edge list.
+   
+2. **Community Detection:**
+   - The Louvain method, implemented in the `community_louvain` module, identifies community structures by optimizing modularity.
+   - Each node is assigned to a community, which is stored in the `partition` dictionary.
+
+3. **Layout Generation:**
+   - The `nx.spring_layout` algorithm is used as the layout algorithm. It positions nodes in a force-directed manner, preserving structural relationships and improving clarity of community structures.
+
+4. **Output:**
+   - The layout includes the x-coordinate, y-coordinate, and the community ID for each node. This data is formatted into JSON for further use.
+
+5. **Usage:**
+   - You can modify the `graph_data` variable to include your edge list, and the script will generate and print the graph layout in JSON format.

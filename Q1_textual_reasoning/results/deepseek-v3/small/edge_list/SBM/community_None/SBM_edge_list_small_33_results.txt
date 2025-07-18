@@ -1,0 +1,16 @@
+To determine the number of communities in the graph, we can analyze the connected components. A community in this context can be considered as a connected component where all nodes are reachable from each other, but not from nodes in other components.
+
+Let's analyze the provided edge list:
+
+1. **First Community**: Nodes `0` to `10` are interconnected.
+2. **Second Community**: Nodes `11` to `20` are interconnected.
+
+There are no edges connecting nodes from the first community to the second community, indicating that these are two separate communities.
+
+Thus, the graph has **2 communities**.
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 55
+    layout = {node: {"x": pos[node][0], "y": pos[node][1]} for node in G.nodes()
+             ^
+SyntaxError: '{' was never closed

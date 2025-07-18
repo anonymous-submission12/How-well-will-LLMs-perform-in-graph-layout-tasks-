@@ -1,0 +1,76 @@
+Below is a Python script that achieves the task of detecting communities in the graph using a modularity-based method (such as the Louvain algorithm), assigning nodes to their communities, and generating a custom graph layout. The layout assigns nodes in each community to positions that maintain the communities' compactness:
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+import math
+
+def generate_layout(graph_data):
+    # Create a graph from the edge list
+    G = nx.Graph()
+    G.add_edges_from(graph_data)
+    
+    # Perform community detection using Louvain method
+    partition = community_louvain.best_partition(G)
+    
+    # Group nodes by their community
+    communities = {}
+    for node, comm in partition.items():
+        if comm not in communities:
+            communities[comm] = []
+        communities[comm].append(node)
+    
+    # Generate a custom layout
+    positions = {}
+    num_communities = len(communities)
+    angle_step = 2 * math.pi / num_communities
+    radius = 10  # Distance of community centers from the origin
+    intra_comm_radius = 3  # Radius within a community for its nodes
+
+    for idx, (comm, nodes) in enumerate(communities.items()):
+        # Calculate the center of this community
+        angle = angle_step * idx
+        comm_center_x = radius * math.cos(angle)
+        comm_center_y = radius * math.sin(angle)
+        
+        # Assign positions for nodes in this community
+        num_nodes = len(nodes)
+        node_angle_step = 2 * math.pi / num_nodes if num_nodes > 1 else 0
+        
+        for node_idx, node in enumerate(nodes):
+            node_angle = node_idx * node_angle_step
+            node_x = comm_center_x + intra_comm_radius * math.cos(node_angle)
+            node_y = comm_center_y + intra_comm_radius * math.sin(node_angle)
+            positions[node] = (node_x, node_y)
+    
+    # Return layout in JSON format
+    return json.dumps(positions, indent=2)
+
+# Input edge list
+graph_data = [(0, 2), (0, 3), (0, 5), (0, 7), (0, 8), (0, 11), (0, 12), (0, 14), (0, 22), (1, 4), (1, 7), (1, 15), ...]  # Truncated for brevity; replace with full data
+
+# Generate layout
+layout = generate_layout(graph_data)
+
+# Print the JSON layout
+print(layout)
+```
+
+### Key Points of the Code:
+1. **Community Detection:** The Louvain algorithm (`community_louvain.best_partition`) is used to divide the graph into communities.
+2. **Custom Layout Generation:**
+   - Communities are arranged in a circular pattern around the origin.
+   - Within each community, nodes are also arranged in a circular pattern around the community's center.
+   - This arrangement ensures that communities remain visually distinct and the layout maintains clarity.
+3. **JSON Output:** The final node positions are serialized into a JSON format.
+
+### Dependencies:
+Make sure to install the `python-louvain` package for community detection:
+```bash
+pip install python-louvain
+```
+
+### Notes:
+- Replace the `graph_data` variable with your full edge list to use directly.
+- The output is a JSON object where each node is mapped to its `(x, y)` position in the layout.

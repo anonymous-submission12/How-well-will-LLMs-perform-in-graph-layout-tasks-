@@ -1,0 +1,57 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 17), (0, 18), (1, 3), (1, 4), (2, 3), (2, 14), (2, 15), (2, 18), (2, 21), (3, 4), (3, 10), (4, 20), 
+             (5, 13), (5, 15), (5, 17), (6, 20), (7, 9), (7, 11), (7, 21), (8, 9), (8, 10), (8, 18), (9, 12), (9, 15), 
+             (9, 18), (9, 21), (10, 11), (10, 16), (10, 21), (11, 19), (12, 15), (13, 18), (13, 21), (14, 15), (16, 17)]
+
+# Build the graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Function definitions to identify graph patterns
+def is_star(g):
+    degrees = [deg for _, deg in g.degree()]
+    return degrees.count(max(degrees)) == 1 and max(degrees) == g.number_of_nodes() - 1
+
+def is_cycle(g):
+    return nx.cycle_graph(g.number_of_nodes()).edges() == set(g.edges()) and nx.is_connected(g)
+
+def is_path(g):
+    return nx.path_graph(g.number_of_nodes()).edges() == set(g.edges()) and nx.is_connected(g)
+
+def is_grid(g):
+    try:
+        rows, cols = nx.grid_graph(dim=[len(g.nodes), len(g.nodes)]).size()
+        return len(g.nodes) == rows * cols
+    except:
+        return False
+
+def is_complete(g):
+    return len(g.edges()) == (g.number_of_nodes() * (g.number_of_nodes() - 1)) // 2
+
+def is_clustered(g):
+    return nx.average_clustering(g) > 0.5
+
+def is_random(g):
+    return not any([is_star(g), is_cycle(g), is_path(g), is_grid(g), is_complete(g), is_clustered(g)])
+
+# Identify the pattern
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered Graph")
+elif is_random(G):
+    print("Random Graph")
+else:
+    print("Unknown Pattern")
+```

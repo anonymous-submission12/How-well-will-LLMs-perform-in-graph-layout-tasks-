@@ -1,0 +1,7 @@
+The edges in the graph are a simple path. Layout 1 appears to be a somewhat random layout, while layout 2 appears to be a more organized layout. It is likely that layout 2 has fewer edge crossings.
+
+```json
+{
+"Answer": "2"
+}
+```

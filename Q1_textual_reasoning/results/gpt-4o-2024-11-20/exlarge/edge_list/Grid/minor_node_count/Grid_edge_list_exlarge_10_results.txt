@@ -1,0 +1,7 @@
+To count the number of distinct nodes in the given graph edge list, we can extract all unique vertices from the pairs provided. Here's the result:
+
+```json
+{
+  "answer": 77
+}
+```

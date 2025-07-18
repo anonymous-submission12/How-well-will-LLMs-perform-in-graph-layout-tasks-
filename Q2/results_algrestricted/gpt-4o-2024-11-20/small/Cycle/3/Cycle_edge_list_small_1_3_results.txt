@@ -1,0 +1,63 @@
+Below is a Python script that generates a layout for the given graph. The layout minimizes edge crossings by attempting to arrange nodes in a linear or circular order based on their connectivity. The script does not use any existing graph layout algorithms or visualization libraries for the final output.
+
+```python
+import json
+
+def generate_layout(edge_list):
+    # Step 1: Extract unique nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+
+    # Step 2: Create adjacency list
+    adjacency_list = {node: [] for node in nodes}
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Step 3: Perform a simple DFS to order nodes linearly
+    visited = set()
+    ordered_nodes = []
+
+    def dfs(node):
+        if node in visited:
+            return
+        visited.add(node)
+        ordered_nodes.append(node)
+        for neighbor in adjacency_list[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+
+    # Start DFS from the first node in the edge list
+    dfs(edge_list[0][0])
+
+    # Step 4: Assign positions to nodes
+    layout = {}
+    for i, node in enumerate(ordered_nodes):
+        # Arrange nodes in a straight line (x, y) = (i, 0)
+        layout[node] = (i, 0)
+
+    # Step 5: Return layout in JSON format
+    return json.dumps(layout, indent=4)
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 20), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8),
+    (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16),
+    (16, 17), (17, 18), (18, 19), (19, 20)
+]
+
+# Generate layout
+layout = generate_layout(edge_list)
+print(layout)
+```
+
+### Explanation:
+1. **Extract Unique Nodes**: The script identifies all unique nodes in the graph.
+2. **Adjacency List**: It builds an adjacency list to represent the graph.
+3. **DFS Traversal**: A depth-first search (DFS) is used to order the nodes linearly, ensuring that connected nodes are placed next to each other.
+4. **Assign Positions**: Nodes are assigned positions along a straight line (x, y) = (i, 0), where `i` is the index of the node in the DFS order.
+5. **Output in JSON**: The final layout is output in JSON format.
+
+This approach minimizes edge crossings by arranging nodes in a linear order based on their connectivity. The output is a JSON object where each node is mapped to its (x, y) position.

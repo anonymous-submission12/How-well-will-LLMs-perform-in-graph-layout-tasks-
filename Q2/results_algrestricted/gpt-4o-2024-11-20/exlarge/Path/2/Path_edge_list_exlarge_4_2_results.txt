@@ -1,0 +1,68 @@
+Below is the Python script to generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance. The script calculates positions for each node based on the graph-theoretic distance from a starting node and places them in a straight line for simplicity.
+
+```python
+import json
+
+def generate_graph_layout(edge_list):
+    # Create adjacency list representation of the graph
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # Perform BFS to calculate graph-theoretic distances
+    def bfs_distances(start_node):
+        distances = {start_node: 0}
+        visited = set([start_node])
+        queue = [start_node]
+        
+        while queue:
+            current = queue.pop(0)
+            for neighbor in graph[current]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    distances[neighbor] = distances[current] + 1
+                    queue.append(neighbor)
+        return distances
+    
+    # Calculate distances from node 0 (arbitrary choice)
+    distances = bfs_distances(0)
+    
+    # Generate layout based on distances
+    layout = {}
+    for node, distance in distances.items():
+        layout[node] = [distance, 0]  # Place nodes in a straight line along the x-axis
+    
+    return layout
+
+# Input edge list
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10),
+    (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18),
+    (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26),
+    (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34),
+    (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42),
+    (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50),
+    (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58),
+    (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66),
+    (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73)
+]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list for efficient traversal.
+2. **BFS for Distances**: Breadth-First Search (BFS) is used to calculate the graph-theoretic distance from a starting node (node 0).
+3. **Layout Generation**: Nodes are placed along the x-axis, with their x-coordinate corresponding to their graph-theoretic distance from the starting node. The y-coordinate is fixed at 0 for simplicity.
+4. **Output**: The layout is output in JSON format, where each node's position is represented as `[x, y]`.
+
+This approach ensures that the Euclidean distance between nodes reflects their graph-theoretic distance.

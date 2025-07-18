@@ -1,0 +1,91 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Identify Nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = list(nodes)
+    num_nodes = len(nodes)
+
+    # 2. Initialize Node Positions Randomly
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Initial positions in [0, 1] range
+
+    # 3. Define a Cost Function
+    def cost(layout, edge_list):
+        total_cost = 0
+        for u, v in edge_list:
+            # Graph-theoretic distance:  We assume each edge has length 1.  So distance is 1 if adjacent, > 1 otherwise.
+            graph_dist = 1
+
+            # Euclidean distance
+            x1, y1 = layout[u]
+            x2, y2 = layout[v]
+            euclidean_dist = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+            # Cost is the squared difference between the two distances.  We want to minimize this.
+            total_cost += (euclidean_dist - graph_dist)**2
+        return total_cost
+
+    # 4. Optimization Loop (Gradient Descent)
+    learning_rate = 0.01
+    iterations = 1000
+
+    for _ in range(iterations):
+        for node in nodes:
+            # Calculate gradients for x and y coordinates
+            x, y = layout[node]
+            grad_x = 0
+            grad_y = 0
+
+            for u, v in edge_list:
+                if u == node or v == node:
+                    other_node = v if u == node else u
+                    x_other, y_other = layout[other_node]
+                    euclidean_dist = math.sqrt((x - x_other)**2 + (y - y_other)**2)
+                    
+                    # Derivative of cost function with respect to x and y
+                    diff = euclidean_dist - 1 # graph distance is 1
+                    if euclidean_dist > 0: # avoid division by zero
+                        grad_x += 2 * diff * (x - x_other) / euclidean_dist
+                        grad_y += 2 * diff * (y - y_other) / euclidean_dist
+
+            # Update positions (gradient descent)
+            new_x = x - learning_rate * grad_x
+            new_y = y - learning_rate * grad_y
+
+            # Keep positions within [0, 1] range
+            new_x = max(0, min(1, new_x))
+            new_y = max(0, min(1, new_y))
+
+            layout[node] = (new_x, new_y)
+
+    return layout
+
+
+# Graph data
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 6), (0, 7), (0, 9), (0, 10), (1, 2), (1, 3), (1, 5), (1, 8), (1, 9), (1, 10), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 10), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (3, 18), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (5, 6), (5, 9), (5, 10), (6, 7), (6, 9), (6, 20), (7, 8), (7, 9), (7, 10), (8, 9), (8, 10), (9, 20), (11, 12), (11, 13), (11, 14), (11, 17), (11, 18), (11, 19), (11, 20), (12, 13), (12, 14), (12, 15), (12, 16), (12, 18), (12, 19), (13, 14), (13, 15), (13, 17), (13, 19), (13, 20), (14, 15), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 18), (15, 19), (16, 17), (16, 18), (16, 19), (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

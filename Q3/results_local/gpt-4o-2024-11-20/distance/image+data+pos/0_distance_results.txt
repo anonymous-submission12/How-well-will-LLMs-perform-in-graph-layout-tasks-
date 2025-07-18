@@ -1,0 +1,48 @@
+To assess the consistency between Euclidean distance and graph-theoretic distance between nodes 5 (source) and 14 (target), we calculate both metrics.
+
+### Graph-Theoretic Distance:
+The path connecting node 5 to node 14 in the given graph has the following edges:
+- (5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13 → 14).
+
+The number of edges in this path is **9**. Hence, the graph-theoretic distance is **9**.
+
+---
+
+### Euclidean Distance:
+We use the Euclidean distance formula between (x₁, y₁) and (x₂, y₂):
+\[
+d = \sqrt{(x₂ - x₁)^2 + (y₂ - y₁)^2}.
+\]
+
+Coordinates of nodes 5 and 14 are:
+- Node 5: (0.58, -0.24)
+- Node 14: (-0.13, 0.67)
+
+\[
+\text{Euclidean Distance} = \sqrt{((-0.13) - 0.58)^2 + ((0.67) - (-0.24))^2}.
+\]
+
+\[
+= \sqrt{(-0.71)^2 + (0.91)^2}
+\]
+
+\[
+= \sqrt{0.5041 + 0.8281} = \sqrt{1.3322} \approx 1.154.
+\]
+
+---
+
+### Comparison:
+- **Graph-Theoretic Distance** = 9
+- **Euclidean Distance** ≈ 1.154
+
+Clearly, the Euclidean distance is **much less** than the graph-theoretic distance.
+
+---
+
+### Final Answer:
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

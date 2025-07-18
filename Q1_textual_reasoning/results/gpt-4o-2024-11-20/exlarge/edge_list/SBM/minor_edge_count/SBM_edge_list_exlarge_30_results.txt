@@ -1,0 +1,11 @@
+To count the number of edges in the graph, simply count the total number of tuples provided in the edge list.
+
+### Calculation:
+As given, each tuple represents an edge in the graph. There are **438** tuples in the provided edge list.
+
+### JSON Response:
+```json
+{
+  "answer": 438
+}
+```

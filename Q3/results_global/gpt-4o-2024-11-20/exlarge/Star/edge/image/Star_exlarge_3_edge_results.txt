@@ -1,0 +1,9 @@
+Both images depict star graphs where all edges radiate from a central node to peripheral nodes. Such graphs inherently have no edge crossings because each edge is directly connected to the central point without overlapping other edges.
+
+Therefore, both layouts have the same number of edge crossings, which is zero.
+
+```json
+{
+  "Answer": "Both"
+}
+```

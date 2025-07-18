@@ -1,0 +1,113 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a force-directed layout approach. This approach simulates physical forces between nodes and edges to position the nodes in a way that minimizes edge crossings and keeps connected nodes close together.
+
+Below is a Python script that implements a simple force-directed layout algorithm. The script will output the graph layout in JSON format.
+
+```python
+import json
+import random
+import math
+
+# Define the graph as an edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12),
+    (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11),
+    (2, 3), (2, 4), (2, 5), (2, 6), (2, 8), (2, 9), (2, 10),
+    (3, 5), (3, 6), (3, 9), (3, 10),
+    (4, 5), (4, 6), (4, 7), (4, 9),
+    (5, 6), (5, 7), (5, 9), (5, 11),
+    (6, 7), (6, 9), (6, 11),
+    (7, 9), (7, 11),
+    (8, 9), (8, 11),
+    (9, 10), (9, 11),
+    (10, 11), (10, 12),
+    (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (12, 18), (12, 19), (12, 20), (12, 22),
+    (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 20), (13, 21),
+    (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 22),
+    (15, 17), (15, 18), (15, 19), (15, 20), (15, 21), (15, 22),
+    (16, 18), (16, 20), (16, 21), (16, 22),
+    (17, 18), (17, 19), (17, 22),
+    (18, 19), (18, 20), (18, 21), (18, 22),
+    (19, 22),
+    (20, 22),
+    (21, 22)
+]
+
+# Initialize node positions randomly
+nodes = set()
+for edge in edge_list:
+    nodes.add(edge[0])
+    nodes.add(edge[1])
+nodes = list(nodes)
+positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in nodes}
+
+# Parameters for the force-directed layout
+k = 1.0  # Spring constant
+repulsion_constant = 100.0  # Repulsion constant
+iterations = 100
+dt = 0.1  # Time step
+
+# Force-directed layout algorithm
+for _ in range(iterations):
+    forces = {node: (0.0, 0.0) for node in nodes}
+    
+    # Calculate repulsive forces (between all pairs of nodes)
+    for i in range(len(nodes)):
+        for j in range(i + 1, len(nodes)):
+            node1 = nodes[i]
+            node2 = nodes[j]
+            x1, y1 = positions[node1]
+            x2, y2 = positions[node2]
+            dx = x2 - x1
+            dy = y2 - y1
+            distance = math.sqrt(dx**2 + dy**2)
+            if distance > 0:
+                force = repulsion_constant / distance**2
+                forces[node1] = (forces[node1][0] - force * dx / distance, forces[node1][1] - force * dy / distance)
+                forces[node2] = (forces[node2][0] + force * dx / distance, forces[node2][1] + force * dy / distance)
+    
+    # Calculate attractive forces (between connected nodes)
+    for edge in edge_list:
+        node1, node2 = edge
+        x1, y1 = positions[node1]
+        x2, y2 = positions[node2]
+        dx = x2 - x1
+        dy = y2 - y1
+        distance = math.sqrt(dx**2 + dy**2)
+        if distance > 0:
+            force = k * distance
+            forces[node1] = (forces[node1][0] + force * dx / distance, forces[node1][1] + force * dy / distance)
+            forces[node2] = (forces[node2][0] - force * dx / distance, forces[node2][1] - force * dy / distance)
+    
+    # Update positions based on forces
+    for node in nodes:
+        fx, fy = forces[node]
+        x, y = positions[node]
+        positions[node] = (x + fx * dt, y + fy * dt)
+
+# Normalize positions to fit within a unit square
+min_x = min(pos[0] for pos in positions.values())
+max_x = max(pos[0] for pos in positions.values())
+min_y = min(pos[1] for pos in positions.values())
+max_y = max(pos[1] for pos in positions.values())
+
+for node in positions:
+    x, y = positions[node]
+    x = (x - min_x) / (max_x - min_x)
+    y = (y - min_y) / (max_y - min_y)
+    positions[node] = (x, y)
+
+# Output the layout in JSON format
+layout_json = {str(node): {"x": pos[0], "y": pos[1]} for node, pos in positions.items()}
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation:
+1. **Initialization**: The nodes are initialized with random positions within a unit square.
+2. **Force Calculation**:
+   - **Repulsive Forces**: All pairs of nodes repel each other, with the force inversely proportional to the square of the distance between them.
+   - **Attractive Forces**: Connected nodes attract each other, with the force proportional to the distance between them.
+3. **Position Update**: The positions of the nodes are updated based on the calculated forces.
+4. **Normalization**: The positions are normalized to fit within a unit square.
+5. **Output**: The final positions are output in JSON format.
+
+This script provides a basic force-directed layout that should give you a reasonable starting point for visualizing the graph. You can adjust the parameters (`k`, `repulsion_constant`, `iterations`, `dt`) to fine-tune the layout.

@@ -1,0 +1,12 @@
+To determine the shortest path between node '29' and node '19' in the provided linear graph, I note that the graph is essentially a straight line. The shortest path is the difference between the node indices themselves.
+
+The distance between node '29' and node '19' is:
+29 - 19 = 10
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 10
+}
+```

@@ -1,0 +1,38 @@
+Let's denote the two edges as $e_1 = (a, b)$ and $e_2 = (c, d)$. The coordinates of the nodes are given as $a = (x_a, y_a)$, $b = (x_b, y_b)$, $c = (x_c, y_c)$, and $d = (x_d, y_d)$.
+
+In this case, $e_1 = (8, 10)$ and $e_2 = (9, 7)$. The coordinates are:
+$8 = (0.29, -0.24)$
+$10 = (0.5, -0.2)$
+$9 = (0.44, -0.1)$
+$7 = (0.47, -0.27)$
+
+We can represent the edges as line segments. Edge 1 is defined by points $(0.29, -0.24)$ and $(0.5, -0.2)$. Edge 2 is defined by points $(0.44, -0.1)$ and $(0.47, -0.27)$.
+
+To determine if two line segments intersect, we can use the orientation test.  Let's define the orientation of three points $(p_1, p_2, p_3)$ as:
+$orientation(p_1, p_2, p_3) = (y_2 - y_1)(x_3 - x_2) - (x_2 - x_1)(y_3 - y_2)$
+
+If the orientation is 0, the points are collinear. If it's positive, the points are in clockwise order. If it's negative, the points are in counterclockwise order.
+
+Two line segments $(p_1, p_2)$ and $(p_3, p_4)$ intersect if and only if:
+1. $orientation(p_1, p_2, p_3) * orientation(p_1, p_2, p_4) < 0$ and
+2. $orientation(p_3, p_4, p_1) * orientation(p_3, p_4, p_2) < 0$
+
+Let $p_1 = (0.29, -0.24)$, $p_2 = (0.5, -0.2)$, $p_3 = (0.44, -0.1)$, $p_4 = (0.47, -0.27)$.
+
+$orientation(p_1, p_2, p_3) = (-0.2 - (-0.24))(0.44 - 0.5) - (0.5 - 0.29)(-0.1 - (-0.2)) = (0.04)(-0.06) - (0.21)(0.1) = -0.0024 - 0.021 = -0.0234$
+$orientation(p_1, p_2, p_4) = (-0.2 - (-0.24))(0.47 - 0.5) - (0.5 - 0.29)(-0.27 - (-0.2)) = (0.04)(-0.03) - (0.21)(-0.07) = -0.0012 + 0.0147 = 0.0135$
+
+Since $orientation(p_1, p_2, p_3) * orientation(p_1, p_2, p_4) = (-0.0234)(0.0135) < 0$, the first condition is met.
+
+$orientation(p_3, p_4, p_1) = (-0.27 - (-0.1))(0.29 - 0.47) - (0.47 - 0.44)(-0.24 - (-0.27)) = (-0.17)(-0.18) - (0.03)(0.03) = 0.0306 - 0.0009 = 0.0297$
+$orientation(p_3, p_4, p_2) = (-0.27 - (-0.1))(0.5 - 0.47) - (0.47 - 0.44)(-0.2 - (-0.27)) = (-0.17)(0.03) - (0.03)(0.07) = -0.0051 - 0.0021 = -0.0072$
+
+Since $orientation(p_3, p_4, p_1) * orientation(p_3, p_4, p_2) = (0.0297)(-0.0072) < 0$, the second condition is met.
+
+Therefore, the two line segments intersect.
+
+```json
+{
+  "Answer": "Yes"
+}
+```

@@ -1,0 +1,14 @@
+To calculate the highest degree in the graph given in the edge list, we first compute the degree (number of connections) of each node and then find the maximum degree.
+
+Here is the solution:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation:
+- Each node in the graph represents a vertex, and the edges represent connections.
+- Using the edge list, we count how many times each node appears (represents the degree of the node).
+- The node with the maximum number of connections has a degree of 4 in this graph.

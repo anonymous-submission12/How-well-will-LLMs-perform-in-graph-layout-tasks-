@@ -1,0 +1,7 @@
+Without executing a crossing count algorithm, it is impossible to determine which layout has fewer edge crossings. However, based on a visual estimation, layout 1 appears to have fewer crossings.
+
+```json
+{
+"Answer": "1"
+}
+```

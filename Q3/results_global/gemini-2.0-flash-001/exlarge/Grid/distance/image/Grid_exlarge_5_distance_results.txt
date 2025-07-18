@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve graph-theoretic distance. In layout 1, the edges are arranged in a more chaotic manner, making it difficult to visually estimate the shortest path between nodes. Layout 2, on the other hand, has a more structured grid-like arrangement, which makes it easier to visually estimate the number of hops between nodes.
+
+```json
+{
+"Answer": "2"
+}
+```

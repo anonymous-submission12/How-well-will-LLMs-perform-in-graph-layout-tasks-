@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 36, in <module>
+    graph = ig.Graph(edges=edge_list)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/igraph/__init__.py", line 438, in __init__
+    super().__init__(nverts, edges, directed)
+TypeError: only non-negative integers, strings or igraph.Vertex objects can be converted to vertex IDs

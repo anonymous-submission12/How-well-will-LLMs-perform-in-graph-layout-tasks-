@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+Explanation: The graph is a linear chain where each node (except the first and last) is connected to exactly two other nodes. The first node (0) and the last node (24) are connected to only one node. Therefore, the highest degree of any node in this graph is 2.

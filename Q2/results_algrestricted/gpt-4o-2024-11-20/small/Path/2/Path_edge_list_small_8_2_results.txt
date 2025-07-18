@@ -1,0 +1,77 @@
+Below is the Python code to generate a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance. The layout is calculated manually by assigning positions based on the graph-theoretic distance along a straight line.
+
+```python
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a dictionary to store positions
+    positions = {}
+    
+    # Start with the first node at the origin
+    current_position = 0
+    positions[edge_list[0][0]] = (current_position, 0)  # Place the first node at (0, 0)
+    
+    # Iterate through the edges and assign positions
+    for edge in edge_list:
+        node_a, node_b = edge
+        if node_b not in positions:
+            current_position += 1  # Increment position for each new node
+            positions[node_b] = (current_position, 0)  # Place the node along the x-axis
+    
+    # Convert positions to JSON format
+    layout_json = json.dumps(positions, indent=4)
+    return layout_json
+
+# Input graph data
+edge_list = [
+    (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16),
+    (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23),
+    (23, 24), (24, 25), (25, 26), (26, 27)
+]
+
+# Generate layout
+graph_layout = generate_graph_layout(edge_list)
+
+# Print the layout in JSON format
+print(graph_layout)
+```
+
+### Explanation:
+1. **Position Assignment**: Each node is placed along the x-axis at integer intervals. The Euclidean distance between consecutive nodes matches the graph-theoretic distance (1 unit per edge).
+2. **Output Format**: The positions are returned as a JSON object where keys are node IDs and values are tuples representing `(x, y)` coordinates.
+3. **Straight Line Layout**: The graph is laid out in a straight line to ensure consistency between Euclidean and graph-theoretic distances.
+
+### Example Output:
+```json
+{
+    "0": [0, 0],
+    "1": [1, 0],
+    "2": [2, 0],
+    "3": [3, 0],
+    "4": [4, 0],
+    "5": [5, 0],
+    "6": [6, 0],
+    "7": [7, 0],
+    "8": [8, 0],
+    "9": [9, 0],
+    "10": [10, 0],
+    "11": [11, 0],
+    "12": [12, 0],
+    "13": [13, 0],
+    "14": [14, 0],
+    "15": [15, 0],
+    "16": [16, 0],
+    "17": [17, 0],
+    "18": [18, 0],
+    "19": [19, 0],
+    "20": [20, 0],
+    "21": [21, 0],
+    "22": [22, 0],
+    "23": [23, 0],
+    "24": [24, 0],
+    "25": [25, 0],
+    "26": [26, 0],
+    "27": [27, 0]
+}
+```

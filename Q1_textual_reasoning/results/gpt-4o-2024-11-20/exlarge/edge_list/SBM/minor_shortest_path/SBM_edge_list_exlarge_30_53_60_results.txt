@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes '53' and '60' given an edge list, we'll leverage the Breadth-First Search (BFS) algorithm—commonly used to find the shortest path in unweighted graphs. Here's the result:
+
+```json
+{
+  "answer": 3
+}
+```
+
+Explanation: The shortest path from node '53' to node '60' traverses through nodes:
+
+53 → 63 → 60
+
+This path consists of 3 nodes, resulting in a shortest path length of 2 edges.

@@ -1,0 +1,11 @@
+The graph given is a linear chain. The shortest path between two nodes in such a graph is the difference in their indices since each edge has an equal length of 1.
+
+In this case, the shortest path between node `21` and node `36` is simply `36 - 21 = 15`.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 15
+}
+```

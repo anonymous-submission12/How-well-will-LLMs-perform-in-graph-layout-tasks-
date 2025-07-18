@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes "19" and "22" in the given graph, I will use a breadth-first search (BFS) algorithm since it is efficient for finding the shortest path in an unweighted graph, such as the adjacency list provided.
+
+The shortest path length between "19" and "22" is as follows:
+
+```json
+{
+  "answer": 1
+}
+```

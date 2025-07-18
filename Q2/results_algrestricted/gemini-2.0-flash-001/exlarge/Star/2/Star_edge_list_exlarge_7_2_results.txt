@@ -1,0 +1,126 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Identify Nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    num_nodes = len(nodes)
+
+    # 2. Initialize Layout (Circular Layout as a Starting Point)
+    layout = {}
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = math.cos(angle)
+        y = math.sin(angle)
+        layout[node] = (x, y)
+
+    # 3. Iterative Refinement (Force-Directed Approach)
+    iterations = 100  # Adjust as needed
+    repulsion_strength = 0.1
+    attraction_strength = 0.05
+    damping = 0.5
+
+    for _ in range(iterations):
+        forces = {}
+        for node in nodes:
+            forces[node] = [0.0, 0.0]  # Initialize force vector
+
+        # 3.1 Repulsion Forces (between all nodes)
+        for i in range(num_nodes):
+            for j in range(i + 1, num_nodes):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                pos1 = layout[node1]
+                pos2 = layout[node2]
+                
+                dx = pos2[0] - pos1[0]
+                dy = pos2[1] - pos1[1]
+                distance = math.sqrt(dx**2 + dy**2)
+
+                if distance == 0:
+                    # Add a small offset to avoid division by zero
+                    distance = 0.01
+                    dx = 0.01
+                    dy = 0.01
+
+                repulsion_force = repulsion_strength / distance**2  # Inverse square law
+                
+                # Calculate force components
+                fx = repulsion_force * (dx / distance)
+                fy = repulsion_force * (dy / distance)
+
+                # Apply forces in opposite directions
+                forces[node1][0] -= fx
+                forces[node1][1] -= fy
+                forces[node2][0] += fx
+                forces[node2][1] += fy
+
+        # 3.2 Attraction Forces (between connected nodes)
+        for edge in edge_list:
+            node1 = edge[0]
+            node2 = edge[1]
+            pos1 = layout[node1]
+            pos2 = layout[node2]
+
+            dx = pos2[0] - pos1[0]
+            dy = pos2[1] - pos1[1]
+            distance = math.sqrt(dx**2 + dy**2)
+
+            attraction_force = attraction_strength * distance  # Linear force
+
+            # Calculate force components
+            fx = attraction_force * (dx / distance) if distance > 0 else 0
+            fy = attraction_force * (dy / distance) if distance > 0 else 0
+
+            # Apply forces in opposite directions
+            forces[node1][0] += fx
+            forces[node1][1] += fy
+            forces[node2][0] -= fx
+            forces[node2][1] -= fy
+
+        # 3.3 Update Positions
+        for node in nodes:
+            layout[node] = (
+                layout[node][0] + forces[node][0] * damping,
+                layout[node][1] + forces[node][1] * damping,
+            )
+
+    # 4. Normalize Layout (Scale to fit within -1 to 1 range)
+    min_x = min(layout[node][0] for node in nodes)
+    max_x = max(layout[node][0] for node in nodes)
+    min_y = min(layout[node][1] for node in nodes)
+    max_y = max(layout[node][1] for node in nodes)
+
+    width = max_x - min_x
+    height = max_y - min_y
+
+    for node in nodes:
+        x = (layout[node][0] - min_x) / width * 2 - 1 if width > 0 else 0
+        y = (layout[node][1] - min_y) / height * 2 - 1 if height > 0 else 0
+        layout[node] = (x, y)
+
+    return layout
+
+
+# Example Usage:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (0, 41), (0, 42), (0, 43), (0, 44), (0, 45), (0, 46), (0, 47), (0, 48), (0, 49), (0, 50), (0, 51), (0, 52), (0, 53), (0, 54), (0, 55), (0, 56), (0, 57), (0, 58), (0, 59), (0, 60), (0, 61), (0, 62), (0, 63), (0, 64), (0, 65), (0, 66), (0, 67), (0, 68), (0, 69), (0, 70), (0, 71), (0, 72), (0, 73), (0, 74), (0, 75), (0, 76)]
+layout = layout_graph(edge_list)
+print(json.dumps(layout, indent=4))
+```

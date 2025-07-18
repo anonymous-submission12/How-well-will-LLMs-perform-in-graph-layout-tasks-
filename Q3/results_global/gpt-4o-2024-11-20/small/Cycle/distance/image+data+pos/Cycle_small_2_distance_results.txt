@@ -1,0 +1,15 @@
+To determine which layout better preserves graph-theoretic distance, we compare whether the Euclidean distance between node pairs in each layout reflects the graph distance (number of edges between nodes).
+
+### Observation:
+1. **Image 1:** The graph's node coordinates are spread out without clear adherence to the graph's sequential structure. Nodes that are close in graph topology (e.g., neighbors like `(1, 2)`) do not appear as close in Euclidean distance.
+2. **Image 2:** The graph has been arranged into a loop preserving the sequential structure, where nodes close in graph topology are also nearly equidistant in Euclidean space. This layout better reflects graph-theoretic distances.
+
+### Conclusion:
+**Answer 2** better preserves graph-theoretic distance. 
+
+### JSON Output:
+```json
+{
+  "Answer": 2
+}
+```

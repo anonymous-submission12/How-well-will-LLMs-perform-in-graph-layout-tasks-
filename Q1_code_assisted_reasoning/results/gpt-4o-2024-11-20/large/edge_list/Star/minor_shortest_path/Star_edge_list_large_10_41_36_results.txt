@@ -1,0 +1,12 @@
+```python
+import networkx as nx
+
+# Define the graph using edge list
+edge_list = [(0, i) for i in range(1, 50)]
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Calculate the shortest path length between node '41' and '36'
+shortest_path_length = nx.shortest_path_length(G, source=41, target=36)
+print(shortest_path_length)
+```

@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '62' and '30' in the provided graph, we can treat the graph as an unweighted graph and use Breadth-First Search (BFS). Here's the solution:
+
+```json
+{
+  "answer": 15
+}
+``` 
+
+Thus, the shortest path length is `15`.

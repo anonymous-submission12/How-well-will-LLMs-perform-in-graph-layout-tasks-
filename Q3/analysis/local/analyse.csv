@@ -1,0 +1,7 @@
+Model-Modality,community,distance,edge
+gemini-2.0-flash-001-data+pos,1.0,1.0,0.5
+gemini-2.0-flash-001-image,1.0,1.0,1.0
+gemini-2.0-flash-001-image+data+pos,1.0,1.0,1.0
+gpt-4o-2024-11-20-data+pos,0.9,1.0,0.4
+gpt-4o-2024-11-20-image,0.7,1.0,1.0
+gpt-4o-2024-11-20-image+data+pos,0.9,1.0,1.0

@@ -1,0 +1,9 @@
+To determine which layout better preserves graph-theoretic distance, one must compare spatial relationships between nodes in the two images and assess if these align with the graph-theoretic distances (shortest path or number of edges between nodes).
+
+The second layout aligns better with graph-theoretic distance, as it visually separates clusters and spaces them proportionately to their connectivity. Unlike the first layout, it reduces overlap and preserves structural relationships with clearer distances.
+
+```json
+{
+  "Answer": 2
+}
+```

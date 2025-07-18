@@ -1,0 +1,11 @@
+To calculate the shortest path between nodes '14' and '16' in an unweighted graph, we can use the Breadth First Search (BFS) algorithm. Given the adjacency list, let's compute the shortest path.
+
+Analyzing the adjacency list provided, nodes '14' and '16' are directly connected. So, the shortest path length is 1.
+
+Here's the JSON-encoded response:
+
+```json
+{
+  "answer": 1
+}
+```

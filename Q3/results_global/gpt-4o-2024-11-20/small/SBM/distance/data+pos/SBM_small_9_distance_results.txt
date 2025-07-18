@@ -1,0 +1,9 @@
+To determine which graph layout better preserves graph-theoretic distance, we compare the Euclidean distances between node pairs in the given layouts with the shortest path distances in the graph. The layout that has smaller deviations from graph-theoretic distances is preferable.
+
+After computing and analyzing the deviations for both layouts:
+
+```json
+{
+  "Answer": 1
+}
+```

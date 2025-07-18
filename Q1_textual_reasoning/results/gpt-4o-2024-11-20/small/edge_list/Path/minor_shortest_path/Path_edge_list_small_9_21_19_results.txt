@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '21' and '19', we can observe that the graph is a simple linear chain. The shortest path is the direct path along the chain, and the distance is the absolute difference between the node numbers.
+
+The shortest path length between node '21' and '19' is:
+
+\[
+|21 - 19| = 2
+\]
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

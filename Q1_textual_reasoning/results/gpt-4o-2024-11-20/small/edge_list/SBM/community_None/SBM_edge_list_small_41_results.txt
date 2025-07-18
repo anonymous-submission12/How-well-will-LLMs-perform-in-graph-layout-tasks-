@@ -1,0 +1,7 @@
+To determine the number of communities in the graph represented as an edge list, we can use the connected components of the graph. Based on the given edge list, here’s the calculated number of communities:
+
+```json
+{
+  "answer": 4
+}
+```

@@ -1,0 +1,9 @@
+To determine the number of communities in the graph provided in adjacency list format, we need to compute the connected components of the graph. Each connected component represents a community.
+
+Here is the number of communities calculated for the given graph:
+
+```json
+{
+  "answer": 3
+}
+```

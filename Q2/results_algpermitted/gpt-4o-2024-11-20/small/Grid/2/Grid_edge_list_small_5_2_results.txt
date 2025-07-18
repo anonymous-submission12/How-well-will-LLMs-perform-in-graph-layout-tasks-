@@ -1,0 +1,39 @@
+Here is the Python script to generate a layout for the given graph. The script uses the `networkx` library to create the graph and applies the `spring_layout` function to ensure consistency between Euclidean distances and graph-theoretic distances. Finally, the layout is serialized into JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Graph edge list
+edge_list = [
+    (0, 1), (0, 6), (1, 2), (1, 7), (2, 3), (2, 8), (3, 4), (3, 9),
+    (4, 5), (4, 10), (5, 11), (6, 7), (6, 12), (7, 8), (7, 13),
+    (8, 9), (8, 14), (9, 10), (9, 15), (10, 11), (10, 16), (11, 17),
+    (12, 13), (12, 18), (13, 14), (13, 19), (14, 15), (14, 20),
+    (15, 16), (15, 21), (16, 17), (16, 22), (17, 23), (18, 19),
+    (18, 24), (19, 20), (19, 25), (20, 21), (20, 26), (21, 22),
+    (21, 27), (22, 23), (22, 28), (23, 29), (24, 25), (25, 26),
+    (26, 27), (27, 28), (28, 29)
+]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Calculate the layout using spring layout
+layout = nx.spring_layout(G)
+
+# Convert positions to JSON serializable format
+layout_json = {node: list(pos) for node, pos in layout.items()}
+
+# Output the layout in JSON format
+print(json.dumps(layout_json, indent=2))
+```
+
+### How It Works:
+1. **Input the Edge List**: The graph is created based on the input edge list using the `networkx.Graph` data structure.
+2. **Spring Layout Algorithm**: The `spring_layout` function computes the positions of the nodes, ensuring consistency between the graph-theoretic distance (shortest path length) and the Euclidean distance.
+3. **JSON Serialization**: The calculated positions are transformed into a JSON-serializable dictionary where the node numbers are keys and their positions are values (lists of coordinates).
+4. **Output**: The layout is printed as a JSON string with indents for readability.
+
+You can run this script, and the output will be a JSON representation of the graph layout. This layout can be used for other purposes such as visualization in external tools.

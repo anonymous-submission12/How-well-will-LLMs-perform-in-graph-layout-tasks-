@@ -1,0 +1,4 @@
+To determine which layout has fewer edge crossings, I would need to analyze the graphical representation of edges given their coordinates in each layout. Edge crossings occur when two edges in a graph intersect at a point other than their vertices. Now analyzing both coordinates provided could be computationally tedious, so automation or specialized tools would help best.
+
+However based on comparing **result data manually constraints aren't solved from layout  
+

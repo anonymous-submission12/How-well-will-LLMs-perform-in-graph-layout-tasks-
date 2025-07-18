@@ -1,0 +1,132 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Determine the nodes in the graph.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # 2. Initialize node positions.  Start with a simple linear layout.
+    layout = {}
+    num_nodes = len(nodes)
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = math.cos(angle) * i
+        y = math.sin(angle) * i
+        layout[node] = (x, y)
+
+    # 3. Iteratively adjust node positions to minimize stress.
+    #    Stress is defined as the difference between graph-theoretic distance
+    #    and Euclidean distance.
+
+    def graph_theoretic_distance(node1, node2, edges):
+        """Calculates the shortest path distance between two nodes."""
+        distances = {node: float('inf') for node in nodes}
+        distances[node1] = 0
+        queue = [node1]
+
+        while queue:
+            u = queue.pop(0)
+            for v1, v2 in edges:
+                if v1 == u:
+                    v = v2
+                elif v2 == u:
+                    v = v1
+                else:
+                    continue
+
+                if distances[v] == float('inf'):
+                    distances[v] = distances[u] + 1
+                    queue.append(v)
+
+        return distances[node2]
+
+    def euclidean_distance(node1, node2, layout):
+        """Calculates the Euclidean distance between two nodes."""
+        x1, y1 = layout[node1]
+        x2, y2 = layout[node2]
+        return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+    def calculate_stress(layout, edges):
+        """Calculates the stress of the layout."""
+        stress = 0
+        for i in range(len(nodes)):
+            for j in range(i + 1, len(nodes)):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                d_graph = graph_theoretic_distance(node1, node2, edges)
+                d_euclidean = euclidean_distance(node1, node2, layout)
+                stress += (d_graph - d_euclidean)**2
+        return stress
+
+    def adjust_layout(layout, edges, learning_rate=0.001):
+        """Adjusts the layout to reduce stress."""
+        for node in nodes:
+            force_x = 0
+            force_y = 0
+            for other_node in nodes:
+                if node == other_node:
+                    continue
+
+                d_graph = graph_theoretic_distance(node, other_node, edges)
+                d_euclidean = euclidean_distance(node, other_node, layout)
+
+                x1, y1 = layout[node]
+                x2, y2 = layout[other_node]
+
+                # Calculate force components based on stress gradient
+                force_x += (d_graph - d_euclidean) * (x1 - x2) / d_euclidean
+                force_y += (d_graph - d_euclidean) * (y1 - y2) / d_euclidean
+
+            # Update node position based on calculated forces
+            layout[node] = (x1 - learning_rate * force_x, y1 - learning_rate * force_y)
+        return layout
+
+    # Iteratively refine the layout
+    num_iterations = 100
+    for _ in range(num_iterations):
+        layout = adjust_layout(layout, edge_list)
+
+    # Normalize the layout to fit within a reasonable range (e.g., -1 to 1)
+    min_x = min(x for x, y in layout.values())
+    max_x = max(x for x, y in layout.values())
+    min_y = min(y for x, y in layout.values())
+    max_y = max(y for x, y in layout.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1
+    if y_range == 0:
+        y_range = 1
+
+    normalized_layout = {}
+    for node, (x, y) in layout.items():
+        normalized_x = 2 * (x - min_x) / x_range - 1
+        normalized_y = 2 * (y - min_y) / y_range - 1
+        normalized_layout[node] = (normalized_x, normalized_y)
+
+    return normalized_layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 72), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72)]
+layout = layout_graph(edge_list)
+print(json.dumps(layout, indent=4))
+```

@@ -1,0 +1,20 @@
+```python
+def classify_graph(edge_list):
+    # Extract nodes set and remove duplicates
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    num_nodes = len(nodes)
+    
+    # Count the edges
+    num_edges = len(edge_list)
+    
+    # Check for complete graph. A complete graph must have n(n-1)/2 edges.
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    return "Not Complete"
+
+edge_list = [(0, 1),......From prompt
+print(classify_graph(edge_list))
+```

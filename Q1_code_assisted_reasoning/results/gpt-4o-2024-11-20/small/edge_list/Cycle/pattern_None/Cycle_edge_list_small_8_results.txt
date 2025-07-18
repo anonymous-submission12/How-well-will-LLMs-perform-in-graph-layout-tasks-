@@ -1,0 +1,61 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 27), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+             (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), 
+             (25, 26), (26, 27)]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check for patterns
+def determine_graph_pattern(G):
+    nodes = G.number_of_nodes()
+    edges = G.number_of_edges()
+    degrees = [deg for _, deg in G.degree()]
+    
+    # Check for Star
+    if degrees.count(nodes - 1) == 1 and degrees.count(1) == nodes - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if edges == nodes and nx.is_connected(G) and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for Path
+    if edges == nodes - 1 and nx.is_connected(G) and degrees.count(1) == 2 and degrees.count(2) == nodes - 2:
+        return "Path"
+    
+    # Check for Grid
+    # A grid graph has a specific structure, so we use nx.grid_2d_graph to compare
+    if nx.is_connected(G):
+        try:
+            rows, cols = 1, nodes  # Start with a single row
+            while rows * cols < nodes:
+                rows += 1
+                cols = nodes // rows
+            if rows * cols == nodes:
+                grid_graph = nx.grid_2d_graph(rows, cols)
+                if nx.is_isomorphic(G, grid_graph):
+                    return "Grid"
+        except:
+            pass
+    
+    # Check for Complete
+    if edges == nodes * (nodes - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered Graph
+    # A clustered graph typically has communities with dense connections within them
+    if nx.algorithms.community.quality.modularity(G, nx.algorithms.community.greedy_modularity_communities(G)) > 0.3:
+        return "Clustered Graph"
+    
+    # Otherwise, assume Random Graph
+    return "Random Graph"
+
+# Determine the pattern
+print(determine_graph_pattern(G))
+```

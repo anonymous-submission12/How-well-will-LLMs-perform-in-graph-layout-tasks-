@@ -1,0 +1,77 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The script uses a custom force-directed algorithm to compute the positions of the nodes.
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+# Input graph as edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 6), (0, 7), (0, 9), (0, 10), (1, 2), (1, 3), (1, 5), (1, 8), (1, 9), (1, 10), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 10), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (3, 18), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (5, 6), (5, 9), (5, 10), (6, 7), (6, 9), (6, 20), (7, 8), (7, 9), (7, 10), (8, 9), (8, 10), (9, 20), (11, 12), (11, 13), (11, 14), (11, 17), (11, 18), (11, 19), (11, 20), (12, 13), (12, 14), (12, 15), (12, 16), (12, 18), (12, 19), (13, 14), (13, 15), (13, 17), (13, 19), (13, 20), (14, 15), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 18), (15, 19), (16, 17), (16, 18), (16, 19), (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (19, 20)]
+
+# Build adjacency list
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Initialize positions randomly
+positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in graph}
+
+# Parameters for the force-directed algorithm
+num_iterations = 1000
+learning_rate = 0.01
+repulsion_constant = 1.0
+attraction_constant = 0.1
+
+# Helper function to compute Euclidean distance
+def euclidean_distance(pos1, pos2):
+    return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+# Force-directed layout algorithm
+for _ in range(num_iterations):
+    # Initialize forces
+    forces = {node: [0, 0] for node in graph}
+    
+    # Compute repulsive forces
+    for node1 in graph:
+        for node2 in graph:
+            if node1 != node2:
+                pos1, pos2 = positions[node1], positions[node2]
+                dist = euclidean_distance(pos1, pos2)
+                if dist > 0:
+                    repulsive_force = repulsion_constant / dist**2
+                    forces[node1][0] += repulsive_force * (pos1[0] - pos2[0]) / dist
+                    forces[node1][1] += repulsive_force * (pos1[1] - pos2[1]) / dist
+    
+    # Compute attractive forces
+    for node1 in graph:
+        for node2 in graph[node1]:
+            pos1, pos2 = positions[node1], positions[node2]
+            dist = euclidean_distance(pos1, pos2)
+            attractive_force = attraction_constant * (dist**2)
+            forces[node1][0] -= attractive_force * (pos1[0] - pos2[0]) / dist
+            forces[node1][1] -= attractive_force * (pos1[1] - pos2[1]) / dist
+    
+    # Update positions based on forces
+    for node in graph:
+        positions[node] = (
+            positions[node][0] + learning_rate * forces[node][0],
+            positions[node][1] + learning_rate * forces[node][1]
+        )
+
+# Output the final layout in JSON format
+layout = {node: {"x": positions[node][0], "y": positions[node][1]} for node in positions}
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list for efficient traversal.
+2. **Random Initialization**: Node positions are initialized randomly in a 2D space.
+3. **Force-Directed Algorithm**:
+   - **Repulsive Forces**: Nodes repel each other based on the inverse square of their distance.
+   - **Attractive Forces**: Connected nodes attract each other based on the square of their distance.
+4. **Position Updates**: Node positions are updated iteratively based on the computed forces.
+5. **Output**: The final layout is output in JSON format, where each node has `x` and `y` coordinates.
+
+This script avoids using any existing graph layout algorithms and provides a custom implementation.

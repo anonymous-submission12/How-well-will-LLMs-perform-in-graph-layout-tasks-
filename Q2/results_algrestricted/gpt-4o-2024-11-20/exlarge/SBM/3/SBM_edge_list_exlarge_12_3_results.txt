@@ -1,0 +1,38 @@
+Below is the Python script to generate a graph layout that minimizes edge crossings without using existing graph layout algorithms. The script uses a heuristic approach to assign positions to nodes based on their connectivity and attempts to reduce edge crossings.
+
+```python
+import json
+import random
+
+def generate_graph_layout(edge_list):
+    # Extract all nodes from the edge list
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+
+    # Initialize positions dictionary
+    positions = {node: (0, 0) for node in nodes}
+
+    # Calculate node degrees
+    node_degrees = {node: 0 for node in nodes}
+    for edge in edge_list:
+        node_degrees[edge[0]] += 1
+        node_degrees[edge[1]] += 1
+
+    # Sort nodes by degree (highest degree first)
+    sorted_nodes = sorted(nodes, key=lambda x: node_degrees[x], reverse=True)
+
+    # Place the highest degree node at the center
+    center_node = sorted_nodes[0]
+    positions[center_node] = (0, 0)
+
+    # Place other nodes around the center node
+    angle_step = 360 / len(nodes)
+    radius_step = 10
+    current_radius = radius_step
+
+    for i, node in enumerate(sorted_nodes[1:], start=1):
+        angle = i * angle_step
+        x = current_radius * random.uniform(0.8, 1.2) * (1 if i % 2 == 0 else -1)
+        y = current_radius * random.uniform(0.8, 1.2) * (1 if i % 3 == 0 else -1)

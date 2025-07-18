@@ -1,0 +1,9 @@
+```python
+def identify_graph(adj_list):
+    # Check for Cycle pattern
+    if all(len(adj_list[node]) == 2 for node in adj_list) and len(adj_list) == len(adj_list) + sum(len(adj_list[node]) - 2 for node in adj_list) // 2:
+        return "Cycle"
+    return "Unknown"
+
+adj_list = {0: [1, 42], 1: [0], 42 [!!
+

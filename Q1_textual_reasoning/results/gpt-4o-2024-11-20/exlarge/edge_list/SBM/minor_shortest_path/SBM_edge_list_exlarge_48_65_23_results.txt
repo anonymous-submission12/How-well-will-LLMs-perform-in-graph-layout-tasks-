@@ -1,0 +1,9 @@
+To solve the problem of finding the shortest path between nodes `65` and `23`, we can represent this as a graph traversal task. Using BFS (Breadth-First Search) is an efficient method to calculate the shortest path in an unweighted graph like this.
+
+Here is the solution and the final answer:
+
+```json
+{
+  "answer": 6
+}
+```

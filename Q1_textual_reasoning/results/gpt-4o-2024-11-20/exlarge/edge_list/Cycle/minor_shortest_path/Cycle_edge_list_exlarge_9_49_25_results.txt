@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes `49` and `25` in the given graph, we can observe that the graph is a linear chain of nodes. The shortest path between two nodes in such a graph is simply the absolute difference between their indices.
+
+Here, the shortest path length is:
+
+\[
+\text{Shortest Path Length} = |49 - 25| = 24
+\]
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 24
+}
+```

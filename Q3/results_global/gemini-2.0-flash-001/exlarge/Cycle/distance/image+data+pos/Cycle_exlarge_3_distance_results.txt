@@ -1,0 +1,7 @@
+The graph data represents a path. Layout 2 arranges the nodes in a sequential manner, which closely reflects the graph-theoretic distance. Layout 1 has many edges crossing each other, which means nodes that are far apart in the graph are placed close to each other in the layout. Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

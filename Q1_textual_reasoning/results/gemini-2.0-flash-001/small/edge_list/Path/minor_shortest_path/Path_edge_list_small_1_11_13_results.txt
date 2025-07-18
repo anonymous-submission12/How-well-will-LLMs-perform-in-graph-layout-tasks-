@@ -1,0 +1,7 @@
+The graph is a simple linear chain. The path from node 11 to node 13 is direct: 11 -> 12 -> 13. Therefore, the shortest path length is 2.
+
+```json
+{
+"answer": 2
+}
+```

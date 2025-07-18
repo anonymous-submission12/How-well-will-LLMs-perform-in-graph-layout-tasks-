@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve graph-theoretic distance. In layout 1, many edges cross, suggesting that nodes that are far apart in the graph are placed close together in the layout. Layout 2 has fewer edge crossings and a more uniform distribution of nodes, suggesting that nodes that are close in the graph are also close in the layout, and vice versa.
+
+```json
+{
+"Answer": 2
+}
+```

@@ -1,0 +1,63 @@
+Below is the Python code that uses the `networkx` library for graph construction, applies the Louvain method using the `community-louvain` library for community detection, and then generates a layout for the graph while keeping the community structure clear. The final result is output in JSON format with positions for the nodes.
+
+```python
+import networkx as nx
+import community  # Also known as community-louvain
+import json
+
+# Input edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 7), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), 
+    (1, 2), (1, 5), (1, 6), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), 
+    (2, 3), (2, 6), (2, 7), (2, 9), (2, 11), (2, 12), (2, 13), (3, 4), (3, 6), 
+    (3, 7), (3, 8), (3, 11), (3, 13), (4, 5), (4, 6), (4, 8), (4, 9), (4, 10), 
+    (4, 11), (5, 6), (5, 7), (5, 9), (5, 10), (5, 11), (5, 12), (5, 13), (6, 7), 
+    (6, 8), (6, 10), (6, 11), (6, 12), (6, 13), (7, 8), (7, 9), (7, 11), (7, 12), 
+    (8, 9), (8, 10), (8, 11), (8, 12), (8, 13), (9, 10), (9, 12), (9, 13), (10, 11), 
+    (10, 12), (10, 13), (11, 13), (11, 22), (12, 13), (14, 16), (14, 17), (14, 18), 
+    (14, 19), (14, 20), (14, 21), (14, 25), (14, 26), (15, 16), (15, 19), (15, 21), 
+    (15, 23), (15, 25), (15, 26), (16, 17), (16, 18), (16, 19), (16, 20), (16, 21), 
+    (16, 23), (16, 25), (16, 26), (17, 18), (17, 19), (17, 20), (17, 21), (17, 25), 
+    (17, 26), (18, 19), (18, 21), (18, 22), (18, 23), (18, 25), (18, 26), (19, 20), 
+    (19, 22), (19, 24), (19, 25), (19, 26), (20, 22), (20, 23), (20, 26), (21, 22), 
+    (21, 23), (21, 25), (21, 26), (22, 23), (22, 25), (22, 26), (23, 24), (23, 25), 
+    (23, 26), (24, 25)
+]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Perform community detection
+partition = community.best_partition(G)
+
+# Assign a layout, ensuring community structure is preserved
+# Use the community information to assign positions
+pos = nx.spring_layout(G, k=0.1, seed=42)  # Spring layout
+
+# Adjust positions to separate communities
+community_offsets = {}
+for node, comm in partition.items():
+    if comm not in community_offsets:
+        # Assign an offset for each community
+        community_offsets[comm] = (comm * 2.0, comm * 2.0)
+
+# Apply the offsets to the layout positions
+for node, comm in partition.items():
+    offset = community_offsets[comm]
+    pos[node] = (pos[node][0] + offset[0], pos[node][1] + offset[1])
+
+# Output the layout in JSON format
+layout_json = {node: {"x": coord[0], "y": coord[1]} for node, coord in pos.items()}
+print(json.dumps({"layout": layout_json}, indent=4))
+```
+
+### Installation Notes:
+- The script uses the `networkx` library for graph representation and layout calculation.
+- It uses the `community-louvain` library for community detection (install using `pip install python-louvain`).
+
+### Explanation:
+1. **Graph Construction**: The graph is constructed using the input edge list.
+2. **Community Detection**: Louvain community detection is applied to divide the graph into communities.
+3. **Layout Calculation**: A `spring_layout` is computed using `networkx`. Community offsets are applied to separate positions based on community structure.
+4. **Output**: The final layout is converted into JSON format for easy consumption.

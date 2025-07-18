@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 1
+    No valid code block.
+       ^^^^^
+SyntaxError: invalid syntax

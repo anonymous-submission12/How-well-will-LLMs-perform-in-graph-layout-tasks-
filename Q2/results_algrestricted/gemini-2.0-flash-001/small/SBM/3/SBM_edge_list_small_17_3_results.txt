@@ -1,0 +1,104 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This implementation uses a simple force-based layout algorithm.  It's not
+    guaranteed to be optimal, but it's a reasonable starting point without
+    relying on existing graph layout libraries.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple contains the node indices (integers).
+
+    Returns:
+        A dictionary where keys are node indices and values are (x, y) coordinates.
+        The layout is returned in JSON format.
+    """
+
+    # 1. Initialize node positions randomly.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    positions = {node: (0.1 * (node % 6), 0.1 * (node // 6)) for node in nodes}  # Initial positions
+
+    # 2. Define parameters for the force-directed layout.
+    k = 0.5  # Ideal edge length
+    repulsion_strength = 1.0
+    attraction_strength = 0.5
+    damping = 0.8
+    iterations = 500
+
+    # 3. Iterate to refine the layout.
+    for _ in range(iterations):
+        forces = {node: [0.0, 0.0] for node in nodes}
+
+        # Calculate repulsive forces between all pairs of nodes.
+        for i in nodes:
+            for j in nodes:
+                if i != j:
+                    dx = positions[i][0] - positions[j][0]
+                    dy = positions[i][1] - positions[j][1]
+                    distance = (dx**2 + dy**2)**0.5
+                    if distance == 0:
+                        distance = 0.01  # Avoid division by zero
+                        dx = 0.01
+                        dy = 0.01
+
+                    repulsion = repulsion_strength * (k**2) / distance
+                    forces[i][0] += repulsion * dx / distance
+                    forces[i][1] += repulsion * dy / distance
+
+        # Calculate attractive forces between connected nodes.
+        for u, v in edge_list:
+            dx = positions[v][0] - positions[u][0]
+            dy = positions[v][1] - positions[u][1]
+            distance = (dx**2 + dy**2)**0.5
+            attraction = attraction_strength * (distance**2) / k
+            forces[u][0] += attraction * dx / distance
+            forces[u][1] += attraction * dy / distance
+            forces[v][0] -= attraction * dx / distance
+            forces[v][1] -= attraction * dy / distance
+
+        # Update node positions based on the calculated forces.
+        for node in nodes:
+            positions[node] = (
+                positions[node][0] + damping * forces[node][0],
+                positions[node][1] + damping * forces[node][1],
+            )
+
+    # Normalize positions to be within 0 and 1
+    min_x = min(x for x, y in positions.values())
+    max_x = max(x for x, y in positions.values())
+    min_y = min(y for x, y in positions.values())
+    max_y = max(y for x, y in positions.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1
+    if y_range == 0:
+        y_range = 1
+
+    normalized_positions = {
+        node: (
+            (x - min_x) / x_range,
+            (y - min_y) / y_range,
+        )
+        for node, (x, y) in positions.items()
+    }
+
+    return json.dumps(normalized_positions, indent=4)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 3), (0, 5), (0, 6), (0, 7), (0, 9), (0, 22), (1, 2), (1, 3), (1, 4), (1, 5), (1, 7), (1, 8), (1, 9), (1, 19), (2, 3), (2, 4), (2, 6), (2, 7), (2, 8), (2, 9), (2, 24), (3, 5), (3, 7), (3, 9), (4, 5), (4, 6), (4, 8), (4, 9), (4, 15), (5, 6), (5, 7), (5, 9), (6, 7), (6, 8), (6, 9), (7, 9), (8, 9), (10, 11), (10, 12), (10, 13), (10, 14), (10, 15), (10, 16), (10, 17), (11, 12), (11, 13), (11, 14), (11, 15), (11, 16), (11, 17), (11, 18), (12, 13), (12, 14), (12, 16), (12, 17), (12, 18), (13, 14), (13, 15), (13, 16), (13, 18), (14, 16), (14, 18), (15, 18), (16, 17), (16, 18), (19, 20), (19, 21), (19, 22), (19, 23), (19, 24), (19, 25), (19, 26), (20, 21), (20, 22), (20, 23), (20, 24), (20, 25), (20, 27), (21, 22), (21, 23), (21, 24), (21, 25), (21, 27), (22, 24), (22, 25), (22, 26), (23, 24), (23, 25), (23, 26), (24, 25), (24, 26), (24, 27), (25, 26), (25, 27), (26, 27)]
+graph_layout_json = layout_graph(edge_list)
+print(graph_layout_json)
+```

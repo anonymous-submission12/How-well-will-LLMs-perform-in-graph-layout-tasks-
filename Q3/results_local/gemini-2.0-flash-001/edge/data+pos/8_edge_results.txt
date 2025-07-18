@@ -1,0 +1,55 @@
+To determine if two line segments intersect, we can use the orientation method.  Given two line segments AB and CD, we can check if they intersect by checking the orientations of the following triplets of points:
+
+1.  A, B, C
+2.  A, B, D
+3.  C, D, A
+4.  C, D, B
+
+If the orientations of (A, B, C) and (A, B, D) are different, and the orientations of (C, D, A) and (C, D, B) are different, then the line segments intersect.
+
+The orientation of three points (p, q, r) can be determined by the sign of the following determinant:
+
+(q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x)
+
+If the determinant is positive, the orientation is counterclockwise (or left turn). If it's negative, the orientation is clockwise (or right turn). If it's zero, the points are collinear.
+
+Let's apply this to the given data:
+
+Edge 1: (46, 60)
+Edge 2: (52, 61)
+
+Coordinates:
+46: (-0.62, 0.53)
+60: (-0.63, 0.62)
+52: (-0.4, 0.69)
+61: (-0.75, 0.54)
+
+Let A = 46, B = 60, C = 52, D = 61
+
+1. Orientation(A, B, C):
+   (-0.63 - (-0.62)) * (0.69 - 0.53) - (0.62 - 0.53) * (-0.4 - (-0.62))
+   (-0.01) * (0.16) - (0.09) * (0.22)
+   -0.0016 - 0.0198 = -0.0214  (Negative)
+
+2. Orientation(A, B, D):
+   (-0.63 - (-0.62)) * (0.54 - 0.53) - (0.62 - 0.53) * (-0.75 - (-0.62))
+   (-0.01) * (0.01) - (0.09) * (-0.13)
+   -0.0001 + 0.0117 = 0.0116 (Positive)
+
+3. Orientation(C, D, A):
+   (-0.75 - (-0.4)) * (0.53 - 0.69) - (0.54 - 0.69) * (-0.62 - (-0.4))
+   (-0.35) * (-0.16) - (-0.15) * (-0.22)
+   0.056 - 0.033 = 0.023 (Positive)
+
+4. Orientation(C, D, B):
+   (-0.75 - (-0.4)) * (0.62 - 0.69) - (0.54 - 0.69) * (-0.63 - (-0.4))
+   (-0.35) * (-0.07) - (-0.15) * (-0.23)
+   0.0245 - 0.0345 = -0.01 (Negative)
+
+Since Orientation(A, B, C) and Orientation(A, B, D) have different signs, and Orientation(C, D, A) and Orientation(C, D, B) have different signs, the line segments intersect.
+
+```json
+{
+  "Answer": "Yes"
+}
+```

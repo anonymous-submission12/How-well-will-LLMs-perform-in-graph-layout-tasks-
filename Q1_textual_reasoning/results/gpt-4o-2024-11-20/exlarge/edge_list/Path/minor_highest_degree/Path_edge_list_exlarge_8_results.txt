@@ -1,0 +1,12 @@
+To calculate the highest degree of all nodes in the provided graph, we need to count the number of edges each node is connected to. Since the graph is given in an edge_list format, we can loop through the edges and update the degrees for each node.
+
+Given the structure of the edges:
+- The graph appears to be a simple linear chain where each node, except the two endpoints (0 and 77), has exactly two connections.
+
+Here is the calculated result:
+
+```json
+{
+  "answer": 2
+}
+```

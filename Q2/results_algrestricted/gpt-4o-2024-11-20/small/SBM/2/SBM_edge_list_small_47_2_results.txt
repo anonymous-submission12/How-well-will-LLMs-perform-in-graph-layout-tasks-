@@ -1,0 +1,89 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The script uses a custom force-directed algorithm to compute the positions of the nodes.
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+# Input graph as edge list
+edge_list = [(0, 4), (0, 5), (0, 7), (1, 2), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 5), (2, 6), (3, 5), (3, 6), 
+             (3, 7), (3, 22), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7), (6, 7), (8, 10), (8, 11), (8, 12), (8, 13), 
+             (8, 14), (8, 15), (9, 11), (9, 12), (9, 13), (9, 14), (9, 15), (10, 11), (10, 12), (10, 13), (10, 14), 
+             (10, 15), (11, 12), (11, 13), (12, 13), (12, 14), (12, 15), (13, 14), (13, 15), (14, 18), (16, 17), 
+             (16, 18), (16, 20), (16, 21), (16, 22), (17, 19), (17, 20), (17, 21), (17, 22), (18, 19), (18, 20), 
+             (18, 21), (18, 22), (19, 20), (19, 21), (19, 22), (20, 21)]
+
+# Create adjacency list
+graph = defaultdict(list)
+for u, v in edge_list:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Initialize node positions randomly
+positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in graph}
+
+# Parameters for the force-directed algorithm
+num_iterations = 1000
+k = 0.1  # Optimal distance between nodes
+repulsion_constant = 0.01
+attraction_constant = 0.1
+
+# Helper functions
+def euclidean_distance(pos1, pos2):
+    return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+def apply_forces():
+    # Calculate repulsive forces
+    forces = {node: [0, 0] for node in graph}
+    for node1 in graph:
+        for node2 in graph:
+            if node1 != node2:
+                pos1, pos2 = positions[node1], positions[node2]
+                dist = euclidean_distance(pos1, pos2)
+                if dist > 0:
+                    repulsive_force = repulsion_constant / dist**2
+                    forces[node1][0] += repulsive_force * (pos1[0] - pos2[0]) / dist
+                    forces[node1][1] += repulsive_force * (pos1[1] - pos2[1]) / dist
+
+    # Calculate attractive forces
+    for node1, neighbors in graph.items():
+        for node2 in neighbors:
+            pos1, pos2 = positions[node1], positions[node2]
+            dist = euclidean_distance(pos1, pos2)
+            attractive_force = attraction_constant * (dist - k)
+            forces[node1][0] -= attractive_force * (pos1[0] - pos2[0]) / dist
+            forces[node1][1] -= attractive_force * (pos1[1] - pos2[1]) / dist
+
+    # Update positions based on forces
+    for node in graph:
+        positions[node] = (
+            positions[node][0] + forces[node][0],
+            positions[node][1] + forces[node][1]
+        )
+
+# Run the force-directed algorithm
+for _ in range(num_iterations):
+    apply_forces()
+
+# Normalize positions to fit in a [0, 1] x [0, 1] box
+min_x = min(pos[0] for pos in positions.values())
+max_x = max(pos[0] for pos in positions.values())
+min_y = min(pos[1] for pos in positions.values())
+max_y = max(pos[1] for pos in positions.values())
+
+for node in positions:
+    x, y = positions[node]
+    positions[node] = ((x - min_x) / (max_x - min_x), (y - min_y) / (max_y - min_y))
+
+# Output the layout in JSON format
+print(json.dumps(positions, indent=2))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented as an adjacency list for efficient traversal.
+2. **Force-Directed Algorithm**: A custom force-directed algorithm is implemented to compute node positions. It considers both repulsive forces (to spread nodes apart) and attractive forces (to pull connected nodes closer).
+3. **Normalization**: After computing the positions, they are normalized to fit within a `[0, 1] x [0, 1]` box.
+4. **Output**: The final positions of the nodes are output in JSON format.
+
+You can run this script to compute the layout for the given graph. The output will be a JSON object where each key is a node, and the value is a tuple representing the node's position.

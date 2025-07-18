@@ -1,0 +1,7 @@
+The source node 57 is on the left and the target node 20 is on the right. The path between them is not a straight line. Therefore, the Euclidean distance is less than the graph-theoretic distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

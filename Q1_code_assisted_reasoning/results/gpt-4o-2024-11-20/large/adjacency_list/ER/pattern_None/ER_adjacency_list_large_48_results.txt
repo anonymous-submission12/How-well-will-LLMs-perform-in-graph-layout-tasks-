@@ -1,0 +1,78 @@
+```python
+from collections import defaultdict
+from itertools import combinations
+import math
+
+# Input adjacency list
+graph = {0: [20, 32], 1: [19, 28, 36], 2: [7, 9, 20, 30, 36, 44, 45], 3: [16, 17, 43, 44, 45], 4: [13, 21, 34, 35, 39], 5: [37, 46], 6: [8, 12, 17], 7: [2, 10, 17, 19, 24, 27], 8: [6, 20, 21, 24, 35, 38, 39], 9: [2, 22, 28], 10: [7, 39, 44, 46], 11: [18, 19, 21, 23, 24, 29, 34, 43], 12: [6, 15, 19, 29, 30], 13: [4, 15, 19, 37], 14: [21, 30, 40, 44], 15: [12, 13, 19], 16: [3, 36], 17: [3, 6, 7, 34, 44], 18: [11, 40, 45], 19: [1, 7, 11, 12, 13, 15, 26, 33, 35, 38, 46], 20: [0, 2, 8, 32, 37, 46], 21: [4, 8, 11, 14, 44], 22: [9, 31, 42], 23: [11, 28, 33, 46], 24: [7, 8, 11, 28, 29, 36, 44], 25: [46], 26: [19, 27, 33, 42], 27: [7, 26, 32, 46], 28: [1, 9, 23, 24, 35, 43], 29: [11, 12, 24, 42], 30: [2, 12, 14, 46], 31: [22, 45], 32: [0, 20, 27, 36], 33: [19, 23, 26, 39], 34: [4, 11, 17, 44], 35: [4, 8, 19, 28, 42, 43, 44], 36: [1, 2, 16, 24, 32, 37], 37: [5, 13, 20, 36, 45], 38: [8, 19, 46], 39: [4, 8, 10, 33, 44], 40: [14, 18], 41: [44], 42: [22, 26, 29, 35, 46], 43: [3, 11, 28, 35], 44: [2, 3, 10, 14, 17, 21, 24, 34, 35, 39, 41], 45: [2, 3, 18, 31, 37], 46: [5, 10, 19, 20, 23, 25, 27, 30, 38, 42]}
+
+# Determine the number of nodes and edges
+num_nodes = len(graph)
+num_edges = sum(len(neighbors) for neighbors in graph.values()) // 2  # Each edge is counted twice
+
+# Check for star graph
+def is_star(graph):
+    center_nodes = sum(len(neighbors) == num_nodes - 1 for neighbors in graph.values())
+    leaf_nodes = sum(len(neighbors) == 1 for neighbors in graph.values())
+    return center_nodes == 1 and leaf_nodes == (num_nodes - 1)
+
+# Check for cycle graph
+def is_cycle(graph):
+    return all(len(neighbors) == 2 for neighbors in graph.values()) and num_edges == num_nodes
+
+# Check for path graph
+def is_path(graph):
+    return sum(len(neighbors) == 1 for neighbors in graph.values()) == 2 and \
+           sum(len(neighbors) == 2 for neighbors in graph.values()) == (num_nodes - 2)
+
+# Check for grid (assume square grid for simplicity)
+def is_grid(graph):
+    sqrt_num_nodes = int(math.sqrt(num_nodes))
+    if sqrt_num_nodes * sqrt_num_nodes != num_nodes:  # Not a perfect square
+        return False
+    expected_edges = 2 * num_nodes - 2 * sqrt_num_nodes
+    return num_edges == expected_edges
+
+# Check for complete graph
+def is_complete(graph):
+    return num_edges == num_nodes * (num_nodes - 1) // 2
+
+# Check for clustered graph (requires more refined definition, using heuristic here)
+def is_clustered(graph):
+    clusters = defaultdict(list)
+    visited = set()
+
+    # Find clusters through DFS
+    def dfs(node, cluster_id):
+        stack = [node]
+        while stack:
+            current = stack.pop()
+            if current not in visited:
+                visited.add(current)
+                clusters[cluster_id].append(current)
+                stack.extend(neigh for neigh in graph[current] if neigh not in visited)
+
+    cluster_id = 0
+    for node in graph:
+        if node not in visited:
+            dfs(node, cluster_id)
+            cluster_id += 1
+
+    return len(clusters) > 1 and any(len(c) > 1 for c in clusters.values())
+
+# Random graph is the default case: no other structure matches
+if is_star(graph):
+    print("Star")
+elif is_cycle(graph):
+    print("Cycle")
+elif is_path(graph):
+    print("Path")
+elif is_grid(graph):
+    print("Grid")
+elif is_complete(graph):
+    print("Complete")
+elif is_clustered(graph):
+    print("Clustered")
+else:
+    print("Random")
+```

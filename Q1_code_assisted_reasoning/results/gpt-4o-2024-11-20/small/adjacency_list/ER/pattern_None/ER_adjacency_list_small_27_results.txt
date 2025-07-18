@@ -1,0 +1,95 @@
+```python
+def graph_pattern(adj_list):
+    n = len(adj_list)
+    
+    # Helper functions
+    def is_star():
+        center_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == n - 1:
+                center_count += 1
+        return center_count == 1
+
+    def is_cycle():
+        visited = {i: False for i in adj_list}
+        parent = {i: None for i in adj_list}
+        start_node = next(iter(adj_list))
+        stack = [start_node]
+        
+        while stack:
+            node = stack.pop()
+            visited[node] = True
+            for neighbor in adj_list[node]:
+                if not visited[neighbor]:
+                    stack.append(neighbor)
+                    parent[neighbor] = node
+                elif neighbor != parent[node]:
+                    return True
+        return False
+
+    def is_path():
+        odd_count = sum(1 for node in adj_list if len(adj_list[node]) % 2 == 1)
+        return odd_count == 2
+
+    def is_grid():
+        rows = cols = int(n**0.5)
+        if rows * cols != n:
+            return False
+        for i in range(rows):
+            for j in range(cols):
+                node = i * cols + j
+                neighbors = []
+                if i > 0: neighbors.append((i-1)*cols + j)
+                if i < rows-1: neighbors.append((i+1)*cols + j)
+                if j > 0: neighbors.append(i*cols + (j-1))
+                if j < cols-1: neighbors.append(i*cols + (j+1))
+                if set(neighbors) != set(adj_list.get(node, [])):
+                    return False
+        return True
+
+    def is_complete():
+        for neighbors in adj_list.values():
+            if len(neighbors) != n - 1:
+                return False
+        return True
+
+    def is_clustered():
+        clusters = []
+        visited = set()
+        
+        def dfs(node, cluster):
+            visited.add(node)
+            cluster.append(node)
+            for neighbor in adj_list[node]:
+                if neighbor not in visited:
+                    dfs(neighbor, cluster)
+
+        for node in adj_list:
+            if node not in visited:
+                cluster = []
+                dfs(node, cluster)
+                clusters.append(cluster)
+
+        return len(clusters) > 1
+
+    def is_random():
+        return not (is_star() or is_cycle() or is_path() or is_grid() or is_complete() or is_clustered())
+
+    if is_star():
+        return "Star"
+    if is_cycle():
+        return "Cycle"
+    if is_path():
+        return "Path"
+    if is_grid():
+        return "Grid"
+    if is_complete():
+        return "Complete"
+    if is_clustered():
+        return "Clustered graph"
+    if is_random():
+        return "Random graph"
+
+adjacency_list = {0: [15, 20], 1: [5, 8, 11, 16, 17, 21, 26], 2: [12, 19, 22, 25], 3: [7, 20], 4: [14, 18, 21], 5: [1, 8, 12, 18], 6: [9, 23], 7: [3, 9, 10, 12], 8: [1, 5, 11, 19, 21, 23, 24], 9: [6, 7, 13, 14, 18, 20, 27], 10: [7, 16, 25], 11: [1, 8, 27], 12: [2, 5, 7], 13: [9], 14: [4, 9, 15, 17, 24], 15: [0, 14, 27], 16: [1, 10], 17: [1, 14, 20, 22], 18: [4, 5, 9, 19], 19: [2, 8, 18], 20: [0, 3, 9, 17, 21], 21: [1, 4, 8, 20, 24], 22: [2, 17], 23: [6, 8], 24: [8, 14, 21], 25: [2, 10, 27], 26: [1], 27: [9, 11, 15, 25]}
+print(graph_pattern(adjacency_list))
+```

@@ -1,0 +1,11 @@
+To determine the shortest path length between nodes '3' and '0', the graph is essentially a linear chain. We can compute the path length by counting the number of edges between the two nodes.
+
+From the adjacency list, observe that the path between '3' and '0' involves traversing nodes '3 → 2 → 1 → 0'. This makes the distance equal to 3.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 3
+}
+```

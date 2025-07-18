@@ -1,0 +1,52 @@
+To evaluate whether the consistency between Euclidean distance and graph-theoretic distance is maintained, we calculate both distances for the source node 21 and the target node 12:
+
+### 1. **Graph-Theoretic Distance (GTD)**:
+The graph-theoretic distance is the shortest path distance between nodes in the graph based on edges. From the subgraph data, the edge sequence connecting node 21 to node 12 is:
+
+```
+21 -> 20 -> 19 -> 18 -> 17 -> 16 -> 15 -> 14 -> 13 -> 12
+```
+
+This sequence contains 9 edges, so the **graph-theoretic distance** is **9**.
+
+### 2. **Euclidean Distance (ED)**:
+The Euclidean distance is calculated using the coordinates provided in the format:
+\[
+\text{Euclidean Distance} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\]
+Where (x₁, y₁) are the coordinates of node 21, and (x₂, y₂) are the coordinates of node 12:
+- Coordinates of node 21: \([-0.7, -0.25]\)
+- Coordinates of node 12: \([0.16, 0.64]\)
+
+Substitute into the formula:
+\[
+\text{Euclidean Distance} = \sqrt{(0.16 - (-0.7))^2 + (0.64 - (-0.25))^2}
+\]
+\[
+\text{Euclidean Distance} = \sqrt{(0.16 + 0.7)^2 + (0.64 + 0.25)^2}
+\]
+\[
+\text{Euclidean Distance} = \sqrt{(0.86)^2 + (0.89)^2}
+\]
+\[
+\text{Euclidean Distance} = \sqrt{0.7396 + 0.7921}
+\]
+\[
+\text{Euclidean Distance} = \sqrt{1.5317} \approx 1.237
+\]
+
+### 3. **Comparison**:
+- **Graph-theoretic distance:** 9
+- **Euclidean distance:** Approximately 1.237
+
+Clearly:
+\[
+\text{Euclidean distance is less than graph-theoretic distance.}
+\]
+
+### Final Answer:
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

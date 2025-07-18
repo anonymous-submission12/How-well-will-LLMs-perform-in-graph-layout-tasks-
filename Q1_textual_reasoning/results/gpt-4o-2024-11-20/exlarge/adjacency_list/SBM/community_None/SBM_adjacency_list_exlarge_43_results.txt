@@ -1,0 +1,9 @@
+To count the number of communities in the graph, we use a graph traversal method (like BFS or DFS) to discover all connected components. Each connected component represents one community. 
+
+Here's the computation for the number of communities in the given graph:
+
+```json
+{
+  "answer": 4
+}
+```

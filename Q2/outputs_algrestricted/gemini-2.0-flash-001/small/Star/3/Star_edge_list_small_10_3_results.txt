@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 105, in <module>
+    layout_json = generate_graph_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 80, in generate_graph_layout
+    fx = force_magnitude * dx / distance
+         ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+ZeroDivisionError: float division by zero

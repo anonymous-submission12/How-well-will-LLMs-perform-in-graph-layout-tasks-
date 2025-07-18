@@ -1,0 +1,51 @@
+To assess the consistency between Euclidean distance and graph-theoretic distance for the source node 21 and target node 12, we calculate both distances:
+
+### Step 1: Calculate Euclidean Distance
+The Euclidean distance between two points \((x_1, y_1)\) and \((x_2, y_2)\) is given by:
+\[
+\text{Euclidean Distance} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\]
+
+Coordinates of node 21: \([-0.7, -0.25]\)  
+Coordinates of node 12: \([0.16, 0.64]\)
+
+\[
+\text{Euclidean Distance} = \sqrt{(0.16 - (-0.7))^2 + (0.64 - (-0.25))^2}
+\]
+\[
+= \sqrt{(0.16 + 0.7)^2 + (0.64 + 0.25)^2}
+\]
+\[
+= \sqrt{(0.86)^2 + (0.89)^2}
+\]
+\[
+= \sqrt{0.7396 + 0.7921}
+\]
+\[
+= \sqrt{1.5317} \approx 1.237
+\]
+
+### Step 2: Calculate Graph-Theoretic Distance
+The graph-theoretic distance is the shortest path distance between nodes in terms of the number of edges. From the subgraph data, the path from node 21 to node 12 is:
+\[
+21 \to 20 \to 19 \to 18 \to 17 \to 16 \to 15 \to 14 \to 13 \to 12
+\]
+This path consists of 9 edges.
+
+Assuming each edge represents a unit distance, the graph-theoretic distance is:
+\[
+\text{Graph-Theoretic Distance} = 9
+\]
+
+### Step 3: Compare Distances
+- **Euclidean Distance**: \(1.237\)
+- **Graph-Theoretic Distance**: \(9\)
+
+Clearly, the Euclidean distance is **less than** the graph-theoretic distance.
+
+### Final Answer:
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

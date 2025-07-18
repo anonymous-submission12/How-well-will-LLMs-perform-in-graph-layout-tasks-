@@ -1,0 +1,14 @@
+Here's the calculation:
+
+The degree of a node is the number of edges connected to it. In the provided graph:
+
+- Node `0` has connections to 78 other nodes, resulting in a degree of `78`.
+- All other nodes (from `1` to `78`) only have a single connection to node `0`, resulting in a degree of `1`.
+
+Therefore, the highest degree in the graph is `78`.
+
+```json
+{
+  "answer": 78
+}
+```

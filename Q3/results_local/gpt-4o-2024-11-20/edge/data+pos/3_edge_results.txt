@@ -1,0 +1,45 @@
+First, let's understand the problem and the data given: 
+
+We are provided with two edges:
+- First edge connects nodes 13 and 21.
+- Second edge connects nodes 22 and 6.
+
+We also have the coordinates of the nodes:
+- Node 13: [0.16, 0.36]
+- Node 21: [0.35, 0.56]
+- Node 22: [0.23, 0.51]
+- Node 6:  [0.43, 0.37]
+
+To determine whether the edges intersect, we can calculate if the two line segments, represented by the given edges based on their coordinates, intersect. This is done using a standard geometric approach for line segment intersection.
+
+The key idea is to use the *orientation test*:
+1. For each pair of segments, determine the orientation of endpoints with respect to the other segment.
+2. If the orientations indicate that the two segments "cross" each other, the segments intersect.
+
+The steps are as follows:
+
+### 1. Represent the segments:
+- Segment 1: (13, 21) = (0.16, 0.36) to (0.35, 0.56)
+- Segment 2: (22, 6)  = (0.23, 0.51) to (0.43, 0.37)
+
+### 2. Determine orientation:
+The orientation of three points (p, q, r) can be determined using the cross product:
+- Orientation = (q_y - p_y) * (r_x - q_x) - (q_x - p_x) * (r_y - q_y)
+
+### 3. Compute intersection:
+We check the orientations of the endpoints of one segment relative to the other. If they differ in a specific way, the segments intersect.
+
+---
+
+Here’s the result:
+
+After computing the orientations using the above method, **the two edges intersect**.
+
+---
+
+### Final Answer:
+```json
+{
+  "Answer": "Yes"
+}
+```

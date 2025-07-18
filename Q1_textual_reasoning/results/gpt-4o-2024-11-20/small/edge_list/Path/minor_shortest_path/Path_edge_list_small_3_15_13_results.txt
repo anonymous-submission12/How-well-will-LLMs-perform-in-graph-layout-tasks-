@@ -1,0 +1,12 @@
+To calculate the shortest path between nodes '15' and '13', we can observe that the graph is a simple linear chain. The shortest path between two nodes in such a graph is the absolute difference between their labels.
+
+For nodes '15' and '13':
+- The shortest path length is `|15 - 13| = 2`.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

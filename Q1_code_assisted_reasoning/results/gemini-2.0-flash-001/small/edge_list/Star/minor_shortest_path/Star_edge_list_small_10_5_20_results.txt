@@ -1,0 +1,44 @@
+```python
+import collections
+
+def shortest_path(graph, start, end):
+    """
+    Calculates the length of the shortest path between two nodes in a graph.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+        start: The starting node.
+        end: The ending node.
+
+    Returns:
+        The length of the shortest path between the start and end nodes, or -1 if no path exists.
+    """
+
+    adj_list = collections.defaultdict(list)
+    for u, v in graph:
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+
+    queue = collections.deque([(start, 0)])  # (node, distance)
+    visited = {start}
+
+    while queue:
+        node, distance = queue.popleft()
+
+        if node == end:
+            return distance
+
+        for neighbor in adj_list[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+
+    return -1  # No path found
+
+graph_data = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29)]
+start_node = 5
+end_node = 20
+
+shortest_path_length = shortest_path(graph_data, start_node, end_node)
+print(shortest_path_length)
+```

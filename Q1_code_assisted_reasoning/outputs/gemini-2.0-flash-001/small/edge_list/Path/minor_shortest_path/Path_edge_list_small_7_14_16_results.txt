@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 7, in <module>
+    shortest_path_length = nx.shortest_path_length(graph, source='14', target='16')
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/utils/decorators.py", line 788, in func
+    return argmap._lazy_compile(__wrapper)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<class 'networkx.utils.decorators.argmap'> compilation 16", line 3, in argmap_shortest_path_length_13
+  File "/usr/local/lib/python3.12/site-packages/networkx/utils/backends.py", line 967, in __call__
+    return self.orig_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/algorithms/shortest_paths/generic.py", line 326, in shortest_path_length
+    p = nx.bidirectional_shortest_path(G, source, target)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/utils/decorators.py", line 788, in func
+    return argmap._lazy_compile(__wrapper)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<class 'networkx.utils.decorators.argmap'> compilation 20", line 3, in argmap_bidirectional_shortest_path_17
+  File "/usr/local/lib/python3.12/site-packages/networkx/utils/backends.py", line 967, in __call__
+    return self.orig_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/algorithms/shortest_paths/unweighted.py", line 244, in bidirectional_shortest_path
+    raise nx.NodeNotFound(f"Source {source} is not in G")
+networkx.exception.NodeNotFound: Source 14 is not in G

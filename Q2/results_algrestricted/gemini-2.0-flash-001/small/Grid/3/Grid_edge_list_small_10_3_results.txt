@@ -1,0 +1,108 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layering approach.  It first identifies
+    nodes with degree 1 (leaves) and assigns them to the outermost layer.
+    Then, it iteratively moves inward, assigning nodes to layers based on the
+    layers of their neighbors.  Finally, it arranges nodes within each layer
+    to minimize crossings.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the graph representation (adjacency list)
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    nodes = list(graph.keys())
+    num_nodes = len(nodes)
+
+    # 2. Layer assignment
+    layer = {}
+    assigned = set()
+
+    # Initialize leaves to layer 0
+    leaves = [node for node in nodes if len(graph[node]) == 1]
+    for node in leaves:
+        layer[node] = 0
+        assigned.add(node)
+
+    current_layer = 1
+    while len(assigned) < num_nodes:
+        next_layer_nodes = []
+        for node in nodes:
+            if node not in assigned:
+                neighbors_in_previous_layer = [
+                    neighbor for neighbor in graph[node] if neighbor in layer and layer[neighbor] == current_layer - 1
+                ]
+                if len(neighbors_in_previous_layer) > 0:
+                    layer[node] = current_layer
+                    assigned.add(node)
+                    next_layer_nodes.append(node)
+        if not next_layer_nodes:  # Handle disconnected components
+            unassigned_node = next(node for node in nodes if node not in assigned)
+            layer[unassigned_node] = current_layer
+            assigned.add(unassigned_node)
+        current_layer += 1
+
+    max_layer = max(layer.values())
+
+    # 3. Node ordering within layers (minimize crossings - simple heuristic)
+    layers = [[] for _ in range(max_layer + 1)]
+    for node, l in layer.items():
+        layers[l].append(node)
+
+    # Sort each layer based on the average position of neighbors in the next layer
+    for i in range(max_layer):
+        next_layer = layers[i+1]
+        def compare_nodes(node1, node2):
+            neighbors1 = [n for n in graph[node1] if n in next_layer]
+            neighbors2 = [n for n in graph[node2] if n in next_layer]
+
+            if not neighbors1 and not neighbors2:
+                return 0
+            if not neighbors1:
+                return -1
+            if not neighbors2:
+                return 1
+
+            avg_pos1 = sum(next_layer.index(n) for n in neighbors1) / len(neighbors1)
+            avg_pos2 = sum(next_layer.index(n) for n in neighbors2) / len(neighbors2)
+
+            return 1 if avg_pos1 > avg_pos2 else -1 if avg_pos1 < avg_pos2 else 0
+
+        from functools import cmp_to_key
+        layers[i] = sorted(layers[i], key=cmp_to_key(compare_nodes))
+
+    # 4. Assign coordinates
+    layout = {}
+    x_spacing = 1
+    y_spacing = 1
+    for i, layer_nodes in enumerate(layers):
+        for j, node in enumerate(layer_nodes):
+            layout[node] = (j * x_spacing, i * y_spacing)
+
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 10), (1, 2), (1, 11), (2, 3), (2, 12), (3, 4), (3, 13), (4, 5), (4, 14), (5, 6), (5, 15), (6, 7), (6, 16), (7, 8), (7, 17), (8, 9), (8, 18), (9, 19), (10, 11), (10, 20), (11, 12), (11, 21), (12, 13), (12, 22), (13, 14), (13, 23), (14, 15), (14, 24), (15, 16), (15, 25), (16, 17), (16, 26), (17, 18), (17, 27), (18, 19), (18, 28), (19, 29), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

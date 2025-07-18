@@ -1,0 +1,76 @@
+```python
+def classify_graph(adj_list):
+    n = len(adj_list)
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check Star pattern: One center node connected to all others
+    star_center = None
+    for node, neighbors in adj_list.items():
+        if len(neighbors) == n - 1:
+            star_center = node
+            break
+    if star_center and all(len(adj_list[node]) == 1 for node in adj_list if node != star_center):
+        return "Star"
+
+    # Check Cycle pattern: All nodes form a single cycle
+    if edges == n and all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        return "Cycle"
+
+    # Check Path pattern: A simple path
+    endpoints = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+    if edges == n - 1 and endpoints == 2:
+        return "Path"
+
+    # Check Grid pattern: Nodes connected in a grid-like topology
+    grid_rows = int(n**0.5)
+    if grid_rows * grid_rows == n:
+        grid_edges = 2 * (grid_rows * (grid_rows - 1))
+        grid_edges += (grid_rows - 1)**2
+        if edges == grid_edges:
+            return "Grid"
+
+    # Check Complete graph: Every pair of nodes is connected
+    if edges == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check Clustered graph: Separate clusters or connected communities
+    def bfs(node, visited):
+        queue = [node]
+        visited.add(node)
+        while queue:
+            curr = queue.pop(0)
+            for neighbor in adj_list[curr]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+    visited = set()
+    clusters = 0
+    for node in adj_list:
+        if node not in visited:
+            clusters += 1
+            bfs(node, visited)
+    if clusters > 1:
+        return "Clustered graph"
+
+    # If none of the above, assume it's Random graph
+    return "Random graph"
+
+graph_data = {
+    0: [10, 16, 18, 23, 38, 40, 41], 1: [9, 11, 29, 30, 32, 46], 2: [17, 23, 35, 39, 42], 
+    3: [28], 4: [13, 28, 34, 41], 5: [17, 20, 45], 6: [10, 12, 13, 22, 26, 27], 7: [8, 22, 38], 
+    8: [7, 10, 20, 38, 43], 9: [1, 23, 43, 44], 10: [0, 6, 8, 19, 47], 11: [1, 18, 33, 36, 38, 41], 
+    12: [6, 28, 36, 39, 45], 13: [4, 6, 14, 21, 33], 14: [13, 27, 33, 35], 15: [32, 45], 
+    16: [0, 23, 32], 17: [2, 5, 18, 22, 30, 32, 45], 18: [0, 11, 17, 23, 46, 47], 
+    19: [10, 32, 36, 44], 20: [5, 8, 22, 30, 33, 39, 41, 44], 21: [13], 22: [6, 7, 17, 20, 30, 33, 46], 
+    23: [0, 2, 9, 16, 18, 37, 43, 47], 24: [39], 25: [27, 32, 34, 42], 26: [6, 29, 39], 
+    27: [6, 14, 25, 31, 36, 42, 45], 28: [3, 4, 12, 39, 43, 46], 29: [1, 26, 31], 
+    30: [1, 17, 20, 22, 31], 31: [27, 29, 30, 32, 43, 47], 32: [1, 15, 16, 17, 19, 25, 31, 41, 42], 
+    33: [11, 13, 14, 20, 22, 34, 35], 34: [4, 25, 33, 44], 35: [2, 14, 33, 40, 46], 
+    36: [11, 12, 19, 27, 46], 37: [23], 38: [0, 7, 8, 11, 42, 43], 39: [2, 12, 20, 24, 26, 28, 46, 47], 
+    40: [0, 35, 42], 41: [0, 4, 11, 20, 32, 44, 45], 42: [2, 25, 27, 32, 38, 40], 
+    43: [8, 9, 23, 28, 31, 38], 44: [9, 19, 20, 34, 41, 45], 45: [5, 12, 15, 17, 27, 41, 44], 
+    46: [1, 18, 22, 28, 35, 36, 39], 47: [10, 18, 23, 31, 39]
+}
+print(classify_graph(graph_data))
+```

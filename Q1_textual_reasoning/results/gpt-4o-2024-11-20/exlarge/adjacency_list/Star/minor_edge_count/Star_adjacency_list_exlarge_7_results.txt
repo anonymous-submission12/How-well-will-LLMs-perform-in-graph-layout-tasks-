@@ -1,0 +1,14 @@
+To count the number of edges in the graph, we can sum the lengths of all adjacency lists and divide by 2 (since each edge is represented twice in an undirected graph).
+
+Here is the calculation:
+
+- Node `0` has 76 neighbors.
+- Each of the other 76 nodes has only 1 neighbor (node `0`).
+
+Total edges = (76 + 76) / 2 = 76.
+
+```json
+{
+  "answer": 76
+}
+```

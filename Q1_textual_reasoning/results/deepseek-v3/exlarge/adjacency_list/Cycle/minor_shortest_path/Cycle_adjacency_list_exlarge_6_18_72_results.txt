@@ -1,0 +1,16 @@
+To calculate the length of the shortest path between node '18' and '72' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 54
+}
+```
+
+### Explanation:
+- The graph is a linear chain from node 0 to node 75, with each node connected to the next one.
+- Starting from node 18, we can traverse to node 72 by moving forward through the chain.
+- The number of steps required to go from node 18 to node 72 is 54 (since 72 - 18 = 54).
+
+Thus, the shortest path length is 54.

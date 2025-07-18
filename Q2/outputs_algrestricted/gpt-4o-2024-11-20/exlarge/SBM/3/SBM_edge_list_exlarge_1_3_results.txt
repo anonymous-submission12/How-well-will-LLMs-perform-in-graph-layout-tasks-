@@ -1,0 +1,1306 @@
+Iteration 0 - Crossings: 2768
+Iteration 1 - Crossings: 2736
+Iteration 2 - Crossings: 2649
+Iteration 3 - Crossings: 2566
+Iteration 4 - Crossings: 2477
+Iteration 5 - Crossings: 2325
+Iteration 6 - Crossings: 2262
+Iteration 7 - Crossings: 2222
+Iteration 8 - Crossings: 2157
+Iteration 9 - Crossings: 2097
+Iteration 10 - Crossings: 2054
+Iteration 11 - Crossings: 1986
+Iteration 12 - Crossings: 1928
+Iteration 13 - Crossings: 1899
+Iteration 14 - Crossings: 1861
+Iteration 15 - Crossings: 1770
+Iteration 16 - Crossings: 1726
+Iteration 17 - Crossings: 1655
+Iteration 18 - Crossings: 1603
+Iteration 19 - Crossings: 1579
+Iteration 20 - Crossings: 1519
+Iteration 21 - Crossings: 1469
+Iteration 22 - Crossings: 1432
+Iteration 23 - Crossings: 1381
+Iteration 24 - Crossings: 1346
+Iteration 25 - Crossings: 1280
+Iteration 26 - Crossings: 1254
+Iteration 27 - Crossings: 1237
+Iteration 28 - Crossings: 1210
+Iteration 29 - Crossings: 1124
+Iteration 30 - Crossings: 1098
+Iteration 31 - Crossings: 1083
+Iteration 32 - Crossings: 1083
+Iteration 33 - Crossings: 997
+Iteration 34 - Crossings: 1000
+Iteration 35 - Crossings: 973
+Iteration 36 - Crossings: 957
+Iteration 37 - Crossings: 931
+Iteration 38 - Crossings: 896
+Iteration 39 - Crossings: 874
+Iteration 40 - Crossings: 879
+Iteration 41 - Crossings: 870
+Iteration 42 - Crossings: 882
+Iteration 43 - Crossings: 878
+Iteration 44 - Crossings: 876
+Iteration 45 - Crossings: 859
+Iteration 46 - Crossings: 906
+Iteration 47 - Crossings: 886
+Iteration 48 - Crossings: 835
+Iteration 49 - Crossings: 827
+Iteration 50 - Crossings: 791
+Iteration 51 - Crossings: 765
+Iteration 52 - Crossings: 764
+Iteration 53 - Crossings: 766
+Iteration 54 - Crossings: 781
+Iteration 55 - Crossings: 751
+Iteration 56 - Crossings: 734
+Iteration 57 - Crossings: 729
+Iteration 58 - Crossings: 692
+Iteration 59 - Crossings: 732
+Iteration 60 - Crossings: 715
+Iteration 61 - Crossings: 706
+Iteration 62 - Crossings: 703
+Iteration 63 - Crossings: 700
+Iteration 64 - Crossings: 717
+Iteration 65 - Crossings: 700
+Iteration 66 - Crossings: 689
+Iteration 67 - Crossings: 695
+Iteration 68 - Crossings: 684
+Iteration 69 - Crossings: 664
+Iteration 70 - Crossings: 640
+Iteration 71 - Crossings: 614
+Iteration 72 - Crossings: 614
+Iteration 73 - Crossings: 602
+Iteration 74 - Crossings: 619
+Iteration 75 - Crossings: 621
+Iteration 76 - Crossings: 641
+Iteration 77 - Crossings: 640
+Iteration 78 - Crossings: 603
+Iteration 79 - Crossings: 587
+Iteration 80 - Crossings: 582
+Iteration 81 - Crossings: 589
+Iteration 82 - Crossings: 585
+Iteration 83 - Crossings: 558
+Iteration 84 - Crossings: 601
+Iteration 85 - Crossings: 615
+Iteration 86 - Crossings: 608
+Iteration 87 - Crossings: 594
+Iteration 88 - Crossings: 586
+Iteration 89 - Crossings: 602
+Iteration 90 - Crossings: 592
+Iteration 91 - Crossings: 600
+Iteration 92 - Crossings: 604
+Iteration 93 - Crossings: 608
+Iteration 94 - Crossings: 615
+Iteration 95 - Crossings: 605
+Iteration 96 - Crossings: 599
+Iteration 97 - Crossings: 586
+Iteration 98 - Crossings: 586
+Iteration 99 - Crossings: 601
+Iteration 100 - Crossings: 627
+Iteration 101 - Crossings: 606
+Iteration 102 - Crossings: 599
+Iteration 103 - Crossings: 620
+Iteration 104 - Crossings: 597
+Iteration 105 - Crossings: 581
+Iteration 106 - Crossings: 599
+Iteration 107 - Crossings: 579
+Iteration 108 - Crossings: 560
+Iteration 109 - Crossings: 559
+Iteration 110 - Crossings: 598
+Iteration 111 - Crossings: 571
+Iteration 112 - Crossings: 579
+Iteration 113 - Crossings: 573
+Iteration 114 - Crossings: 596
+Iteration 115 - Crossings: 601
+Iteration 116 - Crossings: 619
+Iteration 117 - Crossings: 623
+Iteration 118 - Crossings: 615
+Iteration 119 - Crossings: 568
+Iteration 120 - Crossings: 568
+Iteration 121 - Crossings: 552
+Iteration 122 - Crossings: 550
+Iteration 123 - Crossings: 563
+Iteration 124 - Crossings: 573
+Iteration 125 - Crossings: 627
+Iteration 126 - Crossings: 594
+Iteration 127 - Crossings: 647
+Iteration 128 - Crossings: 672
+Iteration 129 - Crossings: 655
+Iteration 130 - Crossings: 643
+Iteration 131 - Crossings: 627
+Iteration 132 - Crossings: 646
+Iteration 133 - Crossings: 628
+Iteration 134 - Crossings: 643
+Iteration 135 - Crossings: 672
+Iteration 136 - Crossings: 668
+Iteration 137 - Crossings: 638
+Iteration 138 - Crossings: 673
+Iteration 139 - Crossings: 666
+Iteration 140 - Crossings: 668
+Iteration 141 - Crossings: 654
+Iteration 142 - Crossings: 661
+Iteration 143 - Crossings: 663
+Iteration 144 - Crossings: 622
+Iteration 145 - Crossings: 614
+Iteration 146 - Crossings: 575
+Iteration 147 - Crossings: 591
+Iteration 148 - Crossings: 612
+Iteration 149 - Crossings: 646
+Iteration 150 - Crossings: 654
+Iteration 151 - Crossings: 667
+Iteration 152 - Crossings: 654
+Iteration 153 - Crossings: 622
+Iteration 154 - Crossings: 621
+Iteration 155 - Crossings: 628
+Iteration 156 - Crossings: 646
+Iteration 157 - Crossings: 622
+Iteration 158 - Crossings: 604
+Iteration 159 - Crossings: 603
+Iteration 160 - Crossings: 597
+Iteration 161 - Crossings: 597
+Iteration 162 - Crossings: 574
+Iteration 163 - Crossings: 556
+Iteration 164 - Crossings: 556
+Iteration 165 - Crossings: 543
+Iteration 166 - Crossings: 616
+Iteration 167 - Crossings: 597
+Iteration 168 - Crossings: 605
+Iteration 169 - Crossings: 618
+Iteration 170 - Crossings: 600
+Iteration 171 - Crossings: 635
+Iteration 172 - Crossings: 631
+Iteration 173 - Crossings: 621
+Iteration 174 - Crossings: 632
+Iteration 175 - Crossings: 598
+Iteration 176 - Crossings: 643
+Iteration 177 - Crossings: 582
+Iteration 178 - Crossings: 601
+Iteration 179 - Crossings: 583
+Iteration 180 - Crossings: 578
+Iteration 181 - Crossings: 603
+Iteration 182 - Crossings: 582
+Iteration 183 - Crossings: 587
+Iteration 184 - Crossings: 629
+Iteration 185 - Crossings: 586
+Iteration 186 - Crossings: 603
+Iteration 187 - Crossings: 615
+Iteration 188 - Crossings: 635
+Iteration 189 - Crossings: 625
+Iteration 190 - Crossings: 639
+Iteration 191 - Crossings: 625
+Iteration 192 - Crossings: 630
+Iteration 193 - Crossings: 632
+Iteration 194 - Crossings: 623
+Iteration 195 - Crossings: 613
+Iteration 196 - Crossings: 590
+Iteration 197 - Crossings: 565
+Iteration 198 - Crossings: 560
+Iteration 199 - Crossings: 555
+Iteration 200 - Crossings: 548
+Iteration 201 - Crossings: 534
+Iteration 202 - Crossings: 558
+Iteration 203 - Crossings: 592
+Iteration 204 - Crossings: 595
+Iteration 205 - Crossings: 605
+Iteration 206 - Crossings: 598
+Iteration 207 - Crossings: 565
+Iteration 208 - Crossings: 566
+Iteration 209 - Crossings: 568
+Iteration 210 - Crossings: 580
+Iteration 211 - Crossings: 619
+Iteration 212 - Crossings: 612
+Iteration 213 - Crossings: 623
+Iteration 214 - Crossings: 658
+Iteration 215 - Crossings: 644
+Iteration 216 - Crossings: 651
+Iteration 217 - Crossings: 641
+Iteration 218 - Crossings: 647
+Iteration 219 - Crossings: 659
+Iteration 220 - Crossings: 671
+Iteration 221 - Crossings: 662
+Iteration 222 - Crossings: 649
+Iteration 223 - Crossings: 650
+Iteration 224 - Crossings: 648
+Iteration 225 - Crossings: 637
+Iteration 226 - Crossings: 646
+Iteration 227 - Crossings: 625
+Iteration 228 - Crossings: 640
+Iteration 229 - Crossings: 612
+Iteration 230 - Crossings: 593
+Iteration 231 - Crossings: 602
+Iteration 232 - Crossings: 585
+Iteration 233 - Crossings: 592
+Iteration 234 - Crossings: 607
+Iteration 235 - Crossings: 568
+Iteration 236 - Crossings: 565
+Iteration 237 - Crossings: 563
+Iteration 238 - Crossings: 574
+Iteration 239 - Crossings: 599
+Iteration 240 - Crossings: 546
+Iteration 241 - Crossings: 547
+Iteration 242 - Crossings: 544
+Iteration 243 - Crossings: 553
+Iteration 244 - Crossings: 562
+Iteration 245 - Crossings: 619
+Iteration 246 - Crossings: 623
+Iteration 247 - Crossings: 626
+Iteration 248 - Crossings: 625
+Iteration 249 - Crossings: 577
+Iteration 250 - Crossings: 567
+Iteration 251 - Crossings: 573
+Iteration 252 - Crossings: 601
+Iteration 253 - Crossings: 582
+Iteration 254 - Crossings: 591
+Iteration 255 - Crossings: 616
+Iteration 256 - Crossings: 613
+Iteration 257 - Crossings: 598
+Iteration 258 - Crossings: 602
+Iteration 259 - Crossings: 631
+Iteration 260 - Crossings: 612
+Iteration 261 - Crossings: 621
+Iteration 262 - Crossings: 609
+Iteration 263 - Crossings: 631
+Iteration 264 - Crossings: 662
+Iteration 265 - Crossings: 697
+Iteration 266 - Crossings: 703
+Iteration 267 - Crossings: 642
+Iteration 268 - Crossings: 626
+Iteration 269 - Crossings: 657
+Iteration 270 - Crossings: 688
+Iteration 271 - Crossings: 666
+Iteration 272 - Crossings: 734
+Iteration 273 - Crossings: 697
+Iteration 274 - Crossings: 672
+Iteration 275 - Crossings: 667
+Iteration 276 - Crossings: 676
+Iteration 277 - Crossings: 658
+Iteration 278 - Crossings: 631
+Iteration 279 - Crossings: 611
+Iteration 280 - Crossings: 618
+Iteration 281 - Crossings: 571
+Iteration 282 - Crossings: 592
+Iteration 283 - Crossings: 604
+Iteration 284 - Crossings: 634
+Iteration 285 - Crossings: 632
+Iteration 286 - Crossings: 602
+Iteration 287 - Crossings: 567
+Iteration 288 - Crossings: 647
+Iteration 289 - Crossings: 649
+Iteration 290 - Crossings: 659
+Iteration 291 - Crossings: 644
+Iteration 292 - Crossings: 638
+Iteration 293 - Crossings: 672
+Iteration 294 - Crossings: 650
+Iteration 295 - Crossings: 639
+Iteration 296 - Crossings: 650
+Iteration 297 - Crossings: 666
+Iteration 298 - Crossings: 666
+Iteration 299 - Crossings: 674
+Iteration 300 - Crossings: 709
+Iteration 301 - Crossings: 711
+Iteration 302 - Crossings: 699
+Iteration 303 - Crossings: 682
+Iteration 304 - Crossings: 687
+Iteration 305 - Crossings: 685
+Iteration 306 - Crossings: 623
+Iteration 307 - Crossings: 643
+Iteration 308 - Crossings: 645
+Iteration 309 - Crossings: 646
+Iteration 310 - Crossings: 650
+Iteration 311 - Crossings: 651
+Iteration 312 - Crossings: 670
+Iteration 313 - Crossings: 678
+Iteration 314 - Crossings: 685
+Iteration 315 - Crossings: 704
+Iteration 316 - Crossings: 744
+Iteration 317 - Crossings: 749
+Iteration 318 - Crossings: 742
+Iteration 319 - Crossings: 705
+Iteration 320 - Crossings: 680
+Iteration 321 - Crossings: 712
+Iteration 322 - Crossings: 689
+Iteration 323 - Crossings: 708
+Iteration 324 - Crossings: 740
+Iteration 325 - Crossings: 711
+Iteration 326 - Crossings: 683
+Iteration 327 - Crossings: 680
+Iteration 328 - Crossings: 716
+Iteration 329 - Crossings: 693
+Iteration 330 - Crossings: 695
+Iteration 331 - Crossings: 675
+Iteration 332 - Crossings: 691
+Iteration 333 - Crossings: 714
+Iteration 334 - Crossings: 702
+Iteration 335 - Crossings: 693
+Iteration 336 - Crossings: 687
+Iteration 337 - Crossings: 681
+Iteration 338 - Crossings: 693
+Iteration 339 - Crossings: 678
+Iteration 340 - Crossings: 694
+Iteration 341 - Crossings: 683
+Iteration 342 - Crossings: 657
+Iteration 343 - Crossings: 607
+Iteration 344 - Crossings: 646
+Iteration 345 - Crossings: 619
+Iteration 346 - Crossings: 607
+Iteration 347 - Crossings: 659
+Iteration 348 - Crossings: 619
+Iteration 349 - Crossings: 635
+Iteration 350 - Crossings: 638
+Iteration 351 - Crossings: 656
+Iteration 352 - Crossings: 636
+Iteration 353 - Crossings: 628
+Iteration 354 - Crossings: 632
+Iteration 355 - Crossings: 641
+Iteration 356 - Crossings: 633
+Iteration 357 - Crossings: 611
+Iteration 358 - Crossings: 631
+Iteration 359 - Crossings: 605
+Iteration 360 - Crossings: 594
+Iteration 361 - Crossings: 599
+Iteration 362 - Crossings: 633
+Iteration 363 - Crossings: 648
+Iteration 364 - Crossings: 634
+Iteration 365 - Crossings: 657
+Iteration 366 - Crossings: 635
+Iteration 367 - Crossings: 631
+Iteration 368 - Crossings: 654
+Iteration 369 - Crossings: 642
+Iteration 370 - Crossings: 651
+Iteration 371 - Crossings: 638
+Iteration 372 - Crossings: 644
+Iteration 373 - Crossings: 630
+Iteration 374 - Crossings: 615
+Iteration 375 - Crossings: 603
+Iteration 376 - Crossings: 630
+Iteration 377 - Crossings: 606
+Iteration 378 - Crossings: 596
+Iteration 379 - Crossings: 608
+Iteration 380 - Crossings: 573
+Iteration 381 - Crossings: 574
+Iteration 382 - Crossings: 613
+Iteration 383 - Crossings: 634
+Iteration 384 - Crossings: 599
+Iteration 385 - Crossings: 622
+Iteration 386 - Crossings: 629
+Iteration 387 - Crossings: 659
+Iteration 388 - Crossings: 654
+Iteration 389 - Crossings: 649
+Iteration 390 - Crossings: 661
+Iteration 391 - Crossings: 667
+Iteration 392 - Crossings: 698
+Iteration 393 - Crossings: 687
+Iteration 394 - Crossings: 680
+Iteration 395 - Crossings: 674
+Iteration 396 - Crossings: 676
+Iteration 397 - Crossings: 680
+Iteration 398 - Crossings: 721
+Iteration 399 - Crossings: 786
+Iteration 400 - Crossings: 800
+Iteration 401 - Crossings: 830
+Iteration 402 - Crossings: 757
+Iteration 403 - Crossings: 790
+Iteration 404 - Crossings: 756
+Iteration 405 - Crossings: 737
+Iteration 406 - Crossings: 722
+Iteration 407 - Crossings: 755
+Iteration 408 - Crossings: 754
+Iteration 409 - Crossings: 740
+Iteration 410 - Crossings: 769
+Iteration 411 - Crossings: 764
+Iteration 412 - Crossings: 763
+Iteration 413 - Crossings: 765
+Iteration 414 - Crossings: 789
+Iteration 415 - Crossings: 759
+Iteration 416 - Crossings: 782
+Iteration 417 - Crossings: 721
+Iteration 418 - Crossings: 787
+Iteration 419 - Crossings: 794
+Iteration 420 - Crossings: 788
+Iteration 421 - Crossings: 749
+Iteration 422 - Crossings: 776
+Iteration 423 - Crossings: 790
+Iteration 424 - Crossings: 795
+Iteration 425 - Crossings: 761
+Iteration 426 - Crossings: 725
+Iteration 427 - Crossings: 754
+Iteration 428 - Crossings: 757
+Iteration 429 - Crossings: 752
+Iteration 430 - Crossings: 708
+Iteration 431 - Crossings: 733
+Iteration 432 - Crossings: 775
+Iteration 433 - Crossings: 734
+Iteration 434 - Crossings: 758
+Iteration 435 - Crossings: 762
+Iteration 436 - Crossings: 778
+Iteration 437 - Crossings: 766
+Iteration 438 - Crossings: 811
+Iteration 439 - Crossings: 808
+Iteration 440 - Crossings: 808
+Iteration 441 - Crossings: 787
+Iteration 442 - Crossings: 745
+Iteration 443 - Crossings: 741
+Iteration 444 - Crossings: 723
+Iteration 445 - Crossings: 721
+Iteration 446 - Crossings: 762
+Iteration 447 - Crossings: 746
+Iteration 448 - Crossings: 715
+Iteration 449 - Crossings: 734
+Iteration 450 - Crossings: 750
+Iteration 451 - Crossings: 747
+Iteration 452 - Crossings: 737
+Iteration 453 - Crossings: 725
+Iteration 454 - Crossings: 744
+Iteration 455 - Crossings: 719
+Iteration 456 - Crossings: 739
+Iteration 457 - Crossings: 762
+Iteration 458 - Crossings: 758
+Iteration 459 - Crossings: 771
+Iteration 460 - Crossings: 747
+Iteration 461 - Crossings: 787
+Iteration 462 - Crossings: 782
+Iteration 463 - Crossings: 755
+Iteration 464 - Crossings: 781
+Iteration 465 - Crossings: 796
+Iteration 466 - Crossings: 822
+Iteration 467 - Crossings: 773
+Iteration 468 - Crossings: 824
+Iteration 469 - Crossings: 763
+Iteration 470 - Crossings: 795
+Iteration 471 - Crossings: 811
+Iteration 472 - Crossings: 756
+Iteration 473 - Crossings: 734
+Iteration 474 - Crossings: 752
+Iteration 475 - Crossings: 783
+Iteration 476 - Crossings: 779
+Iteration 477 - Crossings: 752
+Iteration 478 - Crossings: 812
+Iteration 479 - Crossings: 812
+Iteration 480 - Crossings: 822
+Iteration 481 - Crossings: 805
+Iteration 482 - Crossings: 828
+Iteration 483 - Crossings: 826
+Iteration 484 - Crossings: 774
+Iteration 485 - Crossings: 751
+Iteration 486 - Crossings: 765
+Iteration 487 - Crossings: 781
+Iteration 488 - Crossings: 755
+Iteration 489 - Crossings: 760
+Iteration 490 - Crossings: 770
+Iteration 491 - Crossings: 766
+Iteration 492 - Crossings: 759
+Iteration 493 - Crossings: 743
+Iteration 494 - Crossings: 759
+Iteration 495 - Crossings: 748
+Iteration 496 - Crossings: 732
+Iteration 497 - Crossings: 748
+Iteration 498 - Crossings: 728
+Iteration 499 - Crossings: 761
+Iteration 500 - Crossings: 764
+Iteration 501 - Crossings: 766
+Iteration 502 - Crossings: 805
+Iteration 503 - Crossings: 766
+Iteration 504 - Crossings: 779
+Iteration 505 - Crossings: 763
+Iteration 506 - Crossings: 725
+Iteration 507 - Crossings: 790
+Iteration 508 - Crossings: 762
+Iteration 509 - Crossings: 793
+Iteration 510 - Crossings: 787
+Iteration 511 - Crossings: 779
+Iteration 512 - Crossings: 770
+Iteration 513 - Crossings: 791
+Iteration 514 - Crossings: 803
+Iteration 515 - Crossings: 807
+Iteration 516 - Crossings: 845
+Iteration 517 - Crossings: 840
+Iteration 518 - Crossings: 846
+Iteration 519 - Crossings: 842
+Iteration 520 - Crossings: 831
+Iteration 521 - Crossings: 820
+Iteration 522 - Crossings: 820
+Iteration 523 - Crossings: 886
+Iteration 524 - Crossings: 847
+Iteration 525 - Crossings: 870
+Iteration 526 - Crossings: 890
+Iteration 527 - Crossings: 926
+Iteration 528 - Crossings: 866
+Iteration 529 - Crossings: 874
+Iteration 530 - Crossings: 828
+Iteration 531 - Crossings: 901
+Iteration 532 - Crossings: 891
+Iteration 533 - Crossings: 926
+Iteration 534 - Crossings: 926
+Iteration 535 - Crossings: 892
+Iteration 536 - Crossings: 868
+Iteration 537 - Crossings: 869
+Iteration 538 - Crossings: 830
+Iteration 539 - Crossings: 800
+Iteration 540 - Crossings: 787
+Iteration 541 - Crossings: 805
+Iteration 542 - Crossings: 790
+Iteration 543 - Crossings: 812
+Iteration 544 - Crossings: 823
+Iteration 545 - Crossings: 843
+Iteration 546 - Crossings: 811
+Iteration 547 - Crossings: 846
+Iteration 548 - Crossings: 858
+Iteration 549 - Crossings: 874
+Iteration 550 - Crossings: 839
+Iteration 551 - Crossings: 808
+Iteration 552 - Crossings: 799
+Iteration 553 - Crossings: 831
+Iteration 554 - Crossings: 809
+Iteration 555 - Crossings: 796
+Iteration 556 - Crossings: 816
+Iteration 557 - Crossings: 829
+Iteration 558 - Crossings: 786
+Iteration 559 - Crossings: 780
+Iteration 560 - Crossings: 765
+Iteration 561 - Crossings: 745
+Iteration 562 - Crossings: 764
+Iteration 563 - Crossings: 781
+Iteration 564 - Crossings: 812
+Iteration 565 - Crossings: 795
+Iteration 566 - Crossings: 746
+Iteration 567 - Crossings: 757
+Iteration 568 - Crossings: 786
+Iteration 569 - Crossings: 768
+Iteration 570 - Crossings: 756
+Iteration 571 - Crossings: 780
+Iteration 572 - Crossings: 756
+Iteration 573 - Crossings: 690
+Iteration 574 - Crossings: 684
+Iteration 575 - Crossings: 655
+Iteration 576 - Crossings: 655
+Iteration 577 - Crossings: 633
+Iteration 578 - Crossings: 639
+Iteration 579 - Crossings: 696
+Iteration 580 - Crossings: 681
+Iteration 581 - Crossings: 706
+Iteration 582 - Crossings: 704
+Iteration 583 - Crossings: 687
+Iteration 584 - Crossings: 708
+Iteration 585 - Crossings: 709
+Iteration 586 - Crossings: 691
+Iteration 587 - Crossings: 710
+Iteration 588 - Crossings: 695
+Iteration 589 - Crossings: 658
+Iteration 590 - Crossings: 641
+Iteration 591 - Crossings: 673
+Iteration 592 - Crossings: 678
+Iteration 593 - Crossings: 699
+Iteration 594 - Crossings: 690
+Iteration 595 - Crossings: 661
+Iteration 596 - Crossings: 651
+Iteration 597 - Crossings: 627
+Iteration 598 - Crossings: 632
+Iteration 599 - Crossings: 640
+Iteration 600 - Crossings: 642
+Iteration 601 - Crossings: 639
+Iteration 602 - Crossings: 624
+Iteration 603 - Crossings: 648
+Iteration 604 - Crossings: 662
+Iteration 605 - Crossings: 661
+Iteration 606 - Crossings: 631
+Iteration 607 - Crossings: 633
+Iteration 608 - Crossings: 629
+Iteration 609 - Crossings: 705
+Iteration 610 - Crossings: 682
+Iteration 611 - Crossings: 709
+Iteration 612 - Crossings: 718
+Iteration 613 - Crossings: 746
+Iteration 614 - Crossings: 702
+Iteration 615 - Crossings: 717
+Iteration 616 - Crossings: 699
+Iteration 617 - Crossings: 673
+Iteration 618 - Crossings: 687
+Iteration 619 - Crossings: 691
+Iteration 620 - Crossings: 658
+Iteration 621 - Crossings: 673
+Iteration 622 - Crossings: 643
+Iteration 623 - Crossings: 695
+Iteration 624 - Crossings: 681
+Iteration 625 - Crossings: 681
+Iteration 626 - Crossings: 683
+Iteration 627 - Crossings: 665
+Iteration 628 - Crossings: 702
+Iteration 629 - Crossings: 677
+Iteration 630 - Crossings: 698
+Iteration 631 - Crossings: 747
+Iteration 632 - Crossings: 757
+Iteration 633 - Crossings: 739
+Iteration 634 - Crossings: 703
+Iteration 635 - Crossings: 758
+Iteration 636 - Crossings: 778
+Iteration 637 - Crossings: 759
+Iteration 638 - Crossings: 727
+Iteration 639 - Crossings: 747
+Iteration 640 - Crossings: 788
+Iteration 641 - Crossings: 751
+Iteration 642 - Crossings: 708
+Iteration 643 - Crossings: 751
+Iteration 644 - Crossings: 750
+Iteration 645 - Crossings: 776
+Iteration 646 - Crossings: 766
+Iteration 647 - Crossings: 788
+Iteration 648 - Crossings: 755
+Iteration 649 - Crossings: 747
+Iteration 650 - Crossings: 721
+Iteration 651 - Crossings: 737
+Iteration 652 - Crossings: 726
+Iteration 653 - Crossings: 713
+Iteration 654 - Crossings: 738
+Iteration 655 - Crossings: 752
+Iteration 656 - Crossings: 745
+Iteration 657 - Crossings: 760
+Iteration 658 - Crossings: 723
+Iteration 659 - Crossings: 660
+Iteration 660 - Crossings: 702
+Iteration 661 - Crossings: 753
+Iteration 662 - Crossings: 753
+Iteration 663 - Crossings: 756
+Iteration 664 - Crossings: 743
+Iteration 665 - Crossings: 741
+Iteration 666 - Crossings: 727
+Iteration 667 - Crossings: 678
+Iteration 668 - Crossings: 751
+Iteration 669 - Crossings: 773
+Iteration 670 - Crossings: 748
+Iteration 671 - Crossings: 749
+Iteration 672 - Crossings: 721
+Iteration 673 - Crossings: 689
+Iteration 674 - Crossings: 725
+Iteration 675 - Crossings: 697
+Iteration 676 - Crossings: 687
+Iteration 677 - Crossings: 692
+Iteration 678 - Crossings: 765
+Iteration 679 - Crossings: 749
+Iteration 680 - Crossings: 773
+Iteration 681 - Crossings: 751
+Iteration 682 - Crossings: 728
+Iteration 683 - Crossings: 797
+Iteration 684 - Crossings: 837
+Iteration 685 - Crossings: 840
+Iteration 686 - Crossings: 842
+Iteration 687 - Crossings: 794
+Iteration 688 - Crossings: 801
+Iteration 689 - Crossings: 844
+Iteration 690 - Crossings: 835
+Iteration 691 - Crossings: 851
+Iteration 692 - Crossings: 881
+Iteration 693 - Crossings: 854
+Iteration 694 - Crossings: 828
+Iteration 695 - Crossings: 814
+Iteration 696 - Crossings: 860
+Iteration 697 - Crossings: 808
+Iteration 698 - Crossings: 843
+Iteration 699 - Crossings: 856
+Iteration 700 - Crossings: 813
+Iteration 701 - Crossings: 829
+Iteration 702 - Crossings: 884
+Iteration 703 - Crossings: 854
+Iteration 704 - Crossings: 856
+Iteration 705 - Crossings: 852
+Iteration 706 - Crossings: 861
+Iteration 707 - Crossings: 840
+Iteration 708 - Crossings: 853
+Iteration 709 - Crossings: 856
+Iteration 710 - Crossings: 930
+Iteration 711 - Crossings: 905
+Iteration 712 - Crossings: 913
+Iteration 713 - Crossings: 874
+Iteration 714 - Crossings: 886
+Iteration 715 - Crossings: 896
+Iteration 716 - Crossings: 816
+Iteration 717 - Crossings: 846
+Iteration 718 - Crossings: 874
+Iteration 719 - Crossings: 941
+Iteration 720 - Crossings: 887
+Iteration 721 - Crossings: 822
+Iteration 722 - Crossings: 832
+Iteration 723 - Crossings: 815
+Iteration 724 - Crossings: 797
+Iteration 725 - Crossings: 802
+Iteration 726 - Crossings: 792
+Iteration 727 - Crossings: 753
+Iteration 728 - Crossings: 808
+Iteration 729 - Crossings: 812
+Iteration 730 - Crossings: 812
+Iteration 731 - Crossings: 847
+Iteration 732 - Crossings: 851
+Iteration 733 - Crossings: 828
+Iteration 734 - Crossings: 867
+Iteration 735 - Crossings: 830
+Iteration 736 - Crossings: 863
+Iteration 737 - Crossings: 830
+Iteration 738 - Crossings: 860
+Iteration 739 - Crossings: 881
+Iteration 740 - Crossings: 889
+Iteration 741 - Crossings: 871
+Iteration 742 - Crossings: 867
+Iteration 743 - Crossings: 880
+Iteration 744 - Crossings: 879
+Iteration 745 - Crossings: 882
+Iteration 746 - Crossings: 902
+Iteration 747 - Crossings: 944
+Iteration 748 - Crossings: 929
+Iteration 749 - Crossings: 924
+Iteration 750 - Crossings: 843
+Iteration 751 - Crossings: 815
+Iteration 752 - Crossings: 862
+Iteration 753 - Crossings: 890
+Iteration 754 - Crossings: 893
+Iteration 755 - Crossings: 879
+Iteration 756 - Crossings: 900
+Iteration 757 - Crossings: 860
+Iteration 758 - Crossings: 870
+Iteration 759 - Crossings: 863
+Iteration 760 - Crossings: 823
+Iteration 761 - Crossings: 782
+Iteration 762 - Crossings: 780
+Iteration 763 - Crossings: 791
+Iteration 764 - Crossings: 759
+Iteration 765 - Crossings: 750
+Iteration 766 - Crossings: 709
+Iteration 767 - Crossings: 734
+Iteration 768 - Crossings: 735
+Iteration 769 - Crossings: 780
+Iteration 770 - Crossings: 760
+Iteration 771 - Crossings: 748
+Iteration 772 - Crossings: 793
+Iteration 773 - Crossings: 807
+Iteration 774 - Crossings: 807
+Iteration 775 - Crossings: 792
+Iteration 776 - Crossings: 758
+Iteration 777 - Crossings: 770
+Iteration 778 - Crossings: 769
+Iteration 779 - Crossings: 789
+Iteration 780 - Crossings: 780
+Iteration 781 - Crossings: 793
+Iteration 782 - Crossings: 767
+Iteration 783 - Crossings: 727
+Iteration 784 - Crossings: 755
+Iteration 785 - Crossings: 761
+Iteration 786 - Crossings: 775
+Iteration 787 - Crossings: 798
+Iteration 788 - Crossings: 839
+Iteration 789 - Crossings: 876
+Iteration 790 - Crossings: 878
+Iteration 791 - Crossings: 872
+Iteration 792 - Crossings: 894
+Iteration 793 - Crossings: 927
+Iteration 794 - Crossings: 907
+Iteration 795 - Crossings: 915
+Iteration 796 - Crossings: 884
+Iteration 797 - Crossings: 853
+Iteration 798 - Crossings: 875
+Iteration 799 - Crossings: 812
+Iteration 800 - Crossings: 841
+Iteration 801 - Crossings: 895
+Iteration 802 - Crossings: 942
+Iteration 803 - Crossings: 948
+Iteration 804 - Crossings: 983
+Iteration 805 - Crossings: 978
+Iteration 806 - Crossings: 980
+Iteration 807 - Crossings: 979
+Iteration 808 - Crossings: 937
+Iteration 809 - Crossings: 955
+Iteration 810 - Crossings: 991
+Iteration 811 - Crossings: 939
+Iteration 812 - Crossings: 954
+Iteration 813 - Crossings: 915
+Iteration 814 - Crossings: 908
+Iteration 815 - Crossings: 884
+Iteration 816 - Crossings: 864
+Iteration 817 - Crossings: 851
+Iteration 818 - Crossings: 799
+Iteration 819 - Crossings: 812
+Iteration 820 - Crossings: 885
+Iteration 821 - Crossings: 913
+Iteration 822 - Crossings: 948
+Iteration 823 - Crossings: 953
+Iteration 824 - Crossings: 965
+Iteration 825 - Crossings: 958
+Iteration 826 - Crossings: 952
+Iteration 827 - Crossings: 954
+Iteration 828 - Crossings: 970
+Iteration 829 - Crossings: 992
+Iteration 830 - Crossings: 983
+Iteration 831 - Crossings: 939
+Iteration 832 - Crossings: 940
+Iteration 833 - Crossings: 952
+Iteration 834 - Crossings: 913
+Iteration 835 - Crossings: 921
+Iteration 836 - Crossings: 914
+Iteration 837 - Crossings: 887
+Iteration 838 - Crossings: 905
+Iteration 839 - Crossings: 893
+Iteration 840 - Crossings: 891
+Iteration 841 - Crossings: 901
+Iteration 842 - Crossings: 942
+Iteration 843 - Crossings: 909
+Iteration 844 - Crossings: 926
+Iteration 845 - Crossings: 955
+Iteration 846 - Crossings: 957
+Iteration 847 - Crossings: 954
+Iteration 848 - Crossings: 957
+Iteration 849 - Crossings: 924
+Iteration 850 - Crossings: 950
+Iteration 851 - Crossings: 967
+Iteration 852 - Crossings: 938
+Iteration 853 - Crossings: 992
+Iteration 854 - Crossings: 998
+Iteration 855 - Crossings: 946
+Iteration 856 - Crossings: 920
+Iteration 857 - Crossings: 891
+Iteration 858 - Crossings: 936
+Iteration 859 - Crossings: 889
+Iteration 860 - Crossings: 902
+Iteration 861 - Crossings: 880
+Iteration 862 - Crossings: 873
+Iteration 863 - Crossings: 877
+Iteration 864 - Crossings: 834
+Iteration 865 - Crossings: 860
+Iteration 866 - Crossings: 881
+Iteration 867 - Crossings: 870
+Iteration 868 - Crossings: 830
+Iteration 869 - Crossings: 843
+Iteration 870 - Crossings: 856
+Iteration 871 - Crossings: 830
+Iteration 872 - Crossings: 839
+Iteration 873 - Crossings: 808
+Iteration 874 - Crossings: 846
+Iteration 875 - Crossings: 864
+Iteration 876 - Crossings: 857
+Iteration 877 - Crossings: 852
+Iteration 878 - Crossings: 844
+Iteration 879 - Crossings: 812
+Iteration 880 - Crossings: 848
+Iteration 881 - Crossings: 826
+Iteration 882 - Crossings: 791
+Iteration 883 - Crossings: 794
+Iteration 884 - Crossings: 777
+Iteration 885 - Crossings: 821
+Iteration 886 - Crossings: 831
+Iteration 887 - Crossings: 829
+Iteration 888 - Crossings: 783
+Iteration 889 - Crossings: 801
+Iteration 890 - Crossings: 812
+Iteration 891 - Crossings: 778
+Iteration 892 - Crossings: 826
+Iteration 893 - Crossings: 781
+Iteration 894 - Crossings: 799
+Iteration 895 - Crossings: 779
+Iteration 896 - Crossings: 794
+Iteration 897 - Crossings: 789
+Iteration 898 - Crossings: 739
+Iteration 899 - Crossings: 765
+Iteration 900 - Crossings: 766
+Iteration 901 - Crossings: 796
+Iteration 902 - Crossings: 821
+Iteration 903 - Crossings: 800
+Iteration 904 - Crossings: 781
+Iteration 905 - Crossings: 787
+Iteration 906 - Crossings: 821
+Iteration 907 - Crossings: 869
+Iteration 908 - Crossings: 817
+Iteration 909 - Crossings: 808
+Iteration 910 - Crossings: 808
+Iteration 911 - Crossings: 739
+Iteration 912 - Crossings: 735
+Iteration 913 - Crossings: 775
+Iteration 914 - Crossings: 762
+Iteration 915 - Crossings: 743
+Iteration 916 - Crossings: 713
+Iteration 917 - Crossings: 718
+Iteration 918 - Crossings: 709
+Iteration 919 - Crossings: 701
+Iteration 920 - Crossings: 664
+Iteration 921 - Crossings: 677
+Iteration 922 - Crossings: 685
+Iteration 923 - Crossings: 648
+Iteration 924 - Crossings: 697
+Iteration 925 - Crossings: 706
+Iteration 926 - Crossings: 722
+Iteration 927 - Crossings: 737
+Iteration 928 - Crossings: 778
+Iteration 929 - Crossings: 757
+Iteration 930 - Crossings: 755
+Iteration 931 - Crossings: 746
+Iteration 932 - Crossings: 776
+Iteration 933 - Crossings: 697
+Iteration 934 - Crossings: 691
+Iteration 935 - Crossings: 665
+Iteration 936 - Crossings: 672
+Iteration 937 - Crossings: 679
+Iteration 938 - Crossings: 664
+Iteration 939 - Crossings: 725
+Iteration 940 - Crossings: 762
+Iteration 941 - Crossings: 717
+Iteration 942 - Crossings: 719
+Iteration 943 - Crossings: 718
+Iteration 944 - Crossings: 659
+Iteration 945 - Crossings: 678
+Iteration 946 - Crossings: 702
+Iteration 947 - Crossings: 705
+Iteration 948 - Crossings: 737
+Iteration 949 - Crossings: 715
+Iteration 950 - Crossings: 751
+Iteration 951 - Crossings: 749
+Iteration 952 - Crossings: 710
+Iteration 953 - Crossings: 725
+Iteration 954 - Crossings: 719
+Iteration 955 - Crossings: 714
+Iteration 956 - Crossings: 722
+Iteration 957 - Crossings: 696
+Iteration 958 - Crossings: 720
+Iteration 959 - Crossings: 696
+Iteration 960 - Crossings: 694
+Iteration 961 - Crossings: 696
+Iteration 962 - Crossings: 677
+Iteration 963 - Crossings: 729
+Iteration 964 - Crossings: 732
+Iteration 965 - Crossings: 727
+Iteration 966 - Crossings: 722
+Iteration 967 - Crossings: 716
+Iteration 968 - Crossings: 723
+Iteration 969 - Crossings: 774
+Iteration 970 - Crossings: 739
+Iteration 971 - Crossings: 776
+Iteration 972 - Crossings: 732
+Iteration 973 - Crossings: 762
+Iteration 974 - Crossings: 799
+Iteration 975 - Crossings: 804
+Iteration 976 - Crossings: 787
+Iteration 977 - Crossings: 838
+Iteration 978 - Crossings: 787
+Iteration 979 - Crossings: 787
+Iteration 980 - Crossings: 788
+Iteration 981 - Crossings: 810
+Iteration 982 - Crossings: 804
+Iteration 983 - Crossings: 852
+Iteration 984 - Crossings: 885
+Iteration 985 - Crossings: 827
+Iteration 986 - Crossings: 782
+Iteration 987 - Crossings: 783
+Iteration 988 - Crossings: 771
+Iteration 989 - Crossings: 792
+Iteration 990 - Crossings: 792
+Iteration 991 - Crossings: 791
+Iteration 992 - Crossings: 789
+Iteration 993 - Crossings: 800
+Iteration 994 - Crossings: 801
+Iteration 995 - Crossings: 784
+Iteration 996 - Crossings: 816
+Iteration 997 - Crossings: 812
+Iteration 998 - Crossings: 776
+Iteration 999 - Crossings: 761
+{
+  "0": {
+    "x": 0.2315915947985955,
+    "y": 0.2445199999852061
+  },
+  "1": {
+    "x": 0.4607487441484975,
+    "y": 0.4003653915736609
+  },
+  "2": {
+    "x": 0.5186860249642731,
+    "y": 0.33554115312839666
+  },
+  "3": {
+    "x": 0.42664522110572123,
+    "y": 0.3685142073256717
+  },
+  "4": {
+    "x": 0.6153431093359042,
+    "y": 0.43504857579086953
+  },
+  "5": {
+    "x": 0.30697977689168493,
+    "y": 0.4191879010606373
+  },
+  "6": {
+    "x": 0.4798813314480171,
+    "y": 0.5037048371612326
+  },
+  "7": {
+    "x": 0.5718314689475825,
+    "y": 0.3835275488310067
+  },
+  "8": {
+    "x": 0.5300759025057719,
+    "y": 0.45450343293308976
+  },
+  "9": {
+    "x": 0.4343712870962134,
+    "y": 0.4184014558766418
+  },
+  "10": {
+    "x": 0.36890859730856895,
+    "y": 0.38835078475131923
+  },
+  "11": {
+    "x": 0.4331439028324533,
+    "y": 0.49395170244546355
+  },
+  "12": {
+    "x": 0.5176713911651368,
+    "y": 0.47899512515937204
+  },
+  "13": {
+    "x": 0.46519970052658466,
+    "y": 0.3964694580140824
+  },
+  "14": {
+    "x": 0.47258266821436595,
+    "y": 0.5900621196775031
+  },
+  "15": {
+    "x": 0.5945935700191268,
+    "y": 0.5594194703896205
+  },
+  "16": {
+    "x": 0.4022945860814703,
+    "y": 0.49763618925841624
+  },
+  "17": {
+    "x": 0.3831997026325502,
+    "y": 0.4425569390695851
+  },
+  "18": {
+    "x": 0.49188448844409466,
+    "y": 0.5278698230925869
+  },
+  "19": {
+    "x": 0.4581514316484299,
+    "y": 0.3151999812610339
+  },
+  "20": {
+    "x": 0.4514615861950577,
+    "y": 0.42956730400014725
+  },
+  "21": {
+    "x": 0.5460706016229911,
+    "y": 0.40767720536717844
+  },
+  "22": {
+    "x": 0.4062437191344111,
+    "y": 0.3856005158065367
+  },
+  "23": {
+    "x": 0.2824745660306997,
+    "y": 0.3090833480840778
+  },
+  "24": {
+    "x": 0.3659881842345931,
+    "y": 0.3306180500160639
+  },
+  "25": {
+    "x": 0.35990209767645936,
+    "y": 0.4060018731404236
+  },
+  "26": {
+    "x": 0.3522558420399519,
+    "y": 0.29183286276541337
+  },
+  "27": {
+    "x": 0.3309340200636243,
+    "y": 0.21423462173503977
+  },
+  "28": {
+    "x": 0.3665522596867951,
+    "y": 0.283057369780727
+  },
+  "29": {
+    "x": 0.29002424622277456,
+    "y": 0.40734054148284865
+  },
+  "30": {
+    "x": 0.31662627744065003,
+    "y": 0.2970813894001602
+  },
+  "31": {
+    "x": 0.45257310259883066,
+    "y": 0.22986851094671748
+  },
+  "32": {
+    "x": 0.43002189635458404,
+    "y": 0.3303454705703183
+  },
+  "33": {
+    "x": 0.47788847257055567,
+    "y": 0.5724500811734692
+  },
+  "34": {
+    "x": 0.4793634653923683,
+    "y": 0.5988711435353262
+  },
+  "35": {
+    "x": 0.5355465796804418,
+    "y": 0.5068397906629951
+  },
+  "36": {
+    "x": 0.43823229642807554,
+    "y": 0.4977500742866802
+  },
+  "37": {
+    "x": 0.43929898470181217,
+    "y": 0.58442375008165
+  },
+  "38": {
+    "x": 0.3554474112932547,
+    "y": 0.6038585571415482
+  },
+  "39": {
+    "x": 0.3999630943846606,
+    "y": 0.5160075509441782
+  },
+  "40": {
+    "x": 0.49493998192172217,
+    "y": 0.6570213123446877
+  },
+  "41": {
+    "x": 0.5041933140492548,
+    "y": 0.5872269572538406
+  },
+  "42": {
+    "x": 0.47500790533461396,
+    "y": 0.5429416797038386
+  },
+  "43": {
+    "x": 0.5369040433788355,
+    "y": 0.5066232935712125
+  },
+  "44": {
+    "x": 0.36646676297416514,
+    "y": 0.6334988065130974
+  },
+  "45": {
+    "x": 0.3503688160047081,
+    "y": 0.5142135339938897
+  },
+  "46": {
+    "x": 0.4279192872326045,
+    "y": 0.6406715043576127
+  },
+  "47": {
+    "x": 0.4820924249960501,
+    "y": 0.6315780399222906
+  },
+  "48": {
+    "x": 0.30265218316992737,
+    "y": 0.6648430457647496
+  },
+  "49": {
+    "x": 0.3800841602156603,
+    "y": 0.5302591813450193
+  },
+  "50": {
+    "x": 0.3836363602403504,
+    "y": 0.6217920425003459
+  },
+  "51": {
+    "x": 0.46940280422665936,
+    "y": 0.5545196328741737
+  },
+  "52": {
+    "x": 0.4974440740698568,
+    "y": 0.4891981210190764
+  },
+  "53": {
+    "x": 0.4538464454598946,
+    "y": 0.6072608916788758
+  },
+  "54": {
+    "x": 0.4531252566210634,
+    "y": 0.5203992704093289
+  },
+  "55": {
+    "x": 0.5682035735616908,
+    "y": 0.31025790700023853
+  },
+  "56": {
+    "x": 0.5412996848123538,
+    "y": 0.3274693418587336
+  },
+  "57": {
+    "x": 0.5310915252245906,
+    "y": 0.4080651402306816
+  },
+  "58": {
+    "x": 0.5761090759678665,
+    "y": 0.335837984673221
+  },
+  "59": {
+    "x": 0.5977511201119767,
+    "y": 0.4877312639162846
+  },
+  "60": {
+    "x": 0.5452580404875295,
+    "y": 0.43293335935798005
+  },
+  "61": {
+    "x": 0.6212618086299453,
+    "y": 0.4287472098974665
+  },
+  "62": {
+    "x": 0.4852426995993963,
+    "y": 0.37840454604873736
+  },
+  "63": {
+    "x": 0.6009467330793669,
+    "y": 0.3451585605966813
+  },
+  "64": {
+    "x": 0.5443070873161624,
+    "y": 0.5788246172617282
+  },
+  "65": {
+    "x": 0.46547590065828137,
+    "y": 0.48827381816724585
+  },
+  "66": {
+    "x": 0.5779162286183043,
+    "y": 0.5616641322520883
+  },
+  "67": {
+    "x": 0.5354423322289551,
+    "y": 0.5280171364672738
+  },
+  "68": {
+    "x": 0.4982552562394238,
+    "y": 0.6230832013553621
+  },
+  "69": {
+    "x": 0.568211366976608,
+    "y": 0.5740928472871482
+  },
+  "70": {
+    "x": 0.647946549881942,
+    "y": 0.46084485513275447
+  },
+  "71": {
+    "x": 0.5114229760108564,
+    "y": 0.544705244760656
+  },
+  "72": {
+    "x": 0.5758327963221391,
+    "y": 0.4576245769487105
+  },
+  "73": {
+    "x": 0.5376492936646856,
+    "y": 0.6988902848810615
+  },
+  "74": {
+    "x": 0.6258734131241689,
+    "y": 0.5294935523864228
+  },
+  "75": {
+    "x": 0.5827927386573816,
+    "y": 0.6455406761737684
+  }
+}

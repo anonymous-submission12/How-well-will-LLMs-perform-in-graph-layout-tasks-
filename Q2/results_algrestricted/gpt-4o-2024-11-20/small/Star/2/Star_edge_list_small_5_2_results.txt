@@ -1,0 +1,85 @@
+Here is the Python code that generates a layout for the given graph while ensuring consistency between Euclidean distance and graph-theoretic distance. The process involves assigning positions to nodes such that nodes connected directly in the graph end up close to each other in the 2D space. Nodes that are farther apart in graph-theoretic distance are placed proportionally farther apart in Euclidean distance.
+
+```python
+import json
+import math
+from collections import deque
+
+def generate_graph_layout(edge_list):
+    # Create an adjacency list for the graph
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Compute graph-theoretic distances using BFS
+    def bfs_distance(start_node):
+        distances = {node: math.inf for node in graph}
+        distances[start_node] = 0
+        queue = deque([start_node])
+        while queue:
+            current = queue.popleft()
+            current_distance = distances[current]
+            for neighbor in graph[current]:
+                if distances[neighbor] == math.inf:
+                    distances[neighbor] = current_distance + 1
+                    queue.append(neighbor)
+        return distances
+
+    # Pick a root node (0 in this case) and compute distances
+    root = 0
+    distances_from_root = bfs_distance(root)
+
+    # Place nodes in 2D space based on graph-theoretic distances
+    positions = {root: (0, 0)}
+    angle_increment = 2 * math.pi / len(graph[root])  # Equal angular spacing for direct neighbors
+
+    # Place direct neighbors in a circular arrangement
+    for i, neighbor in enumerate(graph[root]):
+        angle = i * angle_increment
+        positions[neighbor] = (math.cos(angle), math.sin(angle))
+
+    # Place other nodes based on their BFS distance from the root
+    visited = {root} | set(graph[root])
+    for distance in range(2, max(distances_from_root.values()) + 1):
+        current_level_nodes = [node for node, dist in distances_from_root.items() if dist == distance]
+        for i, node in enumerate(current_level_nodes):
+            # Calculate position for the node by averaging positions of its already-placed neighbors
+            neighbor_positions = [positions[neighbor] for neighbor in graph[node] if neighbor in positions]
+            if neighbor_positions:
+                avg_x = sum(pos[0] for pos in neighbor_positions) / len(neighbor_positions)
+                avg_y = sum(pos[1] for pos in neighbor_positions) / len(neighbor_positions)
+                positions[node] = (avg_x + math.cos(i), avg_y + math.sin(i))
+            visited.add(node)
+
+    # Return the graph layout as a JSON string
+    return json.dumps(positions, indent=2)
+
+
+# Graph data as edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), 
+    (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), 
+    (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18),
+    (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24)
+]
+
+# Generate layout and print it
+layout = generate_graph_layout(edge_list)
+print(layout)
+```
+
+### Explanation:
+1. **Graph Representation**: The adjacency list representation is used to represent the input graph from the edge list.
+2. **Distance Calculation**: Breadth-First Search (BFS) is used to compute graph-theoretic distances from a selected root node (node `0`).
+3. **Position Assignment**:
+   - The root is placed at the origin `(0, 0)`.
+   - Direct neighbors of the root are placed uniformly in a circular pattern around the root.
+   - Remaining nodes are placed iteratively based on the average position of already-placed neighbors.
+4. **Output**: The resulting node positions are returned in JSON format for easy use in other tools.
+
+This layout should satisfy consistency between Euclidean and graph-theoretic distances to a reasonable degree, given the constraints in spacing the nodes according to connectivity.

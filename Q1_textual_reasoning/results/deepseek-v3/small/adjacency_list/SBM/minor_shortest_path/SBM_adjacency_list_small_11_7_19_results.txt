@@ -1,0 +1,30 @@
+To find the shortest path between node '7' and node '19', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the step-by-step process:
+
+1. Start from node '7'.
+2. Explore all its neighbors (nodes directly connected to it).
+3. From those neighbors, explore their neighbors, and so on, until we reach node '19'.
+4. Keep track of the number of steps taken to reach node '19'.
+
+Let's perform the BFS:
+
+- **Step 0**: Start at node '7'.
+- **Step 1**: Explore neighbors of '7' → [1, 5, 6, 8, 9, 10, 23].
+- **Step 2**: Explore neighbors of '1' → [2, 3, 4, 5, 6, 7, 8, 9, 10].
+- **Step 3**: Explore neighbors of '5' → [0, 1, 2, 3, 4, 7, 9, 10].
+- **Step 4**: Explore neighbors of '6' → [1, 2, 7, 8, 9, 11].
+- **Step 5**: Explore neighbors of '8' → [0, 1, 2, 3, 6, 7, 9, 10].
+- **Step 6**: Explore neighbors of '9' → [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11].
+- **Step 7**: Explore neighbors of '10' → [0, 1, 2, 3, 5, 7, 8, 9, 11].
+- **Step 8**: Explore neighbors of '23' → [7, 12, 13, 14, 15, 17, 19, 20, 21, 22].
+
+At this point, we have reached node '19' from node '23' in 3 steps (7 → 23 → 19).
+
+Thus, the shortest path from node '7' to node '19' has a length of 3.
+
+```json
+{
+  "answer": 3
+}
+```

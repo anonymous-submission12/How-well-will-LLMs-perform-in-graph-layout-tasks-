@@ -1,0 +1,15 @@
+To calculate the shortest path between nodes '19' and '16' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+1. Start BFS from node '19'.
+2. Explore its neighbors: '5', '18', and '20'.
+3. From these neighbors, continue exploring their neighbors until node '16' is reached.
+4. The shortest path from '19' to '16' is: 19 → 18 → 17 → 16, which has a length of 3.

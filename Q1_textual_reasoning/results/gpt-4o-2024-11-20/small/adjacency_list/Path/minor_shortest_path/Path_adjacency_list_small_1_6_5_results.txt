@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '6' and '5' in the given graph, we can use Breadth-First Search (BFS). The graph is represented as an adjacency list, and since it is a linear graph, the shortest path is simply the number of edges between the two nodes.
+
+Here is the result:
+
+```json
+{
+  "answer": 1
+}
+```

@@ -1,0 +1,19 @@
+To solve the problem, we need to count the connected components in the graph. Each connected component corresponds to a distinct community. Here's how it can be done programmatically:
+
+1. Treat the given adjacency list as an undirected graph.
+2. Perform a graph traversal (e.g., BFS or DFS) from each node, marking all reachable nodes.
+3. Count the number of times a traversal is initiated (each initiating traversal corresponds to a new community).
+
+The calculation reveals there are `3` distinct communities:
+
+- Nodes `{0, 1, 2, 3, 4, 5, 6, 7}` belong to one community (fully connected internally).
+- Nodes `{8, 9, 10, 11, 12, 13, 14, 15}` form another community.
+- Nodes `{16, 17, 18, 19, 20, 21, 22}` form the third community.
+
+Here is the resulting JSON:
+
+```json
+{
+  "answer": 3
+}
+```

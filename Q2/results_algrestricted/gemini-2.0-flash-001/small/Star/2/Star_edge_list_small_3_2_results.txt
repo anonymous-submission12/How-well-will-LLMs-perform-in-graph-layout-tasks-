@@ -1,0 +1,90 @@
+```python
+import json
+import math
+import random
+
+def layout_graph(edge_list, dimensions=2, iterations=100, initial_temperature=1.0, cooling_rate=0.95):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance using a force-based approach
+    with simulated annealing.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+        dimensions: The number of dimensions for the layout (default: 2).
+        iterations: The number of iterations for the simulated annealing process (default: 100).
+        initial_temperature: The initial temperature for simulated annealing (default: 1.0).
+        cooling_rate: The cooling rate for simulated annealing (default: 0.95).
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node indices
+        and values are lists of coordinates.
+    """
+
+    # 1. Initialize node positions randomly
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    num_nodes = len(nodes)
+
+    layout = {}
+    for node in nodes:
+        layout[node] = [random.random() for _ in range(dimensions)]
+
+    # 2. Calculate graph-theoretic distances (shortest paths)
+    distances = {}
+    for i in nodes:
+        distances[i] = {}
+        for j in nodes:
+            distances[i][j] = float('inf')
+        distances[i][i] = 0
+
+    for edge in edge_list:
+        distances[edge[0]][edge[1]] = 1
+        distances[edge[1]][edge[0]] = 1  # Assuming undirected graph
+
+    for k in nodes:
+        for i in nodes:
+            for j in nodes:
+                distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
+
+    # 3. Simulated Annealing
+    temperature = initial_temperature
+    for _ in range(iterations):
+        for node in nodes:
+            # a. Calculate the force on each node
+            force = [0.0] * dimensions
+            for other_node in nodes:
+                if node != other_node:
+                    # Attractive force based on graph distance
+                    graph_distance = distances[node][other_node]
+                    euclidean_distance = math.sqrt(sum([(layout[node][d] - layout[other_node][d])**2 for d in range(dimensions)]))
+
+                    # Calculate force vector
+                    for d in range(dimensions):
+                        force[d] += (graph_distance - euclidean_distance) * (layout[other_node][d] - layout[node][d])
+
+            # b. Calculate the energy change
+            old_position = layout[node][:]  # Create a copy
+            new_position = [old_position[d] + force[d] * 0.01 for d in range(dimensions)] # small step
+
+            # Ensure the new position is within bounds (0 to 1)
+            new_position = [max(0.0, min(1.0, pos)) for pos in new_position]
+
+            layout[node] = new_position
+
+        # Cool the temperature
+        temperature *= cooling_rate
+
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22)]
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

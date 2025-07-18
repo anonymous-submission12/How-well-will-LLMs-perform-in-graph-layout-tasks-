@@ -1,0 +1,51 @@
+```python
+import json
+import numpy as np
+import scipy
+from scipy.sparse.linalg import eigs
+from sklearn.manifold import SpectralEmbedding
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where each node is associated with its x and y coordinates.
+    """
+
+    # 1. Create the adjacency matrix
+    num_nodes = max(max(edge[0], edge[1]) for edge in edge_list) + 1
+    adj_matrix = np.zeros((num_nodes, num_nodes))
+    for u, v in edge_list:
+        adj_matrix[u, v] = 1
+        adj_matrix[v, u] = 1  # Assuming undirected graph
+
+    # 2. Spectral Embedding for layout
+    embedding = SpectralEmbedding(n_components=2, affinity="precomputed", random_state=42)
+    node_positions = embedding.fit_transform(adj_matrix)
+
+    # 3. Normalize positions to be between 0 and 1
+    min_x = np.min(node_positions[:, 0])
+    max_x = np.max(node_positions[:, 0])
+    min_y = np.min(node_positions[:, 1])
+    max_y = np.max(node_positions[:, 1])
+
+    node_positions[:, 0] = (node_positions[:, 0] - min_x) / (max_x - min_x)
+    node_positions[:, 1] = (node_positions[:, 1] - min_y) / (max_y - min_y)
+
+    # 4. Create the layout dictionary
+    layout = {}
+    for i in range(num_nodes):
+        layout[i] = {"x": node_positions[i, 0], "y": node_positions[i, 1]}
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 20), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+graph_layout_json = layout_graph(edge_list)
+print(graph_layout_json)
+```

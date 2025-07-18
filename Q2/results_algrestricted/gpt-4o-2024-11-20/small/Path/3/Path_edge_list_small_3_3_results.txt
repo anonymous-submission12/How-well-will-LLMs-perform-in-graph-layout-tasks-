@@ -1,0 +1,62 @@
+Below is a Python script that generates a layout for the given graph. The layout minimizes edge crossings by arranging the nodes in a straight line, as the graph is a simple path. The output is in JSON format.
+
+```python
+import json
+
+def generate_layout(edge_list):
+    # Extract unique nodes from the edge list
+    nodes = sorted(set([node for edge in edge_list for node in edge]))
+    
+    # Assign positions to nodes in a straight line
+    layout = {}
+    for i, node in enumerate(nodes):
+        layout[node] = (i, 0)  # Place nodes along the x-axis, y=0
+    
+    return layout
+
+# Input edge list
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), 
+             (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+
+# Generate layout
+layout = generate_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Extract Unique Nodes**: The script extracts all unique nodes from the edge list and sorts them. This ensures that the nodes are processed in order.
+2. **Assign Positions**: Each node is assigned a position along the x-axis, with the y-coordinate fixed at 0. This minimizes edge crossings for a path graph.
+3. **Output in JSON**: The layout is output in JSON format for easy readability and further processing.
+
+### Example Output:
+For the given edge list, the output will look like this:
+```json
+{
+    "0": [0, 0],
+    "1": [1, 0],
+    "2": [2, 0],
+    "3": [3, 0],
+    "4": [4, 0],
+    "5": [5, 0],
+    "6": [6, 0],
+    "7": [7, 0],
+    "8": [8, 0],
+    "9": [9, 0],
+    "10": [10, 0],
+    "11": [11, 0],
+    "12": [12, 0],
+    "13": [13, 0],
+    "14": [14, 0],
+    "15": [15, 0],
+    "16": [16, 0],
+    "17": [17, 0],
+    "18": [18, 0],
+    "19": [19, 0],
+    "20": [20, 0],
+    "21": [21, 0],
+    "22": [22, 0]
+}
+```

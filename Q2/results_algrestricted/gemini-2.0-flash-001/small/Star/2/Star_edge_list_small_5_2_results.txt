@@ -1,0 +1,116 @@
+```python
+import json
+import math
+import random
+
+def layout_graph(edge_list, dimensions=2, iterations=100, initial_temperature=1.0, cooling_rate=0.95):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance using a force-based approach
+    with simulated annealing.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+        dimensions: The number of dimensions for the layout (default: 2).
+        iterations: The number of simulated annealing iterations (default: 100).
+        initial_temperature: The initial temperature for simulated annealing (default: 1.0).
+        cooling_rate: The cooling rate for simulated annealing (default: 0.95).
+
+    Returns:
+        A dictionary where keys are node indices and values are lists representing
+        the node's coordinates in the layout.  Returns in JSON format.
+    """
+
+    # 1. Initialize Node Positions
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    layout = {node: [random.random() for _ in range(dimensions)] for node in nodes}
+
+    # 2. Define Forces
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt(sum([(p1 - p2)**2 for p1, p2 in zip(pos1, pos2)]))
+
+    def graph_distance(node1, node2, edge_list, nodes):
+        """Calculates the shortest path distance between two nodes."""
+        # Use BFS to find shortest path
+        queue = [(node1, 0)]  # (node, distance)
+        visited = {node1}
+        
+        while queue:
+            curr_node, dist = queue.pop(0)
+            if curr_node == node2:
+                return dist
+            
+            neighbors = []
+            for edge in edge_list:
+                if edge[0] == curr_node:
+                    neighbors.append(edge[1])
+                elif edge[1] == curr_node:
+                    neighbors.append(edge[0])
+            
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+        
+        return float('inf')  # Return infinity if no path exists
+
+    def calculate_energy(layout, edge_list, nodes):
+        """Calculates the energy of the current layout."""
+        energy = 0
+        for i in range(len(nodes)):
+            for j in range(i + 1, len(nodes)):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                
+                eucl_dist = euclidean_distance(layout[node1], layout[node2])
+                graph_dist = graph_distance(node1, node2, edge_list, nodes)
+                
+                if graph_dist == float('inf'):
+                    continue # ignore disconnected components
+                
+                energy += (eucl_dist - graph_dist)**2
+        return energy
+
+    # 3. Simulated Annealing
+    temperature = initial_temperature
+    for _ in range(iterations):
+        # Choose a random node and a random dimension
+        node_to_move = random.choice(nodes)
+        dimension_to_change = random.randint(0, dimensions - 1)
+
+        # Store the old value
+        old_value = layout[node_to_move][dimension_to_change]
+
+        # Generate a small random change
+        change = random.uniform(-0.1, 0.1)
+        layout[node_to_move][dimension_to_change] += change
+
+        # Calculate the change in energy
+        old_energy = calculate_energy(layout, edge_list, nodes)
+        new_energy = calculate_energy(layout, edge_list, nodes)
+        energy_change = new_energy - old_energy
+
+        # Accept or reject the move
+        if energy_change < 0 or random.random() < math.exp(-energy_change / temperature):
+            # Accept the move
+            pass
+        else:
+            # Reject the move: revert to the old value
+            layout[node_to_move][dimension_to_change] = old_value
+
+        # Cool the temperature
+        temperature *= cooling_rate
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24)]
+layout_json = layout_graph(edge_list)
+print(layout_json)
+```

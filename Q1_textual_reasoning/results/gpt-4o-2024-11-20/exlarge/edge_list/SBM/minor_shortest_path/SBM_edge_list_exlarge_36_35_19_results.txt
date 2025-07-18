@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes '35' and '19' in the given undirected graph, we can use a breadth-first search (BFS) algorithm since all edges have equal weight. Below is the calculation of the shortest path length, along with the result.
+
+```json
+{
+  "answer": 4
+}
+```

@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 49
+    positions[node] = (
+                      ^
+SyntaxError: '(' was never closed

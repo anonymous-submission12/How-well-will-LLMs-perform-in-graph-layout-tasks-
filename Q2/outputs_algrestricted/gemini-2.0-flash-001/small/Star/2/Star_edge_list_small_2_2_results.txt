@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 106, in <module>
+    layout = layout_graph(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 86, in layout_graph
+    force_vector = calculate_force(node, other_node, new_layout, edge_exists)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 55, in calculate_force
+    force_vector = [(p2 - p1) * force_magnitude / distance for p1, p2 in zip(pos1, pos2)]
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+ZeroDivisionError: float division by zero

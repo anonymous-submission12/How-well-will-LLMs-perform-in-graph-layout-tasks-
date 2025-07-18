@@ -1,0 +1,53 @@
+```python
+import networkx as nx
+
+# Create the graph from the edge list
+edges = [(0, 11), (0, 20), (1, 5), (1, 9), (2, 5), (2, 11), (2, 28), (3, 15), (3, 17), (3, 24), 
+         (4, 19), (4, 21), (4, 27), (6, 9), (6, 24), (7, 9), (7, 19), (7, 20), (7, 22), (7, 23), 
+         (8, 9), (8, 13), (8, 15), (8, 23), (8, 26), (9, 14), (9, 15), (9, 25), (9, 26), (10, 17), 
+         (10, 24), (11, 13), (11, 19), (11, 20), (11, 23), (11, 25), (12, 14), (12, 18), (12, 28), 
+         (13, 17), (14, 22), (15, 19), (15, 23), (16, 23), (17, 25), (18, 19), (19, 21), (19, 25), 
+         (19, 28), (20, 27), (24, 28), (25, 26)]
+G = nx.Graph(edges)
+
+# Check the graph type
+def is_star_graph(G):
+    degrees = [deg for _, deg in G.degree()]
+    return degrees.count(len(G.nodes) - 1) == 1 and degrees.count(1) == len(G.nodes) - 1
+
+def is_cycle_graph(G):
+    return nx.is_connected(G) and all(deg == 2 for _, deg in G.degree())
+
+def is_path_graph(G):
+    return nx.is_connected(G) and degrees.count(2) == len(G.nodes) - 2 and degrees.count(1) == 2
+
+def is_grid_graph(G):
+    try:
+        nx.grid_2d_graph(len(G.nodes), len(G.nodes))  # If it matches a grid formation
+        return True
+    except:
+        return False
+
+def is_complete_graph(G):
+    return nx.is_connected(G) and len(G.edges) == len(G.nodes) * (len(G.nodes) - 1) // 2
+
+def is_clustered_graph(G):
+    clusters = nx.algorithms.community.greedy_modularity_communities(G)
+    return len(clusters) > 1
+
+# Determine the graph pattern
+if is_star_graph(G):
+    print("Star")
+elif is_cycle_graph(G):
+    print("Cycle")
+elif is_path_graph(G):
+    print("Path")
+elif is_grid_graph(G):
+    print("Grid")
+elif is_complete_graph(G):
+    print("Complete")
+elif is_clustered_graph(G):
+    print("Clustered Graph")
+else:
+    print("Random Graph")
+```

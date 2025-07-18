@@ -1,0 +1,115 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are (x, y) coordinates.  Returns in JSON format.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Determine the number of nodes.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    num_nodes = len(nodes)
+
+    # 3. Initialize node positions.  Start with a circle.
+    layout = {}
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        layout[node] = (math.cos(angle), math.sin(angle))
+
+    # 4. Iteratively refine the layout using a force-directed approach.
+    #    The goal is to make Euclidean distances approximate graph distances.
+    iterations = 100  # Number of iterations for refinement
+    repulsion_strength = 0.05  # Strength of the repulsive force
+    attraction_strength = 0.1  # Strength of the attractive force
+    damping_factor = 0.5 # Damping factor to prevent oscillations
+
+    for _ in range(iterations):
+        # Calculate forces on each node
+        forces = {}
+        for node in nodes:
+            forces[node] = [0.0, 0.0]  # Initialize force vector
+
+        # Repulsive forces (push nodes apart)
+        for i in nodes:
+            for j in nodes:
+                if i != j:
+                    dx = layout[j][0] - layout[i][0]
+                    dy = layout[j][1] - layout[i][1]
+                    distance = math.sqrt(dx**2 + dy**2)
+                    if distance == 0:
+                        distance = 0.01  # Avoid division by zero
+                        dx = 0.01
+                        dy = 0.01
+
+                    repulsion = repulsion_strength / distance**2
+                    forces[i][0] -= repulsion * dx
+                    forces[i][1] -= repulsion * dy
+
+        # Attractive forces (pull connected nodes together)
+        for u, neighbors in adj.items():
+            for v in neighbors:
+                dx = layout[v][0] - layout[u][0]
+                dy = layout[v][1] - layout[u][1]
+                distance = math.sqrt(dx**2 + dy**2)
+
+                attraction = attraction_strength * distance
+                forces[u][0] += attraction * dx
+                forces[u][1] += attraction * dy
+
+        # Update node positions based on forces
+        for node in nodes:
+            layout[node] = (
+                layout[node][0] + damping_factor * forces[node][0],
+                layout[node][1] + damping_factor * forces[node][1],
+            )
+
+        # Normalize positions to fit within a reasonable range (-1 to 1)
+        min_x = min(x for x, y in layout.values())
+        max_x = max(x for x, y in layout.values())
+        min_y = min(y for x, y in layout.values())
+        max_y = max(y for x, y in layout.values())
+
+        range_x = max_x - min_x
+        range_y = max_y - min_y
+
+        if range_x == 0:
+            range_x = 1
+        if range_y == 0:
+            range_y = 1
+
+        for node in nodes:
+            x, y = layout[node]
+            x = 2 * (x - min_x) / range_x - 1
+            y = 2 * (y - min_y) / range_y - 1
+            layout[node] = (x, y)
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 21), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+layout_json = layout_graph(edge_list)
+print(layout_json)
+```

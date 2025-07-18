@@ -1,0 +1,7 @@
+Based on the images, Layout 2 visually separates the communities more clearly than Layout 1.
+
+```json
+{
+"Answer": "2"
+}
+```

@@ -1,0 +1,16 @@
+To calculate the shortest path between nodes `28` and `17` in the graph represented by the adjacency list, we will use Breadth-First Search (BFS). BFS is ideal for finding the shortest path in an unweighted graph like this one.
+
+The steps involve:
+1. Start from node `28`.
+2. Traverse the graph level by level.
+3. Use a queue to handle nodes to visit and a set to keep track of visited nodes.
+4. Stop BFS once we reach node `17`.
+5. Count the number of edges traversed to get the shortest path length.
+
+Here is the result:
+
+```json
+{
+  "answer": 11
+}
+```

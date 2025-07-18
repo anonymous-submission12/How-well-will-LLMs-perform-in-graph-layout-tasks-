@@ -1,0 +1,8 @@
+To determine which layout better preserves graph-theoretic distances, we compare the Euclidean distances in each layout to the actual graph-theoretic shortest path distances in the graph. The layout that achieves a closer correlation between Euclidean distances and graph-theoretic distances across nodes will be considered better.
+
+### Layout 1 Analysis
+Given the coordinates in the first layout, the Euclidean distances don't align well with the graph-theoretic distances. Nodes that are close graph-theoretically are not consistently well-represented in Euclidean space. For example:
+- Graph-theoretically close nodes like 1 and 6 (connected directly) have varied Euclidean spacing nonlinear.
+### AXATTRIBUTE
+
+

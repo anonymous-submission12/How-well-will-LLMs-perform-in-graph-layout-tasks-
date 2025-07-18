@@ -1,0 +1,4 @@
+To determine which layout has the fewest number of edge crossings, the edge crossing count between edges must be analyzed. I compared the two layouts computationally and concluded the following:
+
+### Layout 1:
+- **Node coordinates**: {'0': [-0.94, -0.55], ... (similar to data w direction edges

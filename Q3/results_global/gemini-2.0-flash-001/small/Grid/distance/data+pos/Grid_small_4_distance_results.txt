@@ -1,0 +1,7 @@
+The graph data represents a chain-like structure with some additional edges connecting nodes that are 15 steps apart. Layout 2 appears to arrange the nodes in a more linear fashion, which better reflects the chain-like structure and thus preserves graph-theoretic distance better than layout 1, which has more nodes scattered around.
+
+```json
+{
+"Answer": "2"
+}
+```

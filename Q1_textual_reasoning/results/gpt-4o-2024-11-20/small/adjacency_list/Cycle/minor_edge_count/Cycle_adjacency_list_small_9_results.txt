@@ -1,0 +1,8 @@
+To count the number of edges in the graph represented by the adjacency list, we note that each edge is listed twice (once for each vertex it connects). Therefore, we can sum up the lengths of all adjacency lists and divide by 2 to find the total number of edges.
+
+Here is the calculation:  
+- Summing up the lengths of all adjacency lists:  
+  `{0: [1, 28], 1: [0, 2], 2: [1, 3], ..., 28: [0, 27]}`  
+  Each vertex has either 2 connected edges consistently across the graph (except no duplicates overlap).
+  
+- Dividing by 2 adjustment

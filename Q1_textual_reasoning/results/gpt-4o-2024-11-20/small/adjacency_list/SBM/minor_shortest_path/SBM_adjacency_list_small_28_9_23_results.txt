@@ -1,0 +1,12 @@
+To calculate the shortest path between node '9' and node '23', we can use the Breadth-First Search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+Explanation:
+1. Starting from node '9', we explore its neighbors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 22].
+2. Node '22' is directly connected to node '9', and node '23' is connected to node '22'.
+3. Therefore, the shortest path from '9' to '23' is of length 3: 9 → 22 → 23.

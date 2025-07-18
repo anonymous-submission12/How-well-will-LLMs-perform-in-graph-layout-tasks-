@@ -1,0 +1,77 @@
+Here is the Python script to generate a layout for the provided graph, maintaining the consistency between Euclidean distance and graph-theoretic distance. The layout is produced using a custom optimization approach to approximate distances.
+
+```python
+import json
+import numpy as np
+from scipy.spatial.distance import euclidean
+from scipy.optimize import minimize
+
+# Graph definition using edge list
+edges = [(0, 1), (0, 24), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), 
+         (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), 
+         (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), 
+         (22, 23), (23, 24)]
+
+# Extract nodes
+nodes = set()
+for edge in edges:
+    nodes.update(edge)
+nodes = list(nodes)
+
+# Create adjacency matrix and graph-theoretic distances
+n = len(nodes)
+adj_matrix = np.zeros((n, n))
+for edge in edges:
+    adj_matrix[edge[0], edge[1]] = 1
+    adj_matrix[edge[1], edge[0]] = 1
+
+# Use Floyd-Warshall algorithm to compute shortest path distances
+graph_distances = np.full((n, n), np.inf)
+np.fill_diagonal(graph_distances, 0)
+
+for i in range(n):
+    for j in range(n):
+        if adj_matrix[i, j] > 0:
+            graph_distances[i, j] = 1
+
+for k in range(n):
+    for i in range(n):
+        for j in range(n):
+            graph_distances[i, j] = min(graph_distances[i, j], graph_distances[i, k] + graph_distances[k, j])
+
+# Objective function to minimize the difference between Euclidean and graph-theoretic distances
+def stress(layout):
+    layout = layout.reshape((n, 2))
+    stress_sum = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            d_graph = graph_distances[i, j]
+            d_euclid = euclidean(layout[i], layout[j]) if d_graph != np.inf else 0
+            stress_sum += (d_euclid - d_graph)**2 if d_graph != np.inf else 0
+    return stress_sum
+
+# Initial random layout
+initial_layout = np.random.rand(n, 2)
+
+# Optimize the layout
+result = minimize(stress, initial_layout.flatten(), method='L-BFGS-B')
+
+# Get the optimized layout
+optimized_layout = result.x.reshape((n, 2))
+
+# Create output in JSON format
+layout_json = {}
+for i, (x, y) in enumerate(optimized_layout):
+    layout_json[i] = {"x": round(x, 4), "y": round(y, 4)}
+
+# Output the result
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation:
+1. **Graph Distance Computation**: The code calculates the graph-theoretic shortest path using the Floyd-Warshall algorithm.
+2. **Stress Function**: The energy (or stress) function minimizes the squared difference between the Euclidean distances in the layout and the actual graph-theoretic distances.
+3. **Optimization**: Using the `scipy.optimize.minimize` function, the layout is optimized to reflect the graph-theoretic distances in the Euclidean distances.
+4. **Final Output**: The script outputs the node positions in JSON format, with each node having `x` and `y` coordinates rounded to 4 decimal places.
+
+You can run this code in a Python environment with `numpy` and `scipy` installed. The output will be a JSON structure containing the graph layout.

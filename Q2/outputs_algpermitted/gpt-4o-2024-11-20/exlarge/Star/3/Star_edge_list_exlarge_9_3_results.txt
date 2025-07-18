@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/networkx/drawing/nx_agraph.py", line 301, in pygraphviz_layout
+    import pygraphviz
+ModuleNotFoundError: No module named 'pygraphviz'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/code.py", line 30, in <module>
+    layout_json = generate_graph_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 12, in generate_graph_layout
+    pos = nx.nx_agraph.graphviz_layout(G, prog='dot')  # 'dot' attempts to minimize edge crossings
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/drawing/nx_agraph.py", line 257, in graphviz_layout
+    return pygraphviz_layout(G, prog=prog, root=root, args=args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/networkx/drawing/nx_agraph.py", line 303, in pygraphviz_layout
+    raise ImportError("requires pygraphviz http://pygraphviz.github.io/") from err
+ImportError: requires pygraphviz http://pygraphviz.github.io/

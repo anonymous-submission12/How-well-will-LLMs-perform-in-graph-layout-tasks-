@@ -1,0 +1,7 @@
+Based on visual inspection, Layout 2 appears to better preserve graph-theoretic distance. In Layout 2, the vertices are spaced and organized in a way that better reflects the actual connectivity and distances between nodes in the graph. In Layout 1, the placement of nodes seems more scattered, making it harder to perceive graph-theoretic distances intuitively.
+
+```json
+{
+  "Answer": 2
+}
+```

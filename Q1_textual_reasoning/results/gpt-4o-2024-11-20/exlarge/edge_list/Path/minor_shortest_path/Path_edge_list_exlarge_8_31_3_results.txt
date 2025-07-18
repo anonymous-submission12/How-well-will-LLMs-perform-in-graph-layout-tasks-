@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes `31` and `3`, we note that the graph provided is a simple linear path where each node is connected sequentially. The shortest path length between two nodes in such a graph is simply the absolute difference between their labels.
+
+In this case:
+- Path from node `31` to node `3`
+- Length = |31 - 3| = 28
+
+Here is the response in the required JSON format:
+
+```json
+{
+  "answer": 28
+}
+```

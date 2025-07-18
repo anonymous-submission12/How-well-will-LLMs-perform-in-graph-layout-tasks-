@@ -1,0 +1,18 @@
+To find the highest degree of any node in the graph, we need to count the number of edges connected to each node and determine the maximum degree.
+
+### Steps:
+1. Parse through the edge list.
+2. Count how many times each node appears (each appearance corresponds to an edge).
+3. Identify the node with the maximum count.
+
+### Solution:
+Let's calculate the highest degree of any node.
+
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+- This graph is a chain where each node (except the endpoints) is connected to exactly two other nodes. As such, the highest degree of any node is `2`. The endpoints (nodes `0` and `72`) have a degree of `1`.

@@ -1,0 +1,45 @@
+Here is a Python script to generate a consistent graph layout. It uses the Kamada-Kawai layout algorithm, which is known for maintaining consistency between Euclidean distances and graph-theoretic distances. The output will be the graph layout in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the edge list for the graph
+edge_list = [
+    (0, 1), (0, 24), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17),
+    (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24)
+]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate node positions using the Kamada-Kawai layout algorithm
+positions = nx.kamada_kawai_layout(G)
+
+# Convert positions to JSON-serializable format
+layout = {node: pos.tolist() for node, pos in positions.items()}
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation**:
+   - The `edge_list` is defined as the input representation of the graph.
+   - A graph `G` is created using the NetworkX library, and edges are added using `G.add_edges_from`.
+
+2. **Kamada-Kawai Layout Algorithm**:
+   - The `nx.kamada_kawai_layout` function computes positions for the nodes of the graph such that the Euclidean distances between nodes in 2D space are as similar as possible to the graph-theoretic distances.
+
+3. **JSON Formatting**:
+   - The positions are serialized into a Python dictionary where the key is the node, and the value is the 2D position (a list of x, y coordinates).
+   - The dictionary is then converted into JSON format with indentation for readability.
+
+4. **Output**:
+   - The script outputs the graph layout as a JSON string. The positions can be further used for visualization or analysis.
+
+### Note:
+- This script does not include visualization or drawing of the graph. It only outputs the layout in JSON format, as per your request.
+- Ensure you have the `networkx` library installed. You can install it using `pip install networkx` if it is not already available.

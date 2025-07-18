@@ -1,0 +1,17 @@
+To solve this problem, we will use Breadth-First Search (BFS) because it is an efficient way to find the shortest path in an unweighted graph. Let's calculate the shortest path between nodes '9' and '11'.
+
+### Calculation
+
+1. Represent the graph as an adjacency list for efficient traversal.
+2. Use BFS starting from node 9 and stop when node 11 is reached.
+3. Count the number of edges in the shortest path.
+
+Here is the result:
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation: The shortest path from node 9 to node 11 is `9 -> 6 -> 11`, which consists of 2 edges.

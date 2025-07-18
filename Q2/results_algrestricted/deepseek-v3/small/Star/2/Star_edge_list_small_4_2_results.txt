@@ -1,0 +1,149 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place the central node (node 0) at the origin and place the other nodes at equal distances around a circle. This ensures that the Euclidean distance between the central node and each of the other nodes is the same, and the graph-theoretic distance (which is 1 for all edges) is also consistent.
+
+Here is the Python code to generate the layout:
+
+```python
+import math
+import json
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), 
+             (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), 
+             (0, 20), (0, 21), (0, 22), (0, 23)]
+
+# Number of nodes
+num_nodes = max(max(edge) for edge in edge_list) + 1
+
+# Initialize positions
+positions = {}
+
+# Place node 0 at the origin
+positions[0] = (0.0, 0.0)
+
+# Calculate positions for the other nodes on a circle
+radius = 1.0  # Radius of the circle
+angle_step = 2 * math.pi / (num_nodes - 1)  # Angle between nodes
+
+for i in range(1, num_nodes):
+    angle = (i - 1) * angle_step
+    x = radius * math.cos(angle)
+    y = radius * math.sin(angle)
+    positions[i] = (x, y)
+
+# Convert positions to JSON format
+layout_json = json.dumps(positions, indent=4)
+
+# Output the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Central Node Placement**: Node 0 is placed at the origin `(0.0, 0.0)`.
+2. **Circular Layout**: The remaining nodes are placed on a circle with a fixed radius. The angle between each node is calculated as `2 * pi / (num_nodes - 1)` to ensure equal spacing.
+3. **JSON Output**: The positions are stored in a dictionary and then converted to JSON format for easy serialization and output.
+
+### Output:
+The output will be a JSON object where each key is a node ID, and the value is a tuple representing the `(x, y)` coordinates of the node.
+
+```json
+{
+    "0": [
+        0.0,
+        0.0
+    ],
+    "1": [
+        1.0,
+        0.0
+    ],
+    "2": [
+        0.8090169943749475,
+        0.5877852522924731
+    ],
+    "3": [
+        0.30901699437494745,
+        0.9510565162951535
+    ],
+    "4": [
+        -0.30901699437494734,
+        0.9510565162951536
+    ],
+    "5": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "6": [
+        -1.0,
+        1.2246467991473532e-16
+    ],
+    "7": [
+        -0.8090169943749475,
+        -0.587785252292473
+    ],
+    "8": [
+        -0.30901699437494756,
+        -0.9510565162951535
+    ],
+    "9": [
+        0.30901699437494723,
+        -0.9510565162951536
+    ],
+    "10": [
+        0.8090169943749473,
+        -0.5877852522924732
+    ],
+    "11": [
+        1.0,
+        -2.4492935982947064e-16
+    ],
+    "12": [
+        0.8090169943749475,
+        0.587785252292473
+    ],
+    "13": [
+        0.30901699437494756,
+        0.9510565162951535
+    ],
+    "14": [
+        -0.30901699437494723,
+        0.9510565162951536
+    ],
+    "15": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "16": [
+        -1.0,
+        3.6739403974420594e-16
+    ],
+    "17": [
+        -0.8090169943749475,
+        -0.587785252292473
+    ],
+    "18": [
+        -0.30901699437494756,
+        -0.9510565162951535
+    ],
+    "19": [
+        0.30901699437494723,
+        -0.9510565162951536
+    ],
+    "20": [
+        0.8090169943749473,
+        -0.5877852522924732
+    ],
+    "21": [
+        1.0,
+        -4.898587196589413e-16
+    ],
+    "22": [
+        0.8090169943749475,
+        0.587785252292473
+    ],
+    "23": [
+        0.30901699437494756,
+        0.9510565162951535
+    ]
+}
+```
+
+This layout ensures that the Euclidean distance between the central node and each of the other nodes is consistent, and the graph-theoretic distance is also maintained.

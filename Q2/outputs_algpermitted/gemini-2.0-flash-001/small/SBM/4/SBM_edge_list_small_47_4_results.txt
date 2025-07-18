@@ -1,0 +1,35 @@
+Modularity: 0.6304630593132153
+Traceback (most recent call last):
+  File "/tmp/code.py", line 62, in <module>
+    layout_json = generate_graph_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 41, in generate_graph_layout
+    tsne_results = tsne.fit_transform(community_vectors)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/utils/_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/base.py", line 1389, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/manifold/_t_sne.py", line 1178, in fit_transform
+    embedding = self._fit(X)
+                ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/manifold/_t_sne.py", line 1029, in _fit
+    X_embedded = pca.fit_transform(X).astype(np.float32, copy=False)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/utils/_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/base.py", line 1389, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/decomposition/_pca.py", line 468, in fit_transform
+    U, S, _, X, x_is_centered, xp = self._fit(X)
+                                    ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/decomposition/_pca.py", line 544, in _fit
+    return self._fit_truncated(X, n_components, xp)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sklearn/decomposition/_pca.py", line 719, in _fit_truncated
+    raise ValueError(
+ValueError: n_components=2 must be between 1 and min(n_samples, n_features)=1 with svd_solver='randomized'

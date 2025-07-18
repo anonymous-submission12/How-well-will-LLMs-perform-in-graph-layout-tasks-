@@ -1,0 +1,14 @@
+```python
+from collections import Counter
+
+edge_list = [(0, 8), (0, 26), (0, 27), (1, 7), (1, 19), (1, 22), (2, 20), (2, 28), (3, 18), (3, 23), (3, 26),
+             (4, 16), (5, 16), (5, 19), (5, 21), (5, 24), (5, 28), (6, 22), (7, 18), (7, 26), (8, 15), (9, 10),
+             (9, 14), (9, 24), (10, 22), (11, 15), (11, 19), (11, 22), (11, 23), (12, 22), (12, 26), (13, 24),
+             (13, 28), (14, 28), (15, 17), (15, 24), (15, 25), (16, 26), (17, 20), (17, 27), (18, 25), (18, 26),
+             (19, 21), (19, 23), (19, 28), (20, 25), (20, 28), (21, 26), (23, 24)]
+
+# Flatten edge_list into a list of nodes and count frequency
+degrees = Counter(node for edge in edge_list for node in edge)
+highest_degree = max(degrees.values())
+print(highest_degree)
+```

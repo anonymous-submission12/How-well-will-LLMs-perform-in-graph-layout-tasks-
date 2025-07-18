@@ -1,0 +1,15 @@
+To find the shortest path between nodes '5' and '11' in the provided graph, we can observe that the graph is structured as a star graph. Node '0' is the central node connected to all other nodes, while all other nodes are only connected to node '0'. The path from any node to any other node will always pass through node '0'.
+
+Thus, the shortest path from node '5' to node '11' is as follows:
+1. From node '5' to node '0' (length = 1).
+2. From node '0' to node '11' (length = 1).
+
+The total length of the shortest path is \(1 + 1 = 2\).
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

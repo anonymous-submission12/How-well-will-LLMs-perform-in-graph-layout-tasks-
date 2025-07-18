@@ -1,0 +1,9 @@
+To count the number of communities, we use a method like connected components detection in an undirected graph. A community is a set of nodes where all nodes are reachable from one another.
+
+Here's the result:
+
+```json
+{
+  "answer": 4
+}
+```

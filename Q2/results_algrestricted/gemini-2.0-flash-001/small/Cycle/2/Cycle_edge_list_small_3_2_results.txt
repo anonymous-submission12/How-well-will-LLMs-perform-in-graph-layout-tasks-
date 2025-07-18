@@ -1,0 +1,96 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the layout, where keys are node IDs and
+        values are (x, y) coordinates.  Returns None if the graph is empty.
+    """
+
+    if not edge_list:
+        return None
+
+    # 1. Build the adjacency list representation of the graph.
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Identify all nodes in the graph.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    num_nodes = len(nodes)
+
+    # 3. Initialize node positions.  Start with a circle.
+    layout = {}
+    radius = 10  # Adjust as needed
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        layout[node] = (x, y)
+
+    # 4. Iteratively refine the layout using a force-based approach.
+    #    Nodes connected by edges attract each other, while all nodes
+    #    repel each other.  The strength of the forces is related to
+    #    the graph-theoretic distance between nodes.
+
+    iterations = 100  # Adjust as needed
+    attraction_strength = 0.1  # Adjust as needed
+    repulsion_strength = 10  # Adjust as needed
+
+    for _ in range(iterations):
+        for u in nodes:
+            force_x = 0
+            force_y = 0
+
+            # Attraction force
+            for v in adj[u]:
+                dx = layout[v][0] - layout[u][0]
+                dy = layout[v][1] - layout[u][1]
+                distance = math.sqrt(dx**2 + dy**2)
+                if distance > 0:  # Avoid division by zero
+                    force_x += attraction_strength * dx / distance
+                    force_y += attraction_strength * dy / distance
+
+            # Repulsion force
+            for v in nodes:
+                if u != v:
+                    dx = layout[v][0] - layout[u][0]
+                    dy = layout[v][1] - layout[u][1]
+                    distance = math.sqrt(dx**2 + dy**2)
+                    if distance > 0:  # Avoid division by zero
+                        force_x -= repulsion_strength * dx / (distance**2)
+                        force_y -= repulsion_strength * dy / (distance**2)
+
+            # Update node position
+            layout[u] = (layout[u][0] + force_x, layout[u][1] + force_y)
+
+    return layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 22), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+layout = layout_graph(edge_list)
+
+if layout:
+    print(json.dumps(layout, indent=4))
+else:
+    print("Graph is empty.")
+```

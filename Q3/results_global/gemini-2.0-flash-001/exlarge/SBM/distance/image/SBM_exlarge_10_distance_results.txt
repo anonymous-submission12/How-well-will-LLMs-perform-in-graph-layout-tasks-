@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve graph-theoretic distance. In layout 1, the nodes are densely packed, making it difficult to visually estimate the distance between nodes based on their spatial proximity. Layout 2, on the other hand, spreads the nodes out more evenly, and clusters of nodes that are close in the graph are also close in the layout. This makes it easier to infer graph-theoretic distance from the visual layout.
+
+```json
+{
+"Answer": 2
+}
+```

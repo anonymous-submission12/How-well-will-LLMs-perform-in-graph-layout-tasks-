@@ -1,0 +1,123 @@
+```python
+import json
+import math
+
+def graph_layout(edge_list):
+    """
+    Generates a layout for a graph, maintaining consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are (x, y) coordinates.  The layout is also returned as a JSON string.
+    """
+
+    # Determine the number of nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    num_nodes = len(nodes)
+
+    # Initialize layout with nodes placed in a circle
+    layout = {}
+    for i in range(num_nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = math.cos(angle)
+        y = math.sin(angle)
+        layout[i] = [x, y]
+
+    # Iteratively adjust node positions to minimize the difference between
+    # Euclidean distance and graph-theoretic distance.
+    for _ in range(1000):  # Iterate to convergence
+        for node1 in range(num_nodes):
+            for node2 in range(node1 + 1, num_nodes):
+                # Calculate graph-theoretic distance (shortest path)
+                graph_dist = shortest_path_distance(node1, node2, edge_list, num_nodes)
+
+                # Calculate Euclidean distance
+                x1, y1 = layout[node1]
+                x2, y2 = layout[node2]
+                euclidean_dist = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+                # Calculate the difference
+                diff = graph_dist - euclidean_dist
+
+                # Adjust node positions to reduce the difference
+                learning_rate = 0.001  # Adjust as needed
+                dx = (x2 - x1) * learning_rate * diff
+                dy = (y2 - y1) * learning_rate * diff
+
+                layout[node1][0] += dx
+                layout[node1][1] += dy
+                layout[node2][0] -= dx
+                layout[node2][1] -= dy
+
+    # Normalize the layout to fit within a reasonable range (e.g., -1 to 1)
+    min_x = min(layout[node][0] for node in layout)
+    max_x = max(layout[node][0] for node in layout)
+    min_y = min(layout[node][1] for node in layout)
+    max_y = max(layout[node][1] for node in layout)
+
+    for node in layout:
+        x, y = layout[node]
+        x = 2 * (x - min_x) / (max_x - min_x) - 1
+        y = 2 * (y - min_y) / (max_y - min_y) - 1
+        layout[node] = [x, y]
+
+    # Convert layout to JSON format
+    layout_json = json.dumps(layout)
+
+    return layout_json
+
+
+def shortest_path_distance(start_node, end_node, edge_list, num_nodes):
+    """
+    Calculates the shortest path distance between two nodes in a graph.
+
+    Args:
+        start_node: The starting node.
+        end_node: The ending node.
+        edge_list: A list of tuples representing the edges of the graph.
+        num_nodes: The total number of nodes in the graph.
+
+    Returns:
+        The shortest path distance between the two nodes.
+    """
+
+    # Use Breadth-First Search (BFS) to find the shortest path
+    queue = [(start_node, 0)]  # (node, distance)
+    visited = {start_node}
+
+    while queue:
+        node, distance = queue.pop(0)
+
+        if node == end_node:
+            return distance
+
+        # Find neighbors of the current node
+        neighbors = []
+        for edge in edge_list:
+            if edge[0] == node:
+                neighbors.append(edge[1])
+            elif edge[1] == node:
+                neighbors.append(edge[0])
+
+        # Add unvisited neighbors to the queue
+        for neighbor in neighbors:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+
+    # If no path is found, return infinity (or a large number)
+    return float('inf')
+
+
+# Example usage:
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+layout_json = graph_layout(edge_list)
+print(layout_json)
+```

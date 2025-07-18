@@ -1,0 +1,14 @@
+To determine which graph layout has fewer edge crossings, observe the images carefully.
+
+Based on visual inspection:
+
+- **Layout 1 (Image 1)** has a densely connected central region with numerous edge crossings.
+- **Layout 2 (Image 2)** organizes the graph into distinct clusters with significantly fewer overlaps between edges.
+
+Thus, **Layout 2** has fewer edge crossings than Layout 1.
+
+```json
+{
+  "Answer": 2
+}
+```

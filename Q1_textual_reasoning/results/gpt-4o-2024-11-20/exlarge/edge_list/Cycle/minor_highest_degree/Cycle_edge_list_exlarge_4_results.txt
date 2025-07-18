@@ -1,0 +1,14 @@
+To calculate the highest degree of all nodes in the graph, we need to count the number of edges connected to each node. Here's the solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+- The graph is represented as an edge list.
+- Node `0` is connected to nodes `1` and `73`, so its degree is `2`.
+- Node `73` is connected to nodes `0` and `72`, so its degree is `2`.
+- All other nodes (from `1` to `72`) are part of a linear chain, where each node (except the endpoints) is connected to two other nodes.
+- The highest degree in this graph is `3`, which occurs at nodes `1` and `72` because they are connected to three nodes each (`0`, `2`, and `73` for `1`, and `71`, `73`, and `72` for `72`).

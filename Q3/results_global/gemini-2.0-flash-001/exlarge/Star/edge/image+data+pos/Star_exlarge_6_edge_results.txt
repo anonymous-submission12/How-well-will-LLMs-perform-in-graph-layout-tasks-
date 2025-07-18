@@ -1,0 +1,7 @@
+The first layout appears to have fewer edge crossings.
+
+```json
+{
+"Answer": "1"
+}
+```

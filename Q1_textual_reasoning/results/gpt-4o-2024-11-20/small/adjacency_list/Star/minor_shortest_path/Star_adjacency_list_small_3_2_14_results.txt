@@ -1,0 +1,9 @@
+The graph provided is a star graph where node `0` is the central node connected to all other nodes, and all other nodes have no connections except to node `0`. To calculate the shortest path between node `2` and node `14`, we can observe that both nodes are directly connected to node `0`. Therefore, the shortest path travels from `2` to `0` and then from `0` to `14`, which consists of 2 edges.
+
+Here is the response:
+
+```json
+{
+  "answer": 2
+}
+```

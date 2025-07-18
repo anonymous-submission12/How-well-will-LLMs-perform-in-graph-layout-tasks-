@@ -1,0 +1,37 @@
+Below is a Python script that calculates a layout for the given graph using the Fruchterman-Reingold force-directed layout algorithm through NetworkX. The computed layout is output in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the graph using the edge list provided
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), 
+    (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), 
+    (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), 
+    (0, 23), (0, 24)
+]
+
+# Create a graph object
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate the layout using the Fruchterman-Reingold algorithm
+layout = nx.spring_layout(G)  # Positions are computed here
+
+# Convert the layout to a JSON-compatible format
+layout_json = {node: position.tolist() for node, position in layout.items()}
+
+# Output the layout in JSON format
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation:
+1. **Graph Creation**: The edge list provided is used to create the graph in NetworkX.
+2. **Fruchterman-Reingold Layout**: The `spring_layout` function from NetworkX computes the layout based on the Fruchterman-Reingold force-directed algorithm, which ensures that the Euclidean distances between nodes reflect the graph-theoretic distances.
+3. **JSON Serialization**: The positions, which are NumPy arrays by default, are converted into lists for JSON serialization. The `json.dumps` function is used to format the output as an indented JSON string.
+
+### Output:
+The script produces a dictionary where each key corresponds to a node, and each value is a 2D coordinate representing the node's position in the layout. The result is printed in JSON format.
+
+You can run this code in any Python environment with NetworkX installed to see the layout generated for your graph.

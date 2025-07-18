@@ -1,0 +1,39 @@
+Here’s the Python script to calculate a graph layout that minimizes edge crossings using an existing layout algorithm, such as the `spring_layout` from `networkx`. The graph layout is outputted in JSON format. 
+
+```python
+import networkx as nx
+import json
+
+# Input edge list
+edge_list = [
+    (0, 1), (0, 10), (1, 2), (1, 11), (2, 3), (2, 12), (3, 4), (3, 13), 
+    (4, 5), (4, 14), (5, 6), (5, 15), (6, 7), (6, 16), (7, 8), (7, 17), 
+    (8, 9), (8, 18), (9, 19), (10, 11), (10, 20), (11, 12), (11, 21), 
+    (12, 13), (12, 22), (13, 14), (13, 23), (14, 15), (14, 24), 
+    (15, 16), (15, 25), (16, 17), (16, 26), (17, 18), (17, 27), 
+    (18, 19), (18, 28), (19, 29), (20, 21), (21, 22), (22, 23), 
+    (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)
+]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate layout using the spring layout algorithm
+pos = nx.spring_layout(G)
+
+# Convert positions to a JSON-compatible dictionary
+layout = {node: [float(coord) for coord in coords] for node, coords in pos.items()}
+
+# Output the layout in JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```
+
+### What the script does:
+1. **Graph creation:** The script uses the `networkx` library to create a graph from the provided edge list.
+2. **Layout calculation:** It uses the `spring_layout` algorithm to compute positions for the graph nodes such that edge crossings are minimized (based on physical spring-force simulation).
+3. **JSON conversion:** The resulting positions are converted to a JSON-compatible dictionary where the keys are node indices and the values are their coordinates in 2D space.
+4. **Output:** It outputs the graph layout as JSON-formatted text.
+
+This script does not attempt to render or visually show the graph, adhering to your requirement not to use plotting tools like `matplotlib`. The output is strictly in JSON format.

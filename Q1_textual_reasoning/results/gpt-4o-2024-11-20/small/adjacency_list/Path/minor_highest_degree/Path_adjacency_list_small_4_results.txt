@@ -1,0 +1,14 @@
+To calculate the highest degree of all nodes in the graph, we need to determine the number of connections (edges) each node has and find the maximum value.
+
+Here is the solution:
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation:
+- The graph is structured as a linear chain, where most nodes (except the first and last) have exactly 2 connections.
+- The first node (0) and the last node (23) each have only 1 connection.
+- Therefore, the highest degree in the graph is 2.

@@ -1,0 +1,99 @@
+```python
+import json
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layout algorithm that attempts to
+    minimize edge crossings by placing nodes in a circular arrangement
+    and then adjusting their positions based on their connections.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple should contain two node indices.
+
+    Returns:
+        A dictionary where keys are node indices and values are tuples
+        representing the (x, y) coordinates of the node in the layout.
+    """
+
+    # 1. Determine the number of nodes.
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions in a circle.
+    import math
+    positions = {}
+    radius = 10  # Adjust radius as needed
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[node] = (x, y)
+
+    # 3. Iteratively adjust node positions to minimize edge crossings.
+    num_iterations = 100  # Adjust number of iterations as needed
+    repulsion_strength = 0.1 # Adjust repulsion strength as needed
+    spring_strength = 0.05 # Adjust spring strength as needed
+
+    for _ in range(num_iterations):
+        for node1 in nodes:
+            # Calculate repulsive forces from other nodes.
+            repulsion_x = 0
+            repulsion_y = 0
+            for node2 in nodes:
+                if node1 != node2:
+                    dx = positions[node1][0] - positions[node2][0]
+                    dy = positions[node1][1] - positions[node2][1]
+                    distance = math.sqrt(dx**2 + dy**2)
+                    if distance > 0:
+                        repulsion_x += repulsion_strength * dx / distance
+                        repulsion_y += repulsion_strength * dy / distance
+
+            # Calculate attractive forces from connected nodes.
+            attraction_x = 0
+            attraction_y = 0
+            for edge in edge_list:
+                if node1 in edge:
+                    neighbor = edge[1] if edge[0] == node1 else edge[0]
+                    dx = positions[neighbor][0] - positions[node1][0]
+                    dy = positions[neighbor][1] - positions[node1][1]
+                    attraction_x += spring_strength * dx
+                    attraction_y += spring_strength * dy
+
+            # Update node position based on forces.
+            positions[node1] = (
+                positions[node1][0] + attraction_x - repulsion_x,
+                positions[node1][1] + attraction_y - repulsion_y,
+            )
+
+    # 4. Normalize positions to fit within a reasonable range (optional).
+    min_x = min(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    width = max_x - min_x
+    height = max_y - min_y
+
+    for node in nodes:
+        x, y = positions[node]
+        x = (x - min_x) / width
+        y = (y - min_y) / height
+        positions[node] = (x, y)
+
+    return positions
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 28), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28)]
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format.
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

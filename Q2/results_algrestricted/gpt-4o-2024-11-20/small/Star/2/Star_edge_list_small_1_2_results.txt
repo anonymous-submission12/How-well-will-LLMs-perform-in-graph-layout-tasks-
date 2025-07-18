@@ -1,0 +1,74 @@
+Below is a Python script to generate a graph layout where the Euclidean distance between the nodes is roughly consistent with the graph-theoretic distance (number of edges in the shortest path connecting two nodes). The code operates by determining the graph's structure and arranging the nodes into a layout accordingly. The result will be output as a JSON dictionary:
+
+```python
+import json
+import math
+
+def generate_graph_layout(edge_list):
+    # Create adjacency list from edge_list
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # BFS to calculate graph-theoretic distances from a root node
+    root = 0
+    distances = {node: math.inf for node in graph}
+    distances[root] = 0
+    queue = [root]
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph[current]:
+            if distances[neighbor] == math.inf:  # Unvisited
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+
+    # Assign positions based on distances
+    positions = {}
+    levels = {}
+    for node, dist in distances.items():
+        if dist not in levels:
+            levels[dist] = []
+        levels[dist].append(node)
+
+    # Spread nodes in concentric circles based on their distance from root
+    radius_increment = 1.0  # Distance between concentric circles
+    for dist, nodes in levels.items():
+        radius = dist * radius_increment
+        angle_increment = (2 * math.pi) / len(nodes) if len(nodes) > 0 else 0
+        for i, node in enumerate(nodes):
+            angle = i * angle_increment
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            positions[node] = (x, y)
+
+    # Convert to JSON-serializable format
+    layout = {str(node): {"x": pos[0], "y": pos[1]} for node, pos in positions.items()}
+    return json.dumps(layout, indent=4)
+
+# Input edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7),
+    (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14),
+    (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20)
+]
+
+# Generate and print graph layout
+layout = generate_graph_layout(edge_list)
+print(layout)
+```
+
+### Explanation:
+1. **Graph Representation**: The adjacency list representation of the graph is built from the provided edge list.
+2. **Breadth-First Search (BFS)**: A BFS traversal from a root node (`0` in this case) calculates the graph-theoretic distance from the root to every other node.
+3. **Node Positioning**:
+    - Nodes are grouped by their graph-theoretic distances (levels).
+    - Nodes in the same level are placed evenly spaced on a circle whose radius corresponds to the level's distance from the root.
+4. **Export to JSON**: The node positions are output in a JSON-serializable format, mapping node IDs to `x` and `y` coordinates.
+
+### Output
+The resulting layout will be a JSON-formatted string with each node's position in the `x` and `y` coordinates.

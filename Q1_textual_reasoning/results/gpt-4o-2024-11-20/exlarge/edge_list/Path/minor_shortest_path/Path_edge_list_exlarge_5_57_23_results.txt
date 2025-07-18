@@ -1,0 +1,15 @@
+To calculate the shortest path between node '57' and '23', we can observe that the graph is a simple linear chain. The shortest path is the absolute difference between the two node values.
+
+The shortest path length is:
+
+\[
+|57 - 23| = 34
+\]
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 34
+}
+```

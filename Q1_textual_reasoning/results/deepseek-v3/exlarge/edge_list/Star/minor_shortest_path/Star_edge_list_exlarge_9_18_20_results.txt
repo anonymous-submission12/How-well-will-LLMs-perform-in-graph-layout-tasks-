@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+The graph provided is a star graph where node `0` is connected to all other nodes (including nodes `18` and `20`). Therefore, the shortest path between node `18` and node `20` is through node `0`. The path is `18 -> 0 -> 20`, which has a length of 2.

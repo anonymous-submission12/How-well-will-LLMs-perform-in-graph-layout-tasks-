@@ -1,0 +1,45 @@
+Here is the Python script using the `networkx` library to compute a consistent graph layout using the `spring_layout` algorithm. This algorithm minimizes a force-directed objective function, ensuring that Euclidean distances between nodes roughly correspond to graph-theoretic distances. The final layout is output in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the given edge list
+edge_list = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), 
+             (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), 
+             (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (12, 13), 
+             (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), 
+             (20, 21)]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Compute the layout using the spring_layout algorithm
+# The spring_layout algorithm places nodes based on a force-directed algorithm
+layout = nx.spring_layout(G)
+
+# Convert the layout into a dictionary for JSON export
+layout_dict = {node: list(position) for node, position in layout.items()}
+
+# Output the layout as a JSON string
+layout_json = json.dumps(layout_dict, indent=2)
+print(layout_json)
+```
+
+### Instructions
+1. Copy and paste the above code into a Python environment that has the `networkx` library installed.
+2. Run the script to generate and print the graph layout in JSON format.
+
+### Output Format
+The output will be a JSON dictionary mapping each node to a position in 2D space, e.g.,
+```json
+{
+  "0": [0.1, 0.9],
+  "1": [-0.2, 0.8],
+  ...
+}
+```
+
+### Dependencies
+Ensure you have the `networkx` package installed. You can install it using `pip install networkx` if necessary.

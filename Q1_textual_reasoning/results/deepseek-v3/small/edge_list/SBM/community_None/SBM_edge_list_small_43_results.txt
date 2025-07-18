@@ -1,0 +1,17 @@
+To determine the number of communities in the graph, we can analyze the connectivity of the nodes. Communities are typically defined as groups of nodes that are more densely connected internally than with the rest of the graph. 
+
+From the provided edge list, we can observe that the graph can be divided into three distinct communities based on the connectivity:
+
+1. **Community 1**: Nodes 0-9
+2. **Community 2**: Nodes 10-19
+3. **Community 3**: Nodes 20-28
+
+Each community is densely connected internally, and there are only a few connections between these communities (e.g., node 2 is connected to node 22, and node 5 is connected to node 28).
+
+Therefore, the number of communities in the graph is **3**.
+
+```json
+{
+  "answer": 3
+}
+```

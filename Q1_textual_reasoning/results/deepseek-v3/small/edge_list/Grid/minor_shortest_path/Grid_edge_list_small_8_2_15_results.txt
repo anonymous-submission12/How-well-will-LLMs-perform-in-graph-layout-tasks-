@@ -1,0 +1,18 @@
+To calculate the length of the shortest path between node '2' and '15', we can use a Breadth-First Search (BFS) algorithm. Here's the step-by-step process:
+
+1. Start from node '2'.
+2. Explore all its neighbors, then the neighbors of those neighbors, and so on, until we reach node '15'.
+3. Count the number of edges traversed to reach node '15'.
+
+From the given edge list, the shortest path from node '2' to '15' is:
+- 2 → 1 → 15
+
+This path involves 2 edges.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,9 @@
+To find the shortest path between nodes `44` and `45`, we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding shortest paths in an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 3
+}
+```

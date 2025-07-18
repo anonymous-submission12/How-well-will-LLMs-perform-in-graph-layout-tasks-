@@ -1,0 +1,21 @@
+To calculate the length of the shortest path between node '7' and '15', we can use a Breadth-First Search (BFS) algorithm. Here's the step-by-step process:
+
+1. **Graph Representation**: Represent the graph using an adjacency list.
+2. **BFS Traversal**: Start from node '7' and explore all its neighbors level by level until node '15' is found.
+3. **Path Length**: The number of levels traversed to reach node '15' is the length of the shortest path.
+
+Let's perform the BFS:
+
+- **Level 0**: Start at node '7'.
+- **Level 1**: Neighbors of '7' are nodes '1', '3', '4', '6'.
+- **Level 2**: Neighbors of '1' are nodes '0', '3', '5', '6'; neighbors of '3' are nodes '1', '4', '5', '6', '13'; neighbors of '4' are nodes '0', '3', '5', '6'; neighbors of '6' are nodes '0', '1', '2', '3', '4', '5', '7'.
+- **Level 3**: Neighbors of '0' are nodes '1', '2', '4', '5'; neighbors of '5' are nodes '0', '1', '2', '3', '4', '6', '13', '21'; neighbors of '13' are nodes '2', '3', '5', '9', '10', '11', '12', '14', '20'; neighbors of '2' are nodes '0', '5', '6', '13', '19', '23'; neighbors of '21' are nodes '5', '15', '16', '17', '18', '19', '20'.
+- **Level 4**: Neighbors of '21' include node '15'.
+
+We find node '15' at level 4. Therefore, the length of the shortest path between node '7' and '15' is 4.
+
+```json
+{
+  "answer": 4
+}
+```

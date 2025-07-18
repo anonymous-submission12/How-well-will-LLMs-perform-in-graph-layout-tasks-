@@ -1,0 +1,7 @@
+Layout 2, the grid-like layout, likely preserves graph-theoretic distance better. In layout 1, the distances between nodes in the graph are distorted by the layout. In layout 2, the distances are more uniform and reflect the actual graph distance.
+
+```json
+{
+"Answer": 2
+}
+```

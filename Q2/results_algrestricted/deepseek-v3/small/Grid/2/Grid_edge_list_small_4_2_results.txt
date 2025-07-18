@@ -1,0 +1,77 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place nodes in a grid-like structure. The idea is to assign positions to nodes such that nodes connected by edges are close to each other in Euclidean space.
+
+Here’s a Python script that generates a layout for the given graph:
+
+```python
+import json
+from collections import defaultdict
+
+# Input edge list
+edges = [(0, 1), (0, 15), (1, 2), (1, 16), (2, 3), (2, 17), (3, 4), (3, 18), 
+          (4, 5), (4, 19), (5, 6), (5, 20), (6, 7), (6, 21), (7, 8), (7, 22), 
+          (8, 9), (8, 23), (9, 10), (9, 24), (10, 11), (10, 25), (11, 12), 
+          (11, 26), (12, 13), (12, 27), (13, 14), (13, 28), (14, 29), (15, 16), 
+          (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), 
+          (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+
+# Create a graph representation
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Initialize positions
+positions = {}
+
+# Assign positions in a grid-like structure
+# We will place nodes in two rows: one for nodes 0-14 and one for nodes 15-29
+for i in range(15):
+    positions[i] = (i * 50, 0)  # First row
+    positions[i + 15] = (i * 50, 50)  # Second row
+
+# Output the positions in JSON format
+output = {str(node): {"x": pos[0], "y": pos[1]} for node, pos in positions.items()}
+print(json.dumps(output, indent=4))
+```
+
+### Explanation:
+1. **Graph Representation**: The graph is represented using a dictionary where each key is a node, and the value is a list of its neighbors.
+2. **Position Assignment**: Nodes are placed in two rows:
+   - Nodes `0` to `14` are placed in the first row with `y = 0`.
+   - Nodes `15` to `29` are placed in the second row with `y = 50`.
+   - The `x` coordinates are spaced evenly with a distance of `50` units between consecutive nodes.
+3. **Output**: The positions are output in JSON format, where each node is mapped to its `(x, y)` coordinates.
+
+### Output Example:
+```json
+{
+    "0": {
+        "x": 0,
+        "y": 0
+    },
+    "1": {
+        "x": 50,
+        "y": 0
+    },
+    "2": {
+        "x": 100,
+        "y": 0
+    },
+    ...
+    "15": {
+        "x": 0,
+        "y": 50
+    },
+    "16": {
+        "x": 50,
+        "y": 50
+    },
+    ...
+    "29": {
+        "x": 700,
+        "y": 50
+    }
+}
+```
+
+This layout ensures that nodes connected by edges are close to each other in Euclidean space, maintaining a consistency between Euclidean distance and graph-theoretic distance.

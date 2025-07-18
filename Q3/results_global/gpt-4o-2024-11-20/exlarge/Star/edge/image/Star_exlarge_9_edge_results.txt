@@ -1,0 +1,7 @@
+The second graph layout (Answer 2) has fewer edge crossings than the first layout (Answer 1). In the second image, edges are more evenly distributed and avoid clustering, reducing the likelihood of crossings.
+
+```json
+{
+  "Answer": 2
+}
+```

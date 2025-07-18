@@ -1,0 +1,9 @@
+To determine the number of communities in the graph described in the adjacency list, we can use Depth First Search (DFS) or Breadth First Search (BFS) to identify connected components. Each connected component represents a community. Let's compute this.
+
+Here’s the result:
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,98 @@
+{
+    "0": {
+        "x": NaN,
+        "y": NaN
+    },
+    "1": {
+        "x": NaN,
+        "y": NaN
+    },
+    "2": {
+        "x": NaN,
+        "y": NaN
+    },
+    "3": {
+        "x": NaN,
+        "y": NaN
+    },
+    "4": {
+        "x": NaN,
+        "y": NaN
+    },
+    "5": {
+        "x": NaN,
+        "y": NaN
+    },
+    "6": {
+        "x": NaN,
+        "y": NaN
+    },
+    "7": {
+        "x": NaN,
+        "y": NaN
+    },
+    "8": {
+        "x": NaN,
+        "y": NaN
+    },
+    "9": {
+        "x": NaN,
+        "y": NaN
+    },
+    "10": {
+        "x": NaN,
+        "y": NaN
+    },
+    "11": {
+        "x": NaN,
+        "y": NaN
+    },
+    "12": {
+        "x": NaN,
+        "y": -Infinity
+    },
+    "13": {
+        "x": NaN,
+        "y": NaN
+    },
+    "14": {
+        "x": Infinity,
+        "y": NaN
+    },
+    "15": {
+        "x": NaN,
+        "y": NaN
+    },
+    "16": {
+        "x": NaN,
+        "y": NaN
+    },
+    "17": {
+        "x": NaN,
+        "y": NaN
+    },
+    "18": {
+        "x": NaN,
+        "y": NaN
+    },
+    "19": {
+        "x": NaN,
+        "y": NaN
+    },
+    "20": {
+        "x": NaN,
+        "y": -Infinity
+    },
+    "21": {
+        "x": Infinity,
+        "y": NaN
+    },
+    "22": {
+        "x": NaN,
+        "y": NaN
+    },
+    "23": {
+        "x": NaN,
+        "y": NaN
+    }
+}

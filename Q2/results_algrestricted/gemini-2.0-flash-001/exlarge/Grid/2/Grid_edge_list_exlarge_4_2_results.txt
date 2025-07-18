@@ -1,0 +1,126 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj = {}
+    for u, v in edge_list:
+        if u not in adj:
+            adj[u] = []
+        if v not in adj:
+            adj[v] = []
+        adj[u].append(v)
+        adj[v].append(u)
+
+    # 2. Identify all nodes in the graph.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # 3. Initialize node positions.  Start with a circle.
+    num_nodes = len(nodes)
+    positions = {}
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        positions[node] = (math.cos(angle), math.sin(angle))
+
+    # 4. Iteratively adjust node positions using a force-based approach.
+    #    Nodes connected by edges attract each other, and nodes not connected
+    #    repel each other.  The strength of the forces is inversely proportional
+    #    to the graph distance between the nodes.
+
+    num_iterations = 100
+    attraction_strength = 0.1
+    repulsion_strength = 0.05
+
+    for _ in range(num_iterations):
+        for i, node1 in enumerate(nodes):
+            force_x = 0.0
+            force_y = 0.0
+
+            for j, node2 in enumerate(nodes):
+                if node1 == node2:
+                    continue
+
+                # Calculate graph distance using BFS
+                queue = [(node1, 0)]
+                visited = {node1}
+                graph_distance = float('inf')
+
+                while queue:
+                    curr_node, dist = queue.pop(0)
+                    if curr_node == node2:
+                        graph_distance = dist
+                        break
+
+                    for neighbor in adj[curr_node]:
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            queue.append((neighbor, dist + 1))
+
+                # Calculate Euclidean distance
+                x1, y1 = positions[node1]
+                x2, y2 = positions[node2]
+                euclidean_distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+                # Apply attractive force if nodes are connected
+                if node2 in adj[node1]:
+                    force_magnitude = attraction_strength / graph_distance
+                    force_x += (x2 - x1) * force_magnitude
+                    force_y += (y2 - y1) * force_magnitude
+
+                # Apply repulsive force if nodes are not directly connected
+                else:
+                    force_magnitude = repulsion_strength / graph_distance
+                    force_x -= (x2 - x1) * force_magnitude
+                    force_y -= (y2 - y1) * force_magnitude
+
+            # Update node position based on the net force
+            positions[node1] = (positions[node1][0] + force_x, positions[node1][1] + force_y)
+
+    # 5. Normalize the layout to fit within a reasonable range (e.g., -1 to 1).
+    min_x = min(x for x, y in positions.values())
+    max_x = max(x for x, y in positions.values())
+    min_y = min(y for x, y in positions.values())
+    max_y = max(y for x, y in positions.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1  # Avoid division by zero if all x-coordinates are the same
+    if y_range == 0:
+        y_range = 1  # Avoid division by zero if all y-coordinates are the same
+
+    normalized_positions = {}
+    for node, (x, y) in positions.items():
+        normalized_x = 2 * (x - min_x) / x_range - 1
+        normalized_y = 2 * (y - min_y) / y_range - 1
+        normalized_positions[node] = (normalized_x, normalized_y)
+
+    return normalized_positions
+
+
+# Provided graph data
+edge_list = [(0, 1), (0, 26), (1, 2), (1, 27), (2, 3), (2, 28), (3, 4), (3, 29), (4, 5), (4, 30), (5, 6), (5, 31), (6, 7), (6, 32), (7, 8), (7, 33), (8, 9), (8, 34), (9, 10), (9, 35), (10, 11), (10, 36), (11, 12), (11, 37), (12, 13), (12, 38), (13, 14), (13, 39), (14, 15), (14, 40), (15, 16), (15, 41), (16, 17), (16, 42), (17, 18), (17, 43), (18, 19), (18, 44), (19, 20), (19, 45), (20, 21), (20, 46), (21, 22), (21, 47), (22, 23), (22, 48), (23, 24), (23, 49), (24, 25), (24, 50), (25, 51), (26, 27), (26, 52), (27, 28), (27, 53), (28, 29), (28, 54), (29, 30), (29, 55), (30, 31), (30, 56), (31, 32), (31, 57), (32, 33), (32, 58), (33, 34), (33, 59), (34, 35), (34, 60), (35, 36), (35, 61), (36, 37), (36, 62), (37, 38), (37, 63), (38, 39), (38, 64), (39, 40), (39, 65), (40, 41), (40, 66), (41, 42), (41, 67), (42, 43), (42, 68), (43, 44), (43, 69), (44, 45), (44, 70), (45, 46), (45, 71), (46, 47), (46, 72), (47, 48), (47, 73), (48, 49), (48, 74), (49, 50), (49, 75), (50, 51), (50, 76), (51, 77), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76), (76, 77)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=2))
+```

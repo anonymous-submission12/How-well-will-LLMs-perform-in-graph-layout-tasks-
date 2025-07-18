@@ -1,0 +1,11 @@
+The graph data represents a simple chain graph. The ideal layout would be a straight line, preserving graph distance perfectly. Let's consider how well each layout approximates this.
+
+Layout 1 has nodes scattered somewhat randomly in 2D space. Layout 2 appears to follow a more linear path, although it curves.
+
+Since layout 2 is closer to a straight line than layout 1, it better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": "2"
+}
+```

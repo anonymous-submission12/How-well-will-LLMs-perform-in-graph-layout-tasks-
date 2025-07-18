@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 66, in <module>
+    layout_json = generate_graph_layout(edge_list)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 33, in generate_graph_layout
+    pos[node] = (radius * co.math.cos(angle), radius * co.math.sin(angle))
+                          ^^^^^^^
+AttributeError: module 'community' has no attribute 'math'

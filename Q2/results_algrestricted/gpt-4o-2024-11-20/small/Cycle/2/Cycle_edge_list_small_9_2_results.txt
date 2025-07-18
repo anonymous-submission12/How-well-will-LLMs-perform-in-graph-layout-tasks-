@@ -1,0 +1,93 @@
+Below is a Python script that computes the layout of the graph based on preserving consistency between Euclidean distance and graph-theoretic distance. By default, it uses a custom force-directed mechanism without relying on existing built-in graph layout algorithms.
+
+The final positions of the nodes will be outputted in JSON format.
+
+```python
+import json
+import math
+from collections import defaultdict
+
+# Graph edge list
+edges = [(0, 1), (0, 28), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), 
+         (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), 
+         (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28)]
+
+# Graph adjacency list
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Function to calculate graph-theoretic distances using BFS
+def calculate_distances(graph, start_node):
+    distances = {node: float('inf') for node in graph}
+    distances[start_node] = 0
+    queue = [start_node]
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph[current]:
+            if distances[neighbor] == float('inf'):
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+    return distances
+
+# Custom layout generation algorithm
+def generate_layout(graph, iterations=500, lr=0.01):
+    # Initialize random positions for nodes
+    positions = {node: (math.cos(node), math.sin(node)) for node in graph}  # Circular initial positions
+    
+    # Calculate all-pairs shortest paths
+    all_distances = {node: calculate_distances(graph, node) for node in graph}
+    
+    # Ensure consistent layout via force-directed adjustments
+    for _ in range(iterations):
+        # Initialize force accumulators
+        displacement = {node: [0, 0] for node in graph}
+        
+        # Compute forces between all pairs of nodes
+        for u in graph:
+            for v in graph:
+                if u != v:
+                    # Desired distance proportional to graph-theoretic shortest path
+                    desired_distance = all_distances[u][v]
+                    
+                    # Current Euclidean distance
+                    ux, uy = positions[u]
+                    vx, vy = positions[v]
+                    dx, dy = vx - ux, vy - uy
+                    euclidean_distance = math.sqrt(dx**2 + dy**2) + 1e-9  # Add a small value to avoid division by zero
+                    
+                    # Force calculation
+                    force = (euclidean_distance - desired_distance) / euclidean_distance
+                    displacement[u][0] += force * dx
+                    displacement[u][1] += force * dy
+        
+        # Update positions based on forces
+        for node in positions:
+            positions[node] = (
+                positions[node][0] + lr * displacement[node][0],
+                positions[node][1] + lr * displacement[node][1]
+            )
+    
+    return positions
+
+# Generate graph layout
+layout = generate_layout(graph)
+
+# Convert layout to JSON format
+layout_json = {node: {'x': pos[0], 'y': pos[1]} for node, pos in layout.items()}
+print(json.dumps(layout_json, indent=4))
+```
+
+### Key Points of the Code:
+1. **Input Graph Representation**: The script uses an adjacency list to represent the graph and takes the edge list as input.
+
+2. **Shortest Path Calculation**: Graph-theoretic distances are computed using Breadth-First Search (BFS).
+
+3. **Custom Layout Algorithm**:
+   - Initial positions of nodes are assigned in a circular manner.
+   - A force-directed principle is implemented where forces are proportional to the difference between graph-theoretic and Euclidean distances.
+
+4. **Output**: The node positions are output in JSON format after convergence (or a set number of iterations).
+
+Let me know if you need help running or extending this code!

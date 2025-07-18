@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes '26' and '19', we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 3
+}
+```

@@ -1,0 +1,15 @@
+To solve the problem, we need to calculate the degree of each node in the graph, which is the number of edges connected to that node. Then, we identify the highest degree among all nodes.
+
+### Implementation Steps:
+1. Parse the edge list to count degrees for each node.
+2. Determine the maximum degree.
+
+Here's the result:
+
+```json
+{
+  "answer": 20
+}
+```
+
+This indicates that the highest degree of any node in the graph is 20.

@@ -1,0 +1,133 @@
+```python
+import json
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph, attempting to maintain consistency
+    between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Identify all nodes in the graph.
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # 2. Initialize node positions.  Start with a circle.
+    num_nodes = len(nodes)
+    positions = {}
+    for i, node in enumerate(nodes):
+        angle = 2 * math.pi * i / num_nodes
+        positions[node] = (math.cos(angle), math.sin(angle))
+
+    # 3. Iteratively adjust positions to minimize stress.
+    # Stress is defined as the difference between the graph-theoretic distance
+    # and the Euclidean distance.
+
+    def euclidean_distance(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+
+    def graph_theoretic_distance(node1, node2, edge_list, nodes):
+        """Calculates the shortest path distance between two nodes."""
+        
+        # Build adjacency list
+        adj = {node: [] for node in nodes}
+        for u, v in edge_list:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        # BFS to find shortest path
+        queue = [(node1, 0)]  # (node, distance)
+        visited = {node1}
+        
+        while queue:
+            curr_node, dist = queue.pop(0)
+            if curr_node == node2:
+                return dist
+            
+            for neighbor in adj[curr_node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+        
+        return float('inf')  # Nodes are not connected
+
+    def calculate_stress(positions, edge_list, nodes):
+        stress = 0
+        for i in range(len(nodes)):
+            for j in range(i + 1, len(nodes)):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                graph_dist = graph_theoretic_distance(node1, node2, edge_list, nodes)
+                euclidean_dist = euclidean_distance(positions[node1], positions[node2])
+                stress += (euclidean_dist - graph_dist)**2
+        return stress
+
+    def adjust_positions(positions, edge_list, nodes, learning_rate=0.01):
+        """Adjusts node positions to reduce stress."""
+        for node in nodes:
+            force_x = 0
+            force_y = 0
+            for other_node in nodes:
+                if node == other_node:
+                    continue
+
+                graph_dist = graph_theoretic_distance(node, other_node, edge_list, nodes)
+                euclidean_dist = euclidean_distance(positions[node], positions[other_node])
+
+                # Calculate force vector
+                diff_x = positions[other_node][0] - positions[node][0]
+                diff_y = positions[other_node][1] - positions[node][1]
+
+                if euclidean_dist > 0:
+                    force_x += (graph_dist - euclidean_dist) * (diff_x / euclidean_dist)
+                    force_y += (graph_dist - euclidean_dist) * (diff_y / euclidean_dist)
+                else:
+                    # If nodes are at the same position, apply a small random force
+                    force_x += 0.01
+                    force_y += 0.01
+
+            # Update position
+            positions[node] = (positions[node][0] + learning_rate * force_x,
+                               positions[node][1] + learning_rate * force_y)
+        return positions
+
+    # Iteration loop
+    num_iterations = 100
+    for _ in range(num_iterations):
+        positions = adjust_positions(positions, edge_list, nodes)
+        # Optionally, print stress to monitor convergence
+        # print(f"Iteration {_}: Stress = {calculate_stress(positions, edge_list, nodes)}")
+
+    # 4. Normalize positions to fit within a unit square (optional).
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    for node in positions:
+        x, y = positions[node]
+        x = (x - min_x) / (max_x - min_x) if (max_x - min_x) != 0 else 0.5
+        y = (y - min_y) / (max_y - min_y) if (max_y - min_y) != 0 else 0.5
+        positions[node] = (x, y)
+
+    return positions
+
+
+# Provided graph data
+edge_list = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), (4, 5), (4, 15), (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), (8, 9), (8, 19), (9, 10), (9, 20), (10, 21), (11, 12), (11, 22), (12, 13), (12, 23), (13, 14), (13, 24), (14, 15), (14, 25), (15, 16), (15, 26), (16, 17), (16, 27), (17, 18), (17, 28), (18, 19), (18, 29), (19, 20), (19, 30), (20, 21), (20, 31), (21, 32), (22, 23), (22, 33), (23, 24), (23, 34), (24, 25), (24, 35), (25, 26), (25, 36), (26, 27), (26, 37), (27, 28), (27, 38), (28, 29), (28, 39), (29, 30), (29, 40), (30, 31), (30, 41), (31, 32), (31, 42), (32, 43), (33, 34), (33, 44), (34, 35), (34, 45), (35, 36), (35, 46), (36, 37), (36, 47), (37, 38), (37, 48), (38, 39), (38, 49), (39, 40), (39, 50), (40, 41), (40, 51), (41, 42), (41, 52), (42, 43), (42, 53), (43, 54), (44, 45), (44, 55), (45, 46), (45, 56), (46, 47), (46, 57), (47, 48), (47, 58), (48, 49), (48, 59), (49, 50), (49, 60), (50, 51), (50, 61), (51, 52), (51, 62), (52, 53), (52, 63), (53, 54), (53, 64), (54, 65), (55, 56), (55, 66), (56, 57), (56, 67), (57, 58), (57, 68), (58, 59), (58, 69), (59, 60), (59, 70), (60, 61), (60, 71), (61, 62), (61, 72), (62, 63), (62, 73), (63, 64), (63, 74), (64, 65), (64, 75), (65, 76), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), (73, 74), (74, 75), (75, 76)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

@@ -1,0 +1,9 @@
+To find the node with the highest degree in the graph, we need to calculate the degree of each node. The degree of a node is the number of edges connected to it, or simply the length of the adjacency list for each node.
+
+```json
+{
+  "answer": 4
+}
+```
+
+The highest degree is 4, which occurs for nodes 8, 9, 10, 11, 12.

@@ -1,0 +1,7 @@
+Based on the provided graph data (edge list), we can identify two distinct communities. The first community includes nodes 0-10, and the second community includes nodes 11-20.
+
+```json
+{
+"answer": 2
+}
+```

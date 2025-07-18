@@ -1,0 +1,7 @@
+Based on the provided edge list, we can identify two distinct connected components, which likely represent the communities. The first component includes nodes from 0 to 12, and the second component includes nodes from 13 to 25. Therefore, there are two communities in the graph.
+
+```json
+{
+"answer": 2
+}
+```

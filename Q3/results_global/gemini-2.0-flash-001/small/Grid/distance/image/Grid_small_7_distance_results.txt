@@ -1,0 +1,7 @@
+Layout 2, the grid-like layout, better preserves graph-theoretic distance. In a grid, the Euclidean distance between nodes is more closely related to the number of edges in the shortest path between them. Layout 1 appears to be a more random layout, where Euclidean distance is less indicative of graph distance.
+
+```json
+{
+"Answer": 2
+}
+```

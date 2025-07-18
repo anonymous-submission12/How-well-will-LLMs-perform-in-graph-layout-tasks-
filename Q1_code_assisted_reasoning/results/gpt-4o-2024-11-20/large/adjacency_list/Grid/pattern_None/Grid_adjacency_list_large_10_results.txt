@@ -1,0 +1,69 @@
+```python
+def is_star_graph(adjacency_list):
+    center_count = 0
+    for node, neighbors in adjacency_list.items():
+        if len(neighbors) == len(adjacency_list) - 1:
+            center_count += 1
+        elif len(neighbors) != 1:
+            return False
+    return center_count == 1
+
+def is_cycle_graph(adjacency_list):
+    for neighbors in adjacency_list.values():
+        if len(neighbors) != 2:
+            return False
+    return True
+
+def is_path_graph(adjacency_list):
+    end_count = 0
+    for neighbors in adjacency_list.values():
+        if len(neighbors) == 1:
+            end_count += 1
+        elif len(neighbors) != 2:
+            return False
+    return end_count == 2
+
+def is_complete_graph(adjacency_list):
+    n = len(adjacency_list)
+    for neighbors in adjacency_list.values():
+        if len(neighbors) != n - 1:
+            return False
+    return True
+
+def is_grid_graph(adjacency_list):
+    # This will check if the adjacency list corresponds to an m x n grid graph.
+    degrees = sorted(len(neighbors) for neighbors in adjacency_list.values())
+    side_nodes = sum(1 for deg in degrees if deg == 2)
+    edge_nodes = sum(1 for deg in degrees if deg == 3)
+    corner_nodes = sum(1 for deg in degrees if deg == 4)
+    total_nodes = len(adjacency_list)
+    return corner_nodes == 4 and side_nodes + corner_nodes + edge_nodes == total_nodes
+
+def graph_type(adjacency_list):
+    if is_star_graph(adjacency_list):
+        return "Star"
+    elif is_cycle_graph(adjacency_list):
+        return "Cycle"
+    elif is_path_graph(adjacency_list):
+        return "Path"
+    elif is_complete_graph(adjacency_list):
+        return "Complete"
+    elif is_grid_graph(adjacency_list):
+        return "Grid"
+    else:
+        return "Random"
+
+adjacency_list = {
+    0: [1, 10], 1: [0, 2, 11], 2: [1, 3, 12], 3: [2, 4, 13], 4: [3, 5, 14], 5: [4, 6, 15], 6: [5, 7, 16],
+    7: [6, 8, 17], 8: [7, 9, 18], 9: [8, 19], 10: [0, 11, 20], 11: [1, 10, 12, 21], 12: [2, 11, 13, 22],
+    13: [3, 12, 14, 23], 14: [4, 13, 15, 24], 15: [5, 14, 16, 25], 16: [6, 15, 17, 26], 17: [7, 16, 18, 27],
+    18: [8, 17, 19, 28], 19: [9, 18, 29], 20: [10, 21, 30], 21: [11, 20, 22, 31], 22: [12, 21, 23, 32],
+    23: [13, 22, 24, 33], 24: [14, 23, 25, 34], 25: [15, 24, 26, 35], 26: [16, 25, 27, 36], 27: [17, 26, 28, 37],
+    28: [18, 27, 29, 38], 29: [19, 28, 39], 30: [20, 31, 40], 31: [21, 30, 32, 41], 32: [22, 31, 33, 42],
+    33: [23, 32, 34, 43], 34: [24, 33, 35, 44], 35: [25, 34, 36, 45], 36: [26, 35, 37, 46], 37: [27, 36, 38, 47],
+    38: [28, 37, 39, 48], 39: [29, 38, 49], 40: [30, 41], 41: [31, 40, 42], 42: [32, 41, 43], 43: [33, 42, 44],
+    44: [34, 43, 45], 45: [35, 44, 46], 46: [36, 45, 47], 47: [37, 46, 48], 48: [38, 47, 49], 49: [39, 48]
+}
+
+print(graph_type(adjacency_list))
+```

@@ -1,0 +1,7 @@
+Looking at the two images, layout 2 has fewer edge crossings compared to layout 1. The nodes in layout 2 are more spread out, and the edges are organized in a way that minimizes overlap.
+
+```json
+{
+  "Answer": 2
+}
+```

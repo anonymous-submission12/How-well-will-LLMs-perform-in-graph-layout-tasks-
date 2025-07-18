@@ -1,0 +1,61 @@
+Below is a Python script that generates a layout for the given graph while maintaining consistency between Euclidean distance and graph-theoretic distance. The script calculates positions for each node based on a simple radial layout, where nodes are distributed evenly around a circle. The central node (node 0) is placed at the center, and all other nodes are placed at equal angular intervals around the circle.
+
+```python
+import json
+import math
+
+def generate_graph_layout(edge_list):
+    # Extract all nodes from the edge list
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    
+    # Determine the central node (node 0) and its neighbors
+    central_node = 0
+    neighbors = [node for node in nodes if node != central_node]
+    
+    # Initialize positions dictionary
+    positions = {}
+    
+    # Place the central node at the origin
+    positions[central_node] = (0.0, 0.0)
+    
+    # Define radius for the neighbors
+    radius = 10.0  # Arbitrary radius for the circle
+    
+    # Calculate angular positions for neighbors
+    num_neighbors = len(neighbors)
+    angle_step = 2 * math.pi / num_neighbors
+    
+    for i, neighbor in enumerate(neighbors):
+        angle = i * angle_step
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[neighbor] = (x, y)
+    
+    # Convert positions to JSON format
+    positions_json = json.dumps(positions, indent=4)
+    return positions_json
+
+# Input graph data
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9),
+    (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17),
+    (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25),
+    (0, 26), (0, 27), (0, 28), (0, 29)
+]
+
+# Generate layout
+layout_json = generate_graph_layout(edge_list)
+
+# Print the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Central Node Placement**: Node `0` is placed at the origin `(0.0, 0.0)`.
+2. **Neighbor Placement**: All other nodes are placed on a circle around the central node. The radius of the circle is set to `10.0`.
+3. **Angular Distribution**: Neighbors are distributed evenly around the circle, ensuring consistent Euclidean distances relative to graph-theoretic distances.
+4. **Output Format**: The positions are output in JSON format, where each node is mapped to its `(x, y)` coordinates.
+
+You can run this script to generate the layout for the given graph. The output will be a JSON object containing the positions of all nodes.

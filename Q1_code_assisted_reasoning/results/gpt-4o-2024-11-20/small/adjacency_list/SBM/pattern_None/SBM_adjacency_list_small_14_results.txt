@@ -1,0 +1,85 @@
+```python
+def determine_graph_pattern(adj_list):
+    def is_star(adj_list):
+        center_count = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == len(adj_list) - 1:
+                center_count += 1
+            elif len(neighbors) != 1:
+                return False
+        return center_count == 1
+
+    def is_cycle(adj_list):
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != 2:
+                return False
+        return True
+
+    def is_path(adj_list):
+        end_nodes = 0
+        for node, neighbors in adj_list.items():
+            if len(neighbors) == 1:
+                end_nodes += 1
+            elif len(neighbors) != 2:
+                return False
+        return end_nodes == 2
+
+    def is_grid(adj_list):
+        import math
+        n = len(adj_list)
+        sqrt_n = int(math.sqrt(n))
+        if sqrt_n * sqrt_n != n:
+            return False
+        for node, neighbors in adj_list.items():
+            if len(neighbors) not in [2, 3, 4]:
+                return False
+        return True
+
+    def is_complete(adj_list):
+        n = len(adj_list)
+        for node, neighbors in adj_list.items():
+            if len(neighbors) != n - 1:
+                return False
+        return True
+
+    def is_clustered(adj_list):
+        # A clustered graph typically has dense subgraphs (clusters) with sparse connections between them.
+        # This is a heuristic check based on the average degree of nodes.
+        degrees = [len(neighbors) for neighbors in adj_list.values()]
+        avg_degree = sum(degrees) / len(degrees)
+        return avg_degree > 2 and avg_degree < len(adj_list) - 1
+
+    def is_random(adj_list):
+        # A random graph typically has no discernible pattern.
+        # If none of the above patterns match, we classify it as random.
+        return True
+
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered Graph"
+    else:
+        return "Random Graph"
+
+adj_list = {
+    0: [2, 5, 6, 7], 1: [2, 3, 5, 6, 7, 8, 19, 20], 2: [0, 1, 3, 4, 6, 7],
+    3: [1, 2, 4, 5, 6], 4: [2, 3, 6, 7, 22], 5: [0, 1, 3, 6, 7],
+    6: [0, 1, 2, 3, 4, 5, 7], 7: [0, 1, 2, 4, 5, 6], 8: [1, 9, 10, 11, 12, 13, 14],
+    9: [8, 11, 12, 13, 14, 15], 10: [8, 12, 13, 15], 11: [8, 9, 13, 14, 15],
+    12: [8, 9, 10, 13, 14, 15], 13: [8, 9, 10, 11, 12], 14: [8, 9, 11, 12, 15],
+    15: [9, 10, 11, 12, 14], 16: [17, 18, 19, 20, 21, 23],
+    17: [16, 18, 19, 20, 21, 22, 23], 18: [16, 17, 19],
+    19: [1, 16, 17, 18, 20, 21, 22, 23], 20: [1, 16, 17, 19, 21],
+    21: [16, 17, 19, 20, 23], 22: [4, 17, 19, 23], 23: [16, 17, 19, 21, 22]
+}
+
+print(determine_graph_pattern(adj_list))
+```

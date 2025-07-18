@@ -1,0 +1,5 @@
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

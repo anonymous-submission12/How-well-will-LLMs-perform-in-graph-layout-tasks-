@@ -1,0 +1,17 @@
+To calculate the highest degree of all nodes in the graph, we need to count the number of edges connected to each node. Here's the calculation:
+
+1. Parse the edge list.
+2. Count the occurrences of each node in the edge list.
+3. Find the maximum count (degree).
+
+The graph is a linear chain, so each node except the endpoints will have a degree of 2, and the endpoints will have a degree of 1.
+
+The highest degree in this graph is **2**.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

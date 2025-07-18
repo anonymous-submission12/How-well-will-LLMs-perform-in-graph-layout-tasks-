@@ -1,0 +1,7 @@
+Based on the spatial clustering of the nodes, there appear to be two distinct communities.
+
+```json
+{
+"Answer": 2
+}
+```

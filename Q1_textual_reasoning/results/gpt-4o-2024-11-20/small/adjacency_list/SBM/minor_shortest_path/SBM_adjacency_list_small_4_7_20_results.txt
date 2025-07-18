@@ -1,0 +1,22 @@
+To calculate the shortest path between node '7' and node '20' in the graph provided, I will use the Breadth-First Search (BFS) algorithm, as the graph is unweighted. 
+
+Here is the calculation:
+
+- Start at node '7'.
+- Explore all neighbors using BFS until reaching node '20'.
+
+Below is the computed solution:
+
+```json
+{
+  "answer": 3
+}
+```
+
+Explanation:
+The shortest path between node '7' and '20' is as follows:
+1. Start at node '7'.
+2. Move to node '11' (a neighbor of '7').
+3. Move to node '20' (a neighbor of '11').
+
+The path is ["7", "11", "20"], and its length is 3.

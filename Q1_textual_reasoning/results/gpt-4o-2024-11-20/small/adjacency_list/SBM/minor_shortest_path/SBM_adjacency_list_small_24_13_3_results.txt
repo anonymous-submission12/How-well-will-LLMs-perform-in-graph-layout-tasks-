@@ -1,0 +1,14 @@
+To calculate the shortest path between nodes '13' and '3', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 4
+}
+``` 
+
+Explanation:
+1. Starting from node '13', the BFS explores all its neighbors: [12, 15, 16, 17, 25].
+2. From these neighbors, it continues to explore their neighbors, and so on, until it reaches node '3'.
+3. The shortest path from '13' to '3' is: 13 → 15 → 14 → 5 → 3, which has a length of 4.

@@ -1,0 +1,67 @@
+```python
+def graph_pattern(adjacency_list):
+    from collections import defaultdict
+    
+    # Count the number of nodes and edges
+    node_count = len(adjacency_list)
+    edge_count = sum(len(neighbors) for neighbors in adjacency_list.values()) // 2
+
+    # Degree calculation
+    degrees = {node: len(neighbors) for node, neighbors in adjacency_list.items()}
+    
+    # Check for Star Graph
+    if sum(1 for d in degrees.values() if d == 1) == (node_count - 1) and 1 in degrees.values() and (node_count - 1) in degrees.values():
+        return "Star"
+
+    # Check for Cycle Graph
+    if all(d == 2 for d in degrees.values()):
+        return "Cycle"
+
+    # Check for Path Graph
+    if sum(1 for d in degrees.values() if d == 1) == 2 and sum(1 for d in degrees.values() if d == 2) == (node_count - 2):
+        return "Path"
+    
+    # Check for Complete Graph
+    if edge_count == (node_count * (node_count - 1)) // 2:
+        return "Complete"
+
+    # Check for Grid Graph - Approximation based on equal neighbors (only works for 2D grids)
+    sqrt_n = int(node_count ** 0.5)
+    if sqrt_n ** 2 == node_count and all(d <= 4 for d in degrees.values()):
+        return "Grid"
+    
+    # Check for Clustered Graph - Heuristic: Check if the graph has several dense clusters
+    def dfs(node, visited, cluster):
+        visited.add(node)
+        cluster.append(node)
+        for neighbor in adjacency_list[node]:
+            if neighbor not in visited:
+                dfs(neighbor, visited, cluster)
+    
+    visited = set()
+    clusters = []
+    for node in adjacency_list:
+        if node not in visited:
+            cluster = []
+            dfs(node, visited, cluster)
+            clusters.append(cluster)
+    if len(clusters) > 1 and all(len(c) > 2 for c in clusters):  # More clusters with nodes > 2
+        return "Clustered"
+
+    # Default to Random Graph if no other patterns matched
+    return "Random"
+
+adjacency_list = {
+    0: [1, 2, 3, 5], 1: [0, 2, 3, 4, 5, 6], 2: [0, 1, 3, 5, 6], 3: [0, 1, 2, 5, 6, 22], 4: [1, 5, 6], 
+    5: [0, 1, 2, 3, 4, 6, 21], 6: [1, 2, 3, 4, 5], 7: [9, 10, 11, 13], 8: [9, 13, 17], 9: [7, 8], 
+    10: [7, 12, 13], 11: [7, 12, 13], 12: [10, 11, 13], 13: [7, 8, 10, 11, 12, 18], 
+    14: [15, 16, 17, 18, 20], 15: [14, 17, 20], 16: [14, 17, 18, 20], 
+    17: [8, 14, 15, 16, 18, 20], 18: [13, 14, 16, 17, 19, 20, 21], 19: [18], 
+    20: [14, 15, 16, 17, 18], 21: [5, 18, 22, 25, 26, 27], 
+    22: [3, 21, 23, 24, 25, 26, 27], 23: [22, 24, 25, 26], 
+    24: [22, 23, 25, 26, 27], 25: [21, 22, 23, 24, 26, 27], 
+    26: [21, 22, 23, 24, 25], 27: [21, 22, 24, 25]
+}
+
+print(graph_pattern(adjacency_list))
+```

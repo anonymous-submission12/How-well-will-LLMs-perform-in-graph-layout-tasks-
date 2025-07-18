@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 28, in <module>
+    forceatlas2 = ForceAtlas2(
+                  ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fa2_modified/forceatlas2.py", line 68, in __init__
+    assert linLogMode == adjustSizes == multiThreaded == False, "You selected a feature that has not been implemented yet..."
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: You selected a feature that has not been implemented yet...

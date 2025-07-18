@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 122, in <module>
+    layout = layout_graph(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 80, in layout_graph
+    euclid_dist = euclidean_distance(pos1, pos2)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 44, in euclidean_distance
+    return math.sqrt(sum([(p1 - p2)**2 for p1, p2 in zip(pos1, pos2)]))
+                          ~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

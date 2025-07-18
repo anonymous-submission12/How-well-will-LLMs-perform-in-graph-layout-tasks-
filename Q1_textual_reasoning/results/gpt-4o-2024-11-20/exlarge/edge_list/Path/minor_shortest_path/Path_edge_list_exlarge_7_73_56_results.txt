@@ -1,0 +1,15 @@
+To determine the shortest path between nodes '73' and '56', we need to compute via the edge list. The graph is an unweighted linear path based on the provided data. The shortest path between two nodes in such a graph can simply be computed as the absolute difference of their indices.
+
+Here, the nodes "73" and "56" correspond to positions in the graph. Therefore, the distance can be calculated as:
+
+```python
+abs(73 - 56) = 17
+```
+
+Hence, the JSON response is:
+
+```json
+{
+  "answer": 17
+}
+```

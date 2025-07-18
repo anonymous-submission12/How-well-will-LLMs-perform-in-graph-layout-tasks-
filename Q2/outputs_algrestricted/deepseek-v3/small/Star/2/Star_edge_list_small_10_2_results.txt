@@ -1,0 +1,4 @@
+  File "/tmp/code.py", line 10
+    num_nodes = max(max(edge) for edge in edge_list) + 1, 1)
+                                                           ^
+SyntaxError: unmatched ')'

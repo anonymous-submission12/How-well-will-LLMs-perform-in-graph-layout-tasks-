@@ -1,0 +1,9 @@
+The graph data represents a simple path. The ideal layout would be a straight line, preserving graph distance perfectly. Let's consider how well each layout approximates this.
+
+Layout 1 has nodes scattered somewhat randomly in 2D space. Layout 2 appears to place the nodes in a more linear fashion. Therefore, Layout 2 should better preserve graph-theoretic distance.
+
+```json
+{
+  "Answer": "2"
+}
+```

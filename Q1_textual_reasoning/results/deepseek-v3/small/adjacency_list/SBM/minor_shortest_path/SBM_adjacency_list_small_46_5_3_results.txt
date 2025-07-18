@@ -1,0 +1,12 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+### Explanation:
+The shortest path from node '5' to node '3' is as follows:
+- **Path**: 5 → 0 → 3
+- **Length**: 2 (since it involves traversing 2 edges).
+
+Thus, the length of the shortest path is **2**.

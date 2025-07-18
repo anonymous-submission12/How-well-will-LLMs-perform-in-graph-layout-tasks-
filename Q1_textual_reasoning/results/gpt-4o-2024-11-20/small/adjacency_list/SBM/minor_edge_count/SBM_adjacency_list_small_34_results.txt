@@ -1,0 +1,9 @@
+To count the number of edges in the graph, I'll note that each edge is represented twice in the adjacency list (once for each endpoint). Thus, I'll sum the lengths of all adjacency lists, divide by 2, and return the result.
+
+Here’s the answer:
+
+```json
+{
+  "answer": 33
+}
+```

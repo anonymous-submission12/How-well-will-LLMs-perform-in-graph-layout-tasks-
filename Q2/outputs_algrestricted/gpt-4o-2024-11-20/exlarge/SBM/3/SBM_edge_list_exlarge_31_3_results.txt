@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 62, in <module>
+    layout = generate_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 36, in generate_layout
+    x = int(center_x + spacing * degrees[node] * random.uniform(0.8, 1.2) * random.cos(current_angle))
+                                                                            ^^^^^^^^^^
+AttributeError: module 'random' has no attribute 'cos'. Did you mean: '_cos'?

@@ -1,0 +1,14 @@
+To calculate the length of the shortest path between nodes `15` and `0`, we can use BFS (Breadth-First Search) since it is suitable for unweighted graphs. Here's the solution:
+
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+1. The BFS starts at node `15` and explores the graph level by level.
+2. Node `15` has a direct edge to node `12`.
+3. Node `12` has a direct edge to node `0`.
+
+Thus, the shortest path from node `15` to `0` is through `15 → 12 → 0`, with a length of `2`.

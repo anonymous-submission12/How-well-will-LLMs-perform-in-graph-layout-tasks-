@@ -1,0 +1,7 @@
+Based on visual inspection, layout 2 appears to better preserve graph-theoretic distance. The nodes are arranged in a more linear fashion, which suggests that the Euclidean distance between nodes in the layout is more closely related to the shortest path distance between them in the graph. Layout 1 has more crossings and nodes that are close together in the layout but far apart in the graph.
+
+```json
+{
+"Answer": "2"
+}
+```

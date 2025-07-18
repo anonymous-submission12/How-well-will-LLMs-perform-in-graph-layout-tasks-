@@ -1,0 +1,117 @@
+Here's a Python script that generates a graph layout while keeping the community structure clear. The approach involves detecting communities using the Louvain method, then arranging nodes in concentric circles based on their communities, with a central node for each community.
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+def detect_communities(edge_list):
+    # Create a graph dictionary
+    graph = defaultdict(set)
+    for u, v in edge_list:
+        graph[u].add(v)
+        graph[v].add(u)
+    
+    # Simple community detection using label propagation
+    communities = {}
+    nodes = list(graph.keys())
+    
+    # Initialize each node with its own community
+    for i, node in enumerate(nodes):
+        communities[node] = i
+    
+    changed = True
+    while changed:
+        changed = False
+        random.shuffle(nodes)
+        
+        for node in nodes:
+            if not graph[node]:
+                continue
+                
+            # Count communities of neighbors
+            neighbor_comms = defaultdict(int)
+            for neighbor in graph[node]:
+                neighbor_comms[communities[neighbor]] += 1
+            
+            if not neighbor_comms:
+                continue
+                
+            # Find most frequent community
+            max_count = max(neighbor_comms.values())
+            best_comms = [c for c, count in neighbor_comms.items() if count == max_count]
+            
+            # If current community not among best, change it
+            current_comm = communities[node]
+            if current_comm not in best_comms:
+                communities[node] = random.choice(best_comms)
+                changed = True
+    
+    # Relabel communities to be sequential
+    unique_comms = sorted(set(communities.values()))
+    comm_mapping = {old: new for new, old in enumerate(unique_comms)}
+    for node in communities:
+        communities[node] = comm_mapping[communities[node]]
+    
+    return communities
+
+def generate_layout(edge_list):
+    communities = detect_communities(edge_list)
+    
+    # Group nodes by community
+    comm_nodes = defaultdict(list)
+    for node, comm in communities.items():
+        comm_nodes[comm].append(node)
+    
+    # Calculate positions
+    positions = {}
+    num_comms = len(comm_nodes)
+    center_x, center_y = 0, 0
+    
+    # Arrange communities in a circle around center
+    comm_centers = {}
+    for i, (comm, nodes) in enumerate(comm_nodes.items()):
+        angle = 2 * math.pi * i / num_comms
+        radius = 10  # Distance from center to community centers
+        comm_center_x = center_x + radius * math.cos(angle)
+        comm_center_y = center_y + radius * math.sin(angle)
+        comm_centers[comm] = (comm_center_x, comm_center_y)
+        
+        # Arrange nodes in a smaller circle around community center
+        num_nodes = len(nodes)
+        node_radius = 5  # Radius for node arrangement within community
+        for j, node in enumerate(nodes):
+            node_angle = 2 * math.pi * j / num_nodes
+            positions[node] = {
+                'x': comm_center_x + node_radius * math.cos(node_angle),
+                'y': comm_center_y + node_radius * math.sin(node_angle)
+            }
+    
+    return positions
+
+# Input graph data
+edge_list = [('0', '1'), ('0', '10'), ('0', '11'), ('0', '12'), ('0', '13'), ('0', '17'), ('0', '19'), ('0', '2'), ('0', '21'), ('0', '3'), ('0', '31'), ('0', '4'), ('0', '5'), ('0', '6'), ('0', '7'), ('0', '8'), ('1', '13'), ('1', '17'), ('1', '19'), ('1', '2'), ('1', '21'), ('1', '3'), ('1', '30'), ('1', '7'), ('13', '33'), ('19', '33'), ('2', '13'), ('2', '27'), ('2', '28'), ('2', '3'), ('2', '32'), ('2', '7'), ('2', '8'), ('2', '9'), ('23', '25'), ('23', '29'), ('25', '24'), ('27', '23'), ('27', '24'), ('27', '33'), ('28', '33'), ('29', '26'), ('3', '12'), ('3', '13'), ('3', '7'), ('30', '32'), ('30', '33'), ('31', '24'), ('31', '25'), ('31', '28'), ('31', '32'), ('31', '33'), ('32', '14'), ('32', '15'), ('32', '18'), ('32', '20'), ('32', '22'), ('32', '23'), ('32', '29'), ('32', '33'), ('33', '14'), ('33', '15'), ('33', '18'), ('33', '20'), ('33', '22'), ('33', '23'), ('33', '26'), ('33', '29'), ('4', '10'), ('4', '6'), ('5', '10'), ('5', '16'), ('5', '6'), ('6', '16'), ('8', '30'), ('8', '32'), ('8', '33'), ('9', '33')]
+
+# Generate layout
+layout = generate_layout(edge_list)
+
+# Output as JSON
+print(json.dumps(layout, indent=2))
+```
+
+This script:
+
+1. Implements a simple label propagation algorithm for community detection
+2. Arranges communities in a circle around a central point
+3. Arranges nodes within each community in smaller circles around their community center
+4. Outputs the positions in JSON format
+
+The layout keeps communities visually distinct by:
+- Separating different communities in different circular regions
+- Keeping nodes within the same community close to each other
+- Maintaining some space between different communities
+
+You can adjust the radii (10 for community centers and 5 for node arrangements) to change the spacing of the layout. The output is a JSON dictionary mapping each node to its x,y coordinates.
+
+Note that since we're not using any existing graph layout algorithms, this implements a basic circular arrangement based on community structure. The community detection is also simplified as we can't use existing algorithms like Louvain directly.

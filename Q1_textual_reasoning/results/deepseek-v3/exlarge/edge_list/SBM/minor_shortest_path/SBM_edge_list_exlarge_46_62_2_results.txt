@@ -1,0 +1,7 @@
+```json
+{
+  "answer": null
+}
+```
+
+The provided graph does not contain the node '62' or '2', so it is impossible to calculate the shortest path between them. Please provide a graph that includes these nodes.

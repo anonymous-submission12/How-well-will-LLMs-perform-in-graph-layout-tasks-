@@ -1,0 +1,82 @@
+Below is the Python code to create a graph layout that ensures consistency between Euclidean distance and graph-theoretic distance, as specified. The layout will be calculated using a force-directed approach with constraints to preserve graph-theoretic distances:
+
+```python
+import json
+import math
+import random
+from collections import defaultdict
+
+# Input: Edge list representation of the graph
+edges = [
+    (0, 1), (0, 8), (1, 2), (1, 9), (2, 3), (2, 10), (3, 4), (3, 11),
+    (4, 5), (4, 12), (5, 6), (5, 13), (6, 7), (6, 14), (7, 15), (8, 9),
+    (8, 16), (9, 10), (9, 17), (10, 11), (10, 18), (11, 12), (11, 19),
+    (12, 13), (12, 20), (13, 14), (13, 21), (14, 15), (14, 22), (15, 23),
+    (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)
+]
+
+# Step 1: Build the adjacency list for BFS traversal
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# Helper function to compute graph-theoretic distances using BFS
+def bfs_distances(graph, start_node):
+    distances = {start_node: 0}
+    queue = [start_node]
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph[current]:
+            if neighbor not in distances:
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+    return distances
+
+# Step 2: Initialize layout with random positions
+positions = {node: (random.uniform(0, 1), random.uniform(0, 1)) for node in graph}
+
+# Step 3: Force-directed algorithm to adjust positions
+def adjust_positions(graph, positions, max_iter=1000, learning_rate=0.01, target_dist=1.0):
+    for _ in range(max_iter):
+        displacement = {node: [0.0, 0.0] for node in graph}
+        for node in graph:
+            theoretical_distances = bfs_distances(graph, node)
+            for other_node in graph:
+                if node == other_node:
+                    continue
+                # Calculate Euclidean distance
+                x1, y1 = positions[node]
+                x2, y2 = positions[other_node]
+                euclidean_dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+                
+                # Target distance from graph-theoretic distance
+                graph_dist = theoretical_distances[other_node]
+                target = graph_dist * target_dist
+                
+                # Apply a spring-like force
+                force = (euclidean_dist - target) * 0.1  # Spring constant = 0.1
+                if euclidean_dist > 0:
+                    dx = (x2 - x1) / euclidean_dist * force
+                    dy = (y2 - y1) / euclidean_dist * force
+                else:
+                    dx, dy = 0, 0
+                
+                displacement[node][0] += dx
+                displacement[node][1] += dy
+        
+        # Update positions
+        for node in positions:
+            positions[node] = (
+                positions[node][0] + learning_rate * displacement[node][0],
+                positions[node][1] + learning_rate * displacement[node][1]
+            )
+    return positions
+
+# Execute force-directed layout adjustment
+final_positions = adjust_positions(graph, positions)
+
+# Convert positions to JSON format
+output = {str(node): {"x": pos[0], "y": pos[1]} for node, pos in final_positions.items()}
+print(json.dumps(output, indent=4))
+```

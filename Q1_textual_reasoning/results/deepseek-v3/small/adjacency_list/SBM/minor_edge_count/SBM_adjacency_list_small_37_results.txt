@@ -1,0 +1,9 @@
+To count the number of edges in the graph, we need to consider that each edge is represented twice in the adjacency list (once for each direction in an undirected graph). Therefore, we can sum the lengths of all the adjacency lists and then divide by 2 to get the total number of unique edges.
+
+Here is the calculation:
+
+```json
+{
+  "answer": 182
+}
+```

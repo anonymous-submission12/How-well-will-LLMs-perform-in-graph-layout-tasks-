@@ -1,0 +1,7 @@
+Both images appear to have a similar number of edge crossings, which is quite high due to the star-like layout. However, upon closer inspection, the second image seems to have slightly fewer crossings in the central area.
+
+```json
+{
+"Answer": "2"
+}
+```

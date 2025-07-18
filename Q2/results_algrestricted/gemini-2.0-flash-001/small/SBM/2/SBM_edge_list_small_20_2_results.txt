@@ -1,0 +1,122 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node indices and values are (x, y) coordinates.
+    """
+
+    # 1. Identify all nodes in the graph.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent ordering
+
+    # 2. Initialize node positions randomly.
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())
+
+    # 3. Iteratively refine the layout using a force-based approach.
+    num_iterations = 1000
+    repulsion_strength = 0.01
+    attraction_strength = 0.1
+    damping = 0.5
+
+    for _ in range(num_iterations):
+        forces = {}
+        for node in nodes:
+            forces[node] = [0.0, 0.0]  # Initialize force vector for each node
+
+        # Calculate repulsive forces between all pairs of nodes.
+        for i in range(len(nodes)):
+            for j in range(i + 1, len(nodes)):
+                node1 = nodes[i]
+                node2 = nodes[j]
+                pos1 = layout[node1]
+                pos2 = layout[node2]
+                
+                dx = pos2[0] - pos1[0]
+                dy = pos2[1] - pos1[1]
+                distance = math.sqrt(dx**2 + dy**2)
+
+                if distance == 0:
+                    # Add a small offset to avoid division by zero
+                    dx = 0.01
+                    dy = 0.01
+                    distance = 0.01414  # Approximation of sqrt(0.01^2 + 0.01^2)
+
+                repulsion = repulsion_strength / distance**2
+                
+                forces[node1][0] -= repulsion * dx
+                forces[node1][1] -= repulsion * dy
+                forces[node2][0] += repulsion * dx
+                forces[node2][1] += repulsion * dy
+
+        # Calculate attractive forces between connected nodes.
+        for u, v in edge_list:
+            pos_u = layout[u]
+            pos_v = layout[v]
+
+            dx = pos_v[0] - pos_u[0]
+            dy = pos_v[1] - pos_u[1]
+            distance = math.sqrt(dx**2 + dy**2)
+
+            attraction = attraction_strength * distance
+
+            forces[u][0] += attraction * dx
+            forces[u][1] += attraction * dy
+            forces[v][0] -= attraction * dx
+            forces[v][1] -= attraction * dy
+
+        # Update node positions based on calculated forces.
+        for node in nodes:
+            forces[node][0] *= damping
+            forces[node][1] *= damping
+            layout[node] = (layout[node][0] + forces[node][0], layout[node][1] + forces[node][1])
+
+    # 4. Normalize the layout to fit within the [0, 1] range.
+    min_x = min(x for x, y in layout.values())
+    max_x = max(x for x, y in layout.values())
+    min_y = min(y for x, y in layout.values())
+    max_y = max(y for x, y in layout.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1  # Avoid division by zero if all x-coordinates are the same
+    if y_range == 0:
+        y_range = 1  # Avoid division by zero if all y-coordinates are the same
+
+    normalized_layout = {}
+    for node, (x, y) in layout.items():
+        normalized_x = (x - min_x) / x_range
+        normalized_y = (y - min_y) / y_range
+        normalized_layout[node] = (normalized_x, normalized_y)
+
+    return normalized_layout
+
+
+# Graph data
+edge_list = [(0, 1), (0, 3), (0, 9), (1, 2), (1, 3), (1, 4), (1, 5), (2, 3), (2, 5), (3, 5), (4, 5), (5, 19), (6, 7), (6, 8), (6, 9), (6, 10), (6, 11), (7, 8), (7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (10, 11), (11, 15), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (13, 14), (13, 15), (13, 16), (13, 21), (14, 15), (14, 16), (16, 17), (18, 19), (18, 20), (18, 21), (18, 22), (19, 20), (19, 21), (20, 21), (20, 22), (21, 22), (22, 26), (23, 24), (23, 25), (23, 26), (24, 25), (24, 27), (25, 26), (25, 27), (26, 27)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

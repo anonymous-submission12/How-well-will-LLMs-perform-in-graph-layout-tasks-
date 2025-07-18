@@ -1,0 +1,17 @@
+To calculate the length of the shortest path between node '24' and node '10' in the given graph (represented as an adjacency list), we can use the Breadth-First Search (BFS) algorithm, which is ideal for finding the shortest path in an unweighted graph. Let's perform the calculation:
+
+### Algorithm:
+1. Start BFS from node '24'.
+2. Maintain a queue to track the current node and distance from the start node.
+3. Stop when the BFS reaches node '10'.
+4. Return the distance as the shortest path.
+
+Here is the result of the calculation:
+
+```json
+{
+  "answer": 3
+}
+``` 
+
+The shortest path between node '24' and node '10' is **3** edges long.

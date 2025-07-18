@@ -1,0 +1,12 @@
+To calculate the shortest path between node '2' and node '1', we can use the Breadth-First Search (BFS) algorithm, which is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 1
+}
+```
+
+### Explanation:
+- From the adjacency list, node '2' is directly connected to node '1'. Therefore, the shortest path length between node '2' and node '1' is `1`.

@@ -1,0 +1,17 @@
+To find the shortest path between node '5' and node '36', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 4
+}
+```
+
+### Explanation:
+- **Step 1**: Start from node '5'.
+- **Step 2**: Explore all nodes directly connected to '5' (i.e., nodes 0, 1, 2, 7, 8, 9, 15, 17, 24, 50, 65).
+- **Step 3**: From these nodes, explore their neighbors, and continue this process until node '36' is reached.
+- **Step 4**: The shortest path from '5' to '36' involves 4 edges, hence the length of the shortest path is 4.
+
+This result is obtained by traversing the graph using BFS and counting the number of edges in the shortest path.

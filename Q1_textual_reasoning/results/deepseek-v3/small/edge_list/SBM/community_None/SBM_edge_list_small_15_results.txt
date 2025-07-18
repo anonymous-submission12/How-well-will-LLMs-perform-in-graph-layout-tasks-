@@ -1,0 +1,16 @@
+To determine the number of communities in the graph, we can analyze the connectivity of the nodes. A community in a graph is typically defined as a group of nodes that are more densely connected to each other than to the rest of the graph. 
+
+From the provided edge list, we can observe that the graph is divided into two distinct communities:
+
+1. **Community 1**: Nodes 0 through 12 are densely connected among themselves.
+2. **Community 2**: Nodes 13 through 25 are densely connected among themselves.
+
+There are no edges connecting nodes from Community 1 to Community 2, indicating that these two groups are separate communities.
+
+Therefore, the number of communities in the graph is **2**.
+
+```json
+{
+  "answer": 2
+}
+```

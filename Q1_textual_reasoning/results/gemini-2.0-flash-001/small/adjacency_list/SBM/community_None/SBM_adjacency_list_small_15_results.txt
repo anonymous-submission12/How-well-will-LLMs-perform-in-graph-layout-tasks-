@@ -1,0 +1,7 @@
+Here's how we can determine the number of communities in the provided graph, using a Connected Components approach:
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,7 @@
+To determine which graph layout has fewer edge crossings, visual inspection suggests that the second layout has fewer crossings as edges appear less tangled or overlapping compared to the first layout.
+
+```json
+{
+  "Answer": 2
+}
+```

@@ -1,0 +1,21 @@
+```python
+from collections import deque
+
+def shortest_path_length(graph, start, end):
+    visited = set()
+    queue = deque([(start, 0)])  # (current_node, current_distance)
+    
+    while queue:
+        current, distance = queue.popleft()
+        if current == end:
+            return distance
+        if current not in visited:
+            visited.add(current)
+            for neighbor in graph[current]:
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + 1))
+    return -1  # If no path exists
+
+graph = {0: [1, 11, 12, 19], 1: [0, 5], 2: [6, 7, 13, 15], 3: [7, 20, 22], 4: [5, 9], 5: [1, 4, 6, 12, 17, 18, 22], 6: [2, 5, 19, 20], 7: [2, 3, 12, 18], 8: [22], 9: [4, 10, 16], 10: [9, 11, 12, 21], 11: [0, 10, 12, 22], 12: [0, 5, 7, 10, 11, 13, 14], 13: [2, 12, 14], 14: [12, 13, 17], 15: [2, 19], 16: [9], 17: [5, 14, 22], 18: [5, 7], 19: [0, 6, 15, 20], 20: [3, 6, 19], 21: [10, 22], 22: [3, 5, 8, 11, 17, 21]}
+print(shortest_path_length(graph, 2, 21))
+```

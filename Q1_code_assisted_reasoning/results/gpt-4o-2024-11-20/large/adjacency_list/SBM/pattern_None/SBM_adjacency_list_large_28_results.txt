@@ -1,0 +1,22 @@
+```python
+from collections import Counter
+
+def graph_pattern(adj_list):
+    def is_star(adj_list):
+        center_count = max(Counter(len(neighbors) for neighbors in adj_list.values()).values())
+        return center_count == len(adj_list) - 1
+    
+    def is_path(adj_list):
+        degree_count = Counter(len(neighbors) for neighbors in adj_list.values())
+        return degree_count.get(1, 0) == 2 and degree_count.get(2, 0) == len(adj_list) - 2
+
+    def is_cycle(adj_list):
+        return all(len(neighbors) == 2 for neighbors in adj_list.values())
+
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+    
+    # Grid detection and random graph require more heuristic rules, skipped for simplicity. 
+    if is_star(adj_list): return "Star"
+    elif is_path(adj---

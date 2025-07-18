@@ -1,0 +1,16 @@
+To solve this, we can use the Breadth-First Search (BFS) algorithm, which is well-suited to finding the shortest path in an unweighted graph.
+
+### Steps using BFS:
+1. Start from node `18`.
+2. Traverse the graph level by level until we reach node `43`.
+3. Count the shortest distance by maintaining a level tracker.
+
+### Execution:
+
+Below is the JSON representation of the shortest path result after applying BFS.
+
+```json
+{
+  "answer": 25
+}
+```

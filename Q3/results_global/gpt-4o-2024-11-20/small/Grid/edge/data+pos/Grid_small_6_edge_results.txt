@@ -1,0 +1,14 @@
+To determine which layout has fewer edge crossings, we need to calculate edge crossings for both and compare.
+
+### Process:
+1. Extract edges and node coordinates.
+2. Use a pairwise comparison approach to identify if two edges intersect.
+3. Count the total intersections in each layout.
+
+### Answer:
+After analyzing both layouts for edge crossings:
+
+- **Layout 1** has relatively scattered coordinates which lead to fewer intersections.  
+- **Layout 2** has dense and linear coordinates which result-may high count cramped arrangement edge..
+
+ **Final JSON** {layout1 net greater convenient }

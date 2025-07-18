@@ -1,0 +1,57 @@
+```python
+graph = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28)]
+
+def find_shortest_path_length(graph, start, end):
+    """
+    Calculates the length of the shortest path between two nodes in a graph.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+        start: The starting node.
+        end: The ending node.
+
+    Returns:
+        The length of the shortest path between the start and end nodes, or -1 if no path exists.
+    """
+
+    # Create an adjacency list representation of the graph
+    adj_list = {}
+    for u, v in graph:
+        if u not in adj_list:
+            adj_list[u] = []
+        if v not in adj_list:
+            adj_list[v] = []
+        adj_list[u].append(v)
+        
+    nodes = set()
+    for u,v in graph:
+        nodes.add(u)
+        nodes.add(v)
+        
+    for node in nodes:
+        if node not in adj_list:
+            adj_list[node] = []
+
+    # Use Breadth-First Search (BFS) to find the shortest path
+    queue = [(start, 0)]  # (node, distance)
+    visited = {start}
+
+    while queue:
+        node, distance = queue.pop(0)
+
+        if node == end:
+            return distance
+
+        for neighbor in adj_list[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+
+    return -1  # No path found
+
+# Calculate the shortest path length between node '6' and '1'
+shortest_path_length = find_shortest_path_length(graph, 6, 1)
+
+# Print the result
+print(shortest_path_length)
+```

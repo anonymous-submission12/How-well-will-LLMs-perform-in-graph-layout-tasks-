@@ -1,0 +1,7 @@
+To count the number of edges, we sum up the lengths of all adjacency lists and divide by 2 (since each edge is counted twice). Here's the calculation and the result:
+
+```json
+{
+  "answer": 87
+}
+```

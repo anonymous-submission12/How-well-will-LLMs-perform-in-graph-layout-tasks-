@@ -1,0 +1,7 @@
+To determine the number of nodes in the graph from the given edge list, we extract all unique nodes from the edges.
+
+```json
+{
+  "answer": 80
+}
+```

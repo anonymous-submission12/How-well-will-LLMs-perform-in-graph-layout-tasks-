@@ -1,0 +1,14 @@
+To calculate the shortest path between node `13` and `56` in the given graph, we first understand its structure. The graph is defined as an edge list of connections to the central node `0`. Each node (`0, 1, ..., 74`) connects directly to `0`, forming a star graph topology. 
+
+In such a graph:
+1. Any two nodes can reach each other through `0`.
+2. The shortest path between any pair of nodes, `(a, b)` where `a ≠ b`, is 2: `a -> 0 -> b`.
+
+Thus, the shortest path between `13` and `56` is `2`.
+
+### JSON Response:
+```json
+{
+  "answer": 2
+}
+```

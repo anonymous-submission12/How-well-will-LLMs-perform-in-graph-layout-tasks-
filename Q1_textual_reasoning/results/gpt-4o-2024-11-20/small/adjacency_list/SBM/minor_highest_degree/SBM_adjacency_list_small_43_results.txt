@@ -1,0 +1,14 @@
+To calculate the highest degree of all nodes in the given graph, we need to determine the number of connections (edges) each node has and find the maximum.
+
+Here’s the solution using the provided adjacency list:
+
+- Degree of a node is the length of its corresponding list in the adjacency list.
+- We calculate the degree for each node and then find the maximum degree.
+
+The result is as follows:
+
+```json
+{
+  "answer": 9
+}
+```

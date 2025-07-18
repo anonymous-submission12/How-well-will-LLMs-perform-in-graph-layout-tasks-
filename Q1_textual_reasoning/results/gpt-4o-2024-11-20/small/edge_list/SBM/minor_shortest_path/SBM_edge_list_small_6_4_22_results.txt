@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes '4' and '22', I will analyze the provided graph data and compute the path length using breadth-first search (BFS). Here is the result:
+
+```json
+{
+  "answer": 4
+}
+```

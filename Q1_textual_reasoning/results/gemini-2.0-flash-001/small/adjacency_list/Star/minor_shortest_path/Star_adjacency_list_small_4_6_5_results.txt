@@ -1,0 +1,14 @@
+The provided graph is very simple. Node 0 is connected to all other nodes from 1 to 23, and all nodes from 1 to 23 are only connected to node 0.
+
+To find the shortest path between node 6 and node 5:
+
+1.  From node 6, the only possible move is to node 0.
+2.  From node 0, node 5 can be reached.
+
+Therefore, the shortest path is 6 -> 0 -> 5, which has a length of 2.
+
+```json
+{
+  "answer": 2
+}
+```

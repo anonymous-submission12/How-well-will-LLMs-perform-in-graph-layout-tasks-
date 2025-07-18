@@ -1,0 +1,7 @@
+Based on the image, the two edges intersect.
+
+```json
+{
+"Answer": "Yes"
+}
+```

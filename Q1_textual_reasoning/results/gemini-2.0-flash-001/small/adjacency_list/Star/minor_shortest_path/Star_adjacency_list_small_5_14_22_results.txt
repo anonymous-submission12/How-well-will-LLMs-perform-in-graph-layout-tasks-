@@ -1,0 +1,7 @@
+The graph is represented as an adjacency list.  We're looking for the shortest path between nodes 14 and 22.  Since every node from 1 to 24 is connected to node 0, and node 0 is connected to every node from 1 to 24, the shortest path between any two nodes in the range 1-24 (inclusive) is always 2.  This is because you can go from node A to node 0, and then from node 0 to node B. Therefore, the shortest path between nodes 14 and 22 is 2.
+
+```json
+{
+"answer": 2
+}
+```

@@ -1,0 +1,16 @@
+To solve this problem, we consider the given graph represented as an edge list. The edges indicate that all nodes (0 through 79) are directly connected to node `0`. Thus, the graph forms a star topology where node `0` is the center.
+
+Calculating the shortest path between node `78` and node `69`, we observe:
+1. Node `78` connects to node `0`.
+2. Node `69` connects to node `0`.
+3. The shortest path is: `78 -> 0 -> 69`.
+
+Hence, the shortest path length is `2`.
+
+Here's the result in the required JSON format:
+
+```json
+{
+  "answer": 2
+}
+```

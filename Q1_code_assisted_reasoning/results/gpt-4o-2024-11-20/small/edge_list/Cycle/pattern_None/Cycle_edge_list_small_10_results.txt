@@ -1,0 +1,46 @@
+```python
+import networkx as nx
+
+# Define edge list
+edge_list = [(0, 1), (0, 29), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), 
+             (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), 
+             (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), 
+             (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), 
+             (26, 27), (27, 28), (28, 29)]
+
+# Create graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check graph pattern
+def check_graph_pattern(G):
+    # Check for star pattern (one node connected to all other nodes)
+    center_nodes = [node for node in G.nodes if G.degree[node] == len(G.nodes) - 1]
+    if center_nodes:
+        return "Star"
+
+    # Check for cycle pattern (each node has degree 2 and graph is connected)
+    is_cycle = all(G.degree[node] == 2 for node in G.nodes) and nx.is_connected(G)
+    if is_cycle:
+        return "Cycle"
+
+    # Check for path pattern (each intermediate node has degree 2, endpoints have degree 1)
+    degree_sequence = sorted(G.degree[node] for node in G.nodes)
+    is_path = degree_sequence.count(1) == 2 and degree_sequence.count(2) == (len(G.nodes) - 2)
+    if is_path and nx.is_connected(G):
+        return "Path"
+
+    # Check for grid pattern (specific lattice structure, requires more details to define)
+    # Skip since no specialized check provided here
+
+    # Check for complete graph (all nodes connected to each other)
+    if nx.is_connected(G) and len(edge_list) == len(G.nodes) * (len(G.nodes) - 1) // 2:
+        return "Complete"
+
+    # Check for clustered graph (requires clustering specifics, skip for now)
+
+    # Default to random graph if no other patterns match
+    return "Random graph"
+
+print(check_graph_pattern(G))
+```

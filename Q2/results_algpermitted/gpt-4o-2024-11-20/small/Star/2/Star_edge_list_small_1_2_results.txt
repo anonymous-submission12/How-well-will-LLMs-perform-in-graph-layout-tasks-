@@ -1,0 +1,42 @@
+Certainly! Below is the Python code to generate a graph layout for a given edge list. The layout ensures consistency between Euclidean distance and graph-theoretic distance. It uses the `networkx` library's spring layout algorithm with the Kamada-Kawai force-directed graph drawing algorithm. The output is in JSON format.
+
+```python
+import json
+import networkx as nx
+
+# Define the edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8),
+    (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15),
+    (0, 16), (0, 17), (0, 18), (0, 19), (0, 20)
+]
+
+# Create a graph using NetworkX
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate the layout (Kamada-Kawai layout is distance-preserving)
+layout = nx.kamada_kawai_layout(G)
+
+# Convert the positions to a JSON serializable format
+layout_json = {node: pos.tolist() for node, pos in layout.items()}
+
+# Output the layout as a JSON string
+print(json.dumps(layout_json, indent=4))
+```
+
+### Key Points:
+1. **Graph Layout with Kamada-Kawai Algorithm:** The `kamada_kawai_layout` algorithm is particularly well-suited for preserving the relationship between graph-theoretic distances and Euclidean distances.
+2. **JSON Output:** The positions of nodes in the layout have been formatted into a JSON-compatible dictionary for serialization and easy consumption by other systems.
+
+### JSON Example Output:
+The output will look something like this after running the script:
+```json
+{
+    "0": [0.0, 0.0],
+    "1": [0.5, 0.87],
+    "2": [-0.5, 0.87],
+    ...
+}
+```
+Make sure to install `networkx` (`pip install networkx`) before executing the script if not already installed.

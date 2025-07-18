@@ -1,0 +1,73 @@
+```python:/home/app/graph_pattern_detection.py
+import networkx as nx
+
+# Given adjacency list
+adjacency_list = {
+    0: [2, 17, 21, 38], 1: [12, 29, 35], 2: [0, 13, 20, 23, 24, 26], 
+    3: [12, 27, 28], 4: [9], 5: [41], 6: [8, 12, 16, 17, 24], 
+    7: [8, 16, 30, 41], 8: [6, 7, 24, 36], 9: [4, 10, 26, 29, 31, 36], 
+    10: [9, 11, 13, 18, 22, 34], 11: [10], 12: [1, 3, 6, 16, 23, 25], 
+    13: [2, 10, 21, 31, 37], 14: [23], 15: [20], 16: [6, 7, 12, 19], 
+    17: [0, 6, 20, 34, 39], 18: [10, 26, 31, 38], 19: [16, 29], 
+    20: [2, 15, 17, 21, 26, 33], 21: [0, 13, 20, 32], 22: [10], 
+    23: [2, 12, 14, 25, 28, 39], 24: [2, 6, 8, 32, 41], 
+    25: [12, 23, 33, 41], 26: [2, 9, 18, 20], 27: [3], 28: [3, 23, 31], 
+    29: [1, 9, 19, 31, 36], 30: [7], 31: [9, 13, 18, 28, 29], 
+    32: [21, 24], 33: [20, 25, 41], 34: [10, 17], 35: [1], 
+    36: [8, 9, 29, 40], 37: [13], 38: [0, 18], 39: [17, 23], 
+    40: [36, 41], 41: [5, 7, 24, 25, 33, 40]
+}
+
+# Constructing the graph
+G = nx.Graph(adjacency_list)
+
+# Function to check if the graph is a star
+def is_star(graph):
+    degrees = dict(graph.degree())
+    center_candidates = [node for node, deg in degrees.items() if deg == max(degrees.values())]
+    return any(
+        all(graph.degree(neigh) == 1 for neigh in set(graph.neighbors(center)))
+        for center in center_candidates
+    )
+
+# Function to check if the graph is a cycle
+def is_cycle(graph):
+    return nx.is_connected(graph) and all(deg == 2 for _, deg in graph.degree())
+
+# Function to check if the graph is a path
+def is_path(graph):
+    return nx.is_connected(graph) and sorted(d for _, d in graph.degree()) == [1, 1] + [2] * (graph.number_of_nodes() - 2)
+
+# Function to check if the graph is complete
+def is_complete(graph):
+    n = graph.number_of_nodes()
+    return graph.number_of_edges() == n * (n - 1) // 2
+
+# Function to check if it's a grid (weak approach checking degree constraints)
+def is_grid(graph):
+    sqrt_n = int(len(graph)**0.5)
+    return all(deg in (2, 3, 4) for _, deg in graph.degree()) and sqrt_n * sqrt_n == len(graph)
+
+# Function to classify graphs as clustered or random
+def is_clustered(graph):
+    return nx.average_clustering(graph) > 0.3  # Arbitrary threshold for clustering
+
+def is_random(graph):
+    return not (is_star(G) or is_cycle(G) or is_path(G) or is_complete(G) or is_grid(G) or is_clustered(G))
+
+# Identify the graph pattern
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered Graph")
+else:
+    print("Random Graph")
+```

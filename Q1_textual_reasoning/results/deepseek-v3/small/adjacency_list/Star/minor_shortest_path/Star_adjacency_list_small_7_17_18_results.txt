@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+Explanation: In the given graph, node '17' and node '18' are both directly connected to node '0'. Therefore, the shortest path from '17' to '18' is through node '0', making the path length 2 (i.e., '17' -> '0' -> '18').

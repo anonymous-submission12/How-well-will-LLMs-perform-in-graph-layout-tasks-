@@ -1,0 +1,67 @@
+Below is the Python code snippet to generate a layout for the graph while maintaining community structure visibility. The code uses the `networkx` library to process the graph data, the `community` module for finding communities, and `json` to output the layout:
+
+```python
+import networkx as nx
+import community
+import json
+
+def generate_graph_layout(edge_list):
+    # Create the graph using edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Detect communities using the Louvain algorithm
+    communities = community.best_partition(G)
+    
+    # Group nodes by communities
+    community_dict = {}
+    for node, com_id in communities.items():
+        community_dict.setdefault(com_id, []).append(node)
+    
+    # Use a layout algorithm (e.g., spring layout) for positioning
+    positions = nx.spring_layout(G)
+    
+    # Adjust spring layout to visually separate communities
+    for com_id, nodes in community_dict.items():
+        # Offset positions for nodes in each community
+        x_offset = com_id * 2.0  # Horizontal shift for separation
+        for node in nodes:
+            positions[node][0] += x_offset
+
+    # Convert positions to JSON format
+    positions_json = json.dumps(positions)
+    return positions_json
+
+# Edge list for the graph
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10),
+    (0, 11), (0, 12), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9),
+    (1, 10), (1, 11), (2, 3), (2, 4), (2, 5), (2, 6), (2, 8), (2, 9), (2, 10), (3, 5),
+    (3, 6), (3, 9), (3, 10), (4, 5), (4, 6), (4, 7), (4, 9), (5, 6), (5, 7), (5, 9),
+    (5, 11), (6, 7), (6, 9), (6, 11), (7, 9), (7, 11), (8, 9), (8, 11), (9, 10), (9, 11),
+    (10, 11), (10, 12), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (12, 18), (12, 19),
+    (12, 20), (12, 22), (13, 14), (13, 15), (13, 16), (13, 17), (13, 18), (13, 20), (13, 21),
+    (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (14, 22), (15, 17), (15, 18), (15, 19),
+    (15, 20), (15, 21), (15, 22), (16, 18), (16, 20), (16, 21), (16, 22), (17, 18), (17, 19),
+    (17, 22), (18, 19), (18, 20), (18, 21), (18, 22), (19, 22), (20, 22), (21, 22)
+]
+
+# Generate and print the layout in JSON format
+layout_json = generate_graph_layout(edge_list)
+print(layout_json)
+```
+
+### Explanation:
+1. **Graph Construction**:
+   The graph is constructed using `networkx.Graph()` and edges are added via the edge list.
+
+2. **Community Detection**:
+   Communities are detected using the Louvain method, which is implemented in the `community` module.
+
+3. **Spring Layout**:
+   The `spring_layout` is scaled to better represent the graph structure. Nodes of the same community are adjusted with an offset to visually separate them.
+
+4. **JSON Output**:
+   The final node positions are serialized into JSON format.
+
+You can paste this code directly into a Python environment to test it. Note that you need to install the `community` module if it isn't available: `pip install python-louvain`.

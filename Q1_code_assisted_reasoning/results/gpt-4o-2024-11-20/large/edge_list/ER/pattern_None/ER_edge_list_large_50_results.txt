@@ -1,0 +1,45 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 15), (1, 2), (1, 6), (1, 8), (1, 22), (1, 33), (1, 37), (2, 9), (2, 22), (2, 24), (2, 34), (2, 40), (2, 42), (3, 16), (3, 19), (4, 26), (4, 28), (4, 32), (4, 39), (5, 13), (5, 14), (5, 22), (5, 37), (6, 8), (6, 15), (6, 16), (6, 18), (6, 25), (6, 40), (6, 41), (7, 15), (7, 21), (7, 26), (7, 32), (7, 41), (8, 27), (8, 40), (9, 10), (9, 23), (9, 26), (9, 27), (9, 34), (9, 36), (10, 15), (10, 32), (11, 29), (11, 31), (11, 35), (12, 13), (12, 18), (12, 28), (13, 30), (14, 16), (14, 21), (14, 22), (14, 28), (15, 20), (15, 30), (16, 34), (17, 24), (17, 33), (17, 34), (17, 38), (17, 40), (18, 36), (19, 33), (19, 36), (19, 40), (20, 32), (20, 33), (21, 25), (21, 36), (22, 27), (22, 34), (23, 24), (24, 28), (24, 36), (24, 38), (27, 39), (27, 42), (28, 34), (28, 37), (28, 39), (29, 30), (30, 31), (30, 35), (30, 36), (32, 42), (33, 37), (34, 37), (36, 38), (36, 41), (37, 39), (37, 40), (39, 41)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Check graph patterns
+def check_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for Star
+    if any(len(G[node]) == n - 1 for node in G.nodes):
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(G) and m == n:
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(G) and m == n - 1:
+        return "Path"
+    
+    # Check for Grid
+    sqrt_n = int(n**0.5)
+    if sqrt_n * sqrt_n == n and all(len(G[node]) <= 4 for node in G.nodes):
+        return "Grid"
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered
+    if nx.number_connected_components(G) > 1:
+        return "Clustered"
+    
+    # Default to Random
+    return "Random"
+
+# Determine the graph pattern
+print(check_graph_pattern(G))
+```

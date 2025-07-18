@@ -1,0 +1,7 @@
+Both layouts appear to be radial layouts centered around a single node. In a radial layout, nodes that are further away in graph-theoretic distance from the center are placed further away in the visual layout. Both layouts seem to achieve this goal. However, the second layout appears to distribute the outer nodes more evenly, which might give a slightly better representation of the graph-theoretic distances between the outer nodes themselves. Therefore, layout 2 might be slightly better at preserving graph-theoretic distance.
+
+```json
+{
+"Answer": "2"
+}
+```

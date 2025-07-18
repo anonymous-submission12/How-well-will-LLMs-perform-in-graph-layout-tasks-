@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '14' and '13', we can observe that the graph is a simple linear chain. The edge list provided represents a sequential connection between nodes. Since nodes '13' and '14' are directly connected by an edge, the shortest path length between them is 1.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 1
+}
+```

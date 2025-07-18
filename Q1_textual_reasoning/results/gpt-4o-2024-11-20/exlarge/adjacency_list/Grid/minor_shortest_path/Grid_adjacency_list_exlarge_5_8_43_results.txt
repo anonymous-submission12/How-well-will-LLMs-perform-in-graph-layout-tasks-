@@ -1,0 +1,7 @@
+To calculate the shortest path between nodes `8` and `43` in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is a suitable algorithm for finding the shortest path in an unweighted graph because it explores all neighbors at the current depth level before moving on to nodes at the next level. Below is the result of the calculation.
+
+```json
+{
+  "answer": 7
+}
+```

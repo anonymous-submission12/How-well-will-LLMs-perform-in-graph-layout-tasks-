@@ -1,0 +1,7 @@
+The first image equally spaces the vertices, while the second image uses variable edge lengths, possibly distorting graph-theoretic distances. The first layout preserves graph-theoretic distance better as it ensures consistent spacing.
+
+```json
+{
+  "Answer": "1"
+}
+```

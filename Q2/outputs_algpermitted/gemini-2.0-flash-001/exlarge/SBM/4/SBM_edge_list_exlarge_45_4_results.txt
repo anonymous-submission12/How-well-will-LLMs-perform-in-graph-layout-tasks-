@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 51, in <module>
+    graph_layout_json = generate_graph_layout(edge_list)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 32, in generate_graph_layout
+    angle = 2 * random.pi * community_id / num_communities
+                ^^^^^^^^^
+AttributeError: module 'random' has no attribute 'pi'. Did you mean: '_pi'?

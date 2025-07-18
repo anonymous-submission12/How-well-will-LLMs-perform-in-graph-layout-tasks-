@@ -1,0 +1,7 @@
+Without executing a crossing number algorithm, it is difficult to definitively determine which layout has fewer crossings. However, based on a visual estimation of the node positions, layout 1 appears to have fewer crossings than layout 2.
+
+```json
+{
+"Answer": "1"
+}
+```

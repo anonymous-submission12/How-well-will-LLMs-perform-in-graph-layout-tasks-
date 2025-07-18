@@ -1,0 +1,7 @@
+Both layouts appear to be identical star graphs. Therefore, they preserve graph-theoretic distance equally well.
+
+```json
+{
+"Answer": "1"
+}
+```

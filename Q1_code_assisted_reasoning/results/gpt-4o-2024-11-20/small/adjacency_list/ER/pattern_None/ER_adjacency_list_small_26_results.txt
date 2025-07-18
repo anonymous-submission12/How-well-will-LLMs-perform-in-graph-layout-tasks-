@@ -1,0 +1,79 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper function to count edges
+    def count_edges(adj_list):
+        edge_count = 0
+        for node, neighbors in adj_list.items():
+            edge_count += len(neighbors)
+        return edge_count // 2  # Each edge is counted twice
+
+    # Helper function to check if graph is complete
+    def is_complete(adj_list):
+        n = len(adj_list)
+        expected_edges = n * (n - 1) // 2
+        return count_edges(adj_list) == expected_edges
+
+    # Helper function to check if graph is a cycle
+    def is_cycle(adj_list):
+        n = len(adj_list)
+        edge_count = count_edges(adj_list)
+        return edge_count == n and all(len(neighbors) == 2 for neighbors in adj_list.values())
+
+    # Helper function to check if graph is a path
+    def is_path(adj_list):
+        degree_counts = defaultdict(int)
+        for neighbors in adj_list.values():
+            for neighbor in neighbors:
+                degree_counts[neighbor] += 1
+        return all(degree_counts[node] <= 2 for node in degree_counts)
+
+    # Helper function to check if graph is a star
+    def is_star(adj_list):
+        center_count = sum(1 for neighbors in adj_list.values() if len(neighbors) == len(adj_list) - 1)
+        leaf_count = sum(1 for neighbors in adj_list.values() if len(neighbors) == 1)
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    # Helper function to check if graph is a grid
+    def is_grid(adj_list):
+        # Grid detection is complex; for simplicity, we check if all nodes have degree <= 4
+        return all(len(neighbors) <= 4 for neighbors in adj_list.values())
+
+    # Helper function to check if graph is clustered
+    def is_clustered(adj_list):
+        # Clustered graph detection is complex; for simplicity, we check if there are dense subgraphs
+        subgraph_sizes = [len(neighbors) for neighbors in adj_list.values()]
+        return max(subgraph_sizes) > len(adj_list) // 2
+
+    # Helper function to check if graph is random
+    def is_random(adj_list):
+        # Random graph detection is complex; for simplicity, we check if edge count is neither too high nor too low
+        edge_count = count_edges(adj_list)
+        n = len(adj_list)
+        return edge_count > n and edge_count < n * (n - 1) // 2
+
+    # Determine graph pattern
+    if is_complete(adj_list):
+        return "Complete"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_star(adj_list):
+        return "Star"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    elif is_random(adj_list):
+        return "Random"
+    else:
+        return "Unknown"
+
+# Input adjacency list
+adj_list = {0: [2, 11, 21], 1: [7, 11, 17, 22], 2: [0, 3, 7, 8, 9, 14, 16], 3: [2], 4: [7, 19], 5: [7, 18], 6: [10, 12, 13, 17, 20], 7: [1, 2, 4, 5, 9, 17, 21, 22], 8: [2, 15, 18, 22], 9: [2, 7, 17], 10: [6, 15], 11: [0, 1], 12: [6], 13: [6, 15, 21], 14: [2, 17, 22], 15: [8, 10, 13, 19, 22], 16: [2], 17: [1, 6, 7, 9, 14], 18: [5, 8], 19: [4, 15, 22], 20: [6], 21: [0, 7, 13], 22: [1, 7, 8, 14, 15, 19]}
+
+# Output result
+print(determine_graph_pattern(adj_list))
+```

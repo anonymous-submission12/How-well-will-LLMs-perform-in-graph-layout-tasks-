@@ -1,0 +1,15 @@
+To calculate the shortest path between node '21' and node '9', we can use a breadth-first search (BFS) algorithm to traverse the graph based on the edge list provided, as it's an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 2
+}
+```
+
+Explanation:
+- From node `21`, you can move directly to node `22` via the edge `(21, 22)`.
+- From node `22`, you can move directly to node `9` via the edge `(22, 9)`.
+
+Thus, the shortest path from `21` to `9` consists of 2 hops, so the length of the shortest path is `2`.

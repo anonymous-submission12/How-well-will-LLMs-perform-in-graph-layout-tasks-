@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes '24' and '9', we will use the Breadth-First Search (BFS) algorithm, which is effective for finding the shortest path in an unweighted graph.
+
+Here is the result:
+
+```json
+{
+  "answer": 4
+}
+```
+
+Explanation: 
+By traversing the graph using BFS, the shortest path from node '24' to node '9' is:
+24 → 11 → 10 → 9 (with a length of 4 edges).

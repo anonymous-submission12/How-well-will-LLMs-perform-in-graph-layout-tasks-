@@ -1,0 +1,65 @@
+```python
+def determine_graph_pattern(adj_list):
+    # Helper functions
+    def is_star(adj_list):
+        center_count = sum(len(neighbors) > 1 for neighbors in adj_list.values())
+        leaf_count = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return center_count == 1 and leaf_count == len(adj_list) - 1
+
+    def is_cycle(adj_list):
+        return all(len(neighbors) == 2 for neighbors in adj_list.values())
+
+    def is_path(adj_list):
+        endpoints = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        return endpoints == 2 and all(len(neighbors) <= 2 for neighbors in adj_list.values())
+
+    def is_grid(adj_list):
+        # Grid graphs are hard to detect without coordinates, so we approximate
+        degree_counts = [len(neighbors) for neighbors in adj_list.values()]
+        return all(degree in {2, 3, 4} for degree in degree_counts)
+
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered(adj_list):
+        # Clustered graphs have dense subgraphs with sparse connections between them
+        # Approximation: Check if there are nodes with significantly higher degrees
+        degree_counts = [len(neighbors) for neighbors in adj_list.values()]
+        avg_degree = sum(degree_counts) / len(degree_counts)
+        return any(degree > avg_degree * 1.5 for degree in degree_counts)
+
+    def is_random(adj_list):
+        # Random graphs have no discernible pattern
+        return True
+
+    # Check patterns
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+# Input graph data
+adj_list = {
+    0: [12], 1: [9, 10, 21], 2: [3, 6, 17, 21, 24], 3: [2, 4, 5, 8, 13],
+    4: [3, 10, 11, 15, 20], 5: [3, 6], 6: [2, 5, 8, 9, 26, 28], 7: [27],
+    8: [3, 6, 22, 25], 9: [1, 6, 11], 10: [1, 4, 22, 23], 11: [4, 9, 22],
+    12: [0, 16, 20], 13: [3, 14, 15], 14: [13, 18, 19, 28], 15: [4, 13],
+    16: [12, 28], 17: [2, 28], 18: [14, 22], 19: [14, 22], 20: [4, 12, 23],
+    21: [1, 2], 22: [8, 10, 11, 18, 19, 23], 23: [10, 20, 22, 27],
+    24: [2], 25: [8], 26: [6], 27: [7, 23, 28], 28: [6, 14, 16, 17, 27]
+}
+
+# Determine the graph pattern
+print(determine_graph_pattern(adj_list))
+```

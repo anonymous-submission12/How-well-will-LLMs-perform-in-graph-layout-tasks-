@@ -1,0 +1,7 @@
+The path from node 7 to node 22 is not a straight line. The Euclidean distance is the straight line distance between the two nodes, while the graph-theoretic distance is the distance along the edges of the graph. In this case, the path is curved, so the graph-theoretic distance is greater than the Euclidean distance.
+
+```json
+{
+"Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

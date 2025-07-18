@@ -1,0 +1,11 @@
+To solve this problem, we will calculate the shortest path between nodes '17' and '34' in the given graph, represented by the edge list.
+
+We can use the Breadth-First Search (BFS) algorithm to find the shortest path in an unweighted graph.
+
+Here is the solution and the answer:
+
+```json
+{
+  "answer": 4
+}
+```

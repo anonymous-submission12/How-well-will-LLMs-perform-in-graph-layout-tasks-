@@ -1,0 +1,10 @@
+To calculate the shortest path between nodes '3' and '6', we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+```json
+{
+  "answer": 1
+}
+```
+
+### Explanation:
+From the given edge list, we can see that there is a direct edge between node '3' and node '6'. Therefore, the shortest path length between these two nodes is 1.

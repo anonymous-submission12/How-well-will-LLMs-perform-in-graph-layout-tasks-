@@ -1,0 +1,15 @@
+The graph is a simple path with an additional edge (0, 28).  We want to see which layout better preserves the graph distances.  A good layout will have nodes that are close in the graph also close in the layout.  Conversely, nodes far apart in the graph should be far apart in the layout.
+
+Layout 1:
+The path 0-1-2-...-27-28 is somewhat preserved, but there are many local distortions.  For example, nodes 10, 11, 12 are very close together.  The edge (0, 28) is also not well represented, as these nodes are not particularly close.
+
+Layout 2:
+The path 0-1-2-...-27-28 is much better preserved. The nodes are laid out in a more linear fashion. The edge (0, 28) is also reasonably well represented.
+
+Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

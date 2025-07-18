@@ -1,0 +1,54 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 3), (0, 4), (0, 5), (1, 2), (1, 4), (1, 5), (2, 3), (2, 4), (2, 17), 
+             (3, 5), (4, 26), (5, 9), (6, 7), (6, 8), (6, 9), (6, 10), (6, 24), (7, 8), (7, 9), 
+             (7, 10), (7, 11), (8, 9), (8, 10), (8, 11), (8, 12), (9, 10), (9, 11), (10, 11), 
+             (11, 12), (12, 13), (12, 14), (12, 15), (12, 16), (13, 16), (14, 15), (14, 16), 
+             (17, 18), (17, 19), (17, 20), (17, 21), (18, 19), (18, 21), (19, 21), (20, 21), 
+             (22, 24), (22, 25), (22, 26), (23, 25), (23, 26), (24, 25), (25, 26)]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check for patterns
+def determine_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for star graph
+    degrees = [deg for _, deg in G.degree()]
+    if degrees.count(n - 1) == 1 and degrees.count(1) == n - 1:
+        return "Star"
+    
+    # Check for cycle graph
+    if nx.is_connected(G) and all(deg == 2 for deg in degrees):
+        return "Cycle"
+    
+    # Check for path graph
+    if nx.is_connected(G) and degrees.count(2) == n - 2 and degrees.count(1) == 2:
+        return "Path"
+    
+    # Check for grid graph
+    if nx.is_connected(G) and nx.check_planarity(G)[0]:
+        # A grid graph is planar and has a specific structure
+        sqrt_n = int(n**0.5)
+        if sqrt_n * sqrt_n == n and m == 2 * (sqrt_n * (sqrt_n - 1)):
+            return "Grid"
+    
+    # Check for complete graph
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for clustered graph
+    if nx.number_connected_components(G) > 1:
+        return "Clustered"
+    
+    # Default to random graph
+    return "Random"
+
+# Determine the pattern
+print(determine_graph_pattern(G))
+```

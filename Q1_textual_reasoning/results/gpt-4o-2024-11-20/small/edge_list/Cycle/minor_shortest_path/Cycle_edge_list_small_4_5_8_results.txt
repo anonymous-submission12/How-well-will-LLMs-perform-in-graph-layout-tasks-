@@ -1,0 +1,16 @@
+To calculate the shortest path between node '5' and node '8', we can observe that the graph is a linear chain of nodes. The shortest path is simply the number of edges between the two nodes.
+
+From the edge list provided, the nodes are connected sequentially:
+- Node '5' connects to node '6'.
+- Node '6' connects to node '7'.
+- Node '7' connects to node '8'.
+
+Thus, the shortest path between node '5' and node '8' consists of 3 edges.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 3
+}
+```

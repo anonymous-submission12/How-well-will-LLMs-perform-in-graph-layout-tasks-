@@ -1,0 +1,23 @@
+```json
+{
+  "answer": 3
+}
+``` 
+
+### Explanation:
+To find the shortest path between node '24' and '25', we can use the Breadth-First Search (BFS) algorithm. Here's the step-by-step process:
+
+1. Start at node '24'.
+2. From '24', we can go to nodes '23', '26', or '27'.
+3. From '23', we can go to '25' directly.
+4. From '26', we can go to '25' directly.
+5. From '27', we can go to '25' directly.
+
+Thus, the shortest path from '24' to '25' is:  
+**24 → 23 → 25**  
+or  
+**24 → 26 → 25**  
+or  
+**24 → 27 → 25**
+
+All these paths have a length of **3** (including the start and end nodes). Therefore, the shortest path length is **3**.

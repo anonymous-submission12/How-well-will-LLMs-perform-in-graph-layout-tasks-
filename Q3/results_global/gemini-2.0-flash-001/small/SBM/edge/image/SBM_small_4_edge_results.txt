@@ -1,0 +1,7 @@
+Based on visual inspection, the first image has more edge crossings than the second image.
+
+```json
+{
+"Answer": "2"
+}
+```

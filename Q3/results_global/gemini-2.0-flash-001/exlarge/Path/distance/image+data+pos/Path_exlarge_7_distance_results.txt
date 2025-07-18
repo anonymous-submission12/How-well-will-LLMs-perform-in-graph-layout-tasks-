@@ -1,0 +1,7 @@
+The graph data represents a simple chain. Layout 2 arranges the nodes in a chain-like fashion, preserving the graph-theoretic distance. Layout 1 does not preserve the graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

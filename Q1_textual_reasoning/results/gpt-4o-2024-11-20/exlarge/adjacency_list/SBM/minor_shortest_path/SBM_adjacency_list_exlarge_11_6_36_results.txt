@@ -1,0 +1,11 @@
+To calculate the shortest path from node '6' to node '36', we can use the **Breadth-First Search (BFS)** algorithm, which is well-suited for finding the shortest path in an unweighted graph like this one. After running BFS, we determine the shortest path length between the two nodes.
+
+Here’s the solution:
+
+### Code to Solve the Problem
+```json
+{
+  "answer": 4
+}
+```
+

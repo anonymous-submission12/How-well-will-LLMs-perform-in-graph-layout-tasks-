@@ -1,0 +1,70 @@
+```python
+import json
+import math
+
+def graph_layout(edge_list):
+    """
+    Generates a layout for a graph represented as an edge list,
+    maintaining consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node IDs
+        and values are their (x, y) coordinates.  The layout is also returned
+        as a JSON string.
+    """
+
+    # Determine the number of nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+    num_nodes = len(nodes)
+
+    # Initialize layout with nodes placed in a line
+    layout = {}
+    for i in range(num_nodes):
+        layout[i] = (i, 0)  # Place nodes along the x-axis
+
+    # Basic consistency enforcement (can be expanded)
+    for _ in range(100): # Iterate to refine layout
+        for u, v in edge_list:
+            # Calculate current Euclidean distance
+            x1, y1 = layout[u]
+            x2, y2 = layout[v]
+            euclidean_distance = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+            # Ideal distance is 1 (since they are adjacent)
+            ideal_distance = 1
+
+            # Adjustment factor
+            adjustment_factor = 0.1 * (ideal_distance - euclidean_distance)
+
+            # Move nodes closer or further apart
+            dx = x2 - x1
+            dy = y2 - y1
+
+            if euclidean_distance == 0:
+                # Nodes are at the same location, apply a small random displacement
+                dx = 0.01
+                dy = 0.01
+
+            # Normalize the direction vector
+            distance = math.sqrt(dx**2 + dy**2)
+            dx /= distance
+            dy /= distance
+
+            # Update positions
+            layout[u] = (x1 + adjustment_factor * dx, y1 + adjustment_factor * dy)
+            layout[v] = (x2 - adjustment_factor * dx, y2 - adjustment_factor * dy)
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20)]
+layout_json = graph_layout(edge_list)
+print(layout_json)
+```

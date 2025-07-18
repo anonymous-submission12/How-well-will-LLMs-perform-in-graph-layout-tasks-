@@ -1,0 +1,15 @@
+To calculate the shortest path between node '9' and node '20', we can observe that the graph is a simple cycle. The shortest path can be calculated by traversing the nodes either clockwise or counterclockwise. 
+
+From node '9' to node '20', the shortest path is:
+- Clockwise: 9 → 10 → 11 → 12 → 13 → 14 → 15 → 16 → 17 → 18 → 19 → 20 (11 steps)
+- Counterclockwise: 9 → 8 → 7 → 6 → 5 → 4 → 3 → 2 → 1 → 0 → 21 → 20 (12 steps)
+
+The shortest path is the clockwise direction, which is 11 steps.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 11
+}
+```

@@ -1,0 +1,13 @@
+To calculate the highest degree of all nodes in the graph, we need to determine the number of connections (edges) each node has and find the maximum among them. Here's the calculation:
+
+- Node 0 has connections to nodes [1, 76], so its degree is 2.
+- Node 76 has connections to nodes [0, 75], so its degree is 2.
+- All other nodes (1 through 75) have connections to exactly two nodes (their neighbors), so their degree is also 2.
+
+Thus, the highest degree of all nodes in the graph is **2**.
+
+```json
+{
+  "answer": 2
+}
+```

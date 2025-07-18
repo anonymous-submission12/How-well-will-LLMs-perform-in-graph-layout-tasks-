@@ -1,0 +1,17 @@
+The graph described in the adjacency_list format is a star graph, where node 0 serves as the central hub connected to all other nodes. Each non-central node (from 1 to 27) is connected only to node 0 and not directly to other nodes.
+
+To calculate the shortest path between node '11' and node '5':
+1. Node '11' connects to node '0'.
+2. Node '0' connects to node '5'.
+
+This means the shortest path from '11' to '5' will pass through the central node '0' and includes 2 edges: one from '11' to '0' and another from '0' to '5'.
+
+Thus, the shortest path length is **2**.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

@@ -1,0 +1,113 @@
+```python
+import json
+
+def generate_layout(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple layering approach.  It attempts to
+    place nodes in layers based on their distance from a starting node (node 0).
+    Nodes are then positioned within each layer to minimize crossings based on
+    a simple barycenter heuristic.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    nodes = list(graph.keys())
+    num_nodes = len(nodes)
+
+    # 1. Layer Assignment
+    layers = {}
+    assigned = {0}
+    layers[0] = [0]
+    layer_num = 0
+
+    while len(assigned) < num_nodes:
+        next_layer = []
+        for node in layers[layer_num]:
+            for neighbor in graph[node]:
+                if neighbor not in assigned:
+                    next_layer.append(neighbor)
+                    assigned.add(neighbor)
+        if next_layer:
+            layer_num += 1
+            layers[layer_num] = next_layer
+
+    # 2. Initial X-coordinate assignment within layers (simple ordering)
+    positions = {}
+    layer_height = 1.0  # Vertical distance between layers
+    node_spacing = 1.0  # Horizontal distance between nodes in a layer
+
+    for layer_index, nodes_in_layer in layers.items():
+        y = -layer_index * layer_height  # Invert y-axis for better visualization
+        num_nodes_in_layer = len(nodes_in_layer)
+        start_x = -(num_nodes_in_layer - 1) * node_spacing / 2.0  # Center the layer
+
+        for i, node in enumerate(nodes_in_layer):
+            x = start_x + i * node_spacing
+            positions[node] = (x, y)
+
+    # 3. Barycenter Heuristic for X-coordinate adjustment (minimizing crossings)
+    num_iterations = 10  # Number of iterations for the heuristic
+
+    for _ in range(num_iterations):
+        for layer_index in sorted(layers.keys()):
+            if layer_index == 0:
+                continue  # Skip the first layer
+
+            for node in layers[layer_index]:
+                neighbors_above = [n for n in graph[node] if n in layers.get(layer_index - 1, [])]
+                if neighbors_above:
+                    avg_x = sum(positions[n][0] for n in neighbors_above) / len(neighbors_above)
+                    positions[node] = (avg_x, positions[node][1])
+
+        for layer_index in sorted(layers.keys(), reverse=True):
+            if layer_index == max(layers.keys()):
+                continue
+
+            for node in layers[layer_index]:
+                neighbors_below = [n for n in graph[node] if n in layers.get(layer_index + 1, [])]
+                if neighbors_below:
+                    avg_x = sum(positions[n][0] for n in neighbors_below) / len(neighbors_below)
+                    positions[node] = (avg_x, positions[node][1])
+
+    # Normalize positions to fit within a unit square (optional)
+    min_x = min(x for x, y in positions.values())
+    max_x = max(x for x, y in positions.values())
+    min_y = min(y for x, y in positions.values())
+    max_y = max(y for x, y in positions.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range > 0 and y_range > 0:
+        for node in positions:
+            x, y = positions[node]
+            x = (x - min_x) / x_range
+            y = (y - min_y) / y_range
+            positions[node] = (x, y)
+
+    return positions
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 14), (1, 2), (1, 15), (2, 3), (2, 16), (3, 4), (3, 17), (4, 5), (4, 18), (5, 6), (5, 19), (6, 7), (6, 20), (7, 8), (7, 21), (8, 9), (8, 22), (9, 10), (9, 23), (10, 11), (10, 24), (11, 12), (11, 25), (12, 13), (12, 26), (13, 27), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27)]
+layout = generate_layout(edge_list)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

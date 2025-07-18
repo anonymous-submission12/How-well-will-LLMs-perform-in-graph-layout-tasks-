@@ -1,0 +1,13 @@
+To determine which layout better preserves graph-theoretic distance, we need to compare the Euclidean distances between nodes in the layouts with their graph-theoretic distances (shortest path distances in the graph). 
+
+From visual inspection:
+- **Layout 1** (first image) appears to have nodes placed in a way that does not follow the linear structure of the graph. Nodes that are close in graph-theoretic distance are often far apart in Euclidean distance, and vice versa.
+- **Layout 2** (second image) arranges the nodes in a way that closely follows the linear structure of the graph. Nodes that are close in graph-theoretic distance are also close in Euclidean distance.
+
+Thus, **Layout 2** better preserves graph-theoretic distance.
+
+```json
+{
+  "Answer": 2
+}
+```

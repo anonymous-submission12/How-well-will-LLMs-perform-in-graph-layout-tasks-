@@ -1,0 +1,129 @@
+```python
+import json
+import random
+
+def calculate_crossing_number(graph, layout):
+    """Calculates the number of edge crossings in a given layout.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+        layout: A dictionary where keys are node IDs and values are (x, y) coordinates.
+
+    Returns:
+        The number of edge crossings.
+    """
+    crossings = 0
+    edges = list(graph)  # Ensure edges is a list
+    n = len(edges)
+    for i in range(n):
+        for j in range(i + 1, n):
+            edge1 = edges[i]
+            edge2 = edges[j]
+
+            # Extract coordinates
+            x1, y1 = layout[edge1[0]]
+            x2, y2 = layout[edge1[1]]
+            x3, y3 = layout[edge2[0]]
+            x4, y4 = layout[edge2[1]]
+
+            # Check for intersection (line segment intersection)
+            def ccw(a, b, c):
+                return (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0])
+
+            if (ccw((x1, y1), (x3, y3), (x4, y4)) != ccw((x2, y2), (x3, y3), (x4, y4)) and
+                    ccw((x1, y1), (x2, y2), (x3, y3)) != ccw((x1, y1), (x2, y2), (x4, y4))):
+                crossings += 1
+
+    return crossings
+
+
+def generate_initial_layout(graph):
+    """Generates a random initial layout for the graph.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+    nodes = set()
+    for edge in graph:
+        nodes.add(edge[0])
+        nodes.add(edge[1])
+
+    layout = {}
+    for node in nodes:
+        layout[node] = (random.random(), random.random())  # Assign random coordinates
+
+    return layout
+
+
+def optimize_layout(graph, initial_layout, iterations=1000, step_size=0.01):
+    """Optimizes the layout to minimize edge crossings using a simple iterative approach.
+
+    Args:
+        graph: A list of tuples representing the edges of the graph.
+        initial_layout: A dictionary representing the initial layout.
+        iterations: The number of optimization iterations.
+        step_size: The step size for moving nodes.
+
+    Returns:
+        A dictionary representing the optimized layout.
+    """
+    layout = initial_layout.copy()
+    best_layout = layout.copy()
+    min_crossings = calculate_crossing_number(graph, layout)
+
+    for _ in range(iterations):
+        # Choose a random node
+        node = random.choice(list(layout.keys()))
+
+        # Calculate the current crossing number
+        current_crossings = calculate_crossing_number(graph, layout)
+
+        # Generate a new position for the node
+        original_x, original_y = layout[node]
+        new_x = original_x + random.uniform(-step_size, step_size)
+        new_y = original_y + random.uniform(-step_size, step_size)
+
+        # Keep coordinates within [0, 1]
+        new_x = max(0, min(1, new_x))
+        new_y = max(0, min(1, new_y))
+
+        # Update the layout with the new position
+        layout[node] = (new_x, new_y)
+
+        # Calculate the new crossing number
+        new_crossings = calculate_crossing_number(graph, layout)
+
+        # Accept the new position if it reduces crossings or with some probability
+        if new_crossings < current_crossings or random.random() < 0.1:  # Simulated annealing-like behavior
+            pass  # Keep the new position
+        else:
+            # Revert to the original position
+            layout[node] = (original_x, original_y)
+
+        # Update best layout if current layout is better
+        current_crossings = calculate_crossing_number(graph, layout)
+        if current_crossings < min_crossings:
+            min_crossings = current_crossings
+            best_layout = layout.copy()
+
+    return best_layout
+
+
+# Graph data
+graph_data = [(0, 1), (0, 23), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23)]
+
+# Generate initial layout
+initial_layout = generate_initial_layout(graph_data)
+
+# Optimize the layout
+optimized_layout = optimize_layout(graph_data, initial_layout)
+
+# Convert the layout to JSON format
+layout_json = json.dumps(optimized_layout, indent=4)
+
+# Print the JSON output
+print(layout_json)
+```

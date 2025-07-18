@@ -1,0 +1,13 @@
+To determine which graph layout better preserves graph-theoretic distances, one must examine the relationship between the positions of nodes in the layout and their shortest-path distances in the graph topology. 
+
+The first image (Answer 1) has nodes scattered more randomly, and the distances between nodes in the layout may not correspond well to graph-theoretic distances. 
+
+The second image (Answer 2) organizes nodes in a more circular or linear fashion, where the layout appears to respect the graph-theoretic distances better. Nodes that are close in terms of connectivity in the graph are positioned closer together in the layout, and distances are consistently followed.
+
+The better preservation of graph-theoretic distances can be observed in **Answer 2**.
+
+```json
+{
+  "Answer": 2
+}
+```

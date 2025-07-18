@@ -1,0 +1,38 @@
+```python
+def graph_pattern(adj_list):
+    n = len(adj_list)
+    edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for Star pattern
+    center_nodes = [node for node, neighbors in adj_list.items() if len(neighbors) == n - 1]
+    if len(center_nodes) == 1:
+        return "Star"
+
+    # Check for Cycle pattern
+    if edges == n and all(len(neighbors) == 2 for neighbors in adj_list.values()):
+        return "Cycle"
+
+    # Check for Path pattern
+    if edges == n - 1 and sum(len(neighbors) == 1 for neighbors in adj_list.values()) == 2:
+        return "Path"
+
+    # Check for Complete pattern
+    if edges == n * (n - 1) // 2:
+        return "Complete"
+
+    # Check for Grid pattern (approximation)
+    sqrt_n = int(n**0.5)
+    if sqrt_n * sqrt_n == n and edges == 2 * n - 2 * sqrt_n:
+        return "Grid"
+
+    # Check for Clustered graph (approximation)
+    max_degree = max(len(neighbors) for neighbors in adj_list.values())
+    if max_degree > n / 2:
+        return "Clustered graph"
+
+    # Default to Random graph
+    return "Random graph"
+
+adj_list = {0: [5, 6, 10], 1: [19], 2: [5, 8, 22], 3: [10], 4: [12, 16], 5: [0, 2, 18, 21], 6: [0, 12, 25], 7: [11, 17], 8: [2, 9, 12, 13, 19], 9: [8, 15], 10: [0, 3], 11: [7, 12, 15, 18, 19, 20, 25], 12: [4, 6, 8, 11, 19, 22, 25], 13: [8, 16, 25], 14: [20, 21], 15: [9, 11], 16: [4, 13, 21], 17: [7, 23, 24], 18: [5, 11, 23], 19: [1, 8, 11, 12, 23], 20: [11, 14], 21: [5, 14, 16], 22: [2, 12], 23: [17, 18, 19], 24: [17], 25: [6, 11, 12, 13]}
+print(graph_pattern(adj_list))
+```

@@ -1,0 +1,7 @@
+Both images appear to have zero edge crossings.
+
+```json
+{
+"Answer": "1"
+}
+```

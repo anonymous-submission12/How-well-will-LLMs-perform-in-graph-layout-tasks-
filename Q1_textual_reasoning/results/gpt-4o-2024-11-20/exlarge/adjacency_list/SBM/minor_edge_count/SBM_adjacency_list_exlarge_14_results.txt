@@ -1,0 +1,9 @@
+To count the number of edges in an undirected graph represented by an adjacency list, each edge is listed twice (once for each vertex it connects). Therefore, the total number of edges is the sum of the lengths of all adjacency lists divided by 2.
+
+Here's the result:
+
+```json
+{
+  "answer": 1163
+}
+```

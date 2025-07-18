@@ -1,0 +1,104 @@
+```python
+def graph_type(graph):
+    def is_star(graph):
+        n = len(graph)
+        center_count = 0
+        for node, neighbors in graph.items():
+            if len(neighbors) == n - 1:
+                center_count += 1
+            elif len(neighbors) > 1:
+                return False
+        return center_count == 1
+
+    def is_cycle(graph):
+        visited = set()
+        edges = sum(len(neighbors) for neighbors in graph.values()) // 2
+        if edges != len(graph):
+            return False
+        
+        def dfs(v, parent):
+            if v in visited:
+                return False
+            visited.add(v)
+            for neighbor in graph[v]:
+                if neighbor != parent:
+                    if neighbor in visited:
+                        return False
+                    if not dfs(neighbor, v):
+                        return False
+            return True
+
+        start = next(iter(graph))
+        return dfs(start, None) and len(visited) == len(graph)
+
+    def is_path(graph):
+        degrees = [len(neighbors) for neighbors in graph.values()]
+        if degrees.count(1) == 2 and degrees.count(2) == len(graph) - 2:
+            return True
+        return False
+
+    def is_complete(graph):
+        n = len(graph)
+        for neighbors in graph.values():
+            if len(neighbors) != n - 1:
+                return False
+        return True
+
+    def is_grid(graph):
+        from math import isqrt
+        n = len(graph)
+        s = isqrt(n)
+        if s * s != n:
+            return False
+        for node in range(n):
+            neighbors = []
+            if node % s > 0: neighbors.append(node - 1)
+            if node % s < s - 1: neighbors.append(node + 1)
+            if node // s > 0: neighbors.append(node - s)
+            if node // s < s - 1: neighbors.append(node + s)
+            if set(neighbors) != set(graph.get(node, [])):
+                return False
+        return True
+
+    def is_clustered(graph):
+        cluster_coefficients = []
+        for node, neighbors in graph.items():
+            k = len(neighbors)
+            if k <= 1:
+                cluster_coefficients.append(0)
+            else:
+                linked_pairs = sum(
+                    1 for i in neighbors for j in neighbors if i in graph[j]
+                )
+                cluster_coefficients.append(
+                    linked_pairs / (k * (k - 1))
+                )
+        avg_clustering = sum(cluster_coefficients) / len(graph)
+        return avg_clustering > 0.5
+
+    if is_star(graph):
+        return "Star"
+    if is_cycle(graph):
+        return "Cycle"
+    if is_path(graph):
+        return "Path"
+    if is_grid(graph):
+        return "Grid"
+    if is_complete(graph):
+        return "Complete"
+    if is_clustered(graph):
+        return "Clustered graph"
+    return "Random graph"
+
+graph = {
+    0: [12, 23, 24], 1: [2, 4, 12, 15], 2: [1, 5, 7, 11], 3: [8],
+    4: [1, 6, 16, 18, 22, 24], 5: [2, 7, 8, 9, 16], 6: [4, 9],
+    7: [2, 5, 13, 14, 24], 8: [3, 5, 12], 9: [5, 6, 24], 10: [22],
+    11: [2], 12: [0, 1, 8, 13, 14, 15, 21, 24], 13: [7, 12, 24],
+    14: [7, 12, 17, 21], 15: [1, 12], 16: [4, 5], 17: [14, 18, 23, 24],
+    18: [4, 17], 19: [20], 20: [19, 21], 21: [12, 14, 20],
+    22: [4, 10, 23], 23: [0, 17, 22], 24: [0, 4, 7, 9, 12, 13, 17]
+}
+
+print(graph_type(graph))
+```

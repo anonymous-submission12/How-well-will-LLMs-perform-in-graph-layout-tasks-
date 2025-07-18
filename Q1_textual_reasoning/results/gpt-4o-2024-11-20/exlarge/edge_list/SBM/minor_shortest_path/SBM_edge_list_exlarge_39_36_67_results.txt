@@ -1,0 +1,7 @@
+To compute the shortest path between nodes '36' and '67', I will treat the graph as an undirected unweighted graph and use Breadth-First Search (BFS). Here's the answer in JSON format:
+
+```json
+{
+  "answer": 7
+}
+```

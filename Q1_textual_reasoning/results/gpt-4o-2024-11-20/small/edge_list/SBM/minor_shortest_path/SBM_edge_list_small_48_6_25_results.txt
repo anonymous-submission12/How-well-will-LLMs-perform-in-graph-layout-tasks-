@@ -1,0 +1,9 @@
+To calculate the shortest path between node '6' and node '25', the graph data provided represents an unweighted graph where each edge signifies a connection between the respective nodes. With the edge list provided, Dijkstra's algorithm or BFS (Breadth-First Search) can be used to determine the shortest path in terms of the number of edges traversed.
+
+Here is the result:
+
+```json
+{
+  "answer": 4
+}
+```

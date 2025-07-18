@@ -1,0 +1,61 @@
+To generate a layout for the graph that keeps the community structure clear, we can use the `networkx` library to handle the graph and community detection, and the `graphviz` layout algorithm to generate positions for the nodes. The community detection will be done using the Louvain method, which is a popular algorithm for detecting communities in large networks.
+
+Here's the Python script that accomplishes this:
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+
+# Define the edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 11), (0, 13), (0, 14),
+             (1, 2), (1, 4), (1, 5), (1, 6), (1, 19), (2, 3), (2, 6), (3, 4), (3, 5),
+             (3, 6), (4, 5), (4, 6), (4, 18), (5, 6), (5, 9), (7, 8), (7, 9), (7, 10),
+             (7, 11), (7, 12), (7, 13), (8, 9), (8, 11), (8, 12), (8, 13), (9, 10),
+             (9, 11), (9, 12), (10, 11), (10, 12), (10, 13), (10, 14), (11, 12), (11, 13),
+             (12, 13), (14, 15), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 17),
+             (15, 18), (15, 20), (16, 17), (16, 18), (16, 19), (16, 20), (17, 18), (17, 19),
+             (17, 20), (18, 19), (18, 20)]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Detect communities using the Louvain method
+partition = community_louvain.best_partition(G)
+
+# Assign each node to its community
+communities = {}
+for node, comm_id in partition.items():
+    if comm_id not in communities:
+        communities[comm_id] = []
+    communities[comm_id].append(node)
+
+# Generate positions for each node using a layout algorithm
+pos = nx.spring_layout(G, seed=42)  # Using spring layout for positioning
+
+# Prepare the layout in JSON format
+layout = {
+    "nodes": [],
+    "edges": edge_list
+}
+
+for node, (x, y) in pos.items():
+    layout["nodes"].append({
+        "id": node,
+        "x": x,
+        "y": y,
+        "community": partition[node]
+    })
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+This script does the following:
+1. Creates a graph from the provided edge list.
+2. Detects communities using the Louvain method.
+3. Generates positions for each node using the spring layout algorithm.
+4. Outputs the graph layout in JSON format, including node positions and community assignments.
+
+The JSON output will include the positions of each node and their community assignments, which can be used to visualize the graph while keeping the community structure clear.

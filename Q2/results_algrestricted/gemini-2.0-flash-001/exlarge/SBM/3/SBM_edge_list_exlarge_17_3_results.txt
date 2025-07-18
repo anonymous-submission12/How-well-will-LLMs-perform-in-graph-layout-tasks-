@@ -1,0 +1,86 @@
+```python
+import json
+import random
+
+def layout_graph(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple iterative layout algorithm. It starts with
+    random positions for the nodes and then iteratively adjusts the positions
+    to reduce edge crossings.  The core idea is to move each node to the
+    average position of its neighbors. This process is repeated for a
+    number of iterations.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple (u, v) indicates an edge between node u and node v.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Initialize node positions randomly.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    positions = {node: (random.random(), random.random()) for node in nodes}
+
+    # 2. Iteratively adjust positions to minimize edge crossings.
+    num_iterations = 100  # Adjust as needed
+    for _ in range(num_iterations):
+        new_positions = {}
+        for node in nodes:
+            # Calculate the average position of neighbors.
+            neighbors = []
+            for u, v in edge_list:
+                if u == node:
+                    neighbors.append(v)
+                elif v == node:
+                    neighbors.append(u)
+
+            if neighbors:
+                avg_x = sum(positions[neighbor][0] for neighbor in neighbors) / len(neighbors)
+                avg_y = sum(positions[neighbor][1] for neighbor in neighbors) / len(neighbors)
+                new_positions[node] = (avg_x, avg_y)
+            else:
+                # If no neighbors, keep the old position.
+                new_positions[node] = positions[node]
+
+        # Update positions.
+        positions = new_positions
+
+    # 3. Normalize positions to fit within a 0-1 range.
+    min_x = min(pos[0] for pos in positions.values())
+    max_x = max(pos[0] for pos in positions.values())
+    min_y = min(pos[1] for pos in positions.values())
+    max_y = max(pos[1] for pos in positions.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    if x_range == 0:
+        x_range = 1  # Avoid division by zero if all x-coordinates are the same
+    if y_range == 0:
+        y_range = 1  # Avoid division by zero if all y-coordinates are the same
+
+    normalized_positions = {
+        node: ((positions[node][0] - min_x) / x_range, (positions[node][1] - min_y) / y_range)
+        for node in nodes
+    }
+
+    return normalized_positions
+
+
+# Graph data
+edge_list = [(0, 1), (0, 4), (0, 12), (1, 5), (1, 6), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (2, 7), (2, 11), (3, 6), (3, 10), (3, 11), (4, 5), (4, 7), (4, 9), (5, 6), (5, 7), (5, 8), (5, 10), (5, 11), (7, 10), (7, 12), (8, 59), (9, 11), (10, 11), (10, 17), (12, 49), (13, 15), (13, 16), (13, 17), (13, 20), (13, 22), (13, 23), (13, 24), (14, 17), (14, 18), (14, 22), (14, 24), (15, 22), (15, 24), (15, 34), (16, 17), (16, 19), (16, 22), (16, 25), (17, 25), (17, 50), (18, 23), (18, 24), (18, 25), (19, 20), (19, 22), (19, 35), (20, 22), (20, 23), (20, 24), (20, 25), (21, 23), (21, 24), (21, 50), (22, 23), (26, 27), (26, 30), (26, 31), (27, 29), (27, 30), (27, 31), (28, 30), (28, 31), (29, 30), (30, 31), (32, 27), (32, 28), (32, 29), (32, 30), (32, 31), (33, 27), (33, 28), (33, 31), (33, 34), (33, 35), (33, 36), (34, 27), (34, 30), (34, 35), (34, 36), (34, 37), (34, 38), (34, 74), (35, 29), (35, 36), (35, 37), (36, 26), (36, 27), (36, 38), (36, 51), (37, 27), (37, 29), (38, 27), (38, 28), (38, 31), (38, 62), (39, 41), (39, 43), (39, 45), (39, 51), (40, 42), (40, 43), (40, 44), (40, 45), (40, 48), (41, 43), (41, 46), (42, 45), (42, 54), (43, 44), (43, 60), (44, 46), (44, 49), (44, 51), (45, 47), (45, 48), (46, 48), (46, 49), (46, 50), (47, 49), (52, 55), (52, 56), (52, 59), (52, 60), (52, 61), (52, 62), (52, 63), (53, 56), (53, 61), (53, 62), (54, 56), (54, 63), (57, 58), (57, 59), (58, 61), (58, 62), (58, 63), (59, 61), (60, 61), (61, 63), (62, 63), (64, 65), (64, 66), (64, 67), (64, 68), (64, 72), (64, 75), (65, 66), (65, 67), (65, 68), (65, 69), (65, 74), (65, 75), (66, 68), (67, 68), (67, 75), (68, 69), (68, 72), (68, 74), (69, 70), (69, 71), (70, 75), (71, 72), (71, 73), (71, 74), (71, 75), (72, 73), (72, 75)]
+
+# Generate the layout
+layout = layout_graph(edge_list)
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```

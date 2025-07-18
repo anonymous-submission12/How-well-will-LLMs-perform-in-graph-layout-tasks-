@@ -1,0 +1,12 @@
+```python
+def graph_pattern(adjacency_list):
+    n = len(adjacency_list)
+    complete_graph_edges = n * (n - 1) // 2
+
+    # Check for Complete Graph
+    total_edges = sum(len(v) for v in adjacency_list.values()) // 2
+    if total_edges == complete_graph_edges:
+        return "Complete"
+
+# Construct the adjacency matrix
+adjacency_data = {0: [1, 2, 3....

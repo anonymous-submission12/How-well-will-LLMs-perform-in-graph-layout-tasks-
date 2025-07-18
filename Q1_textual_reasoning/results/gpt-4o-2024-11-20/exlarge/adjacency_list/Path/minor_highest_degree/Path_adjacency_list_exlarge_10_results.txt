@@ -1,0 +1,15 @@
+To calculate the highest degree of all nodes in the graph, we determine the number of edges connected to each node (its degree) and find the maximum value.
+
+Given the adjacency list format provided, each key corresponds to a node, and its list value corresponds to the nodes it's connected to. The degree of a node is the length of its adjacency list.
+
+Here is the solution:
+
+### Solution:
+```json
+{
+  "answer": 2
+}
+```
+
+### Explanation:
+In this graph, each node connects to at most two other nodes (for example, `1` connects to `0` and `2`), making it a line graph. Therefore, the maximum degree of any node in this graph is `2`.

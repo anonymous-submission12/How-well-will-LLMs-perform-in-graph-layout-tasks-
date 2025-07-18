@@ -1,0 +1,58 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [
+    (0, 6), (0, 7), (0, 9), (0, 14), (1, 7), (1, 21), (1, 23), 
+    (2, 6), (2, 7), (2, 13), (2, 20), (2, 27), (3, 6), (3, 10), 
+    (3, 15), (3, 18), (3, 19), (3, 23), (4, 6), (4, 7), (4, 9), 
+    (4, 21), (5, 8), (5, 18), (5, 23), (6, 24), (7, 18), (7, 20), 
+    (7, 23), (8, 17), (8, 22), (9, 23), (10, 15), (10, 17), (10, 20), 
+    (10, 27), (11, 17), (11, 18), (11, 27), (12, 20), (12, 26), 
+    (13, 15), (16, 18), (16, 26), (16, 27), (21, 23), (23, 25), (24, 28)
+]
+
+# Create a graph
+G = nx.Graph(edge_list)
+
+# Check graph patterns
+def identify_graph(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check if the graph is a Star
+    degrees = [deg for _, deg in G.degree]
+    max_degree = max(degrees)
+    if max_degree == n - 1 and degrees.count(1) == n - 1:  # One center node connected to all others
+        return "Star"
+    
+    # Check if the graph is a Cycle
+    if nx.is_connected(G) and all(deg == 2 for deg in degrees):  # All degrees are 2
+        return "Cycle"
+    
+    # Check if the graph is a Path
+    if nx.is_connected(G) and degrees.count(1) == 2 and degrees.count(2) == n - 2:  # Two endpoints, all other nodes degree 2
+        return "Path"
+    
+    # Check if the graph is a Grid
+    # A grid graph has a very specific structure; we can rule it out if number of edges is not correct
+    sqrt_nodes = int(n**0.5)
+    if sqrt_nodes**2 == n and m == 2 * n - 2 * sqrt_nodes:  # m for grid graph is typically 2n - 2sqrt(n)
+        return "Grid"
+    
+    # Check if the graph is Complete
+    if m == (n * (n - 1)) // 2:  # Edges for a complete graph
+        return "Complete"
+    
+    # Check if the graph is a Random Graph or Clustered Graph
+    # This will be based on clustering coefficient and randomness assumptions
+    clustering_coeff = nx.average_clustering(G)
+    if clustering_coeff > 0.5:  # Arbitrarily assuming a threshold for clustered graph
+        return "Clustered graph"
+    
+    # Default to Random Graph
+    return "Random graph"
+
+# Determine the graph pattern
+print(identify_graph(G))
+```

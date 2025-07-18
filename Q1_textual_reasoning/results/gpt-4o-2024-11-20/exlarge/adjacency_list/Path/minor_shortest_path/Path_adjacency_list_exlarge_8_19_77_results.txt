@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '19' and '77', we can use the Breadth-First Search (BFS) algorithm. The graph is structured as a linear chain, so the shortest path is simply the difference between the two node indices.
+
+The shortest path length between node '19' and node '77' is:
+
+```json
+{
+  "answer": 58
+}
+```

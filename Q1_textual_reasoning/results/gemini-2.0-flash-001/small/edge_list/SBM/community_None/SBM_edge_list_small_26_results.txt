@@ -1,0 +1,26 @@
+Here's how we can determine the number of communities in the provided graph using a simple connected components approach:
+
+**Algorithm:**
+
+1.  **Initialize:** Start with an empty list of communities.
+2.  **Iterate through nodes:** For each node in the graph:
+    *   If the node doesn't belong to any existing community, create a new community containing only that node.
+    *   Find all neighbors of the current node.
+    *   Add the neighbors to the same community as the current node.
+    *   Merge communities if a node belongs to multiple communities.
+3.  **Count Communities:** The number of communities in the list is the answer.
+
+**Implementation (Conceptual):**
+
+Based on the provided `edge_list`, we can identify the following connected components (communities):
+
+*   Community 1: {0, 1, 2, 3, 4, 5, 6, 11, 13, 14, 19, 18, 20, 15, 16, 17, 9, 7, 8, 10, 12}
+*   Nodes: 0,1,2,3,4,5,6 are highly connected and clearly belong to one community. Nodes 7,8,9,10,11,12,13 are connected. Nodes 14, 15, 16, 17, 18, 19, 20 are connected. But node 0 is connected to 11, 13, 14. Node 5 is connected to 9. Node 7 is connected to 11, 13, 14. So all nodes are in a single community.
+
+**JSON Response:**
+
+```json
+{
+"answer": 1
+}
+```

@@ -1,0 +1,75 @@
+```python
+import json
+import community as co
+import networkx as nx
+import random
+
+def generate_community_layout(edge_list):
+    """
+    Generates a graph layout that emphasizes community structure using the Louvain algorithm
+    for community detection and a force-directed layout algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the graph's edges.
+
+    Returns:
+        A JSON string representing the graph layout, where each node has 'x' and 'y' coordinates.
+    """
+
+    # 1. Create a NetworkX graph from the edge list.
+    graph = nx.Graph(edge_list)
+
+    # 2. Apply the Louvain algorithm for community detection.
+    partition = co.best_partition(graph)
+
+    # 3. Calculate the number of communities.
+    num_communities = len(set(partition.values()))
+
+    # 4. Calculate a base layout using a force-directed algorithm (e.g., spring layout).
+    pos = nx.spring_layout(graph)  # You can experiment with other layouts like nx.fruchterman_reingold_layout
+
+    # 5. Adjust the layout to emphasize community structure.
+    #    - Calculate the center of each community.
+    #    - Move nodes closer to their community center.
+    community_centers = {}
+    for community_id in range(num_communities):
+        nodes_in_community = [node for node, comm_id in partition.items() if comm_id == community_id]
+        if nodes_in_community:  # Handle empty communities
+            x_coords = [pos[node][0] for node in nodes_in_community]
+            y_coords = [pos[node][1] for node in nodes_in_community]
+            community_centers[community_id] = (sum(x_coords) / len(x_coords), sum(y_coords) / len(y_coords))
+        else:
+            community_centers[community_id] = (random.random(), random.random()) # Assign random position if community is empty
+
+    # Move nodes towards their community centers.  The 'strength' parameter controls how much they move.
+    strength = 0.1  # Adjust this value to control the community separation.
+    for node, comm_id in partition.items():
+        center_x, center_y = community_centers[comm_id]
+        pos[node] = (pos[node][0] * (1 - strength) + center_x * strength,
+                     pos[node][1] * (1 - strength) + center_y * strength)
+
+    # 6. Normalize the layout to fit within a [0, 1] x [0, 1] bounding box.
+    min_x = min(x for x, y in pos.values())
+    max_x = max(x for x, y in pos.values())
+    min_y = min(y for x, y in pos.values())
+    max_y = max(y for x, y in pos.values())
+
+    x_range = max_x - min_x
+    y_range = max_y - min_y
+
+    for node in graph.nodes():
+        x, y = pos[node]
+        x = (x - min_x) / x_range if x_range > 0 else 0.5  # Handle the case where all x-coordinates are the same
+        y = (y - min_y) / y_range if y_range > 0 else 0.5  # Handle the case where all y-coordinates are the same
+        pos[node] = {'x': x, 'y': y}
+
+    # 7. Convert the layout to JSON format.
+    layout_json = json.dumps(pos, indent=2)
+    return layout_json
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 4), (1, 5), (1, 9), (2, 4), (2, 5), (2, 15), (3, 5), (4, 5), (6, 8), (6, 10), (6, 11), (7, 8), (7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 20), (9, 10), (9, 11), (12, 13), (12, 14), (12, 15), (12, 16), (12, 17), (13, 14), (13, 15), (13, 17), (14, 17), (15, 16), (15, 17), (18, 19), (18, 20), (18, 22), (19, 20), (19, 22), (20, 22), (21, 22)]
+layout_json = generate_community_layout(edge_list)
+print(layout_json)
+```

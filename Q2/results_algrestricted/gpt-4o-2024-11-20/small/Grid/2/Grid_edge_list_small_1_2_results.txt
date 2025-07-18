@@ -1,0 +1,74 @@
+Here is the Python script for generating the layout of the graph provided, given in a consistent manner that adheres to the rule of maintaining consistency between Euclidean distance and graph-theoretic distance. The output is returned as a JSON object.
+
+```python
+import json
+import math
+
+def calculate_layout(edge_list):
+    # Create adjacency list
+    adjacency_list = {}
+    for edge in edge_list:
+        u, v = edge
+        if u not in adjacency_list:
+            adjacency_list[u] = []
+        if v not in adjacency_list:
+            adjacency_list[v] = []
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # BFS to calculate graph-theoretic distances from node 0
+    def bfs_distances(start_node):
+        queue = [start_node]
+        distances = {start_node: 0}
+        visited = set(queue)
+
+        while queue:
+            current = queue.pop(0)
+            current_distance = distances[current]
+
+            for neighbor in adjacency_list[current]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    distances[neighbor] = current_distance + 1
+                    queue.append(neighbor)
+
+        return distances
+
+    graph_distances = bfs_distances(0)
+
+    # Sort nodes based on graph-theoretic distance for layout assignment
+    nodes_sorted_by_distance = sorted(graph_distances.keys(), key=lambda x: graph_distances[x])
+
+    # Assign positions in a radial layout based on distances
+    positions = {}
+    radius_step = 5   # Fixed step in radius for nodes farther away
+    angle_step = math.pi / 6  # Fixed angle step for nodes in the same "ring" of distance
+
+    for distance in set(graph_distances.values()):
+        nodes_at_distance = [node for node in nodes_sorted_by_distance if graph_distances[node] == distance]
+        num_nodes = len(nodes_at_distance)
+        radius = distance * radius_step
+
+        for i, node in enumerate(nodes_at_distance):
+            angle = i * angle_step
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            positions[node] = (x, y)
+
+    return positions
+
+# Input graph edge list
+edge_list = [(0, 1), (0, 11), (1, 2), (1, 12), (2, 3), (2, 13), (3, 4), (3, 14), (4, 5), (4, 15),
+             (5, 6), (5, 16), (6, 7), (6, 17), (7, 8), (7, 18), (8, 9), (8, 19), (9, 10), (9, 20),
+             (10, 21), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18),
+             (18, 19), (19, 20), (20, 21)]
+
+# Generate layout
+layout = calculate_layout(edge_list)
+
+# Convert to JSON format and output
+layout_json = json.dumps({node: {'x': pos[0], 'y': pos[1]} for node, pos in layout.items()}, indent=2)
+print(layout_json)
+```
+
+This script calculates a consistent graph layout using a custom radial approach. Nodes farther away from the starting node (node `0`) will form "rings" at increasing radii, and nodes in each "ring" will be equally spaced based on angles. The output is presented in JSON format with the coordinates of each node (`x` and `y`).

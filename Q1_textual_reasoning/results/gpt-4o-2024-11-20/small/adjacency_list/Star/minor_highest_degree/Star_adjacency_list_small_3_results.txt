@@ -1,0 +1,13 @@
+Here’s the calculation:
+
+The graph is represented by an adjacency list format. To determine the highest degree, we calculate the degree for every node by counting its neighbors. Specifically:
+- Node `0` connects to 22 other nodes, so its degree is `22`.
+- All other nodes (`1` to `22`) connect only to node `0`, their degree is `1`.
+
+Thus, the highest degree in this graph is `22` (from node `0`).
+
+```json
+{
+  "answer": 22
+}
+```

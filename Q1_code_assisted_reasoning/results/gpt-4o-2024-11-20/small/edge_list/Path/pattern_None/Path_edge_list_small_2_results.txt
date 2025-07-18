@@ -1,0 +1,26 @@
+```python
+def check_graph_pattern(edge_list):
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    # Verify if it's a path
+    degree_count = {node: 0 for node in nodes}
+    for u, v in edge_list:
+        degree_count[u] += 1
+        degree_count[v] += 1
+    
+    path_condition = all(degree_count[node] == 2 for node in nodes) or (
+        sum(degree_count[node] == 1 for node in nodes) == 2 and
+        sum(degree_count[node] == 2 for node in nodes) == len(nodes) - 2
+    )
+    
+    if path_condition:
+        return "Path"
+
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), 
+             (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), 
+             (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21)]
+print(check_graph_pattern(edge_list))
+```

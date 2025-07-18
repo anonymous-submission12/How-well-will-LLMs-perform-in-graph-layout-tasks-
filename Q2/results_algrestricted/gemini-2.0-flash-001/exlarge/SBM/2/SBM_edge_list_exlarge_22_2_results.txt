@@ -1,0 +1,97 @@
+```python
+import json
+import random
+import numpy as np
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node indices and values are (x, y) coordinates.
+    """
+
+    # 1. Build the adjacency list representation of the graph.
+    adj_list = {}
+    for u, v in edge_list:
+        if u not in adj_list:
+            adj_list[u] = []
+        if v not in adj_list:
+            adj_list[v] = []
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+
+    nodes = list(adj_list.keys())
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions randomly.
+    pos = {node: (random.random(), random.random()) for node in nodes}
+
+    # 3. Iteratively adjust node positions to minimize stress.
+    # Stress is defined as the difference between the graph-theoretic distance
+    # and the Euclidean distance.
+
+    def compute_shortest_paths(adj_list, nodes):
+        """Computes all-pairs shortest paths using Floyd-Warshall algorithm."""
+        dist = {u: {v: float('inf') for v in nodes} for u in nodes}
+        for u in nodes:
+            dist[u][u] = 0
+            for v in adj_list[u]:
+                dist[u][v] = 1
+
+        for k in nodes:
+            for i in nodes:
+                for j in nodes:
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+        return dist
+
+    def compute_stress(pos, shortest_paths):
+        """Computes the stress of the layout."""
+        stress = 0.0
+        for u in pos:
+            for v in pos:
+                if u != v:
+                    euclidean_dist = np.sqrt((pos[u][0] - pos[v][0])**2 + (pos[u][1] - pos[v][1])**2)
+                    stress += (euclidean_dist - shortest_paths[u][v])**2
+        return stress
+
+    def adjust_positions(pos, adj_list, shortest_paths, learning_rate=0.01):
+        """Adjusts node positions to reduce stress."""
+        for u in pos:
+            grad_x = 0.0
+            grad_y = 0.0
+            for v in pos:
+                if u != v:
+                    euclidean_dist = np.sqrt((pos[u][0] - pos[v][0])**2 + (pos[u][1] - pos[v][1])**2)
+                    if euclidean_dist > 0:  # Avoid division by zero
+                        grad_x += (1 - shortest_paths[u][v] / euclidean_dist) * (pos[u][0] - pos[v][0])
+                        grad_y += (1 - shortest_paths[u][v] / euclidean_dist) * (pos[u][1] - pos[v][1])
+
+            # Update position using gradient descent
+            pos[u] = (pos[u][0] - learning_rate * grad_x, pos[u][1] - learning_rate * grad_y)
+        return pos
+
+    # Calculate shortest paths
+    shortest_paths = compute_shortest_paths(adj_list, nodes)
+
+    # Iteratively adjust positions
+    num_iterations = 100
+    for _ in range(num_iterations):
+        pos = adjust_positions(pos, adj_list, shortest_paths)
+        # Optionally, print the stress to monitor convergence
+        # stress = compute_stress(pos, shortest_paths)
+        # print(f"Iteration {_ + 1}, Stress: {stress}")
+
+    # 4. Return the layout as a dictionary.
+    return pos
+
+
+# Example usage:
+edge_list = [(0, 4), (0, 9), (0, 10), (0, 31), (0, 68), (1, 2), (1, 6), (1, 8), (1, 9), (2, 3), (2, 6), (2, 7), (2, 8), (2, 11), (2, 26), (3, 5), (3, 8), (3, 9), (3, 11), (4, 5), (4, 6), (4, 7), (4, 8), (5, 8), (6, 7), (6, 8), (6, 11), (7, 8), (7, 9), (7, 10), (8, 11), (10, 11), (12, 14), (12, 15), (12, 16), (12, 18), (12, 21), (13, 14), (13, 16), (13, 18), (13, 21), (14, 16), (14, 18), (14, 19), (15, 16), (15, 18), (15, 20), (15, 21), (16, 18), (17, 18), (17, 19), (17, 20), (18, 19), (19, 21), (19, 23), (20, 22), (20, 32), (21, 23), (22, 52), (22, 63), (24, 27), (24, 30), (25, 26), (25, 31), (26, 29), (27, 28), (27, 31), (28, 29), (28, 37), (29, 31), (29, 40), (32, 25), (32, 27), (32, 29), (32, 34), (32, 35), (33, 31), (33, 35), (34, 26), (34, 30), (34, 43), (35, 28), (35, 31), (36, 42), (36, 43), (36, 46), (37, 39), (37, 41), (37, 42), (38, 41), (38, 42), (38, 43), (38, 45), (39, 40), (39, 41), (39, 42), (39, 46), (39, 64), (40, 46), (41, 42), (41, 43), (41, 46), (42, 44), (42, 47), (43, 44), (44, 45), (44, 46), (44, 53), (45, 47), (46, 47), (46, 55), (48, 49), (48, 51), (48, 53), (48, 57), (48, 59), (49, 50), (49, 56), (49, 59), (50, 51), (50, 52), (50, 53), (50, 55), (50, 59), (51, 52), (51, 54), (51, 56), (52, 53), (52, 56), (53, 54), (53, 56), (53, 59), (54, 55), (54, 56), (54, 58), (54, 59), (56, 57), (56, 59), (57, 58), (58, 59), (60, 61), (60, 63), (61, 62), (61, 63), (62, 63), (64, 60), (64, 61), (64, 62), (64, 63), (64, 67), (65, 61), (65, 62), (65, 66), (65, 70), (66, 62), (66, 63), (66, 68), (66, 70), (67, 61), (67, 62), (67, 63), (67, 68), (67, 70), (68, 60), (68, 63), (69, 62), (69, 63), (69, 70), (70, 60), (70, 61), (70, 63)]
+layout = layout_graph(edge_list)
+print(json.dumps(layout))
+```

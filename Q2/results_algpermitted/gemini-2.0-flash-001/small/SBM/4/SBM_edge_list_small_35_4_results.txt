@@ -1,0 +1,64 @@
+```python
+import networkx as nx
+import community as co
+import json
+import random
+
+def generate_community_layout(edge_list):
+    """
+    Generates a graph layout that emphasizes community structure using the Louvain algorithm
+    for community detection and a force-directed layout algorithm.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where each node has 'x' and 'y' coordinates.
+    """
+
+    # 1. Create a NetworkX graph from the edge list
+    graph = nx.Graph(edge_list)
+
+    # 2. Apply the Louvain algorithm for community detection
+    partition = co.best_partition(graph)
+
+    # 3. Use a force-directed layout algorithm (e.g., spring_layout)
+    #    with modifications to emphasize community structure.
+    #    Nodes within the same community are pulled closer together.
+
+    # Initial layout using spring_layout
+    pos = nx.spring_layout(graph)
+
+    # Calculate community centers
+    community_centers = {}
+    for community_id in set(partition.values()):
+        nodes_in_community = [node for node, comm_id in partition.items() if comm_id == community_id]
+        x_coords = [pos[node][0] for node in nodes_in_community]
+        y_coords = [pos[node][1] for node in nodes_in_community]
+        community_centers[community_id] = (sum(x_coords) / len(x_coords), sum(y_coords) / len(y_coords))
+
+    # Adjust node positions to be closer to their community centers
+    for node, comm_id in partition.items():
+        center_x, center_y = community_centers[comm_id]
+        # Adjust the strength of attraction to the community center.  A smaller value
+        # means a weaker attraction, allowing more influence from the spring layout.
+        attraction_strength = 0.1  # Adjust this value as needed
+
+        pos[node] = (
+            pos[node][0] * (1 - attraction_strength) + center_x * attraction_strength,
+            pos[node][1] * (1 - attraction_strength) + center_y * attraction_strength
+        )
+
+    # 4. Prepare the layout in JSON format
+    layout = {}
+    for node, (x, y) in pos.items():
+        layout[node] = {'x': x, 'y': y}
+
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 3), (0, 4), (0, 6), (0, 7), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 17), (1, 18), (2, 3), (2, 5), (2, 6), (3, 4), (3, 5), (3, 6), (3, 9), (3, 20), (4, 5), (4, 6), (4, 7), (5, 6), (5, 7), (8, 11), (8, 13), (9, 10), (9, 11), (9, 12), (9, 13), (9, 14), (10, 11), (10, 12), (10, 13), (10, 14), (11, 12), (11, 13), (11, 14), (11, 15), (12, 13), (12, 14), (13, 23), (15, 16), (15, 17), (15, 18), (15, 19), (15, 20), (15, 21), (16, 18), (16, 20), (17, 18), (17, 19), (17, 20), (18, 19), (18, 20), (18, 21), (19, 20), (19, 21), (20, 21), (20, 26), (22, 23), (22, 25), (22, 26), (22, 27), (22, 28), (23, 24), (23, 25), (23, 28), (24, 26), (24, 27), (24, 28), (25, 26), (25, 28), (26, 27), (27, 28)]
+graph_layout_json = generate_community_layout(edge_list)
+print(graph_layout_json)
+```

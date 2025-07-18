@@ -1,0 +1,27 @@
+```python
+def determine_graph_pattern(edge_list):
+    # Create adjacency list
+    adjacency_list = {}
+    for u, v in edge_list:
+        if u not in adjacency_list:
+            adjacency_list[u] = []
+        if v not in adjacency_list:
+            adjacency_list[v] = []
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Check for Star pattern
+    center_node = None
+    for node, neighbors in adjacency_list.items():
+        if len(neighbors) == len(edge_list):  # Center node connects to all other nodes
+            center_node = node
+        elif len(neighbors) != 1:  # Other nodes should only connect to the center node
+            return "random graph"
+    if center_node is not None:
+        return "Star"
+
+    return "random graph"
+
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25)]
+print(determine_graph_pattern(edge_list))
+```

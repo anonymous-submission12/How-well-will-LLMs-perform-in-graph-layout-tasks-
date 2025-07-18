@@ -1,0 +1,7 @@
+To count the number of edges in a graph represented as an adjacency list, we sum up the lengths of all adjacency lists and divide the total by 2 because each edge is listed twice (once for each vertex). Here's the solution:
+
+```json
+{
+  "answer": 284
+}
+```

@@ -1,0 +1,15 @@
+To compute the length of the shortest path between node '5' and node '10', we can use Breadth-First Search (BFS). Since the graph data represents a simple, unweighted structure where nodes are connected sequentially, the solution will calculate the shortest path step-by-step.
+
+### Execution to find shortest path:
+1. Start BFS from node '5'.
+2. Traverse the graph until node '10' is reached.
+3. Count the length of the path.
+
+The shortest path from node '5' to node '10' involves moving sequentially through nodes in order: `5 → 6 → 7 → 8 → 9 → 10`. This traversal includes **5 edges**.
+
+### Result in JSON format:
+```json
+{
+  "answer": 5
+}
+```

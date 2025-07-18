@@ -1,0 +1,80 @@
+Here is the Python code that generates a layout for the given graph while ensuring consistency between the Euclidean distance and the graph-theoretic distance. The positions for the nodes are computed without using any pre-existing layout functions. The final output is represented in JSON format.
+
+```python
+import json
+import math
+from collections import defaultdict, deque
+
+def compute_graph_layout(edge_list):
+    # Convert edge list to adjacency list
+    adjacency_list = defaultdict(list)
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Perform BFS to calculate graph-theoretic distance from a central node
+    start_node = 0  # Choose an arbitrary node as the central node
+    distances = {}
+    queue = deque([(start_node, 0)])  # (node, distance)
+    visited = set()
+
+    while queue:
+        current, dist = queue.popleft()
+        if current in visited:
+            continue
+        visited.add(current)
+        distances[current] = dist
+        for neighbor in adjacency_list[current]:
+            if neighbor not in visited:
+                queue.append((neighbor, dist + 1))
+
+    # Generate 2D positions using a simple radial layout
+    positions = {}
+    max_distance = max(distances.values())  # Determine max distance
+    nodes_at_distance = defaultdict(list)
+
+    for node, dist in distances.items():
+        nodes_at_distance[dist].append(node)
+
+    for distance, nodes in nodes_at_distance.items():
+        num_nodes = len(nodes)
+        radius = distance  # Use distance as radius
+        angle_step = 2 * math.pi / num_nodes if num_nodes > 1 else 0
+        start_angle = math.pi / num_nodes if num_nodes > 1 else 0
+
+        for i, node in enumerate(nodes):
+            angle = start_angle + i * angle_step
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            positions[node] = (x, y)
+
+    return positions
+
+# Define the graph
+edge_list = [
+    (0, 1), (0, 78), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9),
+    (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+    (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), 
+    (25, 26), (26, 27), (27, 28), (28, 29), (29, 30), (30, 31), (31, 32), (32, 33), 
+    (33, 34), (34, 35), (35, 36), (36, 37), (37, 38), (38, 39), (39, 40), (40, 41), 
+    (41, 42), (42, 43), (43, 44), (44, 45), (45, 46), (46, 47), (47, 48), (48, 49), 
+    (49, 50), (50, 51), (51, 52), (52, 53), (53, 54), (54, 55), (55, 56), (56, 57), 
+    (57, 58), (58, 59), (59, 60), (60, 61), (61, 62), (62, 63), (63, 64), (64, 65), 
+    (65, 66), (66, 67), (67, 68), (68, 69), (69, 70), (70, 71), (71, 72), (72, 73), 
+    (73, 74), (74, 75), (75, 76), (76, 77), (77, 78)
+]
+
+# Compute the graph layout
+layout = compute_graph_layout(edge_list)
+
+# Output the layout in JSON format
+layout_json = json.dumps(layout, indent=2)
+print(layout_json)
+```
+
+### Explanation
+1. **Graph-Theoretic Distances**: The graph-theoretic distance is computed for all nodes using breadth-first search (BFS).
+2. **Radial Layout**: Nodes are placed proportionally to their graph-theoretic distance around concentric circles. Nodes at the same distance are spaced equally along their circle.
+3. **JSON Output**: The final positions are returned in JSON format, with each key as a node and the value as its `(x, y)` position.
+
+Feel free to copy and run this code to generate the desired layout!

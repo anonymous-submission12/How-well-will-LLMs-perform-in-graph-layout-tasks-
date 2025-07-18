@@ -1,0 +1,79 @@
+```python
+from collections import defaultdict, deque
+
+def identify_graph_pattern(adj_list):
+    n = len(adj_list)
+    degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+    
+    # Check for star graph
+    max_degree_node = max(degrees, key=degrees.get)
+    if degrees[max_degree_node] == n - 1 and all(degrees[node] <= 1 for node in adj_list if node != max_degree_node):
+        return "Star"
+    
+    # Check for cycle graph
+    visited = set()
+    def dfs(node, parent):
+        visited.add(node)
+        for neighbor in adj_list[node]:
+            if neighbor == parent:
+                continue
+            if neighbor in visited or not dfs(neighbor, node):
+                return False
+        return True
+    if all(degrees[node] == 2 for node in adj_list) and dfs(list(adj_list.keys())[0], -1) and len(visited) == n:
+        return "Cycle"
+    
+    # Check for path graph
+    endpoints = sum(1 for deg in degrees.values() if deg == 1)
+    if endpoints == 2 and all(deg <= 2 for deg in degrees.values()):
+        return "Path"
+    
+    # Check for grid graph
+    rows = len(set(node // int(n ** 0.5) for node in adj_list))
+    cols = len(set(node % int(n ** 0.5) for node in adj_list))
+    if rows * cols == n:
+        expected_degrees = {4, 3, 2}
+        corner_nodes = sum(1 for node in adj_list if degrees[node] == 2)
+        edge_nodes = sum(1 for node in adj_list if degrees[node] == 3)
+        inner_nodes = sum(1 for node in adj_list if degrees[node] == 4)
+        if corner_nodes == 4 and edge_nodes == (2 * rows + 2 * cols - 4) and inner_nodes == (n - corner_nodes - edge_nodes):
+            return "Grid"
+    
+    # Check for complete graph
+    if all(deg == n - 1 for deg in degrees.values()):
+        return "Complete"
+    
+    # Check for clustered graph
+    # Cluster detection algorithm compares connected components within clusters (loose thresholding used here)
+    def bfs(node):
+        queue = deque([node])
+        component = set()
+        while queue:
+            curr = queue.popleft()
+            if curr in visited:
+                continue
+            visited.add(curr)
+            component.add(curr)
+            queue.extend(adj_list[curr])
+        return component
+    
+    clusters = []
+    visited.clear()
+    for node in adj_list:
+        if node not in visited:
+            clusters.append(bfs(node))
+    cluster_sizes = [len(cluster) for cluster in clusters]
+    if len(clusters) > 1 and all(size >= 2 for size in cluster_sizes):
+        return "Clustered Graph"
+    
+    # Default to random graph
+    return "Random Graph"
+
+adj_list = {0: [2, 10, 15, 18, 22, 32, 38], 1: [19, 28], 2: [0, 11, 32, 40], 3: [9, 23, 32, 35, 39], 4: [9, 24], 5: [8, 26],
+            6: [7, 17, 23, 27, 33, 36], 7: [6, 13, 16, 20, 25], 8: [5, 29, 43], 9: [3, 4, 19, 35, 43], 10: [0, 18, 23],
+            11: [2, 18, 29, 36, 38, 41], 12: [15, 28, 34], 13: [7, 29, 39, 40, 44], 14: [16, 24, 39], 15: [0, 12, 33],
+            16: [7, 14, 31], 17: [6, 20, 21, 29], 18: [0, 10, 11, 33], 19: [1, 9, 21, 26, 27, 40], 20: [7, 17, 22, 24, 27, 34, 42],
+            21: [17, 19, 27, 31, 38, 40], 22: [0, 20, 23, 40], 23: [3, 6, 10, 22, 30, 40, 43], 24: [4, 14, 20, 26, 33, 37, 40],
+            25: [7, 35, 40], 26: [5, 19, 24, 30], 27: [6, 19, 20, 21, 33, 35], 28: [1, 12, 40], 29: [8, 11, 13, 17, 36, 44],
+            30: [23, 26], 31: [16, 21, 36], 32: [0, 2, 3], 33: [6, 15, 18, 24, 27], 34: [12, 20, 43], 35: [3, 9, 25, 27, 39],
+            36: [6, 11, 29, 31, 39], 37: [24], 38: [0, 11, 21], 39: [3, 13, 14, 35, 36,

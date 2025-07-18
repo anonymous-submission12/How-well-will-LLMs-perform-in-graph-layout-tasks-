@@ -1,0 +1,15 @@
+To find the shortest path between node '10' and '3', we will analyze the graph described by the provided edge list. A breadth-first search (BFS) is appropriate for calculating the shortest path in an unweighted graph. 
+
+### Analysis
+1. Nodes '10' and '3' belong to separate disconnected components in the graph. This can be confirmed because the edges connecting '10' are all isolated in a component from those connecting '3'.
+2. Since there is no path linking these components, the shortest path between '10' and '3' does not exist.
+
+### Answer
+The shortest path length between node '10' and '3' is effectively "infinite" or not computable due to disconnection. Representing this computationally as `-1`.
+
+### JSON Response
+```json
+{
+  "answer": -1
+}
+```

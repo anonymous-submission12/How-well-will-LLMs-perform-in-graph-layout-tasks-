@@ -1,0 +1,50 @@
+```python
+from collections import defaultdict
+
+def graph_pattern(adj_list):
+    # Count nodes and edges
+    num_nodes = len(adj_list)
+    num_edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+
+    # Check for complete graph
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+    
+    # Check for star
+    degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+    max_degree = max(degrees.values())
+    if max_degree == num_nodes - 1 and list(degrees.values()).count(1) == num_nodes - 1:
+        return "Star"
+    
+    # Check for cycle
+    if num_edges == num_nodes:
+        visited = set()
+        def dfs(node, parent):
+            if node in visited:
+                return False
+            visited.add(node)
+            for neighbor in adj_list[node]:
+                if neighbor != parent and not dfs(neighbor, node):
+                    return False
+            return True
+        if dfs(next(iter(adj_list)), None) and len(visited) == num_nodes:
+            return "Cycle"
+    
+    # Check for path
+    if num_edges == num_nodes - 1 and len([1 for d in degrees.values() if d > 2]) == 0:
+        return "Path"
+    
+    # Check for grid
+    rows, cols = -1, -1
+    mapped_indices = {node: i for i, node in enumerate(sorted(adj_list))}
+    inverse_map = {i: node for node, i in mapped_indices.items()}
+    node_positions = defaultdict(list)
+    for node, neighbors in adj_list.items():
+        x = mapped_indices[node]
+        for neighbor in neighbors:
+            y = mapped_indices[neighbor]
+            node_positions[x].append(y)
+        # Skip logic makes 
+
+
+#---

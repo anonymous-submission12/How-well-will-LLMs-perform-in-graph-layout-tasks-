@@ -1,0 +1,16 @@
+To calculate the shortest path between nodes '43' and '60', we will leverage the graph's edge list and use an algorithm like Breadth-First Search (BFS), as this is applicable for an unweighted graph.
+
+### Calculation Steps:
+1. **Parse the edge list** into an adjacency list representation of the graph.
+2. Use **BFS** from node '43' to find the shortest path to node '60'.
+3. Track the distance during the BFS traversal and return the length of the shortest path.
+
+Here is the output:
+
+```json
+{
+  "answer": 6
+}
+``` 
+
+This means the shortest path between nodes '43' and '60' is of length 6.

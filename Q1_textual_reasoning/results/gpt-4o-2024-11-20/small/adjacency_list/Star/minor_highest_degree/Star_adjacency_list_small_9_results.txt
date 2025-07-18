@@ -1,0 +1,14 @@
+To calculate the highest degree of all nodes in the graph, we need to determine the number of connections (edges) each node has. The degree of a node is the count of its neighbors in the adjacency list.
+
+Here is the calculation:
+
+- Node `0` has connections to nodes `[1, 2, 3, ..., 28]`, which means it has a degree of `28`.
+- All other nodes (`1` to `28`) are connected only to node `0`, so each of them has a degree of `1`.
+
+The highest degree in the graph is `28`.
+
+```json
+{
+  "answer": 28
+}
+```

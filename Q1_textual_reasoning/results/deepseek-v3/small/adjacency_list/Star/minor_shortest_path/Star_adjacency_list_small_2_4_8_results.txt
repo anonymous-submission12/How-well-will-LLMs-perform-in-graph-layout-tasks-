@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+### Explanation:
+The graph is structured such that node `0` is connected to all other nodes (including nodes `4` and `8`), and no other connections exist. Therefore, the shortest path from node `4` to node `8` is through node `0`, resulting in a path length of `2` (i.e., `4 → 0 → 8`).

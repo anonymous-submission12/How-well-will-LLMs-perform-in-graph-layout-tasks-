@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+The shortest path between node '10' and '7' is directly connected, so the length of the shortest path is 1. However, if we consider the path through node '8' or '9', the length remains 1. Therefore, the shortest path length is 1.

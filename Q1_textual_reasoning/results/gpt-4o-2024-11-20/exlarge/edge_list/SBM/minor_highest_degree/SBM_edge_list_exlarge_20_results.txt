@@ -1,0 +1,7 @@
+To calculate the highest degree of all nodes in the given graph, the degree of a node is determined by the number of edges connected to it. Below is the calculated result:
+
+```json
+{
+  "answer": 14
+}
+```

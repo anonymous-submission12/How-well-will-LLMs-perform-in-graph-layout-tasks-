@@ -1,0 +1,7 @@
+To calculate the shortest path length between nodes '29' and '35', we can use the Breadth-First Search (BFS) algorithm. Here's the result:
+
+```json
+{
+  "answer": 6
+}
+```

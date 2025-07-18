@@ -1,0 +1,7 @@
+To find the number of communities in the graph defined by the adjacency list, we can use a graph traversal algorithm like Depth-First Search (DFS) to identify connected components. Each connected component represents a community. Here's the result:
+
+```json
+{
+  "answer": 3
+}
+```

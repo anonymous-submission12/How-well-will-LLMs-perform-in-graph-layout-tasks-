@@ -1,0 +1,63 @@
+```python
+def determine_graph_pattern(adj_list):
+    def is_star(adj_list):
+        center_count = sum(len(neighbors) == len(adj_list) - 1 for node, neighbors in adj_list.items())
+        return center_count == 1
+
+    def is_cycle(adj_list):
+        return all(len(neighbors) == 2 for neighbors in adj_list.values())
+
+    def is_path(adj_list):
+        end_count = sum(len(neighbors) == 1 for neighbors in adj_list.values())
+        middle_count = sum(len(neighbors) == 2 for neighbors in adj_list.values())
+        return end_count == 2 and middle_count == len(adj_list) - 2
+
+    def is_grid(adj_list):
+        # Grid graphs are harder to detect without additional information.
+        # For simplicity, we check if most nodes have 2-4 neighbors.
+        return all(2 <= len(neighbors) <= 4 for neighbors in adj_list.values())
+
+    def is_complete(adj_list):
+        n = len(adj_list)
+        return all(len(neighbors) == n - 1 for neighbors in adj_list.values())
+
+    def is_clustered(adj_list):
+        # Clustered graphs typically have groups of nodes with dense connections.
+        # We check if there are subsets of nodes with high connectivity.
+        clusters = []
+        visited = set()
+        for node in adj_list:
+            if node not in visited:
+                cluster = set()
+                stack = [node]
+                while stack:
+                    current = stack.pop()
+                    if current not in visited:
+                        visited.add(current)
+                        cluster.add(current)
+                        stack.extend(adj_list[current])
+                clusters.append(cluster)
+        return len(clusters) > 1
+
+    def is_random(adj_list):
+        # Random graphs don't fit any specific pattern.
+        return True
+
+    if is_star(adj_list):
+        return "Star"
+    elif is_cycle(adj_list):
+        return "Cycle"
+    elif is_path(adj_list):
+        return "Path"
+    elif is_grid(adj_list):
+        return "Grid"
+    elif is_complete(adj_list):
+        return "Complete"
+    elif is_clustered(adj_list):
+        return "Clustered"
+    else:
+        return "Random"
+
+adj_list = {0: [2, 3, 4, 5], 1: [2, 3, 4, 5, 16], 2: [0, 1, 3, 5, 8], 3: [0, 1, 2, 5, 10], 4: [0, 1, 5], 5: [0, 1, 2, 3, 4], 6: [9, 10], 7: [8, 10], 8: [2, 7, 10], 9: [6, 10], 10: [3, 6, 7, 8, 9], 11: [12, 14], 12: [11, 14, 15, 20], 13: [14, 15], 14: [11, 12, 13, 20], 15: [12, 13], 16: [1, 17, 18, 19, 20], 17: [16, 18], 18: [16, 17, 19, 20], 19: [16, 18, 20], 20: [12, 14, 16, 18, 19]}
+print(determine_graph_pattern(adj_list))
+```

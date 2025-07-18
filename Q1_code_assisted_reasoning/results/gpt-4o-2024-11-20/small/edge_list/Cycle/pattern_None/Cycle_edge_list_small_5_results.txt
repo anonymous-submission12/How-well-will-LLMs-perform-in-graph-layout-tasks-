@@ -1,0 +1,50 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 24), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), 
+             (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), 
+             (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24)]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Check for patterns
+def determine_graph_pattern(G):
+    n = len(G.nodes)
+    m = len(G.edges)
+    
+    # Check for Star
+    if sum(1 for node in G.nodes if G.degree[node] == n - 1) == 1 and m == n - 1:
+        return "Star"
+    
+    # Check for Cycle
+    if nx.is_connected(G) and m == n and all(G.degree[node] == 2 for node in G.nodes):
+        return "Cycle"
+    
+    # Check for Path
+    if nx.is_connected(G) and m == n - 1 and sum(1 for node in G.nodes if G.degree[node] == 1) == 2:
+        return "Path"
+    
+    # Check for Grid
+    # A grid graph has a specific structure, so we can check if it matches a grid pattern
+    if nx.is_connected(G) and m == 2 * n - 2:
+        return "Grid"
+    
+    # Check for Complete
+    if m == n * (n - 1) // 2:
+        return "Complete"
+    
+    # Check for Clustered Graph
+    # A clustered graph typically has dense subgraphs, but no strict definition exists
+    # Here, we check if the graph has multiple connected components with high density
+    if nx.number_connected_components(G) > 1:
+        return "Clustered Graph"
+    
+    # Otherwise, assume Random Graph
+    return "Random Graph"
+
+# Determine the pattern
+print(determine_graph_pattern(G))
+```

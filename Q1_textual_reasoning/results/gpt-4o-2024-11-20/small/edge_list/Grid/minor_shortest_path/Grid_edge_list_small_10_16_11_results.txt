@@ -1,0 +1,13 @@
+To calculate the shortest path between nodes `16` and `11`, we can represent the graph as an adjacency list and then use Breadth-First Search (BFS) to find the shortest path, as it is efficient for unweighted graphs.
+
+Here is the solution:
+
+```json
+{
+  "answer": 5
+}
+``` 
+
+Explanation:
+- Path: `16 -> 15 -> 14 -> 13 -> 12 -> 11`
+- The length of this path is `5`.

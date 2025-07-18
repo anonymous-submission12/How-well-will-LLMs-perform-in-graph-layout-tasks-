@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 95, in <module>
+    graph_layout_json = compute_graph_layout(edge_list)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 15, in compute_graph_layout
+    positions = {node: [random.uniform(0, 1), random.uniform(0, 1)] for node in nodes}
+                        ^^^^^^
+NameError: name 'random' is not defined. Did you forget to import 'random'?

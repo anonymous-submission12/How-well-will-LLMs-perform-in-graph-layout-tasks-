@@ -1,0 +1,7 @@
+To count the number of communities in the graph, we can use the connected components in an undirected graph. Each connected component in the graph corresponds to a community. Here's the result:
+
+```json
+{
+  "answer": 5
+}
+```

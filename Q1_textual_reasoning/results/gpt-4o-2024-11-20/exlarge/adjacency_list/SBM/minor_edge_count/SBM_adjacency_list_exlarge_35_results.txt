@@ -1,0 +1,9 @@
+To compute the total number of edges in a graph represented as an adjacency list, we must handle the fact that undirected graphs duplicate edges in their adjacency lists (each edge appears twice — once for each vertex it connects). We count all edges and divide the result by 2 to avoid duplication.
+
+Here's the correct JSON response with the answer:
+
+```json
+{
+  "answer": 479
+}
+```

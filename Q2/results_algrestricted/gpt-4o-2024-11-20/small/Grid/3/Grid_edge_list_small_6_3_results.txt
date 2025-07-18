@@ -1,0 +1,25 @@
+```python
+import json
+import math
+from collections import defaultdict
+
+def generate_custom_graph_layout(edge_list):
+    # Initialize variables
+    positions = {}  # Node to position mapping
+    adjacency_list = defaultdict(list)
+    
+    # Build adjacency list from edge list
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Simple "manual" spacing strategy - create a grid layout to find positions
+    def find_positions():
+        num_nodes = len(adjacency_list)
+        side_length = math.ceil(math.sqrt(num_nodes))  # Square grid dimensions
+        grid_spacing = 1.0  # Distance between nodes in grid
+
+        # Assign nodes to grid positions
+        row_col_map = {}
+        node_list = list(adjacency_list.keys())
+        node_idx =0...

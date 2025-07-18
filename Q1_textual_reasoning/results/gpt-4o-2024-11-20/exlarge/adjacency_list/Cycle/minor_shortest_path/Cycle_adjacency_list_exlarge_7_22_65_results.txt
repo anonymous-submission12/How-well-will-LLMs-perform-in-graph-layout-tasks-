@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '22' and '65', we can use the Breadth-First Search (BFS) algorithm. This algorithm is optimal for finding the shortest path in an unweighted graph. Using the adjacency list provided, we determine the shortest path.
+
+The length of the shortest path between node '22' and '65' is **43**. Below is the JSON representation of the result:
+
+```json
+{
+  "answer": 43
+}
+```

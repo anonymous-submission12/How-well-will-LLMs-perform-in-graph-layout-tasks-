@@ -1,0 +1,39 @@
+```python
+import json
+import numpy as np
+import networkx as nx
+from sklearn.manifold import MDS
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that maintains consistency between Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A JSON string representing the graph layout, where keys are node indices and values are [x, y] coordinates.
+    """
+
+    # 1. Create a graph from the edge list using networkx.
+    graph = nx.Graph(edge_list)
+
+    # 2. Calculate the shortest path distance matrix.
+    distance_matrix = nx.floyd_warshall_numpy(graph)
+
+    # 3. Use Multidimensional Scaling (MDS) to generate a 2D layout.
+    mds = MDS(n_components=2, dissimilarity="precomputed", random_state=42)  # Set random_state for reproducibility
+    positions = mds.fit_transform(distance_matrix)
+
+    # 4. Convert the layout to a dictionary format.
+    layout = {node: positions[node].tolist() for node in graph.nodes()}
+
+    # 5. Convert the layout to JSON format.
+    return json.dumps(layout)
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (0, 29), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+graph_layout_json = layout_graph(edge_list)
+print(graph_layout_json)
+```

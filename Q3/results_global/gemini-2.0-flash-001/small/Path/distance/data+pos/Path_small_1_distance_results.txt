@@ -1,0 +1,9 @@
+The graph data represents a simple path graph. The graph-theoretic distance between two nodes is simply the number of edges in the shortest path connecting them, which in this case is the absolute difference in their indices. We want to compare how well the two layouts preserve these distances. A layout that preserves graph-theoretic distance will have Euclidean distances between nodes that are monotonically related to the graph-theoretic distances.
+
+Layout 1 has nodes scattered somewhat randomly. Layout 2 appears to have nodes arranged in a more linear fashion. In a path graph, a linear layout will generally preserve graph-theoretic distances better than a random layout. Therefore, layout 2 is likely better.
+
+```json
+{
+"Answer": "2"
+}
+```

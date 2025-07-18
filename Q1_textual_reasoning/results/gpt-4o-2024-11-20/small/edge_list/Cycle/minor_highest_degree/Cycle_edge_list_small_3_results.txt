@@ -1,0 +1,28 @@
+To calculate the highest degree of a node in the graph, we need to count the number of edges connected to each node and find the maximum value among them.
+
+### Steps:
+1. Parse the edge list.
+2. Count the occurrences of each node in the edge list.
+3. Determine the node with the highest degree.
+
+Let's compute this:
+
+### Edge List Analysis:
+- Each pair `(a, b)` represents an edge connecting nodes `a` and `b`.
+- Nodes 0 and 22 appear more than once in the edge list.
+
+### Node Degree:
+The degrees of nodes can be calculated:
+- Node `0` has a degree of 2 (connected to nodes 1 and 22).
+- Node `1` has a degree of 2 (connected to nodes 0 and 2).
+- Similarly, nodes `2` through `21` each have a degree of 2, as they are part of a linear chain.
+- Node `22` has a degree of 2 (connected to nodes 0 and 21).
+
+Thus, the highest degree is **2**.
+
+### JSON Answer:
+```json
+{
+  "answer": 2
+}
+```

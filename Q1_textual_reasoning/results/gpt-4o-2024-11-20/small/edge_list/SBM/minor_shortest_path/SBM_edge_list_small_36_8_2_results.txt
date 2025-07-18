@@ -1,0 +1,12 @@
+To calculate the shortest path between node `8` and node `2`, we can utilize a graph traversal algorithm like Breadth-First Search (BFS) since it is suitable for finding the shortest path in an unweighted graph.
+
+The graph is provided as an edge list, so let's process the given graph, perform the BFS algorithm, and calculate the shortest distance. Below is the result in the requested JSON format:
+
+```json
+{
+  "answer": -1
+}
+```
+
+Explanation:
+There is no path connecting node `8` to node `2`. This can be observed by noting that the graph is disconnected — the nodes near `8` form one subgraph (8, 11, 12, 13, 14, 15, etc.), and the nodes near `2` form another subgraph. Hence, the shortest path length is `-1`, indicating no such path exists.

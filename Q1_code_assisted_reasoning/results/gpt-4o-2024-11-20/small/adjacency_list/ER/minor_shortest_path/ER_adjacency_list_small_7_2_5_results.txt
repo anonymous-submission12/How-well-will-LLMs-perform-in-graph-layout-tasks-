@@ -1,0 +1,49 @@
+```python
+from collections import deque
+
+def shortest_path_length(adj_list, start, end):
+    visited = set()
+    queue = deque([(start, 0)])  # (current_node, current_length)
+    
+    while queue:
+        current_node, current_length = queue.popleft()
+        
+        if current_node == end:
+            return current_length
+        
+        if current_node not in visited:
+            visited.add(current_node)
+            for neighbor in adj_list.get(current_node, []):
+                queue.append((neighbor, current_length + 1))
+
+    return float('inf')  # Return infinity if no path is found
+
+adjacency_list = {
+    0: [5],
+    1: [17, 21, 22],
+    2: [19, 20],
+    3: [6, 8],
+    4: [11, 18, 20],
+    5: [0, 7, 21],
+    6: [3, 12, 19, 21],
+    7: [5, 17],
+    8: [3, 14, 19],
+    9: [21, 22],
+    10: [13, 16, 21],
+    11: [4, 15, 17, 21],
+    12: [6],
+    13: [10, 16, 17, 19],
+    14: [8],
+    15: [11, 20],
+    16: [10, 13, 20],
+    17: [1, 7, 11, 13, 19],
+    18: [4],
+    19: [2, 6, 8, 13, 17, 21],
+    20: [2, 4, 15, 16],
+    21: [1, 5, 6, 9, 10, 11, 19],
+    22: [1, 9]
+}
+
+result = shortest_path_length(adjacency_list, 2, 5)
+print(result)
+```

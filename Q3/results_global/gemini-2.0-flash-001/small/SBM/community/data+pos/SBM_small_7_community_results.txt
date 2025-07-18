@@ -1,0 +1,15 @@
+Based on the graph data, the nodes can be grouped into communities:
+Community 1: 0, 1, 2, 3, 4, 5, 6
+Community 2: 7, 8, 9, 10, 11, 12, 13
+Community 3: 14, 15, 16, 17, 18, 19, 20
+
+Layout 1 places nodes in community 1 close to each other, community 2 close to each other and community 3 close to each other.
+Layout 2 also places nodes in community 1 close to each other, community 2 close to each other and community 3 close to each other.
+
+Visually, both layouts seem to represent the community structure reasonably well. However, layout 1 seems to have slightly better separation between the communities.
+
+```json
+{
+"Answer": "1"
+}
+```

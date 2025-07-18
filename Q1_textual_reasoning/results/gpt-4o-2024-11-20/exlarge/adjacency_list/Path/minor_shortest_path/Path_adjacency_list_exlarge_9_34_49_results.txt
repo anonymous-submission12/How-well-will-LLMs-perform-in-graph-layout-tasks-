@@ -1,0 +1,19 @@
+To calculate the shortest path between nodes '34' and '49' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is appropriate for unweighted graphs, as it finds the shortest path by exploring all nodes at the current depth level before moving on to the next depth level.
+
+Let's compute the shortest path.
+
+Here is the computation:
+
+1. Start at node '34' and initialize the distance to 0.
+2. Using BFS, explore all neighbors of the current node, marking them as visited and updating their distance.
+3. Continue this process until you reach node '49'.
+
+The graph is linear, so the distance from '34' to '49' should be the difference between the node indices: \(49 - 34 = 15\).
+
+The result:
+
+```json
+{
+  "answer": 15
+}
+```

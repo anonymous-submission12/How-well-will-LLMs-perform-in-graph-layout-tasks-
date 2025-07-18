@@ -1,0 +1,108 @@
+Here's a Python script that generates a graph layout with clear community structure using the Louvain community detection algorithm and the Fruchterman-Reingold force-directed layout algorithm. The output is in JSON format containing node positions and community assignments:
+
+```python
+import json
+import networkx as nx
+import community as community_louvain
+from fa2 import ForceAtlas2
+
+def generate_graph_layout(edge_list):
+    # Create graph from edge list
+    G = nx.Graph()
+    G.add_edges_from(edge_list)
+    
+    # Detect communities using Louvain algorithm
+    partition = community_louvain.best_partition(G)
+    
+    # Get number of communities
+    num_communities = max(partition.values()) + 1
+    
+    # Initialize ForceAtlas2 layout algorithm
+    forceatlas2 = ForceAtlas2(
+        outboundAttractionDistribution=True,
+        linLogMode=False,
+        adjustSizes=False,
+        edgeWeightInfluence=1.0,
+        jitterTolerance=1.0,
+        barnesHutOptimize=True,
+        barnesHutTheta=1.2,
+        multiThreaded=False,
+        scalingRatio=2.0,
+        strongGravityMode=False,
+        gravity=1.0,
+        verbose=False
+    )
+    
+    # Generate positions using ForceAtlas2
+    positions = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=1000)
+    
+    # Prepare output data
+    layout_data = {
+        "nodes": {},
+        "communities": {}
+    }
+    
+    # Organize nodes by community and store positions
+    for node in G.nodes():
+        comm = partition[node]
+        layout_data["nodes"][node] = {
+            "x": positions[node][0],
+            "y": positions[node][1],
+            "community": comm
+        }
+        
+        if str(comm) not in layout_data["communities"]:
+            layout_data["communities"][str(comm)] = []
+        layout_data["communities"][str(comm)].append(node)
+    
+    return layout_data
+
+# Example usage with provided edge list
+edge_list = [('0', '10'), ('0', '14'), ('0', '15'), ('0', '40'), ('0', '42'), ('0', '47'), 
+             ('1', '17'), ('1', '19'), ('1', '26'), ('1', '27'), ('1', '28'), ('1', '36'), 
+             ('1', '41'), ('1', '54'), ('10', '2'), ('10', '29'), ('10', '42'), ('10', '47'), 
+             ('12', '33'), ('13', '32'), ('13', '57'), ('13', '6'), ('14', '16'), ('14', '24'), 
+             ('14', '3'), ('14', '33'), ('14', '34'), ('14', '37'), ('14', '38'), ('14', '40'), 
+             ('14', '43'), ('14', '50'), ('14', '52'), ('15', '18'), ('15', '24'), ('15', '40'), 
+             ('15', '45'), ('15', '55'), ('15', '59'), ('16', '38'), ('16', '50'), ('17', '13'), 
+             ('17', '22'), ('17', '25'), ('17', '27'), ('17', '31'), ('17', '57'), ('17', '6'), 
+             ('17', '9'), ('18', '21'), ('19', '30'), ('19', '54'), ('19', '7'), ('2', '44'), 
+             ('2', '61'), ('20', '16'), ('20', '18'), ('20', '38'), ('20', '50'), ('24', '18'), 
+             ('26', '25'), ('26', '27'), ('27', '25'), ('27', '7'), ('28', '20'), ('28', '30'), 
+             ('28', '8'), ('29', '18'), ('29', '21'), ('29', '24'), ('29', '35'), ('29', '43'), 
+             ('29', '52'), ('3', '59'), ('3', '8'), ('32', '60'), ('33', '16'), ('33', '21'), 
+             ('33', '34'), ('33', '38'), ('33', '43'), ('33', '50'), ('34', '49'), ('36', '20'), 
+             ('36', '23'), ('36', '37'), ('36', '39'), ('36', '59'), ('37', '16'), ('37', '21'), 
+             ('37', '33'), ('37', '34'), ('37', '43'), ('37', '45'), ('38', '43'), ('38', '52'), 
+             ('38', '58'), ('4', '51'), ('40', '33'), ('40', '36'), ('40', '37'), ('40', '52'), 
+             ('40', '7'), ('41', '13'), ('41', '54'), ('41', '57'), ('41', '9'), ('42', '2'), 
+             ('42', '30'), ('42', '47'), ('42', '50'), ('43', '46'), ('43', '53'), ('44', '20'), 
+             ('44', '34'), ('44', '38'), ('45', '18'), ('45', '21'), ('45', '23'), ('45', '24'), 
+             ('45', '29'), ('45', '50'), ('47', '20'), ('47', '28'), ('47', '30'), ('49', '46'), 
+             ('5', '13'), ('5', '56'), ('5', '57'), ('5', '9'), ('51', '11'), ('51', '18'), 
+             ('51', '21'), ('51', '23'), ('51', '24'), ('51', '29'), ('51', '45'), ('51', '50'), 
+             ('51', '55'), ('54', '13'), ('54', '57'), ('54', '6'), ('54', '7'), ('56', '6'), 
+             ('57', '39'), ('57', '48'), ('57', '6'), ('59', '45'), ('61', '37'), ('61', '53'), 
+             ('7', '30'), ('8', '20'), ('8', '37'), ('8', '45'), ('8', '59'), ('9', '13'), 
+             ('9', '32'), ('9', '57'), ('9', '6')]
+
+layout = generate_graph_layout(edge_list)
+print(json.dumps(layout, indent=2))
+```
+
+To run this script, you'll need to install the following packages:
+- networkx
+- python-louvain (community)
+- fa2 (forceatlas2)
+
+You can install them with:
+```
+pip install networkx python-louvain fa2
+```
+
+The output JSON will contain:
+1. Node positions (x, y coordinates) under "nodes"
+2. Community assignments for each node
+3. Lists of nodes belonging to each community under "communities"
+
+The ForceAtlas2 algorithm is particularly good at maintaining community structure in layouts, and the Louvain algorithm is effective for community detection. The combination should produce a layout where nodes in the same community are positioned close together.

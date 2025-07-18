@@ -1,0 +1,19 @@
+To calculate the shortest path between node '4' and node '2', we can use a breadth-first search (BFS) algorithm since the graph is unweighted. Here's the solution:
+
+1. The graph is represented as an edge list.
+2. We'll construct an adjacency list from the edge list.
+3. Using BFS, we'll find the shortest path between node '4' and node '2'.
+
+### Solution:
+
+The shortest path between node '4' and node '2' is as follows:
+- Path: 4 → 3 → 2
+- Length: 2
+
+### JSON Response:
+
+```json
+{
+  "answer": 2
+}
+```

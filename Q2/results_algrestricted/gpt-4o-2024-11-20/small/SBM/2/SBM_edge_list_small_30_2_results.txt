@@ -1,0 +1,82 @@
+Below is the Python script to generate a layout for the given graph. The layout ensures consistency between Euclidean distance and graph-theoretic distance. The output is in JSON format.
+
+```python
+import json
+import numpy as np
+from scipy.spatial import distance
+from scipy.optimize import minimize
+
+def generate_graph_layout(edge_list):
+    # Step 1: Create adjacency matrix
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = sorted(nodes)
+    n = len(nodes)
+    node_index = {node: i for i, node in enumerate(nodes)}
+
+    adjacency_matrix = np.zeros((n, n))
+    for u, v in edge_list:
+        adjacency_matrix[node_index[u], node_index[v]] = 1
+        adjacency_matrix[node_index[v], node_index[u]] = 1
+
+    # Step 2: Compute graph-theoretic distances using Floyd-Warshall algorithm
+    graph_distances = np.full((n, n), np.inf)
+    np.fill_diagonal(graph_distances, 0)
+    for i in range(n):
+        for j in range(n):
+            if adjacency_matrix[i, j] == 1:
+                graph_distances[i, j] = 1
+
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                graph_distances[i, j] = min(graph_distances[i, j], graph_distances[i, k] + graph_distances[k, j])
+
+    # Step 3: Define objective function to minimize
+    def objective(positions):
+        positions = positions.reshape((n, 2))
+        total_error = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                if graph_distances[i, j] < np.inf:  # Only consider connected nodes
+                    euclidean_dist = np.linalg.norm(positions[i] - positions[j])
+                    graph_dist = graph_distances[i, j]
+                    total_error += (euclidean_dist - graph_dist) ** 2
+        return total_error
+
+    # Step 4: Initialize random positions and optimize
+    initial_positions = np.random.rand(n, 2)
+    result = minimize(objective, initial_positions.flatten(), method='L-BFGS-B')
+    optimized_positions = result.x.reshape((n, 2))
+
+    # Step 5: Create output in JSON format
+    layout = {nodes[i]: optimized_positions[i].tolist() for i in range(n)}
+    return layout
+
+# Input edge list
+edge_list = [
+    (0, 2), (0, 3), (0, 4), (0, 12), (1, 3), (1, 4), (1, 5), (1, 6), (1, 12), (1, 16),
+    (2, 3), (2, 4), (2, 5), (2, 6), (3, 4), (3, 5), (3, 13), (3, 18), (4, 5), (4, 6),
+    (5, 9), (6, 7), (7, 8), (7, 9), (7, 10), (7, 11), (7, 13), (8, 9), (8, 10), (8, 12),
+    (8, 13), (9, 10), (9, 11), (9, 13), (10, 11), (10, 12), (11, 12), (11, 13), (11, 18),
+    (14, 15), (14, 16), (14, 17), (14, 18), (14, 19), (14, 20), (15, 16), (15, 17),
+    (15, 18), (15, 19), (15, 20), (16, 17), (16, 18), (16, 19), (17, 18), (17, 19),
+    (17, 20), (18, 19), (18, 20), (19, 20)
+]
+
+# Generate layout
+layout = generate_graph_layout(edge_list)
+
+# Output layout in JSON format
+print(json.dumps(layout, indent=2))
+```
+
+### Explanation:
+1. **Adjacency Matrix**: The adjacency matrix is created to represent the graph.
+2. **Graph-Theoretic Distance**: The Floyd-Warshall algorithm is used to compute the shortest path between all pairs of nodes.
+3. **Objective Function**: The objective function minimizes the difference between the Euclidean distance and the graph-theoretic distance for all pairs of nodes.
+4. **Optimization**: The `scipy.optimize.minimize` function is used to find the optimal positions of nodes in 2D space.
+5. **Output**: The final layout is returned as a JSON object, where each node is mapped to its 2D coordinates.
+
+This script does not use any pre-built graph layout algorithms and adheres to the requirements.

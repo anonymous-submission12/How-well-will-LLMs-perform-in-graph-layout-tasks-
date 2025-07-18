@@ -1,0 +1,91 @@
+```python
+def determine_graph_pattern(graph):
+    def is_star(G):
+        center_count = sum(len(v) == len(G) - 1 for v in G.values())
+        leaf_count = sum(len(v) == 1 for v in G.values())
+        return center_count == 1 and leaf_count == len(G) - 1
+    
+    def is_cycle(G):
+        edges = sum(len(v) for v in G.values()) // 2
+        return edges == len(G) and all(len(v) == 2 for v in G.values())
+    
+    def is_path(G):
+        degree_two = sum(len(v) == 2 for v in G.values())
+        endpoints = sum(len(v) == 1 for v in G.values())
+        return degree_two == len(G) - 2 and endpoints == 2
+    
+    def is_grid(G):
+        nodes = set(G)
+        for u in G:
+            for v in G[u]:
+                if u not in G[v]:
+                    return False
+        return True
+    
+    def is_complete(G):
+        size = len(G)
+        return all(len(v) == size - 1 for v in G.values())
+    
+    def is_clustered(G):
+        # Simple heuristic: check if graph splits into subgroups with dense connections
+        visited = set()
+        clusters = []
+
+        def dfs(node, cluster):
+            if node not in visited:
+                visited.add(node)
+                cluster.append(node)
+                for neighbor in graph[node]:
+                    dfs(neighbor, cluster)
+
+        for node in graph:
+            if node not in visited:
+                cluster = []
+                dfs(node, cluster)
+                clusters.append(cluster)
+
+        return len(clusters) > 1 and all(len(c) > 1 for c in clusters)
+
+    def is_random(G):
+        return not any([is_star(G), is_cycle(G), is_path(G), is_grid(G), is_complete(G), is_clustered(G)])
+    
+    if is_star(graph):
+        return "Star"
+    elif is_cycle(graph):
+        return "Cycle"
+    elif is_path(graph):
+        return "Path"
+    elif is_grid(graph):
+        return "Grid"
+    elif is_complete(graph):
+        return "Complete"
+    elif is_clustered(graph):
+        return "Clustered Graph"
+    elif is_random(graph):
+        return "Random Graph"
+    else:
+        return "Unknown"
+
+graph = {
+    0: [1, 2, 3, 7], 1: [0, 4, 5, 7], 2: [0, 5, 6, 24, 44], 3: [0, 4, 6, 36],
+    4: [1, 3, 7, 15, 36, 38, 40], 5: [1, 2, 6, 7], 6: [2, 3, 5, 7, 24], 7: [0, 1, 4, 5, 6],
+    8: [9, 10, 11, 12, 13, 14, 15], 9: [8, 10, 11, 13, 15, 21], 10: [8, 9, 13, 14],
+    11: [8, 9, 13, 14, 15, 30], 12: [8, 13], 13: [8, 9, 10, 11, 12, 15],
+    14: [8, 10, 11, 15], 15: [4, 8, 9, 11, 13, 14],
+    16: [21], 17: [18, 19, 21, 22], 18: [17, 19, 20, 22, 23], 19: [17, 18, 20],
+    20: [18, 19, 21, 22], 21: [9, 16, 17, 20, 22],
+    22: [17, 18, 20, 21, 23], 23: [18, 22],
+    24: [2, 6, 25, 26, 27, 29, 31], 25: [24, 27, 30], 26: [24, 27, 28, 30, 31],
+    27: [24, 25, 26, 28, 29, 31], 28: [26, 27, 29],
+    29: [24, 27, 28, 30, 31], 30: [11, 25, 26, 29, 31],
+    31: [24, 26, 27, 29, 30], 32: [35, 36, 39, 42],
+    33: [34, 35, 36, 38], 34: [33, 35, 36, 37, 39], 35: [32, 33, 34, 36, 37, 39],
+    36: [3, 4, 32, 33, 34, 35, 39], 37: [34, 35, 38, 39], 38: [4, 33, 37, 39],
+    39: [32, 34, 35, 36, 37, 38], 40: [4, 42, 45, 46, 47],
+    41: [42, 43, 44, 45], 42: [32, 40, 41, 43, 44, 47],
+    43: [41, 42, 44], 44: [2, 41, 42, 43],
+    45: [40, 41, 46, 47], 46: [40, 45, 47], 47: [40, 42, 45, 46]
+}
+
+print(determine_graph_pattern(graph))
+```

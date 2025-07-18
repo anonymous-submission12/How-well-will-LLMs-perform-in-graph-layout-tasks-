@@ -1,0 +1,7 @@
+Layout 1 appears to have several edge crossings. Layout 2 appears to be a relatively straight line, and thus has very few crossings.
+
+```json
+{
+"Answer": 2
+}
+```

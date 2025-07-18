@@ -1,0 +1,113 @@
+```python
+import json
+import math
+import random
+
+def layout_graph(edge_list, dimensions=2, iterations=100, initial_temperature=1.0, cooling_rate=0.95):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance using a force-based approach
+    with simulated annealing.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+        dimensions: The number of dimensions for the layout (default: 2).
+        iterations: The number of simulated annealing iterations (default: 100).
+        initial_temperature: The initial temperature for simulated annealing (default: 1.0).
+        cooling_rate: The cooling rate for simulated annealing (default: 0.95).
+
+    Returns:
+        A dictionary representing the graph layout, where keys are node indices
+        and values are lists of coordinates.  Returns None if the graph is empty.
+    """
+
+    if not edge_list:
+        return None
+
+    # 1. Initialize Node Positions Randomly
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes))  # Ensure consistent node ordering
+
+    layout = {}
+    for node in nodes:
+        layout[node] = [random.random() for _ in range(dimensions)]
+
+    # 2. Define Force Function (Attraction and Repulsion)
+    def calculate_force(node1, node2, current_layout, edge_exists):
+        """Calculates the force between two nodes."""
+        pos1 = current_layout[node1]
+        pos2 = current_layout[node2]
+        distance = math.sqrt(sum([(p1 - p2)**2 for p1, p2 in zip(pos1, pos2)]))
+
+        if edge_exists:
+            # Attractive force (Hooke's Law)
+            ideal_distance = 0.1  # Adjust as needed
+            force_magnitude = (distance - ideal_distance) * 0.1 # Adjust spring constant
+        else:
+            # Repulsive force (Inverse Square Law)
+            min_distance = 0.05 # Minimum distance to avoid extreme forces
+            distance = max(distance, min_distance)
+            force_magnitude = -1.0 / (distance**2) # Adjust repulsive strength
+
+        # Calculate force vector
+        force_vector = [(p2 - p1) * force_magnitude / distance for p1, p2 in zip(pos1, pos2)]
+        return force_vector
+
+    # 3. Simulated Annealing
+    temperature = initial_temperature
+    for _ in range(iterations):
+        for node in nodes:
+            # Calculate net force on the node
+            net_force = [0.0] * dimensions
+            for other_node in nodes:
+                if node != other_node:
+                    edge_exists = (node, other_node) in edge_list or (other_node, node) in edge_list
+                    force_vector = calculate_force(node, other_node, layout, edge_exists)
+                    net_force = [f1 + f2 for f1, f2 in zip(net_force, force_vector)]
+
+            # Propose a new position
+            new_position = [p + random.uniform(-temperature, temperature) * f for p, f in zip(layout[node], net_force)]
+
+            # Keep the nodes within the unit square
+            new_position = [max(0.0, min(1.0, p)) for p in new_position]
+
+            # Calculate the change in energy (simplified: sum of squared forces)
+            current_energy = sum([f**2 for f in net_force])
+
+            new_layout = layout.copy()
+            new_layout[node] = new_position
+
+            new_net_force = [0.0] * dimensions
+            for other_node in nodes:
+                if node != other_node:
+                    edge_exists = (node, other_node) in edge_list or (other_node, node) in edge_list
+                    force_vector = calculate_force(node, other_node, new_layout, edge_exists)
+                    new_net_force = [f1 + f2 for f1, f2 in zip(new_net_force, force_vector)]
+
+            new_energy = sum([f**2 for f in new_net_force])
+
+            delta_energy = new_energy - current_energy
+
+            # Accept the new position based on Metropolis criterion
+            if delta_energy < 0 or random.random() < math.exp(-delta_energy / temperature):
+                layout[node] = new_position
+
+        # Cool the temperature
+        temperature *= cooling_rate
+
+    # 4. Return Layout in JSON format
+    return layout
+
+
+# Example Usage:
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21)]
+layout = layout_graph(edge_list)
+
+if layout:
+    print(json.dumps(layout, indent=4))
+else:
+    print("Graph is empty.")
+```

@@ -1,0 +1,40 @@
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    n = len(adj_list)
+    degrees = [len(adj_list[node]) for node in adj_list]
+
+    # Check for Star pattern
+    max_degree = max(degrees)
+    if max_degree == n-1 and degrees.count(1) == n-1:
+        return "Star"
+
+    # Check for Cycle pattern
+    if all(deg == 2 for deg in degrees):
+        return "Cycle"
+
+    # Check for Path pattern
+    if degrees.count(1) == 2 and degrees.count(2) == n-2:
+        return "Path"
+
+    # Check for Complete pattern
+    if all(deg == n-1 for deg in degrees):
+        return "Complete"
+
+    # Check for Grid pattern
+    grid_edges = sum(degrees) // 2
+    grid_dimensions = [n for n in range(1, int(n**0.5)+1) if grid_edges == 2 * n * (n-1)]
+    if grid_dimensions:
+        return "Grid"
+
+    # Check for presence of clusters (Clustered graph)
+    clusters = defaultdict(list)
+
+    for node in adj_list:
+        clusters[len(adj_list[node])].append(node)
+    if len(clusters) > 1:
+        return 'Cluster .random"
+
+
+ json decorator---user()

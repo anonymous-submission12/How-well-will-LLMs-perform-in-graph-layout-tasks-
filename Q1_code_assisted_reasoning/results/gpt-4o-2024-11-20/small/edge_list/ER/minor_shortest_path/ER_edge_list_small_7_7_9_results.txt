@@ -1,0 +1,19 @@
+```python
+import networkx as nx
+
+# Define the graph using edge list
+edge_list = [(0, 5), (1, 17), (1, 21), (1, 22), (2, 19), (2, 20), (3, 6), (3, 8), (4, 11), (4, 18), (4, 20), 
+             (5, 7), (5, 21), (6, 12), (6, 19), (6, 21), (7, 17), (8, 14), (8, 19), (9, 21), (9, 22), (10, 13), 
+             (10, 16), (10, 21), (11, 15), (11, 17), (11, 21), (13, 16), (13, 17), (13, 19), (15, 20), (16, 20), 
+             (17, 19), (19, 21)]
+
+# Create a graph
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Calculate the shortest path length between node '7' and '9'
+shortest_path_length = nx.shortest_path_length(G, source=7, target=9)
+
+# Print the result
+print(shortest_path_length)
+```

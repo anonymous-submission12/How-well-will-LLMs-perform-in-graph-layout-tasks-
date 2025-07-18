@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 88, in <module>
+    layout = generate_graph_layout(edge_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 44, in generate_graph_layout
+    dist = euclidean_distance(positions[node1], positions[node2])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 14, in euclidean_distance
+    return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
+                     ~~~~~~~~~~~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

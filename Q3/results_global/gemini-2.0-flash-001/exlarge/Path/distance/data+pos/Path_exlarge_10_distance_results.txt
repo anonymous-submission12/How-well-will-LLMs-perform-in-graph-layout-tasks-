@@ -1,0 +1,7 @@
+The graph data represents a simple path. The graph-theoretic distance between two nodes is simply the difference in their indices. We want to see which layout better preserves this distance in Euclidean space. Layout 2 appears to be a much more linear layout than layout 1. Therefore, layout 2 should better preserve graph-theoretic distance.
+
+```json
+{
+"Answer": "2"
+}
+```

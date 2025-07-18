@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '10' and '11', we can observe that the graph is a simple linear chain. Each edge connects consecutive nodes, and the distance between any two directly connected nodes is 1. Therefore, the shortest path between node '10' and node '11' is exactly 1.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 1
+}
+```

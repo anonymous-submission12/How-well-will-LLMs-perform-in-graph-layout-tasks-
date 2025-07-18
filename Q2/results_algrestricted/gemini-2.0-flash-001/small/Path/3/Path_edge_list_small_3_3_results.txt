@@ -1,0 +1,103 @@
+```python
+import json
+import random
+
+def generate_layout(edge_list):
+    """
+    Generates a layout for a graph to minimize edge crossings.
+
+    This function implements a simple iterative layout algorithm that attempts to
+    minimize edge crossings by randomly adjusting node positions.  It does not
+    rely on any external graph layout libraries.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+                   Each tuple (u, v) indicates an edge between node u and node v.
+
+    Returns:
+        A dictionary representing the graph layout. The keys are node IDs,
+        and the values are tuples representing the (x, y) coordinates of each node.
+    """
+
+    # 1. Initialize node positions randomly.
+    nodes = set()
+    for u, v in edge_list:
+        nodes.add(u)
+        nodes.add(v)
+
+    num_nodes = len(nodes)
+    layout = {node: (random.random(), random.random()) for node in nodes}
+
+    # 2. Define a function to calculate the number of edge crossings.
+    def calculate_crossings(layout, edge_list):
+        """Calculates the number of edge crossings in the current layout."""
+        crossings = 0
+        edges = list(edge_list)  # Convert to list for indexing
+
+        for i in range(len(edges)):
+            for j in range(i + 1, len(edges)):
+                u1, v1 = edges[i]
+                u2, v2 = edges[j]
+
+                # Check if the edges share a node; if so, they can't cross.
+                if u1 == u2 or u1 == v2 or v1 == u2 or v1 == v2:
+                    continue
+
+                x1, y1 = layout[u1]
+                x2, y2 = layout[v1]
+                x3, y3 = layout[u2]
+                x4, y4 = layout[v2]
+
+                # Check for intersection using the orientation test.
+                def orientation(p, q, r):
+                    val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+                    if val == 0:
+                        return 0  # Collinear
+                    return 1 if val > 0 else -1  # Clockwise or counterclockwise
+
+                o1 = orientation((x1, y1), (x2, y2), (x3, y3))
+                o2 = orientation((x1, y1), (x2, y2), (x4, y4))
+                o3 = orientation((x3, y3), (x4, y4), (x1, y1))
+                o4 = orientation((x3, y3), (x4, y4), (x2, y2))
+
+                if o1 != o2 and o3 != o4:
+                    crossings += 1
+
+        return crossings
+
+    # 3. Iteratively improve the layout.
+    num_iterations = 1000
+    best_layout = layout.copy()
+    min_crossings = calculate_crossings(layout, edge_list)
+
+    for _ in range(num_iterations):
+        # Pick a random node and move it slightly.
+        node_to_move = random.choice(list(nodes))
+        x, y = layout[node_to_move]
+        dx = random.uniform(-0.05, 0.05)
+        dy = random.uniform(-0.05, 0.05)
+        new_x = max(0, min(1, x + dx))  # Keep within bounds [0, 1]
+        new_y = max(0, min(1, y + dy))  # Keep within bounds [0, 1]
+        layout[node_to_move] = (new_x, new_y)
+
+        # Calculate the number of crossings with the new layout.
+        crossings = calculate_crossings(layout, edge_list)
+
+        # If the new layout has fewer crossings, keep it. Otherwise, revert.
+        if crossings < min_crossings:
+            min_crossings = crossings
+            best_layout = layout.copy()
+        else:
+            layout[node_to_move] = (x, y)  # Revert to the old position
+
+    return best_layout
+
+
+# Example usage with the provided graph data:
+edge_list = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19), (19, 20), (20, 21), (21, 22)]
+layout = generate_layout(edge_list)
+
+# Convert the layout to JSON format.
+layout_json = json.dumps(layout, indent=4)
+print(layout_json)
+```

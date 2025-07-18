@@ -1,0 +1,7 @@
+Based on visual inspection of the two layouts, the second layout appears to have significantly fewer edge crossings than the first layout. The first layout has many edges crossing each other, while the second layout is drawn in a way that minimizes crossings.
+
+```json
+{
+"Answer": "2"
+}
+```

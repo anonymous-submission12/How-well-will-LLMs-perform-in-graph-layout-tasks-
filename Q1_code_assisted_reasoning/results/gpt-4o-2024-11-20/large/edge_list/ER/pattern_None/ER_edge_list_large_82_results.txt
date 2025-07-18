@@ -1,0 +1,64 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 9), (0, 13), (0, 14), (0, 26), (0, 39), (1, 2), (1, 38), (2, 7), (2, 13), (2, 17), (2, 20), (2, 37), (2, 39), (3, 4), (3, 8), (3, 11), (3, 12), (3, 21), (3, 25), (3, 37), (4, 6), (4, 7), (4, 10), (4, 17), (4, 18), (4, 19), (4, 21), (4, 23), (4, 25), (4, 33), (4, 34), (4, 36), (5, 18), (5, 36), (6, 16), (6, 19), (6, 24), (6, 26), (8, 9), (8, 21), (8, 24), (8, 36), (9, 14), (9, 20), (9, 31), (10, 22), (10, 35), (10, 39), (10, 40), (11, 13), (11, 33), (12, 29), (13, 21), (13, 40), (13, 41), (14, 20), (14, 27), (14, 31), (14, 39), (15, 19), (15, 33), (15, 36), (16, 19), (16, 20), (18, 29), (18, 41), (19, 23), (19, 38), (19, 40), (20, 22), (20, 27), (20, 36), (20, 38), (21, 22), (21, 28), (21, 33), (24, 32), (24, 41), (25, 28), (25, 29), (25, 34), (25, 35), (26, 27), (26, 28), (26, 37), (27, 36), (28, 33), (28, 36), (28, 38), (29, 40), (30, 39), (30, 40), (31, 33), (31, 41), (32, 34), (32, 35), (33, 34), (37, 39), (38, 41), (39, 40)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Functions to check graph types
+def is_star(G):
+    center_nodes = [node for node in G.nodes if G.degree[node] == len(G.nodes) - 1]
+    return len(center_nodes) == 1 and nx.is_connected(G)
+
+def is_cycle(G):
+    return nx.cycle_graph(len(G.nodes)).edges == set(G.edges) and nx.is_connected(G)
+
+def is_path(G):
+    return nx.is_path_graph(G)
+
+def is_grid(G):
+    # Approximate check for grid by looking at the dimensions of neighbors
+    if len(G.nodes) < 4:
+        return False
+    sqrt_nodes = int(len(G.nodes)**0.5)
+    return sqrt_nodes * sqrt_nodes == len(G.nodes) and nx.is_connected(G)
+
+def is_complete(G):
+    n = len(G.nodes)
+    return len(G.edges) == (n * (n - 1)) // 2
+
+def is_clustered(G):
+    # Approximation: Check if clustering coefficient is higher than a threshold
+    return nx.average_clustering(G) > 0.5
+
+def is_random(G):
+    # Approximation: Compare actual degree distribution with a random graph
+    from scipy.stats import ks_2samp
+    import numpy as np
+
+    n, p = len(G.nodes), len(G.edges) / (len(G.nodes) * (len(G.nodes) - 1) / 2)
+    random_degrees = np.random.binomial(n-1, p, size=1000)
+    real_degrees = [deg for _, deg in G.degree]
+    _, p_value = ks_2samp(random_degrees, real_degrees)
+    return p_value > 0.05  # Fail to reject null hypothesis; resembles random graph
+
+# Determine the type
+if is_star(G):
+    print("Star")
+elif is_cycle(G):
+    print("Cycle")
+elif is_path(G):
+    print("Path")
+elif is_grid(G):
+    print("Grid")
+elif is_complete(G):
+    print("Complete")
+elif is_clustered(G):
+    print("Clustered graph")
+elif is_random(G):
+    print("Random graph")
+else:
+    print("Unknown graph type")
+```

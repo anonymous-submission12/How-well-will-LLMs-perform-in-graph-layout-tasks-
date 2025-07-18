@@ -1,0 +1,14 @@
+To calculate the shortest path between node `48` and node `50`, we notice that the given graph can be treated as an unweighted graph. Analyzing the edge list reveals that the graph is a grid-like structure where each node is connected to its neighbors. For finding the shortest path, Breadth-First Search (BFS) can be used.
+
+The BFS traversal starts from node `48` and checks neighbors recursively until node `50` is reached. The shortest path length is equivalent to the number of edges traversed.
+
+From the graph, we can trace the path:  
+Node `48` → Node `49` → Node `50`.  
+
+This means the shortest path length is 2.
+
+```json
+{
+  "answer": 2
+}
+```

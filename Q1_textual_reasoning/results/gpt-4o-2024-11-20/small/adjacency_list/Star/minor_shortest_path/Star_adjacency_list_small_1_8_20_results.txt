@@ -1,0 +1,19 @@
+To calculate the shortest path between node '8' and node '20', we can use Breadth-First Search (BFS) since the graph is unweighted. Here's the reasoning:
+
+1. The graph is represented as an adjacency list.
+2. Node '0' is connected to all other nodes (1 through 20), forming a star topology.
+3. Nodes '8' and '20' are not directly connected but are both connected to node '0'.
+
+Thus, the shortest path from '8' to '20' is:
+- From '8' to '0' (1 step).
+- From '0' to '20' (1 step).
+
+The total length of the shortest path is 2.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 2
+}
+```

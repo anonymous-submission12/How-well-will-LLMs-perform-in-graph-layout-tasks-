@@ -1,0 +1,7 @@
+```json
+{
+  "answer": 1
+}
+```
+
+Explanation: In the provided graph, node '4' and node '19' are both directly connected to node '0'. Therefore, the shortest path between node '4' and node '19' is through node '0', making the length of the shortest path 1.

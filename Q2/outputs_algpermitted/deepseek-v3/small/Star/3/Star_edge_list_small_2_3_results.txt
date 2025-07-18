@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/execute.py", line 78, in run_check
+    proc = subprocess.run(cmd, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/subprocess.py", line 550, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/subprocess.py", line 1028, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/local/lib/python3.12/subprocess.py", line 1963, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: PosixPath('dot')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/code.py", line 18, in <module>
+    g.render('graph', format='json', cleanup=True)
+  File "/usr/local/lib/python3.12/site-packages/graphviz/_tools.py", line 171, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/rendering.py", line 122, in render
+    rendered = self._render(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/_tools.py", line 171, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/rendering.py", line 326, in render
+    execute.run_check(cmd,
+  File "/usr/local/lib/python3.12/site-packages/graphviz/backend/execute.py", line 81, in run_check
+    raise ExecutableNotFound(cmd) from e
+graphviz.backend.execute.ExecutableNotFound: failed to execute PosixPath('dot'), make sure the Graphviz executables are on your systems' PATH

@@ -1,0 +1,13 @@
+To calculate the shortest path distance between nodes '17' and '7', first observe that the given graph defines a path from node '0' to node '27'. Each edge represents a direct connection between two consecutive nodes.
+
+The shortest path distance between node '17' and node '7' is simply the difference in their node values (as the graph is linear):
+
+Distance = |17 - 7| = 10.
+
+Here is the JSON-formatted response:
+
+```json
+{
+  "answer": 10
+}
+```

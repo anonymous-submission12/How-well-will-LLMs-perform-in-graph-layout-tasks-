@@ -1,0 +1,95 @@
+Here is the Python code to analyze the given graph and determine the pattern. The analysis involves checking properties related to each graph pattern:
+
+```python
+from collections import defaultdict
+
+def determine_graph_pattern(adj_list):
+    # Helper functions
+    def is_star(adj_list):
+        # A star graph has a central node connected to all other nodes,
+        # and all other nodes have only one connection (degree 1).
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        center_count = list(degrees.values()).count(len(degrees) - 1)
+        leaf_count = list(degrees.values()).count(1)
+        return center_count == 1 and leaf_count == len(degrees) - 1
+
+    def is_cycle(adj_list):
+        # A cycle graph has equal nodes and edges, and every node has degree 2.
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        return all(degree == 2 for degree in degrees.values())
+    
+    def is_path(adj_list):
+        # A path graph has two nodes with degree 1 (endpoints) and the rest with degree 2.
+        degrees = {node: len(neighbors) for node, neighbors in adj_list.items()}
+        return list(degrees.values()).count(1) == 2 and all(degree in {1, 2} for degree in degrees.values())
+    
+    def is_grid(adj_list):
+        # A grid is complex to infer without additional constraints, assuming
+        # a square grid. Here, we check if average degree resembles grid structure.
+        degrees = [len(neighbors) for neighbors in adj_list.values()]
+        avg_degree = sum(degrees) / len(degrees)
+        return avg_degree in {2, 3, 4}  # Common degree for grid nodes
+    
+    def is_complete(adj_list):
+        # A complete graph has all nodes connected to each other.
+        n = len(adj_list)
+        edges = sum(len(neighbors) for neighbors in adj_list.values()) // 2
+        return edges == n * (n - 1) // 2
+    
+    def is_clustered(adj_list):
+        # A clustered graph has sets of nodes forming complete subgraphs.
+        # This requires clustering analysis; here, we approximate by checking
+        # if isolated clusters exist based on density and disconnected nodes.
+        visited = set()
+        clusters = 0
+
+        def dfs(node):
+            stack = [node]
+            while stack:
+                current = stack.pop()
+                visited.add(current)
+                for neighbor in adj_list[current]:
+                    if neighbor not in visited:
+                        stack.append(neighbor)
+        
+        for node in adj_list:
+            if node not in visited:
+                dfs(node)
+                clusters += 1
+        
+        return clusters > 1
+    
+    def is_random(adj_list):
+        # A random graph does not follow specific patterns, so if none match, we consider it random.
+        return True
+    
+    # Check patterns
+    if is_star(adj_list):
+        return "Star"
+    if is_cycle(adj_list):
+        return "Cycle"
+    if is_path(adj_list):
+        return "Path"
+    if is_grid(adj_list):
+        return "Grid"
+    if is_complete(adj_list):
+        return "Complete"
+    if is_clustered(adj_list):
+        return "Clustered"
+    return "Random"
+
+# Input graph adjacency list
+adjacency_list = {
+    0: [1, 3, 14], 1: [0, 16, 17, 24], 2: [9], 3: [0, 7, 8, 12, 21],
+    4: [5, 6, 8, 21, 22, 24], 5: [4, 22], 6: [4, 16, 17, 24, 25],
+    7: [3, 18, 19, 22, 24, 28], 8: [3, 4, 10, 13, 16, 21, 24, 28],
+    9: [2, 11, 23], 10: [8, 11, 15, 25], 11: [9, 10, 17, 21, 23, 28],
+    12: [3, 16, 18, 19], 13: [8, 23], 14: [0, 17], 15: [10, 22, 28],
+    16: [1, 6, 8, 12, 23], 17: [1, 6, 11, 14, 18, 22], 18: [7, 12, 17, 25],
+    19: [7, 12], 20: [21, 24, 25], 21: [3, 4, 8, 11, 20, 24, 27, 28],
+    22: [4, 5, 7, 15, 17, 26], 23: [9, 11, 13, 16], 24: [1, 4, 6, 7, 8, 20, 21],
+    25: [6, 10, 18, 20, 28], 26: [22], 27: [21], 28: [7, 8, 11, 15, 21, 25]
+}
+
+print(determine_graph_pattern(adjacency_list))
+```

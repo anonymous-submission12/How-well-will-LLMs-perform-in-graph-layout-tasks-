@@ -1,0 +1,51 @@
+To generate a layout for the graph while keeping the community structure clear, we can use the `networkx` library to handle the graph and community detection, and the `graphviz` library to generate the layout. The layout will be based on the communities detected using the Louvain method for community detection.
+
+Here is the Python script that accomplishes this:
+
+```python
+import networkx as nx
+import community as community_louvain
+import json
+from networkx.drawing.nx_agraph import graphviz_layout
+
+# Define the graph using the provided edge list
+edge_list = [(0, 1), (0, 3), (0, 5), (0, 6), (1, 2), (1, 4), (1, 6), (1, 12), 
+             (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (3, 4), (3, 6), (4, 5), 
+             (4, 6), (5, 6), (6, 15), (7, 11), (7, 13), (8, 11), (8, 13), 
+             (8, 24), (9, 10), (9, 11), (9, 12), (9, 13), (10, 11), (11, 12), 
+             (11, 13), (13, 17), (14, 16), (14, 17), (14, 18), (14, 19), 
+             (15, 16), (15, 17), (15, 18), (16, 18), (16, 19), (17, 18), 
+             (18, 19), (19, 21), (20, 21), (20, 22), (20, 23), (20, 24), 
+             (21, 22), (21, 25), (22, 23), (22, 24), (22, 25), (23, 24), 
+             (23, 25), (24, 25)]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Detect communities using the Louvain method
+partition = community_louvain.best_partition(G)
+
+# Generate a layout using graphviz
+pos = graphviz_layout(G, prog='neato')
+
+# Prepare the layout in JSON format
+layout = {str(node): {"x": pos[node][0], "y": pos[node][1], "community": partition[node]} for node in G.nodes()}
+
+# Output the layout in JSON format
+print(json.dumps(layout, indent=4))
+```
+
+This script does the following:
+1. Creates a graph from the provided edge list.
+2. Detects communities using the Louvain method.
+3. Generates a layout using the `graphviz_layout` function with the `neato` algorithm, which is suitable for undirected graphs and helps in maintaining the community structure.
+4. Outputs the layout in JSON format, including the position of each node and its community.
+
+Make sure you have the necessary libraries installed (`networkx`, `python-louvain`, and `pygraphviz`) to run this script. You can install them using pip if needed:
+
+```bash
+pip install networkx python-louvain pygraphviz
+```
+
+This script does not visualize the graph but outputs the layout in JSON format, which can be used for further processing or visualization in other tools.

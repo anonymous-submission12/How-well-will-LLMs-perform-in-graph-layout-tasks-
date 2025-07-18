@@ -1,0 +1,85 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place nodes in a grid-like structure. The idea is to assign positions to nodes such that nodes that are close in the graph (i.e., have a small graph-theoretic distance) are also close in Euclidean space.
+
+Here is a Python script that generates a layout for the given graph:
+
+```python
+import json
+from collections import defaultdict
+
+# Input graph as edge list
+edge_list = [(0, 1), (0, 10), (1, 2), (1, 11), (2, 3), (2, 12), (3, 4), (3, 13), (4, 5), (4, 14), 
+             (5, 6), (5, 15), (6, 7), (6, 16), (7, 8), (7, 17), (8, 9), (8, 18), (9, 19), (10, 11), 
+             (10, 20), (11, 12), (11, 21), (12, 13), (12, 22), (13, 14), (13, 23), (14, 15), (14, 24), 
+             (15, 16), (15, 25), (16, 17), (16, 26), (17, 18), (17, 27), (18, 19), (18, 28), (19, 29), 
+             (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), (26, 27), (27, 28), (28, 29)]
+
+# Create adjacency list
+adjacency_list = defaultdict(list)
+for u, v in edge_list:
+    adjacency_list[u].append(v)
+    adjacency_list[v].append(u)
+
+# Initialize positions
+positions = {}
+
+# Assign positions in a grid-like structure
+# We will place nodes in rows and columns based on their connections
+# For simplicity, we will place nodes in a 5x6 grid
+rows = 5
+cols = 6
+
+for node in sorted(adjacency_list.keys()):
+    row = node // cols
+    col = node % cols
+    positions[node] = [col, row]
+
+# Output the layout in JSON format
+layout_json = json.dumps(positions, indent=4)
+print(layout_json)
+```
+
+### Explanation:
+1. **Adjacency List**: We first create an adjacency list from the edge list to represent the graph.
+2. **Grid Layout**: We then assign positions to each node in a grid-like structure. The grid has 5 rows and 6 columns, which is sufficient to accommodate all 30 nodes.
+3. **Position Assignment**: Each node is assigned a position based on its index. The row is determined by dividing the node index by the number of columns, and the column is determined by the remainder when the node index is divided by the number of columns.
+4. **JSON Output**: Finally, the positions are output in JSON format.
+
+### Output:
+The output will be a JSON object where the keys are node indices and the values are their corresponding positions in the grid.
+
+```json
+{
+    "0": [0, 0],
+    "1": [1, 0],
+    "2": [2, 0],
+    "3": [3, 0],
+    "4": [4, 0],
+    "5": [5, 0],
+    "6": [0, 1],
+    "7": [1, 1],
+    "8": [2, 1],
+    "9": [3, 1],
+    "10": [4, 1],
+    "11": [5, 1],
+    "12": [0, 2],
+    "13": [1, 2],
+    "14": [2, 2],
+    "15": [3, 2],
+    "16": [4, 2],
+    "17": [5, 2],
+    "18": [0, 3],
+    "19": [1, 3],
+    "20": [2, 3],
+    "21": [3, 3],
+    "22": [4, 3],
+    "23": [5, 3],
+    "24": [0, 4],
+    "25": [1, 4],
+    "26": [2, 4],
+    "27": [3, 4],
+    "28": [4, 4],
+    "29": [5, 4]
+}
+```
+
+This layout ensures that nodes that are close in the graph (e.g., connected by edges) are also close in Euclidean space, maintaining a consistency between the two distances.

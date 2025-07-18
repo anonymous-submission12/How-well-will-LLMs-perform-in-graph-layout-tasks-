@@ -1,0 +1,7 @@
+To solve for the shortest path between nodes `17` and `40` in the given undirected graph, we need to use an algorithm like Breadth-First Search (BFS) since all edges are unweighted. Here's the result after calculating the shortest path using such an approach:
+
+```json
+{
+  "answer": 6
+}
+```

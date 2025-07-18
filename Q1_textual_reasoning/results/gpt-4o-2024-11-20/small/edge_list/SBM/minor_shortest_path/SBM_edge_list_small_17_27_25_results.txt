@@ -1,0 +1,16 @@
+To calculate the shortest path between nodes "27" and "25," the graph can be represented as an unweighted undirected graph using the provided edge list. The shortest path can be calculated using breadth-first search (BFS) since the graph is unweighted.
+
+Here is the calculation:
+
+- Node "27" is connected to nodes "20," "21," "24," "25," and "26."
+- Node "25" is directly connected to node "27."
+
+Hence, the shortest path length between nodes "27" and "25" is 1.
+
+Here is the result in JSON format:
+
+```json
+{
+  "answer": 1
+}
+```

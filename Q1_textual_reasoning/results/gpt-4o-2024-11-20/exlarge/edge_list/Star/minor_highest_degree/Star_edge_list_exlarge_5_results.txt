@@ -1,0 +1,9 @@
+To calculate the highest degree of nodes in the graph, we need to count how many edges are connected to each node. Here's the result:
+
+```json
+{
+  "answer": 75
+}
+```
+
+Node `0` has the highest degree, as it is connected to all other nodes in the graph (75 edges).

@@ -1,0 +1,7 @@
+The graph data represents a simple path. Layout 2 arranges the nodes in a near-straight line, which closely reflects the graph-theoretic distances. Layout 1 distorts the path significantly.
+
+```json
+{
+"Answer": 2
+}
+```

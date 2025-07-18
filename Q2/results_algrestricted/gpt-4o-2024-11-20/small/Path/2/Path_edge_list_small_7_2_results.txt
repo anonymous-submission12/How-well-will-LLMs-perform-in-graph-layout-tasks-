@@ -1,0 +1,20 @@
+Below is the Python script that processes the edge list and generates a layout. The code assigns positions to nodes such that nodes' Euclidean distances correspond to their graph-theoretic distances, visually resembling a straight line.
+
+```python
+import json
+
+def generate_graph_layout(edge_list):
+    # Create a dictionary to record positions
+    positions = {}
+    
+    # Assign nodes positions based on their graph-theoretic distance from the starting node (node 0)
+    current_position = 0
+    
+    for edge in edge_list:
+        node_a, node_b = edge
+        
+        # If node_a is not positioned, assign it
+        if node_a not in positions:
+            positions[node_a] = current_position
+        # Increment the position for node_b relative to node_a
+        positions[node_b] = (positions[node_a]+!!

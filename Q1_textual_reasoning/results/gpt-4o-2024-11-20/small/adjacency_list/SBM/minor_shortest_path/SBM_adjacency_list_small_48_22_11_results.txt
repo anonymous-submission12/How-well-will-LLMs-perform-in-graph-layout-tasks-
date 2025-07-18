@@ -1,0 +1,10 @@
+To calculate the shortest path between node 22 and node 11 in the graph, we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph. Here’s the result of the computation:
+
+```json
+{
+  "answer": 3
+}
+``` 
+
+Explanation:
+- Using BFS, the shortest path from node 22 to node 11 traverses through nodes 22 → 13 → 1 → 11, resulting in a path length of 3 steps.

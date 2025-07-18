@@ -1,0 +1,8 @@
+```json
+{
+  "answer": 2
+}
+``` 
+
+### Explanation:
+The graph provided is a star-shaped graph where node `0` is connected to all other nodes (including `20` and `6`), and no other connections exist. Therefore, the shortest path from `20` to `6` is through node `0`, resulting in a path length of 2 (i.e., `20 → 0 → 6`).

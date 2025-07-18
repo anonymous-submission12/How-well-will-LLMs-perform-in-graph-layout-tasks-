@@ -1,0 +1,23 @@
+Here's how we can determine the number of communities in the given graph:
+
+1.  **Identify Connected Components:** A community is often represented by a connected component. We need to find groups of nodes that are reachable from each other.
+
+2.  **Iterate Through Edges:** Process the edge list to build an adjacency representation (though we don't need to explicitly build the data structure if we are using a disjoint-set data structure).
+
+3.  **Disjoint-Set Data Structure (Union-Find):** A disjoint-set data structure is efficient for finding connected components. We initialize each node as its own component. Then, for each edge, we "union" the components of the two nodes.  After processing all edges, each distinct root in the disjoint-set represents a connected component.
+
+4.  **Count the Components:** After processing all edges, the number of distinct roots in the disjoint-set data structure is the number of connected components (communities).
+
+Based on the provided graph data:
+
+*   Nodes 0-7 form a community.
+*   Nodes 8-15 form a community.
+*   Nodes 16-22 form a community.
+
+Therefore, there are 3 communities.
+
+```json
+{
+"answer": 3
+}
+```

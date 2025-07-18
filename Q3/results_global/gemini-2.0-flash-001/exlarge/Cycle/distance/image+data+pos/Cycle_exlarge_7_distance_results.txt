@@ -1,0 +1,7 @@
+The graph data represents a path graph. Layout 2 arranges the nodes in a linear fashion, which closely reflects the graph-theoretic distances in a path graph. Layout 1, on the other hand, scatters the nodes randomly, making it difficult to infer the graph-theoretic distances from the Euclidean distances in the layout.
+
+```json
+{
+"Answer": 2
+}
+```

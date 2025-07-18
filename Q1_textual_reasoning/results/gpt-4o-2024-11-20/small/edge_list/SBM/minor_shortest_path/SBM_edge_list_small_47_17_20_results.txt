@@ -1,0 +1,10 @@
+To calculate the shortest path between nodes '17' and '20', we can use a graph traversal algorithm like Breadth-First Search (BFS). Here's the solution:
+
+```json
+{
+  "answer": 1
+}
+```
+
+Explanation:
+From the edge list provided, we can see that there is a direct edge between node '17' and node '20'. Therefore, the shortest path length between these two nodes is 1.

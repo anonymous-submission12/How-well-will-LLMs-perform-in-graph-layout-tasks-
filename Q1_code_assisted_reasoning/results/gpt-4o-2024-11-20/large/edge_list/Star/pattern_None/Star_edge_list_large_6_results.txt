@@ -1,0 +1,52 @@
+```python
+def identify_graph_pattern(edge_list):
+    from collections import defaultdict
+
+    # Create adjacency list
+    adjacency_list = defaultdict(list)
+    for u, v in edge_list:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Count the number of nodes and edges
+    num_nodes = len(adjacency_list)
+    num_edges = len(edge_list)
+
+    # Check for Star graph
+    center_nodes = [node for node, neighbors in adjacency_list.items() if len(neighbors) == num_nodes - 1]
+    leaf_nodes = [node for node, neighbors in adjacency_list.items() if len(neighbors) == 1]
+    if len(center_nodes) == 1 and len(leaf_nodes) == num_nodes - 1:
+        return "Star"
+
+    # Check for Cycle graph
+    if num_edges == num_nodes and all(len(neighbors) == 2 for neighbors in adjacency_list.values()):
+        return "Cycle"
+
+    # Check for Path graph
+    if num_edges == num_nodes - 1 and sum(len(neighbors) == 1 for neighbors in adjacency_list.values()) == 2:
+        return "Path"
+
+    # Check for Complete graph
+    if num_edges == num_nodes * (num_nodes - 1) // 2:
+        return "Complete"
+
+    # Check for Grid graph (only works for 2D grids)
+    # A grid graph has nodes with degree 2, 3, or 4
+    if all(2 <= len(neighbors) <= 4 for neighbors in adjacency_list.values()):
+        return "Grid"
+
+    # Check for Clustered graph (heuristic: nodes form dense subgraphs)
+    # This is a heuristic and not a strict definition
+    avg_degree = sum(len(neighbors) for neighbors in adjacency_list.values()) / num_nodes
+    if avg_degree > num_nodes / 4:  # Arbitrary threshold
+        return "Clustered"
+
+    # If none of the above, assume Random graph
+    return "Random"
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (0, 41), (0, 42), (0, 43), (0, 44), (0, 45)]
+
+# Determine the graph pattern
+print(identify_graph_pattern(edge_list))
+```

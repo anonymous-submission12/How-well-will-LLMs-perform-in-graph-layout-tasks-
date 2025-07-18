@@ -1,0 +1,25 @@
+To find the shortest path between node '7' and '18', we need to analyze the graph described by the provided edge list. We'll use a breadth-first search (BFS) algorithm since the graph is unweighted.
+
+Here's the computation:
+
+1. The graph is represented as an adjacency list for efficient traversal.
+2. We perform BFS from node '7' until we reach node '18' or exhaust all possibilities.
+3. Each step increments the distance counter.
+
+Now, let's compute the shortest path.
+
+Steps of the BFS:
+- Starting at node '7', explore its neighbors.
+- Gradually expand the search level by level until node '18' is found.
+
+After analysis:
+
+Shortest path length from node '7' to node '18' is **3**.
+
+Here is the JSON response:
+
+```json
+{
+  "answer": 3
+}
+```

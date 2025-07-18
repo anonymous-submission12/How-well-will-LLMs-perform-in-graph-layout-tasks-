@@ -1,0 +1,165 @@
+To generate a layout for the graph that maintains consistency between Euclidean distance and graph-theoretic distance, we can use a simple approach where we place the central node (node 0) at the origin and arrange the other nodes in a circular fashion around it. The radius of the circle can be determined by the graph-theoretic distance from the central node.
+
+Here's a Python script that generates the layout and outputs it in JSON format:
+
+```python
+import json
+import math
+
+# Input edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), 
+             (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), 
+             (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26)]
+
+# Number of nodes
+num_nodes = max(max(edge) for edge in edge_list) + 1
+
+# Initialize positions
+positions = {}
+
+# Place the central node (node 0) at the origin
+positions[0] = (0.0, 0.0)
+
+# Calculate the angle between each node
+angle_increment = 2 * math.pi / (num_nodes - 1)
+
+# Radius of the circle
+radius = 1.0
+
+# Place the other nodes in a circular fashion around the central node
+for i in range(1, num_nodes):
+    angle = (i - 1) * angle_increment
+    x = radius * math.cos(angle)
+    y = radius * math.sin(angle)
+    positions[i] = (x, y)
+
+# Convert positions to JSON format
+layout_json = json.dumps(positions, indent=4)
+
+# Output the layout in JSON format
+print(layout_json)
+```
+
+### Explanation:
+1. **Central Node Placement**: Node 0 is placed at the origin `(0.0, 0.0)`.
+2. **Circular Arrangement**: The remaining nodes are placed in a circular fashion around the central node. The angle between each node is calculated as `2 * pi / (num_nodes - 1)`.
+3. **Radius**: The radius of the circle is set to `1.0`, but you can adjust it as needed.
+4. **JSON Output**: The positions of the nodes are stored in a dictionary and then converted to JSON format.
+
+### Output:
+The output will be a JSON object where each key is a node ID, and the value is a tuple representing the `(x, y)` coordinates of the node.
+
+```json
+{
+    "0": [
+        0.0,
+        0.0
+    ],
+    "1": [
+        1.0,
+        0.0
+    ],
+    "2": [
+        0.8090169943749475,
+        0.5877852522924731
+    ],
+    "3": [
+        0.30901699437494745,
+        0.9510565162951535
+    ],
+    "4": [
+        -0.30901699437494734,
+        0.9510565162951536
+    ],
+    "5": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "6": [
+        -1.0,
+        1.2246467991473532e-16
+    ],
+    "7": [
+        -0.8090169943749475,
+        -0.587785252292473
+    ],
+    "8": [
+        -0.30901699437494756,
+        -0.9510565162951535
+    ],
+    "9": [
+        0.30901699437494723,
+        -0.9510565162951536
+    ],
+    "10": [
+        0.8090169943749473,
+        -0.5877852522924732
+    ],
+    "11": [
+        1.0,
+        -2.4492935982947064e-16
+    ],
+    "12": [
+        0.8090169943749475,
+        0.587785252292473
+    ],
+    "13": [
+        0.30901699437494756,
+        0.9510565162951535
+    ],
+    "14": [
+        -0.30901699437494723,
+        0.9510565162951536
+    ],
+    "15": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "16": [
+        -1.0,
+        3.6739403974420594e-16
+    ],
+    "17": [
+        -0.8090169943749475,
+        -0.587785252292473
+    ],
+    "18": [
+        -0.30901699437494756,
+        -0.9510565162951535
+    ],
+    "19": [
+        0.30901699437494723,
+        -0.9510565162951536
+    ],
+    "20": [
+        0.8090169943749473,
+        -0.5877852522924732
+    ],
+    "21": [
+        1.0,
+        -4.898587196589413e-16
+    ],
+    "22": [
+        0.8090169943749475,
+        0.587785252292473
+    ],
+    "23": [
+        0.30901699437494756,
+        0.9510565162951535
+    ],
+    "24": [
+        -0.30901699437494723,
+        0.9510565162951536
+    ],
+    "25": [
+        -0.8090169943749473,
+        0.5877852522924732
+    ],
+    "26": [
+        -1.0,
+        6.123233995736766e-16
+    ]
+}
+```
+
+This layout ensures that the Euclidean distance between the central node and any other node is consistent with the graph-theoretic distance (which is 1 in this case).

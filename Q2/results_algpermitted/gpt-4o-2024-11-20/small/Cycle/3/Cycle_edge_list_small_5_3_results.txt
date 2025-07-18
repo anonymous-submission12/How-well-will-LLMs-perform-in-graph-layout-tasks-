@@ -1,0 +1,42 @@
+Below is a Python script to generate a layout for your graph using `pygraphviz` and the `neato` layout engine. This layout minimizes edge crossings. The output is the graph layout in JSON format.
+
+```python
+import pygraphviz as pgv
+import json
+
+def generate_graph_layout(edges):
+    # Create a directed graph using PyGraphviz
+    graph = pgv.AGraph(strict=False, directed=False)
+
+    # Add edges to the graph
+    for edge in edges:
+        graph.add_edge(edge[0], edge[1])
+
+    # Use the 'neato' layout engine to minimize edge crossings
+    graph.layout(prog='neato')
+
+    # Extract node positions
+    node_positions = {}
+    for node in graph.nodes():
+        pos = node.attr['pos']
+        if pos:
+            x, y = map(float, pos.split(','))
+            node_positions[node.name] = (x, y)
+
+    # Convert node positions to JSON format
+    return json.dumps(node_positions, indent=4)
+
+# Edge list representing the graph
+edge_list = [(0, 1), (0, 24), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), 
+             (6, 7), (7, 8), (8, 9), (9, 10), (10, 11), (11, 12), (12, 13),
+             (13, 14), (14, 15), (15, 16), (16, 17), (17, 18), (18, 19),
+             (19, 20), (20, 21), (21, 22), (22, 23), (23, 24)]
+
+# Generate layout for the graph
+layout_json = generate_graph_layout(edge_list)
+
+# Print the layout in JSON format
+print(layout_json)
+```
+
+This script uses `pygraphviz` to generate the layout using the `neato` backend. The final output is a JSON object with node positions as `(x, y)` tuples. Ensure `pygraphviz` is installed, which you can install using `pip install pygraphviz` if not already installed.

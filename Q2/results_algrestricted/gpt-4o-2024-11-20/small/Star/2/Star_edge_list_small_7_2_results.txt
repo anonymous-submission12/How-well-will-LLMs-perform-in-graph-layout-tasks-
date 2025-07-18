@@ -1,0 +1,90 @@
+Below is the Python script that implements a custom layout algorithm for the given graph. The custom layout tries to maintain consistency between Euclidean distance and graph-theoretic distance, and outputs the layout (positions) in JSON format.
+
+```python
+import json
+import math
+
+def generate_layout(edge_list):
+    # Step 1: Extract unique nodes
+    nodes = set()
+    for edge in edge_list:
+        nodes.update(edge)
+    nodes = list(nodes)
+
+    # Step 2: Generate adjacency list for the graph
+    adjacency_list = {node: [] for node in nodes}
+    for edge in edge_list:
+        u, v = edge
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    # Step 3: Calculate graph-theoretic distances using BFS
+    def bfs_distances(start_node):
+        visited = {node: False for node in nodes}
+        distance = {node: float('inf') for node in nodes}
+        queue = [start_node]
+
+        visited[start_node] = True
+        distance[start_node] = 0
+
+        while queue:
+            current = queue.pop(0)
+            for neighbor in adjacency_list[current]:
+                if not visited[neighbor]:
+                    visited[neighbor] = True
+                    distance[neighbor] = distance[current] + 1
+                    queue.append(neighbor)
+        return distance
+
+    # Compute distances from a "central" node (node 0 in this case)
+    distances = bfs_distances(0)
+
+    # Step 4: Assign positions based on distances (simple radial layout logic)
+    positions = {}
+    radius_gap = 1  # Distance between successive "rings" of nodes
+    angle_gap = math.radians(360 / (len(nodes) - 1))  # Equal spacing of nodes in outer layers
+
+    for node, dist in distances.items():
+        if dist == 0:  # If it's the center node
+            positions[node] = (0, 0)
+        else:
+            # Calculate position in polar coordinates (r, θ)
+            radius = dist * radius_gap
+            angle = (node - 1) * angle_gap  # Offset by index in outer layers
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            positions[node] = (x, y)
+
+    # Convert to JSON format
+    layout_json = json.dumps(positions, indent=2)
+    return layout_json
+
+# Input edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
+    (0, 6), (0, 7), (0, 8), (0, 9), (0, 10),
+    (0, 11), (0, 12), (0, 13), (0, 14), (0, 15),
+    (0, 16), (0, 17), (0, 18), (0, 19), (0, 20),
+    (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26)
+]
+
+# Generate layout
+layout = generate_layout(edge_list)
+print(layout)
+```
+
+### Explanation
+1. **Graph Data Structure**:
+    - The graph is structured as an adjacency list for efficient traversal and distance computation.
+
+2. **Graph-Theoretic Distances**:
+    - Breadth-First Search (BFS) is used to compute distances from the central node (node `0`).
+    
+3. **Layout Algorithm**:
+    - Node `0` (hub) is placed at the origin `(0, 0)`.
+    - Remaining nodes are placed in concentric circles, where the radial distance depends on the graph-theoretic distance, and the angular position is distributed evenly.
+
+4. **Output**:
+    - The positions of nodes are formatted as JSON and printed.
+
+Note: This layout is simple and may not result in an aesthetically optimal visualization but adheres to the constraint of maintaining consistency between Euclidean and graph-theoretic distances.

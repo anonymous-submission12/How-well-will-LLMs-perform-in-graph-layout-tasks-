@@ -1,0 +1,43 @@
+```python
+import networkx as nx
+
+# Define the edge list
+edge_list = [(0, 1), (0, 10), (1, 2), (1, 11), (2, 3), (2, 12), (3, 4), (3, 13), 
+             (4, 5), (4, 14), (5, 6), (5, 15), (6, 7), (6, 16), (7, 8), (7, 17), 
+             (8, 9), (8, 18), (9, 19), (10, 11), (10, 20), (11, 12), (11, 21), 
+             (12, 13), (12, 22), (13, 14), (13, 23), (14, 15), (14, 24), (15, 16), 
+             (15, 25), (16, 17), (16, 26), (17, 18), (17, 27), (18, 19), (18, 28), 
+             (19, 29), (20, 21), (21, 22), (22, 23), (23, 24), (24, 25), (25, 26), 
+             (26, 27), (27, 28), (28, 29)]
+
+# Create a graph from the edge list
+G = nx.Graph(edge_list)
+
+# Determine the dimensions of the graph
+nodes = G.number_of_nodes()
+edges = G.number_of_edges()
+
+# Check for grid pattern
+def is_grid_graph(G):
+    # Try to determine if the graph is a grid by checking node degrees and structure
+    degrees = [d for _, d in G.degree()]
+    if sorted(degrees) == [2] * 4 + [3] * (nodes - 4 - 4) + [4] * 4:  # Corners, edges, and inner nodes
+        return True
+    return False
+
+# Check for other patterns
+if nx.is_tree(G) and len([n for n in G.nodes if G.degree[n] == nodes - 1]) == 1:
+    print("Star")
+elif nx.is_connected(G) and all(G.degree[n] == 2 for n in G.nodes):
+    print("Cycle")
+elif nx.is_tree(G) and max(G.degree[n] for n in G.nodes) == 2:
+    print("Path")
+elif is_grid_graph(G):
+    print("Grid")
+elif edges == nodes * (nodes - 1) // 2:
+    print("Complete")
+elif nx.number_connected_components(G) > 1:
+    print("Clustered graph")
+else:
+    print("Random graph")
+```

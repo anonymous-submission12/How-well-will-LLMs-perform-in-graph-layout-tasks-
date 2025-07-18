@@ -1,0 +1,132 @@
+```python
+import json
+import random
+import math
+
+def layout_graph(edge_list):
+    """
+    Generates a graph layout that attempts to maintain consistency between
+    Euclidean distance and graph-theoretic distance.
+
+    Args:
+        edge_list: A list of tuples representing the edges of the graph.
+
+    Returns:
+        A dictionary where keys are node IDs and values are (x, y) coordinates.
+    """
+
+    # 1. Build the graph representation (adjacency list)
+    graph = {}
+    for u, v in edge_list:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+
+    nodes = list(graph.keys())
+    num_nodes = len(nodes)
+
+    # 2. Initialize node positions randomly
+    layout = {node: (random.random(), random.random()) for node in nodes}
+
+    # 3. Iterative refinement (Force-directed layout with graph distance consideration)
+    iterations = 100  # Adjust as needed
+    repulsion_strength = 0.05 # Adjust as needed
+    attraction_strength = 0.05 # Adjust as needed
+    damping_factor = 0.9 # Adjust as needed
+
+    for _ in range(iterations):
+        forces = {node: [0.0, 0.0] for node in nodes}  # Initialize forces
+
+        # Calculate forces between all pairs of nodes
+        for i in range(num_nodes):
+            for j in range(i + 1, num_nodes):
+                node1 = nodes[i]
+                node2 = nodes[j]
+
+                pos1 = layout[node1]
+                pos2 = layout[node2]
+
+                # Calculate Euclidean distance
+                dx = pos2[0] - pos1[0]
+                dy = pos2[1] - pos1[1]
+                distance = math.sqrt(dx**2 + dy**2)
+
+                # Calculate shortest path distance
+                shortest_path_length = shortest_path(graph, node1, node2)
+
+                # Repulsive force (inverse square law)
+                repulsion = repulsion_strength / (distance**2 + 0.01)  # Add small constant to avoid division by zero
+                force_x = repulsion * (pos1[0] - pos2[0])
+                force_y = repulsion * (pos1[1] - pos2[1])
+
+                forces[node1][0] += force_x
+                forces[node1][1] += force_y
+                forces[node2][0] -= force_x
+                forces[node2][1] -= force_y
+
+                # Attractive force (proportional to graph distance)
+                ideal_distance = shortest_path_length * 0.1 # Scale graph distance to Euclidean space
+                attraction = attraction_strength * (distance - ideal_distance)
+                force_x = attraction * (pos2[0] - pos1[0])
+                force_y = attraction * (pos2[1] - pos1[1])
+
+                forces[node1][0] += force_x
+                forces[node1][1] += force_y
+                forces[node2][0] -= force_x
+                forces[node2][1] -= force_y
+
+        # Update node positions based on forces
+        for node in nodes:
+            layout[node] = (
+                layout[node][0] + damping_factor * forces[node][0],
+                layout[node][1] + damping_factor * forces[node][1],
+            )
+
+            # Keep nodes within bounds (0, 1)
+            layout[node] = (
+                max(0.0, min(1.0, layout[node][0])),
+                max(0.0, min(1.0, layout[node][1])),
+            )
+
+    return layout
+
+
+def shortest_path(graph, start, end):
+    """
+    Calculates the shortest path length between two nodes in a graph using BFS.
+
+    Args:
+        graph: Adjacency list representation of the graph.
+        start: Starting node.
+        end: Ending node.
+
+    Returns:
+        The shortest path length, or infinity if no path exists.
+    """
+    if start == end:
+        return 0
+
+    queue = [(start, 0)]  # (node, distance)
+    visited = {start}
+
+    while queue:
+        node, distance = queue.pop(0)
+
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return distance + 1
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+
+    return float('inf')  # No path found
+
+
+# Example usage:
+edge_list = [('0', '10'), ('0', '14'), ('0', '15'), ('0', '40'), ('0', '42'), ('0', '47'), ('1', '17'), ('1', '19'), ('1', '26'), ('1', '27'), ('1', '28'), ('1', '36'), ('1', '41'), ('1', '54'), ('10', '2'), ('10', '29'), ('10', '42'), ('10', '47'), ('12', '33'), ('13', '32'), ('13', '57'), ('13', '6'), ('14', '16'), ('14', '24'), ('14', '3'), ('14', '33'), ('14', '34'), ('14', '37'), ('14', '38'), ('14', '40'), ('14', '43'), ('14', '50'), ('14', '52'), ('15', '18'), ('15', '24'), ('15', '40'), ('15', '45'), ('15', '55'), ('15', '59'), ('16', '38'), ('16', '50'), ('17', '13'), ('17', '22'), ('17', '25'), ('17', '27'), ('17', '31'), ('17', '57'), ('17', '6'), ('17', '9'), ('18', '21'), ('19', '30'), ('19', '54'), ('19', '7'), ('2', '44'), ('2', '61'), ('20', '16'), ('20', '18'), ('20', '38'), ('20', '50'), ('24', '18'), ('26', '25'), ('26', '27'), ('27', '25'), ('27', '7'), ('28', '20'), ('28', '30'), ('28', '8'), ('29', '18'), ('29', '21'), ('29', '24'), ('29', '35'), ('29', '43'), ('29', '52'), ('3', '59'), ('3', '8'), ('32', '60'), ('33', '16'), ('33', '21'), ('33', '34'), ('33', '38'), ('33', '43'), ('33', '50'), ('34', '49'), ('36', '20'), ('36', '23'), ('36', '37'), ('36', '39'), ('36', '59'), ('37', '16'), ('37', '21'), ('37', '33'), ('37', '34'), ('37', '43'), ('37', '45'), ('38', '43'), ('38', '52'), ('38', '58'), ('4', '51'), ('40', '33'), ('40', '36'), ('40', '37'), ('40', '52'), ('40', '7'), ('41', '13'), ('41', '54'), ('41', '57'), ('41', '9'), ('42', '2'), ('42', '30'), ('42', '47'), ('42', '50'), ('43', '46'), ('43', '53'), ('44', '20'), ('44', '34'), ('44', '38'), ('45', '18'), ('45', '21'), ('45', '23'), ('45', '24'), ('45', '29'), ('45', '50'), ('47', '20'), ('47', '28'), ('47', '30'), ('49', '46'), ('5', '13'), ('5', '56'), ('5', '57'), ('5', '9'), ('51', '11'), ('51', '18'), ('51', '21'), ('51', '23'), ('51', '24'), ('51', '29'), ('51', '45'), ('51', '50'), ('51', '55'), ('54', '13'), ('54', '57'), ('54', '6'), ('54', '7'), ('56', '6'), ('57', '39'), ('57', '48'), ('57', '6'), ('59', '45'), ('61', '37'), ('61', '53'), ('7', '30'), ('8', '20'), ('8', '37'), ('8', '45'), ('8', '59'), ('9', '13'), ('9', '32'), ('9', '57'), ('9', '6')]
+layout = layout_graph(edge_list)
+print(json.dumps(layout, indent=4))
+```

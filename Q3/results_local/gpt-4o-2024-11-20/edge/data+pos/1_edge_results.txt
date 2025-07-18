@@ -1,0 +1,23 @@
+To determine the intersection of two edges \((2, 1)\) and \((3, 6)\) given their node coordinates, we follow these steps:
+
+1. Retrieve the coordinates of the nodes:
+   - \(1: [-0.8, 0.57]\)
+   - \(2: [-0.67, 0.44]\)
+   - \(3: [-0.69, 0.52]\)
+   - \(6: [-0.74, 0.36]\)
+
+2. Represent the edges:
+   - Edge \((2, 1)\): from \((-0.67, 0.44)\) to \((-0.8, 0.57)\),
+   - Edge \((3, 6)\): from \((-0.69, 0.52)\) to \((-0.74, 0.36)\).
+
+3. Use the vector cross-product method to check if these line segments intersect. This involves:
+   - Verifying whether the points of one segment are on different sides of the other segment's line,
+   - Ensuring the segments overlap.
+
+After performing these calculations (details omitted for brevity), the edges **do not intersect**.
+
+```json
+{
+  "Answer": "No"
+}
+```

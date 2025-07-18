@@ -1,0 +1,12 @@
+Based on the visual inspection of the graph:
+
+- The Euclidean distance between the source node 5 and the target node 14 is the straight-line distance between them.
+- The graph-theoretic distance is the sum of the edges along the shortest path connecting the two nodes.
+
+From the image, the graph-theoretic distance involves multiple edges, which will result in a longer path than the straight-line (Euclidean) distance. Hence:
+
+```json
+{
+  "Answer": "Euclidean distance is less than graph-theoretic distance"
+}
+```

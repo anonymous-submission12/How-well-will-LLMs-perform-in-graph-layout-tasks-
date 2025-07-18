@@ -1,0 +1,7 @@
+The graph data represents a grid-like structure. Layout 2 visually represents this grid structure much better than layout 1, where the grid structure is distorted. Therefore, layout 2 better preserves graph-theoretic distance.
+
+```json
+{
+"Answer": 2
+}
+```

@@ -1,0 +1,7 @@
+Layout 2 appears to better preserve graph-theoretic distance. In layout 1, many nodes are clustered together, making it difficult to visually estimate the actual path length between them in the graph. Layout 2 spreads the nodes out more evenly, and the edges follow a more natural flow, making it easier to trace paths and estimate distances.
+
+```json
+{
+"Answer": "2"
+}
+```

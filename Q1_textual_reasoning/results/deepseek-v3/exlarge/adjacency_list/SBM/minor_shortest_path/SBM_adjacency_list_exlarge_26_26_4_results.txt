@@ -1,0 +1,17 @@
+To find the shortest path between node '26' and node '4', we can use the Breadth-First Search (BFS) algorithm, which is suitable for finding the shortest path in an unweighted graph.
+
+Here is the JSON response with the length of the shortest path:
+
+```json
+{
+  "answer": 3
+}
+```
+
+### Explanation:
+- Starting from node '26', we explore its neighbors: [1, 27, 30, 32, 35, 37].
+- From node '1', we explore its neighbors: [0, 2, 6, 7, 8, 9, 10, 11, 12, 26].
+- From node '8', we explore its neighbors: [1, 2, 4, 5, 55].
+- Node '4' is found in the neighbors of node '8'.
+
+Thus, the shortest path from node '26' to node '4' is: 26 → 1 → 8 → 4, which has a length of 3.

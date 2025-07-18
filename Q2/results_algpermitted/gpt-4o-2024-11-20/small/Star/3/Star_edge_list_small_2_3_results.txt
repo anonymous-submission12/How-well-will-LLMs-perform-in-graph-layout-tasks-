@@ -1,0 +1,34 @@
+Below is the Python code to generate a layout for the given graph using the `networkx` library. The layout algorithm used is the `spring_layout`, which is designed to minimize edge crossings and provide a visually appealing arrangement of nodes. The final output is the graph layout in JSON format.
+
+```python
+import networkx as nx
+import json
+
+# Define the edge list
+edge_list = [
+    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9),
+    (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17),
+    (0, 18), (0, 19), (0, 20), (0, 21)
+]
+
+# Create a graph from the edge list
+G = nx.Graph()
+G.add_edges_from(edge_list)
+
+# Generate the layout using the spring layout algorithm
+positions = nx.spring_layout(G)
+
+# Convert the positions to JSON format
+positions_json = json.dumps(positions)
+
+# Print the JSON output
+print(positions_json)
+```
+
+### Explanation:
+1. **Graph Creation**: The `networkx` library is used to create a graph from the provided edge list.
+2. **Layout Algorithm**: The `spring_layout` algorithm is applied to compute positions for the nodes. This algorithm simulates a force-directed layout, minimizing edge crossings and distributing nodes evenly.
+3. **JSON Conversion**: The positions dictionary, which maps node IDs to their coordinates, is converted to JSON format using the `json.dumps` function.
+4. **Output**: The final output is printed as a JSON string.
+
+You can run this script in a Python environment to generate the layout for the graph.

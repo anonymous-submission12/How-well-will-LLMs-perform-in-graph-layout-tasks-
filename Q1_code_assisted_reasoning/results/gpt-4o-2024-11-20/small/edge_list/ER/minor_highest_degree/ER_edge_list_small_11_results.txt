@@ -1,0 +1,18 @@
+```python
+from collections import Counter
+
+# Edge list
+edges = [(0, 5), (0, 6), (0, 10), (0, 20), (1, 21), (2, 19), (2, 21), (3, 20), 
+         (3, 21), (4, 5), (4, 17), (5, 14), (5, 20), (6, 7), (6, 10), (6, 12), 
+         (6, 17), (6, 21), (7, 9), (7, 13), (7, 16), (7, 19), (8, 10), (8, 15), 
+         (8, 17), (8, 18), (9, 11), (9, 15), (10, 11), (11, 17), (11, 20), 
+         (13, 18), (13, 20), (14, 19)]
+
+# Count degrees for all nodes
+degree_counter = Counter(node for edge in edges for node in edge)
+
+# Get the highest degree
+highest_degree = max(degree_counter.values())
+
+print(highest_degree)
+```

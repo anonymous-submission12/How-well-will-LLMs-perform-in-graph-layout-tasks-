@@ -1,0 +1,9 @@
+To calculate the shortest path between nodes '22' and '15' in the given graph, we can use the Breadth-First Search (BFS) algorithm. BFS is well-suited for finding the shortest path in an unweighted graph.
+
+Here is the solution:
+
+```json
+{
+  "answer": 7
+}
+```

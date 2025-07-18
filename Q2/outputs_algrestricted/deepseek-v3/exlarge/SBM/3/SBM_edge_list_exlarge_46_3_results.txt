@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/code.py", line 104, in <module>
+    dist = distance(positions[node], positions[other_node])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/code.py", line 92, in distance
+    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+                                          ~~~~~~~~~~~~~~~^^~
+OverflowError: (34, 'Numerical result out of range')

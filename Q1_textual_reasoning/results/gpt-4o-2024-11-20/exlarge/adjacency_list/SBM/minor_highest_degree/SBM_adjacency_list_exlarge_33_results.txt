@@ -1,0 +1,9 @@
+To calculate the highest degree of all nodes in the graph, we determine the count of neighbors for each node and select the maximum value.
+
+The degrees of the nodes are computed as follows:
+
+```json
+{
+  "answer": 23
+}
+```

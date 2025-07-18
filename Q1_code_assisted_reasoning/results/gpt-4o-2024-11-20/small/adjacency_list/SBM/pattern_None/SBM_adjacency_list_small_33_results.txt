@@ -1,0 +1,74 @@
+```python
+from collections import defaultdict
+
+def graph_properties(adj_list):
+    def is_star():
+        center_count = sum(len(neighbors) == len(adj_list) - 1 for neighbors in adj_list.values())
+        return center_count == 1
+    
+    def is_cycle():
+        visited = set()
+        def dfs(v, parent):
+            visited.add(v)
+            for neighbor in adj_list[v]:
+                if neighbor not in visited:
+                    if not dfs(neighbor, v):
+                        return False
+                elif neighbor != parent:
+                    return False
+            return True
+        
+        start_node = next(iter(adj_list))
+        return all(len(neighbors) == 2 for neighbors in adj_list.values()) and dfs(start_node, -1) and len(visited) == len(adj_list)
+    
+    def is_path():
+        degree_counts = defaultdict(int)
+        for node, neighbors in adj_list.items():
+            degree_counts[len(neighbors)] += 1
+        return degree_counts[1] == 2 and degree_counts[2] == len(adj_list) - 2
+    
+    def is_grid():
+        size = int(len(adj_list)**0.5)
+        if size * size != len(adj_list):
+            return False
+        for node, neighbors in adj_list.items():
+            row, col = divmod(node, size)
+            expected_neighbors = [(row - 1) * size + col, 
+                                  (row + 1) * size + col, 
+                                  row * size + col - 1, 
+                                  row * size + col + 1]
+            count = sum(1 for neighbor in expected_neighbors if neighbor in adj_list and neighbor in neighbors)
+            if count != len(neighbors):
+                return False
+        return True
+    
+    def is_complete():
+        expected_degree = len(adj_list) - 1
+        return all(len(neighbors) == expected_degree for neighbors in adj_list.values())
+    
+    def is_clustered():
+        cluster_sizes = [len(neighbors) + 1 for neighbors in adj_list.values()]
+        difference = max(cluster_sizes) - min(cluster_sizes)
+        return difference <= 3 
+
+    def is_random():
+        return True
+    
+    if is_star():
+        return "Star"
+    elif is_cycle():
+        return "Cycle"
+    elif is_path():
+        return "Path"
+    elif is_grid():
+        return "Grid"
+    elif is_complete():
+        return "Complete"
+    elif is_clustered():
+        return "Clustered Graph"
+    elif is_random():
+        return "Random Graph"
+
+adj_list = {0: [2, 3, 4, 6, 7, 8, 9, 10], 1: [5, 6, 8, 9, 10], 2: [0, 3, 6], 3: [0, 2, 4, 7, 9], 4: [0, 3, 5, 7, 14, 19], 5: [1, 4, 6, 7, 8, 10], 6: [0, 1, 2, 5, 7, 8, 9, 10], 7: [0, 3, 4, 5, 6, 8], 8: [0, 1, 5, 6, 7, 10], 9: [0, 1, 3, 6], 10: [0, 1, 5, 6, 8], 11: [13, 16, 18, 19, 20], 12: [13, 14, 15, 16, 19], 13: [11, 12, 15, 16, 18, 19, 20], 14: [4, 12, 15, 17, 18, 19, 20], 15: [12, 13, 14, 17, 18, 19, 20], 16: [11, 12, 13, 19], 17: [14, 15, 18, 20], 18: [11, 13, 14, 15, 17, 19, 20], 19: [4, 11, 12, 13, 14, 15, 16, 18], 20: [11, 13, 14, 15, 17, 18]}
+print(graph_properties(adj_list))
+```

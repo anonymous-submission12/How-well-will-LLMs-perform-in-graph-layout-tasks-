@@ -1,0 +1,80 @@
+Here is a Python script that takes the provided graph in edge_list format and generates a layout while maintaining consistency between Euclidean and graph-theoretic distances. It outputs the layout positions in JSON format.
+
+```python
+import json
+import math
+import random
+from itertools import combinations
+
+# Define the graph as an edge list
+edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), 
+             (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14),
+             (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), 
+             (0, 21), (0, 22), (0, 23), (0, 24), (0, 25)]
+
+# Step 1: Build adjacency list
+def build_adjacency_list(edges):
+    graph = {}
+    for u, v in edges:
+        if u not in graph:
+            graph[u] = []
+        if v not in graph:
+            graph[v] = []
+        graph[u].append(v)
+        graph[v].append(u)
+    return graph
+
+# Step 2: Calculate graph-theoretic distances using BFS
+def calculate_graph_distances(graph, start_node):
+    distances = {node: float('inf') for node in graph}
+    distances[start_node] = 0
+    queue = [start_node]
+    
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph[current]:
+            if distances[neighbor] == float('inf'):
+                distances[neighbor] = distances[current] + 1
+                queue.append(neighbor)
+    return distances
+
+# Step 3: Generate layout positions
+def generate_layout(graph):
+    positions = {}
+    # Fix center node (node 0) at (0, 0)
+    positions[0] = (0, 0)
+    
+    # Calculate angular spacing for neighbors of central node
+    center_neighbors = graph[0]
+    num_neighbors = len(center_neighbors)
+    angle_step = 2 * math.pi / num_neighbors
+    radius = 5  # Fixed radius for neighbors of center node
+    
+    # Place neighbors in a circular layout around the center
+    for index, neighbor in enumerate(center_neighbors):
+        angle = index * angle_step
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        positions[neighbor] = (x, y)
+    
+    return positions
+
+# Main script
+graph = build_adjacency_list(edge_list)
+layout = generate_layout(graph)
+
+# Convert the result to JSON format
+layout_json = {str(node): list(coords) for node, coords in layout.items()}
+print(json.dumps(layout_json, indent=4))
+```
+
+### Explanation of the Approach:
+1. **Adjacency List Construction**: An adjacency list is built from the provided edge list to facilitate graph traversal.
+
+2. **Graph-Theoretic Distances Calculation**: Although not directly leveraged for this particular star graph layout, graph-theoretic distances can be useful for more complex graphs.
+
+3. **Layout Generation**:
+   - The central node (node `0`) is fixed at `(0, 0)`.
+   - All neighbors of the central node are evenly distributed on a circle centered at `(0, 0)`. The number of neighbors determines the angular spacing, and a uniform radius ensures Euclidean distances align well with the graph's star topology.
+
+4. **Output**: The positions are serialized into JSON format for programmatic usability.
