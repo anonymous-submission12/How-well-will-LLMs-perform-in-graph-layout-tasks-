@@ -1,4 +1,4 @@
-This project provides supplementary materials of the manuscript "How well will LLMs perform in graph layout tasks?".
+This project provides supplementary materials of the manuscript "How Well Will LLMs Perform for Graph Layout Tasks?".
 
 The materials include the original data, code and LLMs' outputs.
 
